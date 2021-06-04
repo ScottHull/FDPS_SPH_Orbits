@@ -25,6 +25,7 @@ for time in np.arange(0, end_time + interval, interval):
     combined_file = cf.combine()
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=True).collect_particles()
+    os.remove(f)
 
     target_silicate = [p for p in pm if p.tag == 0]
     target_iron = [p for p in pm if p.tag == 1]
