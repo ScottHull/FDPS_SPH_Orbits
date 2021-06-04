@@ -46,28 +46,28 @@ def collect_particles(output, com, mass_protoearth, find_orbital_elements=True):
         tags=output[1]
     )
     for row in output.index:
-        position = [output[3][row] - com[0], output[4][row] - com[1],
-                    output[5][row] - com[2]]
-        velocity = [output[6][row], output[7][row], output[8][row]]
+        position = [float(output[3][row]) - com[0], float(output[4][row]) - com[1],
+                    float(output[5][row]) - com[2]]
+        velocity = [float(output[6][row]), float(output[7][row]), float(output[8][row])]
         relative_velocity = [
             velocity[0] - target_velocity[0],
             velocity[1] - target_velocity[1],
             velocity[2] - target_velocity[2]
         ]
         p = elements.Particle(
-            particle_id=output[0][row],
-            tag=output[1][row],
-            mass=output[2][row],
+            particle_id=int(output[0][row]),
+            tag=int(output[1][row]),
+            mass=float(output[2][row]),
             position=position,
             velocity=velocity,
             relative_velocity=relative_velocity,
-            density=output[9][row],
-            internal_energy=output[10][row],
-            pressure=output[11][row],
-            potential_energy=output[12][row],
-            entropy=output[13][row],
-            temperature=output[14][row],
-            mass_grav_body=mass_protoearth,
+            density=float(output[9][row]),
+            internal_energy=float(output[10][row]),
+            pressure=float(output[11][row]),
+            potential_energy=float(output[12][row]),
+            entropy=float(output[13][row]),
+            temperature=float(output[14][row]),
+            mass_grav_body=float(mass_protoearth),
             calculate_elements=find_orbital_elements
         )
         particles.append(p)
