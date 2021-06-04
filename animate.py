@@ -67,7 +67,7 @@ for time in np.arange(0, end_time + interval, interval):
     ax.grid()
     ax.legend(loc="upper left")
 
-    plt.savefig("{}.png".format(time), format='png')
+    plt.savefig(output + "/{}.png".format(time), format='png')
 
 animate(
     start_time=0,
