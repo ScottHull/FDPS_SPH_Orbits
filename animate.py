@@ -23,7 +23,7 @@ for time in np.arange(0, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
     formatted_time = cf.time
     combined_file = cf.combine()
-    f = os.getcwd() + "/{}_merged_{}.dat".format(randint(0, 100), time)
+    f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=True).collect_particles()
     
     target_silicate = [p for p in pm if p.tag == 0]
