@@ -67,6 +67,8 @@ for time in np.arange(0, end_time + interval, interval):
     ax.set_title("Time: {} sec (iteration: {})".format(formatted_time, time))
     ax.grid()
     ax.legend(loc="upper left")
+    ax.set_xlim(-0.5e8, 0.5e8)
+    ax.set_ylim(-0.5e8, 0.5e8)
 
     plt.savefig(output + "/{}.png".format(time), format='png')
 
