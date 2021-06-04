@@ -36,7 +36,7 @@ def refine_target_velocity(particles):
     ]
 
 
-def collect_particles(output, find_orbital_elements=True):
+def collect_particles(output, com, find_orbital_elements=True):
     print("Collecting particles...")
     particles = []
     target_velocity = calc_target_velocity(
@@ -46,8 +46,8 @@ def collect_particles(output, find_orbital_elements=True):
         tags=output[1]
     )
     for row in output.index:
-        position = [output[3][row] - self.com[0], output[4][row] - self.com[1],
-                    output[5][row] - self.com[2]]
+        position = [output[3][row] - com[0], output[4][row] - com[1],
+                    output[5][row] - com[2]]
         velocity = [output[6][row], output[7][row], output[8][row]]
         relative_velocity = [
             velocity[0] - target_velocity[0],
