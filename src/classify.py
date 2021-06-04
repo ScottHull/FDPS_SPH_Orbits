@@ -2,6 +2,8 @@ from math import pi, sqrt
 import statistics
 from copy import copy
 
+from src import elements
+
 
 def calc_oblateness(a, b):
     return (a - b) / b
@@ -32,6 +34,45 @@ def refine_target_velocity(particles):
         statistics.mean([p.relative_velocity[1] for p in particles if particles.label == "PLANET" and p.tag == 1]),
         statistics.mean([p.relative_velocity[1] for p in particles if particles.label == "PLANET" and p.tag == 1])
     ]
+
+
+def collect_particles(self, output, find_orbital_elements=True):
+    print("Collecting particles...")
+    particles = []
+    target_velocity = calc_target_velocity(
+        vx=output[6],
+        vy=output[7],
+        vz=output[8],
+        tags=output[1]
+    )
+    for row in output.index:
+        position = [output[3][row] - self.com[0], output[4][row] - self.com[1],
+                    output[5][row] - self.com[2]]
+        velocity = [output[6][row], output[7][row], output[8][row]]
+        relative_velocity = [
+            velocity[0] - target_velocity[0],
+            velocity[1] - target_velocity[1],
+            velocity[2] - target_velocity[2]
+        ]
+        p = elements.Particle(
+            particle_id=output[0][row],
+            tag=output[1][row],
+            mass=output[2][row],
+            position=position,
+            velocity=velocity,
+            relative_velocity=relative_velocity,
+            density=output[9][row],
+            internal_energy=output[10][row],
+            pressure=output[11][row],
+            potential_energy=output[12][row],
+            entropy=output[13][row],
+            temperature=output[14][row],
+            mass_grav_body=self.mass_protoearth,
+            calculate_elements=find_orbital_elements
+        )
+        particles.append(p)
+    print("Collected particles!")
+    return particles
 
 
 def is_planet(p, a):

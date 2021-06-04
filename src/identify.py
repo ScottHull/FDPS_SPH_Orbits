@@ -29,42 +29,7 @@ class ParticleMap:
         self.relative_velocity = relative_velocity
 
     def collect_particles(self, find_orbital_elements=True):
-        print("Collecting particles...")
-        particles = []
-        target_velocity = classify.calc_target_velocity(
-            vx=self.output[6],
-            vy=self.output[7],
-            vz=self.output[8],
-            tags=self.output[1]
-        )
-        for row in self.output.index:
-            position = [self.output[3][row] - self.com[0], self.output[4][row] - self.com[1],
-                        self.output[5][row] - self.com[2]]
-            velocity = [self.output[6][row], self.output[7][row], self.output[8][row]]
-            relative_velocity = [
-                velocity[0] - target_velocity[0],
-                velocity[1] - target_velocity[1],
-                velocity[2] - target_velocity[2]
-            ]
-            p = elements.Particle(
-                particle_id=self.output[0][row],
-                tag=self.output[1][row],
-                mass=self.output[2][row],
-                position=position,
-                velocity=velocity,
-                relative_velocity=relative_velocity,
-                density=self.output[9][row],
-                internal_energy=self.output[10][row],
-                pressure=self.output[11][row],
-                potential_energy=self.output[12][row],
-                entropy=self.output[13][row],
-                temperature=self.output[14][row],
-                mass_grav_body=self.mass_protoearth,
-                calculate_elements=find_orbital_elements
-            )
-            particles.append(p)
-        print("Collected particles!")
-        return particles
+        return classify.collect_particles(output=self.output, find_orbital_elements=find_orbital_elements)
 
     def solve(self, particles, K=0.335, G=6.674 * 10 ** -11, avg_density=5.5 * 1000):
         iteration = 0
@@ -116,7 +81,7 @@ class ParticleMap:
             total_angular_momentum = sum([i.angular_momentum for i in particles])
             new_target_velocity = classify.refine_target_velocity(particles=particles)
             for p in particles:
-                if self.relative_velocity is not None:
+                if self.relative_velocity is True:
                     p.relative_velocity_vector = [
                         p.velocity[0] - new_target_velocity[0],
                         p.velocity[1] - new_target_velocity[1],
@@ -132,3 +97,13 @@ class ParticleMap:
                 NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
                 total_angular_momentum
             )
+
+
+class ParticleMapFromFiles:
+
+    def __init__(self, path):
+        self.path = path
+
+    def read(self, time):
+        particles = []
+        df = pd.read_csv(self.path + "/{}.csv".format(time))
