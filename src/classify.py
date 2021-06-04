@@ -36,7 +36,7 @@ def refine_target_velocity(particles):
     ]
 
 
-def collect_particles(self, output, find_orbital_elements=True):
+def collect_particles(output, find_orbital_elements=True):
     print("Collecting particles...")
     particles = []
     target_velocity = calc_target_velocity(
