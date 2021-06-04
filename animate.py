@@ -12,7 +12,7 @@ start_time = 0
 end_time = 100
 interval = 10
 number_processes = 100
-path = "/scratch/shull4/gi"
+path = "/scratch/shull4/gi_v_esc"
 output = "/scratch/shull4/animate"
 
 if os.path.exists(output):
