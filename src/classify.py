@@ -36,7 +36,7 @@ def refine_target_velocity(particles):
     ]
 
 
-def collect_particles(output, com, find_orbital_elements=True):
+def collect_particles(output, com, mass_protoearth, find_orbital_elements=True):
     print("Collecting particles...")
     particles = []
     target_velocity = calc_target_velocity(
@@ -67,7 +67,7 @@ def collect_particles(output, com, find_orbital_elements=True):
             potential_energy=output[12][row],
             entropy=output[13][row],
             temperature=output[14][row],
-            mass_grav_body=self.mass_protoearth,
+            mass_grav_body=mass_protoearth,
             calculate_elements=find_orbital_elements
         )
         particles.append(p)

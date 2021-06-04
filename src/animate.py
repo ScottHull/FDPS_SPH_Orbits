@@ -1,6 +1,7 @@
 import numpy as np
 import moviepy.editor as mpy
 
+
 def animate(start_time, end_time, interval, path, filename="animation.mp4", fps=30):
     frames = [path + "/{}.png".format(time) for time in np.arange(start_time, end_time + interval, interval)]
     animation = mpy.ImageSequenceClip(frames, fps=fps, load_images=True)

@@ -29,7 +29,12 @@ class ParticleMap:
         self.relative_velocity = relative_velocity
 
     def collect_particles(self, find_orbital_elements=True):
-        return classify.collect_particles(output=self.output, com=self.com, find_orbital_elements=find_orbital_elements)
+        return classify.collect_particles(
+            output=self.output,
+            com=self.com,
+            mass_protoearth=self.mass_protoearth,
+            find_orbital_elements=find_orbital_elements
+        )
 
     def solve(self, particles, K=0.335, G=6.674 * 10 ** -11, avg_density=5.5 * 1000):
         iteration = 0
