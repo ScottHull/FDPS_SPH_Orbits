@@ -58,7 +58,7 @@ class Particle:
             return sqrt(1.0 + ((2.0 * self.orbital_energy * (self.angular_momentum ** 2)) / (
                     self.mass_reduced * (self.alpha ** 2))))
         except:
-            print("error for particle: {} (ORBITAL ENERGY: {}, ANGULAR MOMENTUM: {})".format(self.particle_name,
+            print("error for particle: {} (ORBITAL ENERGY: {}, ANGULAR MOMENTUM: {})".format(self.particle_id,
                                                                                              self.orbital_energy,
                                                                                              self.angular_momentum))
             return 0
