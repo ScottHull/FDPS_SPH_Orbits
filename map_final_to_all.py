@@ -12,12 +12,23 @@ start_time = 0
 end_time = 3000
 interval = 20
 number_processes = 100
-path = "/scratch/shull4/gi_v_esc"
-output = "/scratch/shull4/animate"
+path = "/scratch/shull4/gi_new"
+output = "/scratch/shull4/map_final_to_all"
 
 if os.path.exists(output):
     shutil.rmtree(output)
 os.mkdir(output)
+
+cf_end = CombineFile(num_processes=number_processes, time=end_time, output_path=path)
+formatted_time_end = cf_end.sim_time
+combined_file_end = cf_end.combine()
+f = os.getcwd() + "/merged_{}.dat".format(end_time)
+pm_end = ParticleMap(path=f, center=False, relative_velocity=False).collect_particles()
+os.remove(f)
+
+end = {}
+for p in pm_end:
+    end.update({p.particle_id: p.label})
 
 for time in np.arange(0, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
@@ -27,40 +38,32 @@ for time in np.arange(0, end_time + interval, interval):
     pm = ParticleMap(path=f, center=False, relative_velocity=False).collect_particles()
     os.remove(f)
 
-    target_silicate = [p for p in pm if p.tag == 0]
-    target_iron = [p for p in pm if p.tag == 1]
-    impactor_silicate = [p for p in pm if p.tag == 2]
-    impactor_iron = [p for p in pm if p.tag == 3]
+    planet = [p for p in pm if pm_end[p.particle_id] == "PLANET"]
+    disk = [p for p in pm if pm_end[p.particle_id] == "DISK"]
+    escape = [p for p in pm if pm_end[p.particle_id] == "ESCAPE"]
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
     ax.scatter(
-        [p.position[0] for p in target_silicate],
-        [p.position[1] for p in target_silicate],
+        [p.position[0] for p in planet],
+        [p.position[1] for p in planet],
         marker="+",
-        color='red',
-        label="TARGET SILICATE"
+        color="blue",
+        label="PLANET"
     )
     ax.scatter(
-        [p.position[0] for p in target_iron],
-        [p.position[1] for p in target_iron],
+        [p.position[0] for p in disk],
+        [p.position[1] for p in disk],
         marker="+",
-        color='blue',
-        label="TARGET IRON"
+        color="green",
+        label="DISK"
     )
     ax.scatter(
-        [p.position[0] for p in impactor_silicate],
-        [p.position[1] for p in impactor_silicate],
+        [p.position[0] for p in escape],
+        [p.position[1] for p in escape],
         marker="+",
-        color='purple',
-        label="IMPACTOR SILICATE"
-    )
-    ax.scatter(
-        [p.position[0] for p in impactor_iron],
-        [p.position[1] for p in impactor_iron],
-        marker="+",
-        color='green',
-        label="IMPACTOR IRON"
+        color="red",
+        label="ESCAPE"
     )
     ax.set_xlabel("x")
     ax.set_ylabel("y")
@@ -78,5 +81,5 @@ animate(
     interval=interval,
     path=output,
     fps=5,
-    filename="test_animate.mp4",
+    filename="map_final_to_all.mp4",
 )
