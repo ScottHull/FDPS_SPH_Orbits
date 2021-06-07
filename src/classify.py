@@ -30,9 +30,9 @@ def calc_target_velocity(vx, vy, vz, tags):
 def refine_target_velocity(particles):
     # returns relative velocity of target iron
     return [
-        statistics.mean([p.relative_velocity[0] for p in particles if particles.label == "PLANET" and p.tag == 1]),
-        statistics.mean([p.relative_velocity[1] for p in particles if particles.label == "PLANET" and p.tag == 1]),
-        statistics.mean([p.relative_velocity[1] for p in particles if particles.label == "PLANET" and p.tag == 1])
+        statistics.mean([p.relative_velocity[0] for p in particles if p.label == "PLANET" and p.tag == 1]),
+        statistics.mean([p.relative_velocity[1] for p in particles if p.label == "PLANET" and p.tag == 1]),
+        statistics.mean([p.relative_velocity[1] for p in particles if p.label == "PLANET" and p.tag == 1])
     ]
 
 
