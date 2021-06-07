@@ -84,18 +84,19 @@ class ParticleMap:
             self.mass_protoearth = NEW_MASS_PROTOPLANET
             iteration += 1
             total_angular_momentum = sum([i.angular_momentum for i in particles])
-            new_target_velocity = classify.refine_target_velocity(particles=particles)
-            for p in particles:
-                if self.relative_velocity is True:
-                    p.relative_velocity_vector = [
-                        p.velocity[0] - new_target_velocity[0],
-                        p.velocity[1] - new_target_velocity[1],
-                        p.velocity[2] - new_target_velocity[2]
-                    ]
-                try:
-                    p.recalculate_elements(mass_grav_body=self.mass_protoearth)
-                except:
-                    pass
+            if self.relative_velocity:
+                new_target_velocity = classify.refine_target_velocity(particles=particles)
+                for p in particles:
+                    if self.relative_velocity is True:
+                        p.relative_velocity_vector = [
+                            p.velocity[0] - new_target_velocity[0],
+                            p.velocity[1] - new_target_velocity[1],
+                            p.velocity[2] - new_target_velocity[2]
+                        ]
+                    try:
+                        p.recalculate_elements(mass_grav_body=self.mass_protoearth)
+                    except:
+                        pass
             classify.log(
                 iteration, error, self.a,
                 NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
