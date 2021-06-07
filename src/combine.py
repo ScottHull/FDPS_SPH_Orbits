@@ -8,6 +8,7 @@ class CombineFile:
     def __init__(self, num_processes, time, output_path):
         self.num_processes = num_processes
         self.time = time
+        self.sim_time = None
         self.output_path = output_path
         self.file_format = "results.{}_{}_{}.dat"
         self.curr_process = 0
@@ -57,5 +58,6 @@ class CombineFile:
                 total_N += int(next(reader)[0])
                 infile.close()
             dfs.append(self.__read_sph_file())
+        self.sim_time = time
         merged_df = pd.concat(dfs)
         return merged_df

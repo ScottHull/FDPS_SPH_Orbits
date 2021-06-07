@@ -9,8 +9,8 @@ from src.combine import CombineFile
 from src.animate import animate
 
 start_time = 0
-end_time = 100
-interval = 5
+end_time = 3000
+interval = 20
 number_processes = 100
 path = "/scratch/shull4/gi_v_esc"
 output = "/scratch/shull4/animate"
@@ -21,7 +21,7 @@ os.mkdir(output)
 
 for time in np.arange(0, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
-    formatted_time = cf.time
+    formatted_time = cf.sim_time
     combined_file = cf.combine()
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=True).collect_particles()
@@ -67,8 +67,8 @@ for time in np.arange(0, end_time + interval, interval):
     ax.set_title("Time: {} sec (iteration: {})".format(formatted_time, time))
     ax.grid()
     ax.legend(loc="upper left")
-    ax.set_xlim(-0.5e8, 0.5e8)
-    ax.set_ylim(-0.5e8, 0.5e8)
+    ax.set_xlim(-1e8, 1e8)
+    ax.set_ylim(-1e8, 1e8)
 
     plt.savefig(output + "/{}.png".format(time), format='png')
 
@@ -77,6 +77,6 @@ animate(
     end_time=end_time,
     interval=interval,
     path=output,
-    fps=30,
-    filename="test_animate.mp4"
+    fps=5,
+    filename="test_animate.mp4",
 )
