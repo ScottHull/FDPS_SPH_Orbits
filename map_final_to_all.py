@@ -23,11 +23,13 @@ cf_end = CombineFile(num_processes=number_processes, time=end_time, output_path=
 formatted_time_end = cf_end.sim_time
 combined_file_end = cf_end.combine()
 f = os.getcwd() + "/merged_{}.dat".format(end_time)
-pm_end = ParticleMap(path=f, center=False, relative_velocity=False).collect_particles()
+pm_end = ParticleMap(path=f, center=False, relative_velocity=False)
+particles = pm_end.collect_particles()
+pm_end.solve(particles=particles)
 os.remove(f)
 
 end = {}
-for p in pm_end:
+for p in particles:
     end.update({p.particle_id: p.label})
 
 for time in np.arange(0, end_time + interval, interval):
@@ -38,9 +40,9 @@ for time in np.arange(0, end_time + interval, interval):
     pm = ParticleMap(path=f, center=False, relative_velocity=False).collect_particles()
     os.remove(f)
 
-    planet = [p for p in pm if pm_end[p.particle_id] == "PLANET"]
-    disk = [p for p in pm if pm_end[p.particle_id] == "DISK"]
-    escape = [p for p in pm if pm_end[p.particle_id] == "ESCAPE"]
+    planet = [p for p in pm if end[p.particle_id] == "PLANET"]
+    disk = [p for p in pm if end[p.particle_id] == "DISK"]
+    escape = [p for p in pm if end[p.particle_id] == "ESCAPE"]
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)

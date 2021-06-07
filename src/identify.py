@@ -75,7 +75,7 @@ class ParticleMap:
             f_denominator = 1.0 + ((5.0 / 2.0) - ((15.0 * K) / 4.0)) ** 2
             new_f = f_numerator / f_denominator
             new_a = ((3.0 * pi * NEW_MASS_PROTOPLANET * (1.0 - new_f)) / (4.0 * avg_density)) ** (1 / 3)
-            error = abs((new_a - a) / a)
+            error = abs((new_a - self.a) / self.a)
             if error < 10 ** -8:
                 CONVERGENCE = True
             else:
