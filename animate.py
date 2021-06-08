@@ -1,7 +1,6 @@
 import os
 import shutil
 import numpy as np
-from random import randint
 import matplotlib.pyplot as plt
 
 from src.identify import ParticleMap
