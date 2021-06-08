@@ -93,10 +93,11 @@ class ParticleMap:
                             p.velocity[1] - new_target_velocity[1],
                             p.velocity[2] - new_target_velocity[2]
                         ]
-            try:
-                p.recalculate_elements(mass_grav_body=self.mass_protoearth)
-            except:
-                pass
+            for p in particles:
+                try:
+                    p.recalculate_elements(mass_grav_body=self.mass_protoearth)
+                except:
+                    pass
             classify.log(
                 iteration, error, self.a,
                 NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,

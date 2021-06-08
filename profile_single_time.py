@@ -8,7 +8,6 @@ from src.combine import CombineFile
 from src.animate import animate
 
 time = 3000
-interval = 20
 number_processes = 100
 path = "/scratch/shull4/gi_new"
 
