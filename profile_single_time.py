@@ -16,12 +16,14 @@ cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
 formatted_time = cf.sim_time
 combined_file = cf.combine()
 f = os.getcwd() + "/merged_{}.dat".format(time)
-pm = ParticleMap(path=f, center=False, relative_velocity=False).collect_particles()
+pm = ParticleMap(path=f, center=False, relative_velocity=False)
+particles = pm.collect_particles()
+pm.solve(particles=particles)
 os.remove(f)
 
-planet = [p for p in pm if pm.label == "PLANET"]
-disk = [p for p in pm if pm.label == "DISK"]
-escape = [p for p in pm if pm.label == "ESCAPE"]
+planet = [p for p in particles if p.label == "PLANET"]
+disk = [p for p in particles if p.label == "DISK"]
+escape = [p for p in particles if p.label == "ESCAPE"]
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
