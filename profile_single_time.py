@@ -18,7 +18,8 @@ f = os.getcwd() + "/merged_{}.dat".format(time)
 pm = ParticleMap(path=f, center=False, relative_velocity=False)
 particles = pm.collect_particles()
 pm.solve(particles=particles)
-os.remove(f)
+if f in os.listdir(os.getcwd()):
+    os.remove(f)
 
 planet = [p for p in particles if p.label == "PLANET"]
 disk = [p for p in particles if p.label == "DISK"]
