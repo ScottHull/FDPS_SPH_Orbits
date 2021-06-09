@@ -22,7 +22,6 @@ for time in np.arange(0, end_time + interval, interval):
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
     particles = pm.collect_particles(find_orbital_elements=False)
-    pm.solve(particles=particles)
     os.remove(f)
 
     target, impactor, target_com_x, target_com_y, target_com_z, impactor_com_x, impactor_com_y, impactor_com_z, \
@@ -56,6 +55,13 @@ for time in np.arange(0, end_time + interval, interval):
         [target_com_y, impactor_com_y],
         linewidth=2.0,
         color='black'
+    )
+    ax.plot(
+        [target_com_x, impactor_com_x],
+        [target_com_y, impactor_com_y],
+        linewidth=2.0,
+        color='black',
+        label="IMP ANGLE: {}".format(imp_angle)
     )
     ax.set_xlabel("x")
     ax.set_ylabel("y"),
