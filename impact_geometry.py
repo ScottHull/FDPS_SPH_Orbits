@@ -15,6 +15,10 @@ number_processes = 100
 path = "/scratch/shull4/gi"
 output = "/scratch/shull4/impact_geometry"
 
+if os.path.exists(output):
+    shutil.rmtree(output)
+os.mkdir(output)
+
 for time in np.arange(0, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
     formatted_time = cf.sim_time
@@ -76,5 +80,5 @@ animate(
     interval=interval,
     path=output,
     fps=5,
-    filename="impact_geometry.py.mp4",
+    filename="impact_geometry.mp4",
 )
