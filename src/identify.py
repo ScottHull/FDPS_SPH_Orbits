@@ -33,7 +33,8 @@ class ParticleMap:
             output=self.output,
             com=self.com,
             mass_protoearth=self.mass_protoearth,
-            find_orbital_elements=find_orbital_elements
+            find_orbital_elements=find_orbital_elements,
+            relative_velocity=self.relative_velocity
         )
 
     def solve(self, particles, K=0.335, G=6.674 * 10 ** -11, avg_density=5.5 * 1000):

@@ -36,15 +36,17 @@ def refine_target_velocity(particles):
     ]
 
 
-def collect_particles(output, com, mass_protoearth, find_orbital_elements=True):
+def collect_particles(output, com, mass_protoearth, relative_velocity=False, find_orbital_elements=True):
     print("Collecting particles...")
     particles = []
-    target_velocity = calc_target_velocity(
-        vx=output[6],
-        vy=output[7],
-        vz=output[8],
-        tags=output[1]
-    )
+    target_velocity = [0, 0, 0]
+    if relative_velocity:
+        target_velocity = calc_target_velocity(
+            vx=output[6],
+            vy=output[7],
+            vz=output[8],
+            tags=output[1]
+        )
     for row in output.index:
         position = [float(output[3][row]) - com[0], float(output[4][row]) - com[1],
                     float(output[5][row]) - com[2]]
