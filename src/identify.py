@@ -104,13 +104,3 @@ class ParticleMap:
                 NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
                 total_angular_momentum
             )
-
-
-class ParticleMapFromFiles:
-
-    def __init__(self, path):
-        self.path = path
-
-    def read(self, time):
-        particles = []
-        df = pd.read_csv(self.path + "/{}.csv".format(time))
