@@ -73,7 +73,6 @@ class Particle:
 
     def __semi_major_axis(self):
         E_spec = self.__total_orbital_energy() / self.mass
-
         mu = self.__G * self.mass_grav_body
         return - mu / (2.0 * E_spec)
 

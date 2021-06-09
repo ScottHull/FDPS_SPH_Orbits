@@ -57,13 +57,13 @@ ax.set_xlim(-1e8, 1e8)
 ax.set_ylim(-1e8, 1e8)
 plt.savefig("{}.png".format(time), format='png')
 
-x_axis = [p.semi_major_axis / pm.a for p in particles]
+x_axis = [p.semi_major_axis / pm.a for p in particles if p.label == "DISK"]
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 ax.scatter(
     x_axis,
-    [p.inclination for p in particles],
+    [p.inclination for p in particles if p.label == "DISK"],
     marker="+",
     color='blue'
 )
@@ -76,7 +76,7 @@ fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 ax.scatter(
     x_axis,
-    [p.eccentricity for p in particles],
+    [p.eccentricity for p in particles if p.label == "DISK"],
     marker="+",
     color='blue'
 )
