@@ -11,10 +11,11 @@ class ReverseTime:
     Reversing the initial position of the impactor backwards in time.
     """
 
-    def __init__(self, target_file_path, impactor_file_path, impact_parameter, dt=-0.1):
+    def __init__(self, target_file_path, impactor_file_path, impact_parameter, dt=-0.1, center_targat=False):
         self.G = 6.674 * 10 ** -11
         self.target_df = pd.read_csv(target_file_path, sep='\t', skiprows=2, header=None)
         self.impactor_df = pd.read_csv(impactor_file_path, sep='\t', skiprows=2, header=None)
+        self.center_target = center_targat
         self.target_mass = sum([float(i) for i in self.target_df[2]])
         self.impactor_mass = sum([float(i) for i in self.impactor_df[2]])
         self.total_mass = self.target_mass + self.impactor_mass
@@ -258,13 +259,15 @@ class ReverseTime:
             z_coords=self.current_impactor_position[2],
             masses=self.impactor_df[2]
         )
-        # self.current_target_position[0] = [i - self.com_target[0] for i in self.current_target_position[0]]
-        # self.current_target_position[1] = [i - self.com_target[1] for i in self.current_target_position[1]]
-        # self.current_target_position[2] = [i - self.com_target[2] for i in self.current_target_position[2]]
-        #
-        # self.current_impactor_position[0] = [i - self.com_impactor[0] for i in self.current_impactor_position[0]]
-        # self.current_impactor_position[1] = [i - self.com_impactor[1] for i in self.current_impactor_position[1]]
-        # self.current_impactor_position[2] = [i - self.com_impactor[2] for i in self.current_impactor_position[2]]
+
+        if self.center_target:
+            self.current_target_position[0] = [i - self.com_target[0] for i in self.current_target_position[0]]
+            self.current_target_position[1] = [i - self.com_target[1] for i in self.current_target_position[1]]
+            self.current_target_position[2] = [i - self.com_target[2] for i in self.current_target_position[2]]
+
+            self.current_impactor_position[0] = [i - self.com_target[0] for i in self.current_impactor_position[0]]
+            self.current_impactor_position[1] = [i - self.com_target[1] for i in self.current_impactor_position[1]]
+            self.current_impactor_position[2] = [i - self.com_target[2] for i in self.current_impactor_position[2]]
 
         self.position_target_history.append(self.com_target)
         self.position_impactor_history.append(self.com_impactor)
