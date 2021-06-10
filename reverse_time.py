@@ -22,11 +22,13 @@ rt = ReverseTime(
 )
 
 loop = 0
+plotted = 0
 while rt.distance < 3 * rt.radius_target:
     rt.reverse()
     if loop % 20 == 0:
         fig = rt.plot_current_position()
         plt.savefig(output_path + "/{}.png".format(loop), format='png')
+        plotted += 1
     loop += 1
 
 print(
@@ -43,7 +45,7 @@ print(
     "INITIAL_IMPACTOR_Y_VELOCITY: {}\n".format(
         rt.distance / rt.radius_target,
         rt.x_distance / rt.radius_target, rt.y_distance / rt.radius_target, rt.z_distance / rt.radius_target,
-        rt.current_target_position, rt.current_impactor_position,
+        rt.com_target, rt.com_impactor,
         rt.v_target_x, rt.v_target_y, rt.v_target_z,
         rt.v_impactor_x, rt.v_impactor_y, rt.v_impactor_z,
     )
@@ -51,11 +53,12 @@ print(
 
 animate(
     start_time=0,
-    end_time=rt.time,
+    end_time=plotted,
     interval=1,
     path=output_path,
     fps=10,
-    filename="reverse_time.mp4"
+    filename="reverse_time.mp4",
+    reverse=True
 )
 
 # rt.plot_velocity_history()
