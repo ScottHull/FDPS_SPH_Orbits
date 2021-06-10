@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from src.animate import animate
 from src.reverse_time import ReverseTime
 
-target_path = "/Users/scotthull/Desktop/input/tar.dat"
-impactor_path = "/Users/scotthull/Desktop/input/imp.dat"
+target_path = "/home/shull4/drift_test/FDPS_SPH/input/tar.dat"
+impactor_path = "/home/shull4/drift_test/FDPS_SPH/input/imp.dat"
 output_path = "/scratch/shull4/output_path"
 
 rt = ReverseTime(
