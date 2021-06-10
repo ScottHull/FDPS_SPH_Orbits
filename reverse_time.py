@@ -25,9 +25,9 @@ loop = 0
 plotted = 0
 while rt.distance < 3 * rt.radius_target:
     rt.reverse()
-    if loop % 20 == 0:
+    if loop % 5 == 0:
         fig = rt.plot_current_position()
-        plt.savefig(output_path + "/{}.png".format(loop), format='png')
+        plt.savefig(output_path + "/{}.png".format(plotted), format='png')
         plotted += 1
     loop += 1
 
@@ -53,7 +53,7 @@ print(
 
 animate(
     start_time=0,
-    end_time=plotted,
+    end_time=plotted - 1,
     interval=1,
     path=output_path,
     fps=10,

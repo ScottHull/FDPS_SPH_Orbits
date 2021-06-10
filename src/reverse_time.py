@@ -132,6 +132,9 @@ class ReverseTime:
             color='green',
             label="PATH IMPACTOR"
         )
+        ax.set_xlim(-2.1e7, 2.1e7)
+        ax.set_ylim(-2.1e7, 2.1e7)
+        ax.set_ylim()
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_title("Time Before Impact: {} s".format(self.time))
