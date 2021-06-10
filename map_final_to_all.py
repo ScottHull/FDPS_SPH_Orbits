@@ -38,7 +38,6 @@ for time in np.arange(0, end_time + interval, interval):
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
     particles = pm.collect_particles(find_orbital_elements=False)
-    pm.solve(particles=particles)
     os.remove(f)
 
     planet = [p for p in particles if end[p.particle_id] == "PLANET"]

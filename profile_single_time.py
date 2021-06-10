@@ -1,6 +1,7 @@
 import os
 import shutil
 import numpy as np
+from math import cos
 import matplotlib.pyplot as plt
 
 from src.identify import ParticleMap
@@ -57,7 +58,10 @@ ax.set_xlim(-1e8, 1e8)
 ax.set_ylim(-1e8, 1e8)
 plt.savefig("{}.png".format(time), format='png')
 
-x_axis = [p.semi_major_axis / pm.a for p in particles if p.label == "DISK"]
+# circularize orbits
+damped_semi_major_axis = [p.semi_major_axis * (1 - p.eccentricity ** 2) * cos(p.inclination)**2 for p in particles if p.label == "DISK"]
+x_axis = [p / pm.a for p in damped_semi_major_axis]
+# x_axis = [p.semi_major_axis / pm.a for p in damped_semi_major_axis]
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)

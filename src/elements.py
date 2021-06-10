@@ -1,4 +1,4 @@
-from math import sqrt, acos, sin, cos, exp
+from math import pi, sqrt, acos, sin, cos, exp
 import numpy as np
 from copy import copy
 
@@ -77,7 +77,7 @@ class Particle:
         return - mu / (2.0 * E_spec)
 
     def __inclination(self):
-        return acos(self.angular_momentum_vector[2] / self.angular_momentum)
+        return acos(self.angular_momentum_vector[2] / self.angular_momentum) * (180 / pi)
 
     def __longitude_of_ascending_node(self):
         return np.cross([0, 0, 1], self.angular_momentum_vector)
