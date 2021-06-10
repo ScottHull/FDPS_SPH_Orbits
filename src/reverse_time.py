@@ -10,6 +10,7 @@ class ReverseTime:
     """
     Reversing the initial position of the impactor backwards in time.
     """
+
     def __init__(self, target_file_path, impactor_file_path, impact_parameter, dt=-0.1):
         self.G = 6.674 * 10 ** -11
         self.target_df = pd.read_csv(target_file_path, sep='\t', skiprows=2, header=None)
@@ -73,7 +74,7 @@ class ReverseTime:
             masses=self.impactor_df[2]
         )
         self.calculate_distance()
-        
+
         self.v_target_history = [[self.v_target_x, self.v_target_y, self.v_target_z]]
         self.v_impactor_history = [[self.v_impactor_x, self.v_impactor_y, self.v_impactor_z]]
         self.position_target_history = [self.com_target]
@@ -85,7 +86,7 @@ class ReverseTime:
         y = [i - com[1] for i in y]
         z = [i - com[2] for i in z]
         return [x, y, z]
-    
+
     def radius_body(self, centered_coords):
         return max(centered_coords[0])
 
@@ -93,8 +94,10 @@ class ReverseTime:
         return asin(impact_parameter) * (180 / pi)
 
     def initial_impactor_position(self, centered_coords):
-        x = [i + ((self.radius_target + self.radius_impactor) * cos(self.angle * (pi / 180))) for i in centered_coords[0]]
-        y = [i + ((self.radius_target + self.radius_impactor) * sin(self.angle * (pi / 180))) for i in centered_coords[1]]
+        x = [i + ((self.radius_target + self.radius_impactor) * cos(self.angle * (pi / 180))) for i in
+             centered_coords[0]]
+        y = [i + ((self.radius_target + self.radius_impactor) * sin(self.angle * (pi / 180))) for i in
+             centered_coords[1]]
         z = centered_coords[0]
         return [x, y, z]
 
@@ -233,10 +236,13 @@ class ReverseTime:
         self.current_target_position[1] = [i + (self.v_target_y * self.dt) for i in self.current_target_position[1]]
         self.current_target_position[2] = [i + (self.v_target_z * self.dt) for i in self.current_target_position[2]]
 
-        self.current_impactor_position[0] = [i + (self.v_impactor_x * self.dt) for i in self.current_impactor_position[0]]
-        self.current_impactor_position[1] = [i + (self.v_impactor_y * self.dt) for i in self.current_impactor_position[1]]
-        self.current_impactor_position[2] = [i + (self.v_impactor_z * self.dt) for i in self.current_impactor_position[2]]
-        
+        self.current_impactor_position[0] = [i + (self.v_impactor_x * self.dt) for i in
+                                             self.current_impactor_position[0]]
+        self.current_impactor_position[1] = [i + (self.v_impactor_y * self.dt) for i in
+                                             self.current_impactor_position[1]]
+        self.current_impactor_position[2] = [i + (self.v_impactor_z * self.dt) for i in
+                                             self.current_impactor_position[2]]
+
         self.com_target = center_of_mass(
             x_coords=self.current_target_position[0],
             y_coords=self.current_target_position[1],
@@ -257,7 +263,6 @@ class ReverseTime:
         # self.current_impactor_position[1] = [i - self.com_impactor[1] for i in self.current_impactor_position[1]]
         # self.current_impactor_position[2] = [i - self.com_impactor[2] for i in self.current_impactor_position[2]]
 
-        
         self.position_target_history.append(self.com_target)
         self.position_impactor_history.append(self.com_impactor)
 

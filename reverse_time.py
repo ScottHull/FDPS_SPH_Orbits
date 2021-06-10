@@ -1,11 +1,18 @@
+import os
+import shutil
 import matplotlib.pyplot as plt
 
 from src.animate import animate
+
 from src.reverse_time import ReverseTime
 
 target_path = "/home/shull4/drift_test/FDPS_SPH/input/tar.dat"
 impactor_path = "/home/shull4/drift_test/FDPS_SPH/input/imp.dat"
-output_path = "/scratch/shull4/output_path"
+output_path = "/scratch/shull4/reversed_outputs"
+
+if os.path.exists(output_path):
+    shutil.rmtree(output_path)
+os.mkdir(output_path)
 
 rt = ReverseTime(
     target_file_path=target_path,
@@ -40,7 +47,6 @@ print(
         rt.v_impactor_x, rt.v_impactor_y, rt.v_impactor_z,
     )
 )
-
 
 animate(
     start_time=0,
