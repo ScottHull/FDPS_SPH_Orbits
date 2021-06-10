@@ -24,7 +24,7 @@ rt = ReverseTime(
 loop = 0
 while rt.distance < 3 * rt.radius_target:
     rt.reverse()
-    if loop % 20:
+    if loop % 20 == 0:
         fig = rt.plot_current_position()
         plt.savefig(output_path + "/{}.png".format(loop), format='png')
     loop += 1
