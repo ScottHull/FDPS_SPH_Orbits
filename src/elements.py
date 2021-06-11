@@ -28,18 +28,16 @@ class Particle:
             self.recalculate_elements(mass_grav_body=self.mass_grav_body)
 
     def __total_momentum_vector(self):
-        m_x = self.mass * self.relative_velocity[0]
-        m_y = self.mass * self.relative_velocity[1]
-        m_z = self.mass * self.relative_velocity[2]
+        m_x = self.relative_velocity[0]
+        m_y = self.relative_velocity[1]
+        m_z = self.relative_velocity[2]
         return m_x, m_y, m_z
 
     def __angular_momentum_vector(self):
-        am = self.mass * np.cross(self.position, self.relative_velocity)
-        return am
+        return np.cross(self.position, self.relative_velocity)
 
     def __angular_momentum(self):
-        am = np.linalg.norm(self.__angular_momentum_vector())
-        return am
+        return np.linalg.norm(self.__angular_momentum_vector())
 
     def __node_vector(self):
         return np.cross([0, 0, self.position[0]], self.angular_momentum_vector)
@@ -53,10 +51,11 @@ class Particle:
 
     def __eccentricity(self):
         try:
-            self.alpha = - self.__G * self.mass * self.mass_grav_body
-            self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
-            return sqrt(1.0 + ((2.0 * self.orbital_energy * (self.angular_momentum ** 2)) / (
-                    self.mass_reduced * (self.alpha ** 2))))
+            # self.alpha = - self.__G * self.mass * self.mass_grav_body
+            # self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
+            # return sqrt(1.0 + ((2.0 * self.orbital_energy * (self.angular_momentum ** 2)) / (
+            #         self.mass_reduced * (self.alpha ** 2))))
+            return sqrt(1 + 2 * self.orbital_energy * self.angular_momentum_vector[2] ** 2 / self.mass / self.__G / self.__G / self.mass_grav_body / self.mass_grav_body)
         except:
             print("error for particle: {} (ORBITAL ENERGY: {}, ANGULAR MOMENTUM: {})".format(self.particle_id,
                                                                                              self.orbital_energy,
@@ -106,13 +105,16 @@ class Particle:
     def __periapsis(self):
         return self.semi_major_axis * (1.0 - self.eccentricity)
 
+    def __radius_circular_orbit(self):
+        return (self.angular_momentum_vector[2] ** 2) / (self.__G * self.mass_grav_body)
+
     def recalculate_elements(self, mass_grav_body):
         self.mass_grav_body = mass_grav_body
         self.angular_momentum_vector = self.__angular_momentum_vector()
         self.angular_momentum = self.__angular_momentum()
         self.momentum_vector = self.__total_momentum_vector()
-        self.semi_major_axis = self.__semi_major_axis()
         self.orbital_energy = self.__total_orbital_energy()
+        self.semi_major_axis = self.__semi_major_axis()
         self.eccentricity = self.__eccentricity()
         self.eccentricity_vector = self.__eccentricity_vector()
         self.periapsis_node_vector = self.__node_vector()
@@ -121,3 +123,4 @@ class Particle:
         self.argument_of_periapsis = self.__argument_of_periapsis()
         # self.true_anomaly = self.__true_anomaly()
         self.periapsis = self.__periapsis()
+        self.radius_circular_orbit = self.__radius_circular_orbit()

@@ -89,6 +89,12 @@ def is_planet(p, a):
         return True
     return False
 
+def will_be_planet_circular_orbit(p, a):
+    if abs(p.radius_circular_orbit) < a:
+        p.label = "PLANET"
+        return True
+    return False
+
 
 def will_be_planet(p, a):
     """
@@ -104,7 +110,7 @@ def will_be_planet(p, a):
 
 
 def is_disk(p, a):
-    if p.eccentricity < 1.0 and abs(p.periapsis) > a:
+    if p.eccentricity <= 1.0 and abs(p.periapsis) > a:
         p.label = "DISK"
         return True
     return False

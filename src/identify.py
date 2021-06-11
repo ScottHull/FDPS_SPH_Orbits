@@ -72,9 +72,10 @@ class ParticleMap:
             moment_of_inertia_protoplanet = (2.0 / 5.0) * NEW_MASS_PROTOPLANET * (self.a ** 2)
             angular_velocity_protoplanet = NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET / moment_of_inertia_protoplanet
             keplerian_velocity_protoplanet = sqrt((G * NEW_MASS_PROTOPLANET) / self.a ** 3)
-            f_numerator = (5.0 / 2.0) * ((angular_velocity_protoplanet / keplerian_velocity_protoplanet) ** 2)
-            f_denominator = 1.0 + ((5.0 / 2.0) - ((15.0 * K) / 4.0)) ** 2
-            new_f = f_numerator / f_denominator
+            # f_numerator = (5.0 / 2.0) * ((angular_velocity_protoplanet / keplerian_velocity_protoplanet) ** 2)
+            # f_denominator = 1.0 + ((5.0 / 2.0) - ((15.0 * K) / 4.0)) ** 2
+            # new_f = f_numerator / f_denominator
+            new_f = (2.5 * (angular_velocity_protoplanet / keplerian_velocity_protoplanet) ** 2) / (1 + (2.5 - 1.5) ** 2)
             new_a = ((3.0 * pi * NEW_MASS_PROTOPLANET * (1.0 - new_f)) / (4.0 * avg_density)) ** (1 / 3)
             error = abs((new_a - self.a) / self.a)
             if error < 10 ** -8:
@@ -88,12 +89,11 @@ class ParticleMap:
             if self.relative_velocity:
                 new_target_velocity = classify.refine_target_velocity(particles=particles)
                 for p in particles:
-                    if self.relative_velocity is True:
-                        p.relative_velocity_vector = [
-                            p.velocity[0] - new_target_velocity[0],
-                            p.velocity[1] - new_target_velocity[1],
-                            p.velocity[2] - new_target_velocity[2]
-                        ]
+                    p.relative_velocity_vector = [
+                        p.velocity[0] - new_target_velocity[0],
+                        p.velocity[1] - new_target_velocity[1],
+                        p.velocity[2] - new_target_velocity[2]
+                    ]
             for p in particles:
                 try:
                     p.recalculate_elements(mass_grav_body=self.mass_protoearth)
@@ -102,6 +102,6 @@ class ParticleMap:
             classify.log(
                 iteration, error, self.a,
                 NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
-                NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
+                NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, self.mass_protoearth, NEW_MASS_DISK, NEW_MASS_ESCAPED,
                 total_angular_momentum
             )
