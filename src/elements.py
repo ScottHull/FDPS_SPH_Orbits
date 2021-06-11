@@ -71,9 +71,10 @@ class Particle:
         return term1 - term2
 
     def __semi_major_axis(self):
-        E_spec = self.__total_orbital_energy() / self.mass
-        mu = self.__G * self.mass_grav_body
-        return - mu / (2.0 * E_spec)
+        # E_spec = self.__total_orbital_energy() / self.mass
+        # mu = self.__G * self.mass_grav_body
+        # return - mu / (2.0 * E_spec)
+        return - self.__G * self.mass_grav_body * self.mass / 2.0 / self.__total_orbital_energy()
 
     def __inclination(self):
         return acos(self.angular_momentum_vector[2] / self.angular_momentum) * (180 / pi)
