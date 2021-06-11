@@ -38,6 +38,12 @@ class ParticleMap:
         )
 
     def solve(self, particles, K=0.335, G=6.674 * 10 ** -11, avg_density=5.5 * 1000):
+        classify.log(
+            None, None, self.a,
+            None,
+            None, None, self.mass_protoearth, None, None,
+            None
+        )
         iteration = 0
         CONVERGENCE = False
         while CONVERGENCE is False:
