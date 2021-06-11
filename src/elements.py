@@ -55,7 +55,8 @@ class Particle:
             # self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
             # return sqrt(1.0 + ((2.0 * self.orbital_energy * (self.angular_momentum ** 2)) / (
             #         self.mass_reduced * (self.alpha ** 2))))
-            return sqrt(1 + 2 * self.orbital_energy * self.angular_momentum_vector[2] ** 2 / self.mass / self.__G / self.__G / self.mass_grav_body / self.mass_grav_body)
+            return sqrt(1 + 2 * self.orbital_energy * self.angular_momentum_vector[
+                2] ** 2 / self.mass / self.__G / self.__G / self.mass_grav_body / self.mass_grav_body)
         except:
             print("error for particle: {} (ORBITAL ENERGY: {}, ANGULAR MOMENTUM: {})".format(self.particle_id,
                                                                                              self.orbital_energy,

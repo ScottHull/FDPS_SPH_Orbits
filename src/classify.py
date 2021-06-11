@@ -89,6 +89,7 @@ def is_planet(p, a):
         return True
     return False
 
+
 def will_be_planet_circular_orbit(p, a):
     if abs(p.radius_circular_orbit) < a:
         p.label = "PLANET"
