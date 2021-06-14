@@ -139,7 +139,7 @@ class ReverseTime:
             linewidth=2.0,
             color='black',
             label="Angle: {}".format(
-                tan((self.com_impactor[1] - self.com_target[1]) / (self.com_impactor[1] - self.com_target - 1)) * (
+                tan((self.com_impactor[1] - self.com_target[1]) / (self.com_impactor[1] - self.com_target[1])) * (
                             180 / pi)
             )
         )

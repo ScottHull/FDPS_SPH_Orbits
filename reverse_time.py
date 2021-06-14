@@ -21,7 +21,7 @@ rt = ReverseTime(
     target_file_path=target_path,
     impactor_file_path=impactor_path,
     impact_parameter=0.73,
-    dt=-100,
+    dt=-5,
     center_target=True
 )
 
