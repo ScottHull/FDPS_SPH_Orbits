@@ -69,6 +69,8 @@ for time in np.arange(0, end_time + interval, interval):
     )
     ax.set_xlabel("x")
     ax.set_ylabel("y"),
+    ax.set_xlim(-2.1e7, 2.1e7)
+    ax.set_ylim(-2.1e7, 2.1e7)
     ax.set_title("Iteration: {} // Impact Angle: {}".format(time, imp_angle))
     ax.grid()
     ax.legend(loc='upper left')
