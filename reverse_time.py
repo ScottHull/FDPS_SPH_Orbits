@@ -50,8 +50,10 @@ print(
     "ESCAPE VELOCITY: {}\n"
     "INITIAL_TARGET_X_VELOCITY: {} v_esc\n"
     "INITIAL_TARGET_Y_VELOCITY: {} v_esc\n"
+    "INITIAL_TARGET_Z_VELOCITY: {} v_esc\n"
     "INITIAL_IMPACTOR_X_VELOCITY: {} v_esc\n"
-    "INITIAL_IMPACTOR_Y_VELOCITY: {} v_esc\n".format(
+    "INITIAL_IMPACTOR_Y_VELOCITY: {} v_esc\n"
+    "INITIAL_IMPACTOR_Z_VELOCITY: {} v_esc\n".format(
         rt.distance / rt.radius_target,
         rt.x_distance / rt.radius_target, rt.y_distance / rt.radius_target, rt.z_distance / rt.radius_target,
         rt.com_target, rt.com_impactor, v_esc,
