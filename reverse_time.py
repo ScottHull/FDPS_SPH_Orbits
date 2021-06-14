@@ -64,7 +64,7 @@ print(
 
 animate(
     start_time=0,
-    end_time=plotted,
+    end_time=plotted - 1,
     interval=1,
     path=output_path,
     fps=10,
