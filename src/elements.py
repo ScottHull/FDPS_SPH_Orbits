@@ -28,16 +28,18 @@ class Particle:
             self.recalculate_elements(mass_grav_body=self.mass_grav_body)
 
     def __total_momentum_vector(self):
-        m_x = self.relative_velocity[0]
-        m_y = self.relative_velocity[1]
-        m_z = self.relative_velocity[2]
+        m_x = self.mass * self.relative_velocity[0]
+        m_y = self.mass * self.relative_velocity[1]
+        m_z = self.mass * self.relative_velocity[2]
         return m_x, m_y, m_z
 
     def __angular_momentum_vector(self):
-        return np.cross(self.position, self.relative_velocity)
+        am = self.mass * np.cross(self.position, self.relative_velocity)
+        return am
 
     def __angular_momentum(self):
-        return np.linalg.norm(self.__angular_momentum_vector())
+        am = np.linalg.norm(self.__angular_momentum_vector())
+        return am
 
     def __node_vector(self):
         return np.cross([0, 0, self.position[0]], self.angular_momentum_vector)
@@ -51,12 +53,13 @@ class Particle:
 
     def __eccentricity(self):
         try:
-            # self.alpha = - self.__G * self.mass * self.mass_grav_body
-            # self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
-            # return sqrt(1.0 + ((2.0 * self.orbital_energy * (self.angular_momentum ** 2)) / (
-            #         self.mass_reduced * (self.alpha ** 2))))
-            return sqrt(1 + 2 * self.orbital_energy * self.angular_momentum_vector[
-                2] ** 2 / self.mass / self.__G / self.__G / self.mass_grav_body / self.mass_grav_body)
+            self.alpha = - self.__G * self.mass * self.mass_grav_body
+            self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
+            sp_mom = np.cross(self.position, self.relative_velocity)
+            ecc = sqrt(1.0 + ((2.0 * self.orbital_energy * (self.angular_momentum ** 2)) / (
+                    self.mass_reduced * (self.alpha ** 2))))
+            ecc_check = sqrt(1 + 2 * self.__total_orbital_energy() * sp_mom[2]**2 / self.mass / self.__G / self.__G / self.mass_grav_body / self.mass_grav_body)
+            return ecc
         except:
             print("error for particle: {} (ORBITAL ENERGY: {}, ANGULAR MOMENTUM: {})".format(self.particle_id,
                                                                                              self.orbital_energy,
@@ -72,10 +75,11 @@ class Particle:
         return term1 - term2
 
     def __semi_major_axis(self):
-        # E_spec = self.__total_orbital_energy() / self.mass
-        # mu = self.__G * self.mass_grav_body
-        # return - mu / (2.0 * E_spec)
-        return - self.__G * self.mass_grav_body * self.mass / 2.0 / self.__total_orbital_energy()
+        E_spec = self.__total_orbital_energy() / self.mass
+        mu = self.__G * self.mass_grav_body
+        a = - mu / (2.0 * E_spec)
+        a_check = -self.__G * self.mass_grav_body * self.mass / 2 / self.__total_orbital_energy()
+        return a
 
     def __inclination(self):
         return acos(self.angular_momentum_vector[2] / self.angular_momentum) * (180 / pi)
@@ -107,16 +111,13 @@ class Particle:
     def __periapsis(self):
         return self.semi_major_axis * (1.0 - self.eccentricity)
 
-    def __radius_circular_orbit(self):
-        return (self.angular_momentum_vector[2] ** 2) / (self.__G * self.mass_grav_body)
-
     def recalculate_elements(self, mass_grav_body):
         self.mass_grav_body = mass_grav_body
         self.angular_momentum_vector = self.__angular_momentum_vector()
         self.angular_momentum = self.__angular_momentum()
         self.momentum_vector = self.__total_momentum_vector()
-        self.orbital_energy = self.__total_orbital_energy()
         self.semi_major_axis = self.__semi_major_axis()
+        self.orbital_energy = self.__total_orbital_energy()
         self.eccentricity = self.__eccentricity()
         self.eccentricity_vector = self.__eccentricity_vector()
         self.periapsis_node_vector = self.__node_vector()
@@ -125,4 +126,3 @@ class Particle:
         self.argument_of_periapsis = self.__argument_of_periapsis()
         # self.true_anomaly = self.__true_anomaly()
         self.periapsis = self.__periapsis()
-        self.radius_circular_orbit = self.__radius_circular_orbit()
