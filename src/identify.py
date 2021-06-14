@@ -1,5 +1,6 @@
 import pandas as pd
 from math import pi, sqrt
+from copy import copy
 
 from src import elements, centering, classify
 
@@ -10,9 +11,11 @@ class ParticleMap:
                  centering_delta=1e7, a=(12713.6 / 2.0) * 1000.0, b=(12756.2 / 2.0) * 1000.0):
         self.path = path
         self.output = pd.read_csv(self.path, skiprows=2, header=None, delimiter="\t")
-        self.a = a  # present-day equatorial radius of the Earth in m
+        # self.a = a  # present-day equatorial radius of the Earth in m
+        self.a = 1.099e7
         self.b = b  # present-day polar radius of the Earth in m
-        self.mass_protoearth = classify.calc_mass_protoearth(a=self.a, b=self.b)
+        # self.mass_protoearth = classify.calc_mass_protoearth(a=self.a, b=self.b)
+        self.mass_protoearth = 5.972e24
         self.center = center
         self.centering_resolution = centering_resolution
         self.centering_delta = centering_delta
@@ -37,12 +40,14 @@ class ParticleMap:
             relative_velocity=self.relative_velocity
         )
 
-    def solve(self, particles, K=2/5, G=6.674 * 10 ** -11, avg_density=5.5 * 1000):
+    def solve(self, particles, K=0.335, G=6.674 * 10 ** -11):
         # K = 0.335 for Earth, K = 2/5 for homogenous body
         iteration = 0
         CONVERGENCE = False
+        avg_density = classify.average_density(planet_mass=self.mass_protoearth, a=self.a)
+        print("INITIAL AVG DENSITY: {} (iteration: {})".format(avg_density, iteration))
         while CONVERGENCE is False:
-            NUM_PARTICLES_WITHIN_RADIAL_DISTANCE = 0
+            NUM_PARTICLES_PLANET = 0
             NUM_PARTICLES_IN_DISK = 0
             NUM_PARTICLES_ESCAPING = 0
             NUM_PARTICLES_NO_CLASSIFICATION = 0
@@ -54,7 +59,7 @@ class ParticleMap:
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
                 if classify.is_planet(p=p, a=self.a) or classify.will_be_planet(p=p, a=self.a):
-                    NUM_PARTICLES_WITHIN_RADIAL_DISTANCE += 1
+                    NUM_PARTICLES_PLANET += 1
                     NEW_MASS_PROTOPLANET += p.mass
                     NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
                 elif classify.is_disk(p=p, a=self.a):
@@ -69,6 +74,9 @@ class ParticleMap:
                 else:
                     NUM_PARTICLES_NO_CLASSIFICATION += 1
 
+
+            TOTAL_PARTICLES = NUM_PARTICLES_PLANET + NUM_PARTICLES_IN_DISK + NUM_PARTICLES_ESCAPING + \
+                              NUM_PARTICLES_NO_CLASSIFICATION
             # recalibrate the system
             moment_of_inertia_protoplanet = (2.0 / 5.0) * NEW_MASS_PROTOPLANET * (self.a ** 2)
             angular_velocity_protoplanet = NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET / moment_of_inertia_protoplanet
@@ -76,14 +84,15 @@ class ParticleMap:
             f_numerator = (5.0 / 2.0) * ((angular_velocity_protoplanet / keplerian_velocity_protoplanet) ** 2)
             f_denominator = 1.0 + ((5.0 / 2.0) - ((15.0 * K) / 4.0)) ** 2
             new_f = f_numerator / f_denominator
-            new_a = ((3.0 * pi * NEW_MASS_PROTOPLANET * (1.0 - new_f)) / (4.0 * avg_density)) ** (1 / 3)
+            new_a = ((3 * NEW_MASS_PROTOPLANET) / (4 * pi * avg_density * (1 - new_f))) ** (1 / 3)
             error = abs((new_a - self.a) / self.a)
             if error < 10 ** -8:
                 CONVERGENCE = True
             else:
                 CONVERGENCE = False
-            self.a = new_a
-            self.mass_protoearth = NEW_MASS_PROTOPLANET
+            self.a = copy(new_a)
+            self.b = self.a * (1 - new_f)
+            self.mass_protoearth = copy(NEW_MASS_PROTOPLANET)
             iteration += 1
             total_angular_momentum = sum([i.angular_momentum for i in particles])
             if self.relative_velocity:
@@ -102,7 +111,7 @@ class ParticleMap:
                     pass
             classify.log(
                 iteration, error, self.a,
-                NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
+                NUM_PARTICLES_PLANET,
                 NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
-                total_angular_momentum
+                total_angular_momentum, avg_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES
             )

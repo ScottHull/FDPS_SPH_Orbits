@@ -77,6 +77,11 @@ def collect_particles(output, com, mass_protoearth, relative_velocity=False, fin
     return particles
 
 
+def average_density(planet_mass, a):
+    vol_sphere = (4 / 3) * pi * (a ** 3)
+    return planet_mass / vol_sphere
+
+
 def is_planet(p, a):
     """
     If the particle falls within the radius of the planet.
@@ -84,7 +89,7 @@ def is_planet(p, a):
     :param a:
     :return:
     """
-    if p.distance < a:
+    if abs(p.distance) < a:
         p.label = "PLANET"
         return True
     return False
@@ -127,19 +132,23 @@ def is_escape(p, a):
 def log(iteration, error, a,
         NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
         NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
-        total_angular_momentum):
+        total_angular_momentum, planet_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES):
     EARTH_MASS = 5.972 * 10 ** 24
     LUNAR_MASS = 7.34767309 * 10 ** 22
     L_EM = 3.5 * 10 ** 34
     print(
         "ITERATION: {}\n"
         "ERROR: {}\n"
-        "NEW A: {}\n"
-        "NUM_PARTICLES_WITHIN_RADIAL_DISTANCE: {}\n"
+        "NEW RADIUS: {} km\n"
+        "AVG PLANET DENSITY: {}\n"
+        "NUM_PARTICLES_PLANET: {}\n"
         "NUM_PARTICLES_IN_DISK: {}\n"
-        "NUM_PARTICLES_ESCAPING: {}".format(iteration, error, a,
-                                            NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
-                                            NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING)
+        "NUM_PARTICLES_ESCAPING: {}\n"
+        "NUM_PARTICLES_ERROR: {}\n"
+        "TOTAL_PARTICLES: {}".format(iteration, error, a / 1000.0, planet_density,
+                                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
+                                     NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING,
+                                     NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES)
     )
     print(
         "PROTOPLANET MASS: {} M_E ({} KG)\n"

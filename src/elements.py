@@ -58,7 +58,8 @@ class Particle:
             sp_mom = np.cross(self.position, self.relative_velocity)
             ecc = sqrt(1.0 + ((2.0 * self.orbital_energy * (self.angular_momentum ** 2)) / (
                     self.mass_reduced * (self.alpha ** 2))))
-            ecc_check = sqrt(1 + 2 * self.__total_orbital_energy() * sp_mom[2]**2 / self.mass / self.__G / self.__G / self.mass_grav_body / self.mass_grav_body)
+            ecc_check = sqrt(1 + 2 * self.__total_orbital_energy() * sp_mom[
+                2] ** 2 / self.mass / self.__G / self.__G / self.mass_grav_body / self.mass_grav_body)
             return ecc
         except:
             print("error for particle: {} (ORBITAL ENERGY: {}, ANGULAR MOMENTUM: {})".format(self.particle_id,
@@ -113,6 +114,7 @@ class Particle:
 
     def recalculate_elements(self, mass_grav_body):
         self.mass_grav_body = mass_grav_body
+        self.distance = np.linalg.norm(self.position)
         self.angular_momentum_vector = self.__angular_momentum_vector()
         self.angular_momentum = self.__angular_momentum()
         self.momentum_vector = self.__total_momentum_vector()
