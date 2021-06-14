@@ -1,4 +1,4 @@
-from math import pi, sqrt, cos, sin, asin
+from math import pi, sqrt, cos, sin, tan, asin
 import pandas as pd
 from copy import copy
 import matplotlib.pyplot as plt
@@ -132,6 +132,28 @@ class ReverseTime:
             linewidth=2.0,
             color='green',
             label="PATH IMPACTOR"
+        )
+        ax.plot(
+            [self.com_target[0], self.com_impactor[0]],
+            [self.com_target[1], self.com_impactor[1]],
+            linewidth=2.0,
+            color='black',
+            label="Angle: {}".format(
+                tan((self.com_impactor[1] - self.com_target[1]) / (self.com_impactor[1] - self.com_target - 1)) * (
+                            180 / pi)
+            )
+        )
+        ax.plot(
+            [self.com_target[0], self.com_target[0]],
+            [self.com_target[1], self.com_impactor[1]],
+            linestyle="--",
+            color='black'
+        )
+        ax.plot(
+            [self.com_target[0], self.com_impactor[0]],
+            [self.com_impactor[1], self.com_impactor[1]],
+            linestyle="--",
+            color='black'
         )
         ax.set_xlim(-2.1e7, 2.1e7)
         ax.set_ylim(-2.1e7, 2.1e7)
@@ -268,6 +290,9 @@ class ReverseTime:
             self.current_impactor_position[0] = [i - self.com_target[0] for i in self.current_impactor_position[0]]
             self.current_impactor_position[1] = [i - self.com_target[1] for i in self.current_impactor_position[1]]
             self.current_impactor_position[2] = [i - self.com_target[2] for i in self.current_impactor_position[2]]
+
+            self.com_impactor = [i - j for i, j in zip(self.com_impactor, self.com_target)]
+            self.com_target = [i - j for i, j in zip(self.com_target, self.com_target)]
 
         self.position_target_history.append(self.com_target)
         self.position_impactor_history.append(self.com_impactor)

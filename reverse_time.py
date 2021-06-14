@@ -13,9 +13,9 @@ target_path = "/home/shull4/drift_test/FDPS_SPH/input/tar.dat"
 impactor_path = "/home/shull4/drift_test/FDPS_SPH/input/imp.dat"
 output_path = "/scratch/shull4/reversed_outputs"
 
-# if os.path.exists(output_path):
-#     shutil.rmtree(output_path)
-# os.mkdir(output_path)
+if os.path.exists(output_path):
+    shutil.rmtree(output_path)
+os.mkdir(output_path)
 
 rt = ReverseTime(
     target_file_path=target_path,
@@ -56,15 +56,15 @@ print(
     "INITIAL_IMPACTOR_Z_VELOCITY: {} v_esc\n".format(
         rt.distance / rt.radius_target,
         rt.x_distance / rt.radius_target, rt.y_distance / rt.radius_target, rt.z_distance / rt.radius_target,
-        [i - j for i, j in zip(rt.com_target, rt.com_target)], [i - j for i, j in zip(rt.com_impactor, rt.com_target)],
-        v_esc, rt.v_target_x / v_esc, rt.v_target_y / v_esc, rt.v_target_z / v_esc,
+        rt.com_target, rt.com_impactor, v_esc,
+        rt.v_target_x / v_esc, rt.v_target_y / v_esc, rt.v_target_z / v_esc,
         rt.v_impactor_x / v_esc, rt.v_impactor_y / v_esc, rt.v_impactor_z / v_esc,
     )
 )
 
 animate(
     start_time=0,
-    end_time=plotted - 1,
+    end_time=plotted,
     interval=1,
     path=output_path,
     fps=10,
