@@ -22,7 +22,7 @@ rt = ReverseTime(
     impactor_file_path=impactor_path,
     impact_parameter=0.73,
     dt=-100,
-    center_targat=True
+    center_target=True
 )
 
 v_esc = sqrt(2.0 * rt.G * (rt.target_mass + rt.impactor_mass) / (rt.radius_target + rt.radius_impactor))
@@ -56,8 +56,8 @@ print(
     "INITIAL_IMPACTOR_Z_VELOCITY: {} v_esc\n".format(
         rt.distance / rt.radius_target,
         rt.x_distance / rt.radius_target, rt.y_distance / rt.radius_target, rt.z_distance / rt.radius_target,
-        rt.com_target, rt.com_impactor, v_esc,
-        rt.v_target_x / v_esc, rt.v_target_y / v_esc, rt.v_target_z / v_esc,
+        [i - j for i, j in zip(rt.com_target, rt.com_target)], [i - j for i, j in zip(rt.com_impactor, rt.com_target)],
+        v_esc, rt.v_target_x / v_esc, rt.v_target_y / v_esc, rt.v_target_z / v_esc,
         rt.v_impactor_x / v_esc, rt.v_impactor_y / v_esc, rt.v_impactor_z / v_esc,
     )
 )
