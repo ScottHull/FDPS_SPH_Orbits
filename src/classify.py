@@ -81,6 +81,22 @@ def average_density(planet_mass, a):
     vol_sphere = (4 / 3) * pi * (a ** 3)
     return planet_mass / vol_sphere
 
+def predicted_satellite_mass(disk_angular_momentum, mass_target, mass_disk, mass_escape):
+    # Canup 2004 equation 1
+    G = 6.67 * 10 ** -11
+    radius_earth = 6371 * 1000
+    roche_radius = 3 * radius_earth
+    a1 = 1.9 * disk_angular_momentum / sqrt(G * mass_target * roche_radius)
+    a2 = 1.1 * mass_disk
+    a3 = 1.9 * mass_escape
+    return a1 - a2 - a3
+
+def is_beyond_roche_radius(p):
+    radius_earth = 6371 * 1000
+    roche_radius = 3 * radius_earth
+    if p.distance > roche_radius:
+        return True
+    return False
 
 def is_planet(p, a):
     """
@@ -132,7 +148,8 @@ def is_escape(p, a):
 def log(iteration, error, a,
         NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
         NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
-        total_angular_momentum, planet_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES):
+        total_angular_momentum, planet_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES,
+        PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass):
     EARTH_MASS = 5.972 * 10 ** 24
     LUNAR_MASS = 7.34767309 * 10 ** 22
     L_EM = 3.5 * 10 ** 34
@@ -145,18 +162,23 @@ def log(iteration, error, a,
         "NUM_PARTICLES_IN_DISK: {}\n"
         "NUM_PARTICLES_ESCAPING: {}\n"
         "NUM_PARTICLES_ERROR: {}\n"
-        "TOTAL_PARTICLES: {}".format(iteration, error, a / 1000.0, planet_density,
+        "TOTAL_PARTICLES: {}\n"
+        "NUM_DISK_PARTICLES_BEYOND_ROCHE: {}\n"
+        "DISK_MASS_BEYOND_ROCHE: {} M_L (target: 0.92 M_L)\n".format(iteration, error, a / 1000.0, planet_density,
                                      NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
                                      NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING,
-                                     NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES)
+                                     NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES, PARTICLES_BEYOND_ROCHE,
+                                    MASS_BEYOND_ROCHE / LUNAR_MASS)
     )
     print(
-        "PROTOPLANET MASS: {} M_E ({} KG)\n"
-        "DISK MASS: {} M_L ({} KG)\n"
-        "ESCAPING MASS: {} M_L ({} KG)\n".format(
+        "PROTOPLANET MASS: {} M_E ({} KG) (target: 1 M_E)\n"
+        "DISK MASS: {} M_L ({} KG) (target: 1.62 M_L)\n"
+        "ESCAPING MASS: {} M_L ({} KG) (target: 0.41 M_L)\n"
+        "PREDICTED SATELLITE MASS: {} M_L ({} KG) (target: 1 M_L)".format(
             NEW_MASS_PROTOPLANET / EARTH_MASS, NEW_MASS_PROTOPLANET,
             NEW_MASS_DISK / LUNAR_MASS, NEW_MASS_DISK,
-            NEW_MASS_ESCAPED / LUNAR_MASS, NEW_MASS_ESCAPED
+            NEW_MASS_ESCAPED / LUNAR_MASS, NEW_MASS_ESCAPED,
+            satellite_mass / LUNAR_MASS, satellite_mass
         )
     )
     print(

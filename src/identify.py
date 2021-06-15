@@ -57,6 +57,8 @@ class ParticleMap:
             NEW_Z_ANGULAR_MOMENTUM_DISK = 0.0
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
+            PARTICLES_BEYOND_ROCHE = 0
+            MASS_BEYOND_ROCHE = 0.0
             for p in particles:
                 if classify.is_planet(p=p, a=self.a) or classify.will_be_planet(p=p, a=self.a):
                     NUM_PARTICLES_PLANET += 1
@@ -67,6 +69,9 @@ class ParticleMap:
                     NEW_MASS_DISK += p.mass
                     NEW_Z_ANGULAR_MOMENTUM_DISK += p.angular_momentum_vector[
                         2]  # assume z component dominate and x and y cancel
+                    if classify.is_beyond_roche_radius(p=p):
+                        PARTICLES_BEYOND_ROCHE += 1
+                        MASS_BEYOND_ROCHE += p.mass
                 elif classify.is_escape(p=p, a=self.a):
                     NUM_PARTICLES_ESCAPING += 1
                     NEW_MASS_ESCAPED += p.mass
@@ -95,6 +100,12 @@ class ParticleMap:
             self.mass_protoearth = copy(NEW_MASS_PROTOPLANET)
             iteration += 1
             total_angular_momentum = sum([i.angular_momentum for i in particles])
+            satellite_mass = classify.predicted_satellite_mass(
+                disk_angular_momentum=NEW_Z_ANGULAR_MOMENTUM_DISK,
+                mass_target=NEW_MASS_PROTOPLANET,
+                mass_disk=NEW_MASS_DISK,
+                mass_escape=NEW_MASS_ESCAPED
+            )
             if self.relative_velocity:
                 new_target_velocity = classify.refine_target_velocity(particles=particles)
                 for p in particles:
@@ -113,5 +124,6 @@ class ParticleMap:
                 iteration, error, self.a,
                 NUM_PARTICLES_PLANET,
                 NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
-                total_angular_momentum, avg_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES
+                total_angular_momentum, avg_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES,
+                PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass
             )
