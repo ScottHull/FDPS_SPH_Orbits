@@ -1,4 +1,5 @@
-from math import atan, pi
+from math import atan, pi, sqrt
+from statistics import mean
 
 from src.centering import center_of_mass
 
@@ -38,3 +39,27 @@ def get_impact_geometry(particles):
 
     return target, impactor, target_com_x, target_com_y, target_com_z, impactor_com_x, impactor_com_y, impactor_com_z, \
            imp_angle, min_x_tar, max_x_tar, min_y_tar, max_y_tar, min_x_imp, max_x_imp, min_y_imp, max_y_imp
+
+
+def get_velocity_profile(particles, target_radius, impactor_radius):
+    G = 6.67 * 10 ** -11
+    target = [p for p in particles if p.tag <= 1]
+    impactor = [p for p in particles if p.tag > 1]
+    target_mass = sum([p.mass for p in target])
+    impactor_mass = sum([p.mass for p in impactor])
+    total_mass = target_mass + impactor_mass
+
+    v_esc = sqrt((2 * G * total_mass) / (target_radius + impactor_radius))
+
+    target_avg_velocity = [
+        mean([p.velocity[0] for p in target]) / v_esc,
+        mean([p.velocity[1] for p in target]) / v_esc,
+        mean([p.velocity[2] for p in target]) / v_esc,
+    ]
+    impactor_avg_velocity = [
+        mean([p.velocity[0] for p in impactor]) / v_esc,
+        mean([p.velocity[1] for p in impactor]) / v_esc,
+        mean([p.velocity[2] for p in impactor]) / v_esc,
+    ]
+
+    return target_avg_velocity, impactor_avg_velocity, v_esc
