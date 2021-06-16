@@ -1,5 +1,6 @@
 from math import pi, sqrt, cos, sin, atan, asin
 import pandas as pd
+import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
 
@@ -89,7 +90,9 @@ class ReverseTime:
         return [x, y, z]
 
     def radius_body(self, centered_coords):
-        return max(centered_coords[0])
+        reformatted_coords = [[centered_coords[0][index], centered_coords[1][index], centered_coords[2][index]]
+                              for index, i in enumerate(centered_coords[0])]
+        return max([np.linalg.norm(i) for i in reformatted_coords])
 
     def impact_angle(self, impact_parameter):
         return asin(impact_parameter) * (180 / pi)
@@ -155,6 +158,18 @@ class ReverseTime:
             linestyle="--",
             color='black'
         )
+        # ax.plot(
+        #     [self.com_target[0], self.com_target[0] + self.radius_target],
+        #     [self.com_target[1], self.com_target[1]],
+        #     color='green',
+        #     linewidth=2.0
+        # )
+        # ax.plot(
+        #     [self.com_impactor[0], self.com_impactor[0] + self.radius_impactor],
+        #     [self.com_impactor[1], self.com_impactor[1]],
+        #     color='green',
+        #     linewidth=2.0,
+        # )
         ax.set_xlim(-2.1e7, 2.1e7)
         ax.set_ylim(-2.1e7, 2.1e7)
         ax.set_ylim()

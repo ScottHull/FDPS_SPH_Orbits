@@ -73,4 +73,4 @@ animate(
     reverse=True
 )
 
-# rt.plot_velocity_history()
+rt.plot_velocity_history()

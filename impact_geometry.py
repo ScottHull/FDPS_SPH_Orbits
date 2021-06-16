@@ -46,8 +46,8 @@ for time in np.arange(0, end_time + interval, interval):
         G = 6.67 * 10 ** -11
         target = [p for p in particles if p.tag <= 1]
         impactor = [p for p in particles if p.tag > 1]
-        target_radius = (max([p.distance for p in target]) - min([p.distance for p in target])) / 2.0
-        impactor_radius = (max([p.distance for p in impactor]) - min([p.distance for p in impactor])) / 2.0
+        target_radius = (max([p.position[0] for p in target]) - min([p.position[0] for p in target])) / 2.0
+        impactor_radius = (max([p.position[0] for p in impactor]) - min([p.position[0] for p in impactor])) / 2.0
 
         tar_mass = sum([p.mass for p in target])
         imp_mass = sum([p.mass for p in impactor])
@@ -55,12 +55,12 @@ for time in np.arange(0, end_time + interval, interval):
         v_esc = sqrt((2 * G * tot_mass) / (target_radius + impactor_radius))
 
         v_target_at_impact = [
-            (imp_mass / tot_mass) * v_esc,
+            (imp_mass / tot_mass) * v_esc / v_esc,
             0,
             0
         ]
         v_impactor_at_impact = [
-            (tar_mass / tot_mass) * v_esc,
+            - (tar_mass / tot_mass) * v_esc / v_esc,
             0,
             0
         ]
@@ -225,7 +225,7 @@ ax_z.axhline(
 )
 
 ax_z.set_xlabel("Iteration")
-ax_x.set_ylabel("v_x")
+ax_x.set_ylabel("v_x / v_esc")
 ax_y.set_ylabel("v_y")
 ax_z.set_ylabel("v_z")
 ax_x.set_title("Impact Velocity Profile")
