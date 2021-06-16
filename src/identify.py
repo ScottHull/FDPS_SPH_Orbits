@@ -97,7 +97,7 @@ class ParticleMap:
             self.b = self.a * (1 - new_f)
             self.mass_protoearth = copy(NEW_MASS_PROTOPLANET)
             iteration += 1
-            total_angular_momentum = sum([i.angular_momentum[2] for i in particles])  # in z-direction
+            total_angular_momentum = sum([i.angular_momentum_vector[2] for i in particles])  # in z-direction
             satellite_mass = classify.predicted_satellite_mass(
                 disk_angular_momentum=NEW_Z_ANGULAR_MOMENTUM_DISK,
                 mass_target=NEW_MASS_PROTOPLANET,
