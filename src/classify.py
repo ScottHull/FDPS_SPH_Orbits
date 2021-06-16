@@ -149,7 +149,7 @@ def log(iteration, error, a,
         NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
         NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
         total_angular_momentum, planet_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES,
-        PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass):
+        PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass, disk_angular_momentum):
     EARTH_MASS = 5.972 * 10 ** 24
     LUNAR_MASS = 7.34767309 * 10 ** 22
     L_EM = 3.5 * 10 ** 34
