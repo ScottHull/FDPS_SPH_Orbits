@@ -40,12 +40,11 @@ class ParticleMap:
             relative_velocity=self.relative_velocity
         )
 
-    def solve(self, particles, K=0.335, G=6.674 * 10 ** -11):
-        # K = 0.335 for Earth, K = 2/5 for homogenous body
+    def __convergence_loop(self, particles, K, G):
         iteration = 0
         CONVERGENCE = False
-        avg_density = classify.average_density(planet_mass=self.mass_protoearth, a=self.a)
-        print("INITIAL AVG DENSITY: {} (iteration: {})".format(avg_density, iteration))
+        self.avg_density = classify.average_density(planet_mass=self.mass_protoearth, a=self.a)
+        # print("INITIAL AVG DENSITY: {} (iteration: {})".format(self.avg_density, iteration))
         while CONVERGENCE is False:
             NUM_PARTICLES_PLANET = 0
             NUM_PARTICLES_IN_DISK = 0
@@ -79,7 +78,6 @@ class ParticleMap:
                 else:
                     NUM_PARTICLES_NO_CLASSIFICATION += 1
 
-
             TOTAL_PARTICLES = NUM_PARTICLES_PLANET + NUM_PARTICLES_IN_DISK + NUM_PARTICLES_ESCAPING + \
                               NUM_PARTICLES_NO_CLASSIFICATION
             # recalibrate the system
@@ -89,7 +87,7 @@ class ParticleMap:
             f_numerator = (5.0 / 2.0) * ((angular_velocity_protoplanet / keplerian_velocity_protoplanet) ** 2)
             f_denominator = 1.0 + ((5.0 / 2.0) - ((15.0 * K) / 4.0)) ** 2
             new_f = f_numerator / f_denominator
-            new_a = ((3 * NEW_MASS_PROTOPLANET) / (4 * pi * avg_density * (1 - new_f))) ** (1 / 3)
+            new_a = ((3 * NEW_MASS_PROTOPLANET) / (4 * pi * self.avg_density * (1 - new_f))) ** (1 / 3)
             error = abs((new_a - self.a) / self.a)
             if error < 10 ** -8:
                 CONVERGENCE = True
@@ -99,7 +97,7 @@ class ParticleMap:
             self.b = self.a * (1 - new_f)
             self.mass_protoearth = copy(NEW_MASS_PROTOPLANET)
             iteration += 1
-            total_angular_momentum = sum([i.angular_momentum for i in particles])
+            total_angular_momentum = sum([i.angular_momentum[2] for i in particles])  # in z-direction
             satellite_mass = classify.predicted_satellite_mass(
                 disk_angular_momentum=NEW_Z_ANGULAR_MOMENTUM_DISK,
                 mass_target=NEW_MASS_PROTOPLANET,
@@ -124,6 +122,12 @@ class ParticleMap:
                 iteration, error, self.a,
                 NUM_PARTICLES_PLANET,
                 NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
-                total_angular_momentum, avg_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES,
+                total_angular_momentum, self.avg_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES,
                 PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass
             )
+
+
+    def solve(self, particles, K=0.335, G=6.674 * 10 ** -11):
+        # K = 0.335 for Earth, K = 2/5 for homogenous body
+        self.__convergence_loop(particles=particles, K=K, G=G)
+        self.__convergence_loop(particles=particles, K=K, G=G)  # run twice to recalc avg density after initial solution

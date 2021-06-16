@@ -182,5 +182,7 @@ def log(iteration, error, a,
         )
     )
     print(
-        "TOTAL ANGULAR MOMENTUM: {} L_EM ({})\n\n".format(total_angular_momentum / L_EM, total_angular_momentum)
+        "TOTAL ANGULAR MOMENTUM: {} L_EM ({})\n"
+        "DISK ANGULAR MOMEMENTUM: {} L_EM ({})\n".format(total_angular_momentum / L_EM, total_angular_momentum,
+                                                         disk_angular_momentum / L_EM, disk_angular_momentum)
     )
