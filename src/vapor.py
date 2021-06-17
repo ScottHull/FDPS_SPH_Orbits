@@ -21,7 +21,7 @@ def calc_vapor_mass_fraction(particles, phase_path="src/phase_data/duniteS_vapou
             # entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
             #                             interp_array=self.phase_df['entropy_vap'])
             nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=temperature_i,
-                                                                        array=phase_df['temperature'])
+                                                                        array=list(phase_df['temperature']))
             entropy_liq = phase_df['entropy_sol_liq'][nearest_temperature_index]
             entropy_vap = phase_df['entropy_vap'][nearest_temperature_index]
             if entropy_i < entropy_liq:
