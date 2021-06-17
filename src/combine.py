@@ -54,8 +54,8 @@ class CombineFile:
             self.curr_process = proc
             with open(self.__get_filename(), 'r') as infile:
                 reader = csv.reader(infile, delimiter="\t")
-                time = float(next(reader)[0])
-                total_N += int(next(reader)[0])
+                time = float(list(next(reader))[0])
+                total_N += int(list(next(reader))[0])
                 infile.close()
             dfs.append(self.__read_sph_file())
         self.sim_time = time
