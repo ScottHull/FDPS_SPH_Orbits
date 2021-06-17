@@ -81,22 +81,29 @@ def average_density(planet_mass, a):
     vol_sphere = (4 / 3) * pi * (a ** 3)
     return planet_mass / vol_sphere
 
+
+def get_roche_radius():
+    radius_earth = 6371 * 1000
+    return 2.9 * radius_earth
+
+
 def predicted_satellite_mass(disk_angular_momentum, mass_target, mass_disk, mass_escape):
     # Canup 2004 equation 1
     G = 6.67 * 10 ** -11
     radius_earth = 6371 * 1000
-    roche_radius = 3 * radius_earth
+    roche_radius = get_roche_radius()
     a1 = 1.9 * disk_angular_momentum / sqrt(G * mass_target * roche_radius)
     a2 = 1.1 * mass_disk
     a3 = 1.9 * mass_escape
     return a1 - a2 - a3
 
+
 def is_beyond_roche_radius(p):
-    radius_earth = 6371 * 1000
-    roche_radius = 3 * radius_earth
+    roche_radius = get_roche_radius()
     if p.distance > roche_radius:
         return True
     return False
+
 
 def is_planet(p, a):
     """
@@ -107,6 +114,13 @@ def is_planet(p, a):
     """
     if abs(p.distance) < a:
         p.label = "PLANET"
+        return True
+    return False
+
+
+def circular_orbit_beyond_roche(p):
+    roche = get_roche_radius()
+    if abs(p.radius_circular_orbit) > roche:
         return True
     return False
 
@@ -165,10 +179,11 @@ def log(iteration, error, a,
         "TOTAL_PARTICLES: {}\n"
         "NUM_DISK_PARTICLES_BEYOND_ROCHE: {}\n"
         "DISK_MASS_BEYOND_ROCHE: {} M_L (target: 0.92 M_L)\n".format(iteration, error, a / 1000.0, planet_density,
-                                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
-                                     NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING,
-                                     NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES, PARTICLES_BEYOND_ROCHE,
-                                    MASS_BEYOND_ROCHE / LUNAR_MASS)
+                                                                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
+                                                                     NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING,
+                                                                     NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES,
+                                                                     PARTICLES_BEYOND_ROCHE,
+                                                                     MASS_BEYOND_ROCHE / LUNAR_MASS)
     )
     print(
         "PROTOPLANET MASS: {} M_E ({} KG) (target: 1 M_E)\n"
@@ -183,6 +198,6 @@ def log(iteration, error, a,
     )
     print(
         "TOTAL ANGULAR MOMENTUM: {} L_EM ({})\n"
-        "DISK ANGULAR MOMEMENTUM: {} L_EM ({})\n".format(total_angular_momentum / L_EM, total_angular_momentum,
+        "DISK ANGULAR MOMEMENTUM: {} L_EM ({}) (target: 0.31 LEM)\n".format(total_angular_momentum / L_EM, total_angular_momentum,
                                                          disk_angular_momentum / L_EM, disk_angular_momentum)
     )

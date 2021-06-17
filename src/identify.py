@@ -2,7 +2,7 @@ import pandas as pd
 from math import pi, sqrt
 from copy import copy
 
-from src import elements, centering, classify
+from src import elements, centering, classify, vapor
 
 
 class ParticleMap:
@@ -126,8 +126,9 @@ class ParticleMap:
                 PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass, NEW_Z_ANGULAR_MOMENTUM_DISK
             )
 
-
     def solve(self, particles, K=0.335, G=6.674 * 10 ** -11):
         # K = 0.335 for Earth, K = 2/5 for homogenous body
         self.__convergence_loop(particles=particles, K=K, G=G)
         self.__convergence_loop(particles=particles, K=K, G=G)  # run twice to recalc avg density after initial solution
+        self.vmf = vapor.calc_vapor_mass_fraction(particles=particles)
+        print(self.vmf)
