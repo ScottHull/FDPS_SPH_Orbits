@@ -12,7 +12,7 @@ end_time = 3000
 interval = 20
 number_processes = 100
 path = "/scratch/shull4/gi_impact5"
-output = "/scratch/shull4/low_density_entropy_evolutoim"
+output = "/scratch/shull4/low_density_entropy_evolution"
 
 if os.path.exists(output):
     shutil.rmtree(output)
@@ -40,7 +40,7 @@ for time in np.arange(0, end_time + interval, interval):
     particles = pm.collect_particles(find_orbital_elements=False)
     os.remove(f)
 
-    disk = [p for p in particles if end[p.particle_id] == "DISK" and p.density < 1-0]
+    disk = [p for p in particles if end[p.particle_id] == "DISK" and p.density < 10]
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
@@ -55,7 +55,6 @@ for time in np.arange(0, end_time + interval, interval):
     ax.set_ylabel("Entropy")
     ax.set_title("Time: {} sec (iteration: {})".format(formatted_time, time))
     ax.grid()
-    ax.legend(loc="upper left")
     ax.set_xlim(-1e8, 1e8)
     ax.set_ylim(-1e8, 1e8)
 
