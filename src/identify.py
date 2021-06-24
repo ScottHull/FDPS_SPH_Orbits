@@ -131,4 +131,4 @@ class ParticleMap:
         self.__convergence_loop(particles=particles, K=K, G=G)
         self.__convergence_loop(particles=particles, K=K, G=G)  # run twice to recalc avg density after initial solution
         self.vmf = vapor.calc_vapor_mass_fraction(particles=particles)
-        print(self.vmf)
+        print("VMF: ", self.vmf)
