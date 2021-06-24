@@ -55,8 +55,8 @@ for time in np.arange(0, end_time + interval, interval):
     ax.set_ylabel("Entropy")
     ax.set_title("Time: {} sec (iteration: {})".format(formatted_time, time))
     ax.grid()
-    ax.set_xlim(-1e8, 1e8)
-    ax.set_ylim(-1e8, 1e8)
+    ax.set_xlim(0, 12)
+    ax.set_ylim(0, 9000)
 
     plt.savefig(output + "/{}.png".format(time), format='png')
 
