@@ -33,6 +33,11 @@ for p in particles:
     end.update({p.particle_id: p.label})
 
 tracked_particles = {}
+disk = [p for p in particles if end[p.particle_id] == "DISK" and p.density < 10]
+
+for i in range(0, 10):
+    r = disk[randint(0, len(disk) - 1)]
+    tracked_particles.update({r.particle_id: []})
 
 for time in np.arange(0, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
@@ -45,10 +50,6 @@ for time in np.arange(0, end_time + interval, interval):
 
     disk = [p for p in particles if end[p.particle_id] == "DISK" and p.density < 10]
 
-    if time == 0:
-        for i in range(0, 10):
-            r = disk[randint(0, len(disk) - 1)]
-            tracked_particles.update({r.particle_id: []})
 
     tp = [p for p in disk if p.particle_id in tracked_particles.keys()]
     for i in tp:
