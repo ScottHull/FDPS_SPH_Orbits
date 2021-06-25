@@ -33,6 +33,7 @@ for p in particles:
     end.update({p.particle_id: p.label})
 
 tracked_particles = {}
+tracked_iterations = []
 disk = [p for p in particles if end[p.particle_id] == "DISK" and p.density < 10]
 
 for i in range(0, 10):
@@ -54,6 +55,8 @@ for time in np.arange(0, end_time + interval, interval):
     tp = [p for p in disk if p.particle_id in tracked_particles.keys()]
     for i in tp:
         tracked_particles[i.particle_id].append(i.entropy)
+    if len(tp)  > 0:
+        tracked_iterations.append(time)
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
@@ -88,7 +91,7 @@ fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 for i in tracked_particles.keys():
     ax.plot(
-        np.arange(0, end_time + interval, interval),
+        tracked_iterations,
         tracked_particles[i],
         linewidth=2.0,
         label=i
