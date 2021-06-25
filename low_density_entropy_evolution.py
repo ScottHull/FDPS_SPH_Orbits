@@ -2,6 +2,7 @@ import os
 import shutil
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.cm import ScalarMappable
 from random import randint
 
 from src.identify import ParticleMap
@@ -41,6 +42,9 @@ for i in range(0, 10):
     tracked_particles.update({r.particle_id: []})
     tracked_iterations.update({r.particle_id: []})
 
+cmap = plt.get_cmap("viridis")
+norm = plt.Normalize(0, 10000)
+
 for time in np.arange(0, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
     formatted_time = cf.sim_time
@@ -50,10 +54,10 @@ for time in np.arange(0, end_time + interval, interval):
     particles = pm.collect_particles(find_orbital_elements=False)
     os.remove(f)
 
-    disk = [p for p in particles if end[p.particle_id] == "DISK" and p.density < 10]
+    disk = [p for p in particles if end[p.particle_id] == "DISK"]
 
 
-    tp = [p for p in disk if p.particle_id in tracked_particles.keys()]
+    tp = [p for p in particles if p.particle_id in tracked_particles.keys()]
     for i in tp:
         tracked_particles[i.particle_id].append(i.entropy)
         tracked_iterations[i.particle_id].append(time)
@@ -61,18 +65,21 @@ for time in np.arange(0, end_time + interval, interval):
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
     ax.scatter(
-        [p.density for p in disk],
-        [p.entropy for p in disk],
+        [p.position[0] for p in disk],
+        [p.position[1] for p in disk],
         marker="+",
-        color="blue",
+        c=[p.entropy for p in disk]
     )
+    sm = ScalarMappable(norm=norm, cmap=cmap)
+    cbar = fig.colorbar(sm, ax=ax)
+    cbar.ax.set_title("Entropy")
 
-    ax.set_xlabel("Density")
-    ax.set_ylabel("Entropy")
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
     ax.set_title("Time: {} sec (iteration: {})".format(formatted_time, time))
     ax.grid()
-    ax.set_xlim(0, 12)
-    ax.set_ylim(0, 9000)
+    ax.set_xlim(-1e8, 1e8)
+    ax.set_ylim(-1e8, 1e8)
 
     plt.savefig(output + "/{}.png".format(time), format='png')
 
