@@ -2,6 +2,7 @@ import os
 import shutil
 import numpy as np
 import matplotlib.pyplot as plt
+from random import randint
 
 from src.identify import ParticleMap
 from src.combine import CombineFile
@@ -31,6 +32,8 @@ end = {}
 for p in particles:
     end.update({p.particle_id: p.label})
 
+tracked_particles = {}
+
 for time in np.arange(0, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
     formatted_time = cf.sim_time
@@ -41,6 +44,15 @@ for time in np.arange(0, end_time + interval, interval):
     os.remove(f)
 
     disk = [p for p in particles if end[p.particle_id] == "DISK" and p.density < 10]
+
+    if time == 0:
+        for i in range(0, 10):
+            r = disk[randint(0, len(disk) - 1)]
+            tracked_particles.update({r.particle_id: []})
+
+    tp = [p for p in disk if p.particle_id in tracked_particles.keys()]
+    for i in tp:
+        tracked_particles[i.particle_id].append(i.entropy)
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
@@ -70,3 +82,21 @@ animate(
 )
 
 shutil.rmtree(output)
+
+fig = plt.figure(figsize=(16, 9))
+ax = fig.add_subplot(111)
+for i in tracked_particles.keys():
+    ax.plot(
+        np.arange(0, end_time + interval, interval),
+        tracked_particles[i],
+        linewidth=2.0,
+        label=i
+    )
+
+ax.set_xlabel("Iteration")
+ax.set_ylabel("Entropy")
+ax.set_title("Disk Particle Entropy Time Evolution")
+ax.grid()
+ax.legend()
+
+plt.savefig("disk_entropy_time_evolution.png", format='png')
