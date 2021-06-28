@@ -27,10 +27,10 @@ for time in np.arange(0, end_time + interval, interval):
     particles = pm.collect_particles(find_orbital_elements=False)
     os.remove(f)
 
-    target_silicate = [p for p in particles if p.tag == 0]
-    target_iron = [p for p in particles if p.tag == 1]
-    impactor_silicate = [p for p in particles if p.tag == 2]
-    impactor_iron = [p for p in particles if p.tag == 3]
+    target_silicate = [p.entropy for p in particles if p.tag == 0]
+    target_iron = [p.entropy for p in particles if p.tag == 1]
+    impactor_silicate = [p.entropy for p in particles if p.tag == 2]
+    impactor_iron = [p.entropy for p in particles if p.tag == 3]
 
     times.append(time)
     averages.append(
