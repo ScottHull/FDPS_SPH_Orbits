@@ -26,9 +26,9 @@ d = [seconds_to_days(s=i) for i in d]
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 ax.plot(
-    r, d, linewidth=2.0, color='black'
+    [log10(i) for i in r], d, linewidth=2.0, color='black'
 )
-ax.set_xlabel("N")
+ax.set_xlabel("log10(N)")
 ax.set_ylabel("Days")
 ax.set_title("Computational Time of FDPS SPH (O = N log10(N))")
 ax.grid()
