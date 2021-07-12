@@ -55,9 +55,11 @@ for index, time in enumerate(times):
         label="Impactor Iron"
     )
     axs[index].grid()
-    axs[index].set_title("{} hrs".format(pm.time * 0.000277778))
+    axs[index].set_title("{} hrs".format(round(pm.time * 0.000277778, 4)))
+    axs[index].set_xlim(-1.5e7, 1.5e7)
+    axs[index].set_ylim(-1.5e7, 1.5e7)
     if index == 0:
-        axs[index].legend(loc='upper left')
+        axs[index].legend(loc='lower right')
 
 plt.savefig("multitime.png", format='png')
 
