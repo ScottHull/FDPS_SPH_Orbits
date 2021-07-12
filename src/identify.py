@@ -1,6 +1,7 @@
 import pandas as pd
 from math import pi, sqrt
 from copy import copy
+import csv
 
 from src import elements, centering, classify, vapor
 
@@ -10,6 +11,10 @@ class ParticleMap:
     def __init__(self, path, center, relative_velocity=False, centering_resolution=1e5,
                  centering_delta=1e7, a=(12713.6 / 2.0) * 1000.0, b=(12756.2 / 2.0) * 1000.0):
         self.path = path
+        self.time = None
+        with open(path, 'r') as infile:  # get simulation time from combined file
+            self.time = float(infile.readline().strip())
+            infile.close()
         self.output = pd.read_csv(self.path, skiprows=2, header=None, delimiter="\t")
         # self.a = a  # present-day equatorial radius of the Earth in m
         self.a = 1.099e7

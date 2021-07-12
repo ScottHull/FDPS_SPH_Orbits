@@ -56,3 +56,18 @@ def plot_disk_entropy(particles, phase_path="src/phase_data/duniteS_vapour_curve
     ax.set_title("Disk Entropy")
     ax.grid()
     plt.savefig("disk_entropy_radial_distance.png", format='png')
+
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111)
+    ax.scatter(
+        [p.distance / 1000 for p in particles if p.label == "PLANET" and p.tag % 2 == 0],
+        [p.entropy for p in particles if p.label == "PLANET" and p.tag % 2 == 0],
+        color='black',
+        marker="+",
+        alpha=0.8
+    )
+    ax.set_xlabel("Radial Distance (km)")
+    ax.set_ylabel("Entropy")
+    ax.set_title("Protoplanet Mantle Entropy")
+    ax.grid()
+    plt.savefig("protoplanet_entropy_radial_distance.png", format='png')
