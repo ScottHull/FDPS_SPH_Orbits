@@ -56,8 +56,8 @@ for index, time in enumerate(times):
     )
     axs[index].grid()
     axs[index].set_title("{} hrs".format(round(pm.time * 0.000277778, 4)))
-    axs[index].set_xlim(-1.5e7, 1.5e7)
-    axs[index].set_ylim(-1.5e7, 1.5e7)
+    axs[index].set_xlim(-1e8, 1e8)
+    axs[index].set_ylim(-1e8, 1e8)
     if index == 0:
         axs[index].legend(loc='lower right')
 
