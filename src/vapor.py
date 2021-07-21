@@ -5,8 +5,8 @@ from matplotlib.cm import ScalarMappable
 from src.interpolation import NearestNeighbor1D
 
 
-def calc_vapor_mass_fraction(particles, phase_path="src/phase_data/duniteS_vapour_curve.txt"):
-    phase_df = pd.read_fwf("src/phase_data/duniteS_vapour_curve.txt", skiprows=1,
+def calc_vapor_mass_fraction(particles, phase_path="src/phase_data/duniteN_vapour_curve.txt"):
+    phase_df = pd.read_fwf(phase_path, skiprows=1,
                            names=["temperature", "density_sol_liq", "density_vap", "pressure",
                                   "entropy_sol_liq", "entropy_vap"])
 
