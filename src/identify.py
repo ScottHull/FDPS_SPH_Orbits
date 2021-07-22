@@ -130,7 +130,8 @@ class ParticleMap:
                 NUM_PARTICLES_PLANET,
                 NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
                 total_angular_momentum, self.avg_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES,
-                PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass, NEW_Z_ANGULAR_MOMENTUM_DISK
+                PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass, NEW_Z_ANGULAR_MOMENTUM_DISK,
+                iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche
             )
 
     def solve(self, particles, K=0.335, G=6.674 * 10 ** -11):
