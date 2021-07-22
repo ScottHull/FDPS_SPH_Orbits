@@ -34,7 +34,7 @@ def get_iron_fraction(particles):
     total_iron_disk_mass = sum([p.mass for p in disk_particles if p.tag % 2 != 0])
     total_iron_disk_mass_beyond_roche = sum(
         [p.mass for p in disk_particles if p.tag % 2 != 0 and p.distance > roche_limit])
-    return total_iron_disk_mass / total_disk_mass * 100, total_iron_disk_mass_beyond_roche / total_disk_mass * 100
+    return total_iron_disk_mass / total_disk_mass, total_iron_disk_mass_beyond_roche / total_disk_mass
 
 
 def refine_target_velocity(particles):
@@ -218,5 +218,5 @@ def log(iteration, error, a,
     )
     print(
         "IRON DISK MASS FRACTION: {}\n"
-        "IRON DISK MASS FRACTION BEYOND ROCHE: {}".format(iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche)
+        "IRON DISK MASS FRACTION BEYOND ROCHE: {}\n\n".format(iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche)
     )
