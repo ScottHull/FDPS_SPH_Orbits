@@ -93,8 +93,9 @@ def predicted_satellite_mass(disk_angular_momentum, mass_target, mass_disk, mass
     radius_earth = 6371 * 1000
     mass_earth = 5.972e24
     roche_radius = get_roche_radius()
+    mass_escape = 0.05 * mass_disk  # assumption based on Canup 2004 for more centrally condensed disks than Ida 1997
     a1 = 1.9 * disk_angular_momentum / sqrt(G * mass_earth * roche_radius)
-    a2 = 1.15 * mass_disk
+    a2 = 1.1 * mass_disk
     a3 = 1.9 * mass_escape
     return a1 - a2 - a3
 
