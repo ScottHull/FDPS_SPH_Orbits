@@ -91,9 +91,10 @@ def predicted_satellite_mass(disk_angular_momentum, mass_target, mass_disk, mass
     # Canup 2004 equation 1
     G = 6.67 * 10 ** -11
     radius_earth = 6371 * 1000
+    mass_earth = 5.972e24
     roche_radius = get_roche_radius()
-    a1 = 1.9 * disk_angular_momentum / sqrt(G * mass_target * roche_radius)
-    a2 = 1.1 * mass_disk
+    a1 = 1.9 * disk_angular_momentum / sqrt(G * mass_earth * roche_radius)
+    a2 = 1.15 * mass_disk
     a3 = 1.9 * mass_escape
     return a1 - a2 - a3
 
