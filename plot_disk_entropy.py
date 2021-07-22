@@ -16,7 +16,7 @@ formatted_time = cf.sim_time
 combined_file = cf.combine()
 f = os.getcwd() + "/merged_{}.dat".format(time)
 pm = ParticleMap(path=f, center=True, relative_velocity=False)
-particles = pm.collect_particles(find_orbital_elements=False)
+particles = pm.collect_particles(find_orbital_elements=True)
 os.remove(f)
 
 disk_particles = [p for p in particles if p.label == "DISK"]
