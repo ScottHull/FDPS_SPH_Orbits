@@ -86,6 +86,8 @@ class ParticleMap:
             TOTAL_PARTICLES = NUM_PARTICLES_PLANET + NUM_PARTICLES_IN_DISK + NUM_PARTICLES_ESCAPING + \
                               NUM_PARTICLES_NO_CLASSIFICATION
             # recalibrate the system
+            iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche = classify.get_iron_fraction(
+                particles=particles)
             moment_of_inertia_protoplanet = (2.0 / 5.0) * NEW_MASS_PROTOPLANET * (self.a ** 2)
             angular_velocity_protoplanet = NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET / moment_of_inertia_protoplanet
             keplerian_velocity_protoplanet = sqrt((G * NEW_MASS_PROTOPLANET) / (self.a ** 3))

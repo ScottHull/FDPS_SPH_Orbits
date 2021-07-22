@@ -27,6 +27,16 @@ def calc_target_velocity(vx, vy, vz, tags):
     ]
 
 
+def get_iron_fraction(particles):
+    roche_limit = get_roche_radius()
+    disk_particles = [p for p in particles if p.label == "DISK"]
+    total_disk_mass = sum([p.mass for p in disk_particles])
+    total_iron_disk_mass = sum([p.mass for p in disk_particles if p.tag % 2 != 0])
+    total_iron_disk_mass_beyond_roche = sum(
+        [p.mass for p in disk_particles if p.tag % 2 != 0 and p.distance > roche_limit])
+    return total_iron_disk_mass / total_disk_mass * 100, total_iron_disk_mass_beyond_roche / total_disk_mass * 100
+
+
 def refine_target_velocity(particles):
     # returns relative velocity of target iron
     return [
@@ -165,7 +175,8 @@ def log(iteration, error, a,
         NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
         NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING, NEW_MASS_PROTOPLANET, NEW_MASS_DISK, NEW_MASS_ESCAPED,
         total_angular_momentum, planet_density, NUM_PARTICLES_NO_CLASSIFICATION, TOTAL_PARTICLES,
-        PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass, disk_angular_momentum):
+        PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass, disk_angular_momentum,
+        iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche):
     EARTH_MASS = 5.972 * 10 ** 24
     LUNAR_MASS = 7.34767309 * 10 ** 22
     L_EM = 3.5 * 10 ** 34
@@ -200,6 +211,12 @@ def log(iteration, error, a,
     )
     print(
         "TOTAL ANGULAR MOMENTUM: {} L_EM ({})\n"
-        "DISK ANGULAR MOMEMENTUM: {} L_EM ({}) (target: 0.31 LEM)\n".format(total_angular_momentum / L_EM, total_angular_momentum,
-                                                         disk_angular_momentum / L_EM, disk_angular_momentum)
+        "DISK ANGULAR MOMEMENTUM: {} L_EM ({}) (target: 0.31 LEM)\n".format(total_angular_momentum / L_EM,
+                                                                            total_angular_momentum,
+                                                                            disk_angular_momentum / L_EM,
+                                                                            disk_angular_momentum)
+    )
+    print(
+        "IRON DISK MASS FRACTION: {}\n"
+        "IRON DISK MASS FRACTION BEYOND ROCHE: {}".format(iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche)
     )
