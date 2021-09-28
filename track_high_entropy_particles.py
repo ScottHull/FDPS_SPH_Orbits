@@ -11,8 +11,8 @@ start_time = 0
 end_time = 3000
 interval = 20
 number_processes = 100
-path = "/scratch/shull4/gi_new"
-output = "/scratch/shull4/map_final_to_all"
+path = "/scratch/shull4/gi"
+output = "/scratch/shull4/track_high_entropy_particles"
 
 if os.path.exists(output):
     shutil.rmtree(output)
@@ -75,8 +75,8 @@ for time in np.arange(0, end_time + interval, interval):
     ax.scatter(
         [p.position[0] for p in high_entropy_time],
         [p.position[1] for p in high_entropy_time],
-        marker="+",
-        color="purple",
+        marker="*",
+        color="pink",
         label="S > 8000"
     )
     ax.set_xlabel("x")
