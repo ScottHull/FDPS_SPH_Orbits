@@ -22,36 +22,24 @@ combined_file_end = cf_end.combine()
 f = os.getcwd() + "/merged_{}.dat".format(time)
 pm_end = ParticleMap(path=f, center=False, relative_velocity=False)
 particles = pm_end.collect_particles()
-pm_end.solve(particles=particles)
+# pm_end.solve(particles=particles)
 os.remove(f)
 
 iron_particles = [p for p in particles if p.tag % 2 != 0]
 silicate_particles = [p for p in particles if p.tag % 2 == 0]
 
-_min, _max = np.amin(np.array([i.entropy for i in particles])), np.amax([i.entropy for i in particles])
-norm = plt.Normalize(_min, _max)
-fig = plt.figure(figsize=(16, 9))
-ax = fig.add_subplot(111)
+fig, ax = plt.subplots(figsize=(16, 9))
 ax.scatter(
     [p.position[0] for p in silicate_particles],
     [p.position[1] for p in silicate_particles],
     c=[p.entropy for p in silicate_particles],
     cmap='viridis',
     marker='+', 
-    norm=norm
 )
-plt.clim(_min, _max)
 ax.scatter(
     [p.position[0] for p in iron_particles],
     [p.position[1] for p in iron_particles],
     c=[p.entropy for p in iron_particles],
     cmap='cividis',
     marker='+', 
-    norm=norm
 )
-plt.clim(_min, _max)
-ax.set_xlabel("x")
-ax.set_ylabel("y")
-plt.colorbar().set_label('Entropy', rotation=270)
-
-plt.savefig("entropy_cross_section.png", format='png')
