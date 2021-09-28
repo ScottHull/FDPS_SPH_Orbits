@@ -5,4 +5,6 @@ def cross_section_xy(particles, min_z, max_z):
     :param particles:
     :return:
     """
-    return None
+    return [
+        p for p in particles if min_z <= p.position[2] <= max_z
+    ]
