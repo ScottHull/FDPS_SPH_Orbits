@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from src.identify import ParticleMap
 from src.combine import CombineFile
 from src.animate import animate
-from src.cross_section import cross_section_xy
+from src.cross_section import cross_section_xy, sort_particles_by_closest
 
 # time = 3000
 # number_processes = 100
@@ -28,6 +28,7 @@ particles = pm_end.collect_particles()
 # os.remove(f)
 
 # particles = cross_section_xy(particles=particles, min_z=-100 * 10 ** 3, max_z=100 * 10 ** 3)
+particles = sort_particles_by_closest(particles=particles)
 
 print("{} particles sampled".format(len(particles)))
 iron_particles = [p for p in particles if p.tag % 2 != 0]
