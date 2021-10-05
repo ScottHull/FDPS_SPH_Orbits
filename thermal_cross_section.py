@@ -2,6 +2,7 @@ import os
 import shutil
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from src.identify import ParticleMap
 from src.combine import CombineFile
@@ -31,8 +32,10 @@ particles = pm_end.collect_particles()
 particles = sort_particles_by_closest(particles=particles)
 
 print("{} particles sampled".format(len(particles)))
-iron_particles = [p for p in particles if p.tag % 2 != 0]
-silicate_particles = [p for p in particles if p.tag % 2 == 0]
+iron_particles = [p for p in particles if p.tag % 2 != 0 and p.label == "PLANET"]
+silicate_particles = [p for p in particles if p.tag % 2 == 0 and p.label == "PLANET"]
+
+sns.set()
 
 fig, ax = plt.subplots(figsize=(16, 9))
 a0 = ax.scatter(
