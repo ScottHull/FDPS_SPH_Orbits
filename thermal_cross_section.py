@@ -24,7 +24,8 @@ def format_seaborn_dataframe(old_eos_particles, new_eos_particles):
         "entropy": [p.entropy for p in particles],
         "temperature": [p.temperature for p in particles],
         "pressure": [p.pressure for p in particles],
-        "internal_energy": [p.internal_energy for p in particles]
+        "internal_energy": [p.internal_energy for p in particles],
+        "density": [p.density for p in particles],
     })
 
 
@@ -74,19 +75,21 @@ sns.set()
 # ax.set_xlim(-1e7, 1e7)
 # ax.set_ylim(-1e7, 1e7)
 
+
 df_iron = format_seaborn_dataframe(new_eos_particles=iron_particles_new_gi, old_eos_particles=iron_particles_old_gi)
 df_silicate = format_seaborn_dataframe(new_eos_particles=silicate_particles_new_gi, old_eos_particles=silicate_particles_old_gi)
 
 
-p = sns.jointplot(x='distance', y='internal_energy', data=df_iron,
+p = sns.jointplot(x='temperature', y='entropy', data=df_iron,
               hue="new_or_old_eos")
-p.set_axis_labels('Radius (m)', 'Internal Energy', fontsize=14)
+p.set_axis_labels('Temperature', 'Entropy', fontsize=14)
 p.fig.suptitle("Iron")
 p.fig.tight_layout()
 p.fig.subplots_adjust(top=0.95)  # Reduce plot to make room
-p = sns.jointplot(x='distance', y='internal_energy', data=df_silicate,
+
+p = sns.jointplot(x='temperature', y='entropy', data=df_silicate,
               hue="new_or_old_eos")
-p.set_axis_labels('Radius (m)', 'Internal Energy', fontsize=14)
+p.set_axis_labels('Temperature', 'Entropy', fontsize=14)
 p.fig.suptitle("Silicate")
 p.fig.tight_layout()
 p.fig.subplots_adjust(top=0.95)  # Reduce plot to make room

@@ -48,6 +48,10 @@ print(
     "INITIAL TARGET COORDS: {}\n"
     "INITIAL IMPACTOR COORDS: {}\n"
     "ESCAPE VELOCITY: {}\n"
+    "TARGET RADIUS : {}\n"
+    "IMPACTOR RADIUS: {}\n"
+    "TARGET MASS: {}\n"
+    "IMPACTOR MASS: {}\n"
     "INITIAL_TARGET_X_VELOCITY: {} v_esc\n"
     "INITIAL_TARGET_Y_VELOCITY: {} v_esc\n"
     "INITIAL_TARGET_Z_VELOCITY: {} v_esc\n"
@@ -57,7 +61,7 @@ print(
         rt.distance / rt.radius_target,
         rt.x_distance / rt.radius_target, rt.y_distance / rt.radius_target, rt.z_distance / rt.radius_target,
         rt.distance, rt.x_distance, rt.y_distance, rt.z_distance,
-        rt.com_target, rt.com_impactor, v_esc,
+        rt.com_target, rt.com_impactor, v_esc, rt.radius_target, rt.radius_impactor, rt.target_mass, rt.impactor_mass,
         rt.v_target_x / v_esc, rt.v_target_y / v_esc, rt.v_target_z / v_esc,
         rt.v_impactor_x / v_esc, rt.v_impactor_y / v_esc, rt.v_impactor_z / v_esc,
     )
