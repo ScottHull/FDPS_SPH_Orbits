@@ -6,19 +6,12 @@ import matplotlib.pyplot as plt
 
 from src.identify import ParticleMap
 from src.combine import CombineFile
-from src.animate import animate
-from src.geometry import get_impact_geometry, get_velocity_profile
 
 start_time = 0
 end_time = 3000
 interval = 50
 number_processes = 100
-path = "/scratch/shull4/gi_old_eos"
-output = "/scratch/shull4/internal_energy_increase"
-
-if os.path.exists(output):
-    shutil.rmtree(output)
-os.mkdir(output)
+path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
 
 total_internal_energy = []
 total_silicate_internal_energy = []
@@ -70,5 +63,5 @@ ax.grid()
 plt.suptitle("GI (Old EoS)")
 plt.supxlabel("Iteration")
 
-plt.show()
+plt.savefig("internal_energy_increase.png", format='png')
 
