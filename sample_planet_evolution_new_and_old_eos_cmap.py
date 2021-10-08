@@ -64,9 +64,7 @@ def plot(fig, axs, particles, index, time, cmap, normalizer):
         [p.position[1] for p in particles if p.position[2] < 0],
         s=0.02,
         marker="o",
-        c=[p.tag for p in particles if p.position[2] < 0],
-        cmap=cmap,
-        norm=normalizer
+        c=[cmap(normalizer(p.tag)) for p in particles if p.position[2] < 0],
     )
     ax.text(
         square_scale - (square_scale / 1.2),
@@ -111,6 +109,8 @@ for index, time in enumerate(sample_times):
 
 axs.flatten()[0].set_title("New EoS", c="white")
 axs.flatten()[1].set_title("Old EoS", c="white")
-cbar_ax = fig.add_axes([0.85, 0.15, 0.05, 0.7])
-fig.colorbar(ax, cax=cbar_ax)
+sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+sm.set_array([])
+cbar = fig.colorbar(sm, ax=axs[:,1])
+cbar.ax.set_title("scale")
 plt.savefig("planet_evolution.png", format='png')
