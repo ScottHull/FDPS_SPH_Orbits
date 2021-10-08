@@ -34,8 +34,8 @@ for index, time in enumerate(sample_times):
     # closest_iteration_to_time = get_nearest_iteration_to_time(time=time, sampled_times=all_iterations_and_times)
     # cf = CombineFile(num_processes=number_processes, time=closest_iteration_to_time, output_path=path)
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
-    formatted_time = cf.sim_time
     combined_file = cf.combine()
+    formatted_time = cf.sim_time
     # f = os.getcwd() + "/merged_{}.dat".format(closest_iteration_to_time)
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
