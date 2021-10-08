@@ -29,7 +29,7 @@ all_iterations_and_times = get_all_iterations_and_times(number_processes=number_
 # fig, axs = plt.subplots(sample_interval + 1, 1, figsize=(8, 16), sharex='all',
 #                         gridspec_kw={"hspace": 0.0})
 fig, axs = plt.subplots(len(sample_times), 2, figsize=(8, 16), sharex='all',
-                        gridspec_kw={"hspace": 0.0})
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 
 def get_particles(path, number_processes, time):
@@ -69,8 +69,8 @@ def plot(fig, axs, particles, index, time):
         label='iron'
     )
     ax.text(
-        square_scale - (square_scale / 2.2),
         square_scale - (square_scale / 1.2),
+        square_scale - (square_scale / 3),
         str(round(seconds_to_hours(time), 2)) + " hrs",
         c="white",
         fontsize=10
@@ -109,7 +109,6 @@ for index, time in enumerate(sample_times):
     plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=old_particles)
     tracked_index += 1
 
-mpl.rcParams['axes.labelcolor'] = 'white'
-axs[0].set_title("New EoS")
-axs[1].set_title("Old EoS")
+axs.flatten()[0].set_title("New EoS", c="white")
+axs.flatten()[1].set_title("Old EoS", c="white")
 plt.savefig("planet_evolution.png", format='png')
