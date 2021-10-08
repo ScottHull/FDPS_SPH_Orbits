@@ -46,6 +46,7 @@ class CombineFile:
         temp.close()
         os.remove(self.to_fname.format(self.time))
         os.rename("temp.dat", self.to_fname.format(self.time))
+        self.sim_time = time
 
     def combine_df(self):
         dfs = []
