@@ -32,9 +32,7 @@ plt.style.use("dark_background")
 nrow = len(sample_times)
 ncol = 2
 fig, axs = plt.subplots(nrow, ncol, figsize=(8, 16), sharex='all',
-                        gridspec_kw={"hspace": 0.0, "wspace": 0.0, "top": 1. - 0.5 / (nrow + 1),
-                                     "bottom": 0.5 / (nrow + 1),
-                                     "left": 0.5 / (ncol + 1), "right": 1 - 0.5 / (ncol + 1)})
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
 normalizer = Normalize(1000, 8000)
@@ -112,6 +110,6 @@ axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
-cbar = fig.colorbar(sm, ax=axs[:,1])
+cbar = fig.colorbar(sm, ax=axs[:,1], pad=0.2)
 cbar.ax.set_title("Entropy")
-plt.savefig("planet_evolution.png", format='png')
+plt.savefig("planet_evolution.png", format='png', dpi=600)
