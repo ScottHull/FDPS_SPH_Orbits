@@ -15,7 +15,7 @@ number_processes = 100
 sample_interval = 3
 path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 inc = (max_time - min_time) / sample_interval
-sample_times = []
+sample_times = [0, 20, 500, 1000, 2000, 3000]
 
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)
@@ -25,12 +25,15 @@ fig, axs = plt.subplots(sample_interval + 1, 1, figsize=(8, 16), sharex='all',
 fig.patch.set_facecolor('xkcd:black')
 
 
-for index, time in enumerate(np.arange(min_time, max_time + inc, inc)):
-    closest_iteration_to_time = get_nearest_iteration_to_time(time=time, sampled_times=all_iterations_and_times)
-    cf = CombineFile(num_processes=number_processes, time=closest_iteration_to_time, output_path=path)
+# for index, time in enumerate(np.arange(min_time, max_time + inc, inc)):
+for index, time in sample_times:
+    # closest_iteration_to_time = get_nearest_iteration_to_time(time=time, sampled_times=all_iterations_and_times)
+    # cf = CombineFile(num_processes=number_processes, time=closest_iteration_to_time, output_path=path)
+    cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
     formatted_time = cf.sim_time
     combined_file = cf.combine()
-    f = os.getcwd() + "/merged_{}.dat".format(closest_iteration_to_time)
+    # f = os.getcwd() + "/merged_{}.dat".format(closest_iteration_to_time)
+    f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
     particles = pm.collect_particles(find_orbital_elements=False)
     # pm.solve(particles=particles)
@@ -38,6 +41,10 @@ for index, time in enumerate(np.arange(min_time, max_time + inc, inc)):
 
     ax = axs.flatten()[index]
     ax.set_facecolor('xkcd:black')
+    ax.spines['left'].set_color('white')
+    ax.spines['right'].set_color('white')
+    ax.spines['bottom'].set_color('white')
+    ax.spines['top'].set_color('white')
     ax.scatter(
         [p.position[0] for p in particles if p.tag % 2 == 0],
         [p.position[1] for p in particles if p.tag % 2 == 0],
@@ -61,7 +68,7 @@ for index, time in enumerate(np.arange(min_time, max_time + inc, inc)):
     ax.set_yticks([])
     # for minor ticks
     ax.set_yticks([], minor=True)
-    ax.set_xlim(-5 * 10 ** 7, 5 * 10 ** 7)
-    ax.set_ylim(-5 * 10 ** 7, 5 * 10 ** 7)
+    ax.set_xlim(-1e8, 1e8)
+    ax.set_ylim(-1e8, 1e8)
 
 plt.savefig("planet_evolution.png", format='png')
