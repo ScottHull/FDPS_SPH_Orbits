@@ -60,17 +60,8 @@ def plot(fig, axs, particles, index, time):
         [p.position[1] for p in particles if p.position[2] < 0],
         s=0.02,
         marker="o",
-        color=[p.tag for p in particles if p.tag % 2 == 0 and p.position[2] < 0],
-        # label='silicate'
+        c=[p.tag for p in particles if p.position[2] < 0],
     )
-    # ax.scatter(
-    #     [p.position[0] for p in particles if p.tag % 2 != 0 and p.position[2] < 0],
-    #     [p.position[1] for p in particles if p.tag % 2 != 0 and p.position[2] < 0],
-    #     s=0.02,
-    #     marker="o",
-    #     color='blue',
-    #     label='iron'
-    # )
     ax.text(
         square_scale - (square_scale / 1.2),
         square_scale - (square_scale / 3),
@@ -93,7 +84,7 @@ def plot(fig, axs, particles, index, time):
                                square_scale / 5,
                                '{:.2e} km'.format(square_scale / 5),
                                loc=8,
-                               pad=0.2,
+                               pad=0.3,
                                color='white',
                                frameon=False,
                                size_vertical=1,
