@@ -26,11 +26,14 @@ square_scale = 2e7
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=new_path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)
 
-# fig, axs = plt.subplots(sample_interval + 1, 1, figsize=(8, 16), sharex='all',
-#                         gridspec_kw={"hspace": 0.0})
-fig, axs = plt.subplots(len(sample_times), 2, figsize=(8, 16), sharex='all',
-                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+nrow = len(sample_times)
+ncol = 2
+fig, axs = plt.subplots(nrow, ncol, figsize=(8, 16), sharex='all',
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.0, "top": 1. - 0.5 / (nrow + 1),
+                                     "bottom": 0.5 / (nrow + 1),
+                                     "left": 0.5 / (ncol + 1), "right": 1 - 0.5 / (ncol + 1)})
 fig.patch.set_facecolor('xkcd:black')
+
 
 def get_particles(path, number_processes, time):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
@@ -53,21 +56,21 @@ def plot(fig, axs, particles, index, time):
     ax.spines['bottom'].set_color('white')
     ax.spines['top'].set_color('white')
     ax.scatter(
-        [p.position[0] for p in particles if p.tag % 2 == 0 and p.position[2] < 0],
-        [p.position[1] for p in particles if p.tag % 2 == 0 and p.position[2] < 0],
+        [p.position[0] for p in particles if p.position[2] < 0],
+        [p.position[1] for p in particles if p.position[2] < 0],
         s=0.02,
         marker="o",
-        color='red',
-        label='silicate'
+        color=[p.tag for p in particles if p.tag % 2 == 0 and p.position[2] < 0],
+        # label='silicate'
     )
-    ax.scatter(
-        [p.position[0] for p in particles if p.tag % 2 != 0 and p.position[2] < 0],
-        [p.position[1] for p in particles if p.tag % 2 != 0 and p.position[2] < 0],
-        s=0.02,
-        marker="o",
-        color='blue',
-        label='iron'
-    )
+    # ax.scatter(
+    #     [p.position[0] for p in particles if p.tag % 2 != 0 and p.position[2] < 0],
+    #     [p.position[1] for p in particles if p.tag % 2 != 0 and p.position[2] < 0],
+    #     s=0.02,
+    #     marker="o",
+    #     color='blue',
+    #     label='iron'
+    # )
     ax.text(
         square_scale - (square_scale / 1.2),
         square_scale - (square_scale / 3),
@@ -101,7 +104,6 @@ def plot(fig, axs, particles, index, time):
 
 tracked_index = 0
 for index, time in enumerate(sample_times):
-
     new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time)
     old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time)
     plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=new_particles)
