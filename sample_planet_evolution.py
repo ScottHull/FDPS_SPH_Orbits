@@ -68,9 +68,9 @@ for index, time in enumerate(sample_times):
         label='iron'
     )
     ax.text(
+        square_scale - (square_scale / 0.98),
         square_scale - (square_scale / 2),
-        square_scale - (square_scale / 2),
-        str(round(seconds_to_hours(formatted_time), 4)) + " hrs",
+        str(round(seconds_to_hours(formatted_time), 2)) + " hrs",
         c="white",
         fontsize=10
     )
@@ -86,14 +86,14 @@ for index, time in enumerate(sample_times):
     ax.set_box_aspect(1)
 
     scalebar = AnchoredSizeBar(ax.transData,
-                               2000 * 1000,
-                               '2000 km',
+                               square_scale / 5,
+                               '{} km'.format(square_scale / 5),
                                loc=3,
-                               pad=0.1,
+                               pad=0.2,
                                color='white',
                                frameon=False,
                                size_vertical=1,
-                               fontproperties=fm.FontProperties(size=18))
+                               fontproperties=fm.FontProperties(size=6))
 
     ax.add_artist(scalebar)
 
