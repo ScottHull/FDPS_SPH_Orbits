@@ -3,6 +3,8 @@ import os
 import shutil
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
+import matplotlib.font_manager as fm
 
 from src.identify import ParticleMap
 from src.combine import CombineFile
@@ -16,7 +18,7 @@ number_processes = 100
 sample_interval = 3
 path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 inc = (max_time - min_time) / sample_interval
-sample_times = [0, 20, 500, 1000, 2000, 3000]
+sample_times = [0, 15, 20, 30, 500, 2000, 3000]
 square_scale = 5e7
 
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=path,
@@ -66,11 +68,11 @@ for index, time in enumerate(sample_times):
         label='iron'
     )
     ax.text(
-        square_scale - (square_scale / 4),
-        square_scale - (square_scale / 4),
-        str(round(seconds_to_hours(formatted_time), 4) + " hrs"),
+        square_scale - (square_scale / 2),
+        square_scale - (square_scale / 2),
+        str(round(seconds_to_hours(formatted_time), 4)) + " hrs",
         c="white",
-        fontsize=12
+        fontsize=10
     )
     # ax.set_title(seconds_to_hours(time))
     ax.set_xticks([])
@@ -82,5 +84,17 @@ for index, time in enumerate(sample_times):
     ax.set_xlim(-square_scale, square_scale)
     ax.set_ylim(-square_scale, square_scale)
     ax.set_box_aspect(1)
+
+    scalebar = AnchoredSizeBar(ax.transData,
+                               2000 * 1000,
+                               '2000 km',
+                               loc=3,
+                               pad=0.1,
+                               color='white',
+                               frameon=False,
+                               size_vertical=1,
+                               fontproperties=fm.FontProperties(size=18))
+
+    ax.add_artist(scalebar)
 
 plt.savefig("planet_evolution.png", format='png')
