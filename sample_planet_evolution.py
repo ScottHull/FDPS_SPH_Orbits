@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import shutil
 import numpy as np
@@ -16,6 +17,7 @@ sample_interval = 3
 path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 inc = (max_time - min_time) / sample_interval
 sample_times = [0, 20, 500, 1000, 2000, 3000]
+square_scale = 5e7
 
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)
@@ -63,6 +65,13 @@ for index, time in enumerate(sample_times):
         color='blue',
         label='iron'
     )
+    ax.text(
+        square_scale - (square_scale / 4),
+        square_scale - (square_scale / 4),
+        str(round(seconds_to_hours(formatted_time), 4) + " hrs"),
+        c="white",
+        fontsize=12
+    )
     # ax.set_title(seconds_to_hours(time))
     ax.set_xticks([])
     # for minor ticks
@@ -70,7 +79,8 @@ for index, time in enumerate(sample_times):
     ax.set_yticks([])
     # for minor ticks
     ax.set_yticks([], minor=True)
-    ax.set_xlim(-1e8, 1e8)
-    ax.set_ylim(-1e8, 1e8)
+    ax.set_xlim(-square_scale, square_scale)
+    ax.set_ylim(-square_scale, square_scale)
+    ax.set_box_aspect(1)
 
 plt.savefig("planet_evolution.png", format='png')
