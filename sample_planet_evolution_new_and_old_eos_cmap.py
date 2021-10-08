@@ -64,7 +64,7 @@ def plot(fig, axs, particles, index, time, cmap, normalizer):
         [p.position[1] for p in particles if p.position[2] < 0],
         s=0.02,
         marker="o",
-        c=[cmap(normalizer(p.tag)) for p in particles if p.position[2] < 0],
+        c=[cmap(normalizer(p.entropy)) for p in particles if p.position[2] < 0],
     )
     ax.text(
         square_scale - (square_scale / 1.2),
@@ -112,5 +112,5 @@ axs.flatten()[1].set_title("Old EoS", c="white")
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
 cbar = fig.colorbar(sm, ax=axs[:,1])
-cbar.ax.set_title("scale")
+cbar.ax.set_title("Entropy")
 plt.savefig("planet_evolution.png", format='png')
