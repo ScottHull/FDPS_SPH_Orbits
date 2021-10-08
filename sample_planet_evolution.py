@@ -20,13 +20,15 @@ sample_times = [0, 20, 500, 1000, 2000, 3000]
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)
 
-fig, axs = plt.subplots(sample_interval + 1, 1, figsize=(8, 16), sharex='all',
+# fig, axs = plt.subplots(sample_interval + 1, 1, figsize=(8, 16), sharex='all',
+#                         gridspec_kw={"hspace": 0.0})
+fig, axs = plt.subplots(len(sample_times), 1, figsize=(8, 16), sharex='all',
                         gridspec_kw={"hspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 
 
 # for index, time in enumerate(np.arange(min_time, max_time + inc, inc)):
-for index, time in sample_times:
+for index, time in enumerate(sample_times):
     # closest_iteration_to_time = get_nearest_iteration_to_time(time=time, sampled_times=all_iterations_and_times)
     # cf = CombineFile(num_processes=number_processes, time=closest_iteration_to_time, output_path=path)
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
