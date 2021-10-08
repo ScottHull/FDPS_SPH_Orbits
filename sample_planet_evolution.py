@@ -20,7 +20,7 @@ sample_times = []
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=path,
                                                               min_iteration=min_iteration, max_iteration=max_iteration)
 
-fig, axs = plt.subplots(sample_interval + 1, 1, figsize=(6, 6))
+fig, axs = plt.subplots(sample_interval + 1, 1, figsize=(6, 6), sharex='all')
 
 for index, time in enumerate(np.arange(min_time, max_time + inc, inc)):
     closest_iteration_to_time = get_nearest_iteration_to_time(time=time, sampled_times=all_iterations_and_times)
@@ -37,7 +37,7 @@ for index, time in enumerate(np.arange(min_time, max_time + inc, inc)):
     ax.scatter(
         [p.position[0] for p in particles if p.tag % 2 == 0],
         [p.position[1] for p in particles if p.tag % 2 == 0],
-        s=4,
+        s=0.02,
         marker="o",
         color='red',
         label='silicate'
@@ -45,7 +45,7 @@ for index, time in enumerate(np.arange(min_time, max_time + inc, inc)):
     ax.scatter(
         [p.position[0] for p in particles if p.tag % 2 != 0],
         [p.position[1] for p in particles if p.tag % 2 != 0],
-        s=4,
+        s=0.02,
         marker="o",
         color='blue',
         label='iron'
@@ -57,6 +57,8 @@ for index, time in enumerate(np.arange(min_time, max_time + inc, inc)):
     ax.set_yticks([])
     # for minor ticks
     ax.set_yticks([], minor=True)
+    ax.set_xlim(-1.2 * 10 ** 7, 1.2 * 10 ** 7)
+    ax.set_ylim(-1.2 * 10 ** 7, 1.2 * 10 ** 7)
 
-plt.savefig("sample_planet_evolution.png", format='png')
+plt.savefig("planet_evolution.png", format='png')
 
