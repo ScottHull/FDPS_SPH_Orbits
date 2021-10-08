@@ -19,7 +19,7 @@ sample_interval = 3
 path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 inc = (max_time - min_time) / sample_interval
 sample_times = [0, 15, 20, 30, 500, 2000, 3000]
-square_scale = 5e7
+square_scale = 2e7
 
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)
@@ -68,7 +68,7 @@ for index, time in enumerate(sample_times):
         label='iron'
     )
     ax.text(
-        square_scale - (square_scale / 0.98),
+        square_scale - (square_scale / 2),
         square_scale - (square_scale / 2),
         str(round(seconds_to_hours(formatted_time), 2)) + " hrs",
         c="white",
@@ -87,8 +87,8 @@ for index, time in enumerate(sample_times):
 
     scalebar = AnchoredSizeBar(ax.transData,
                                square_scale / 5,
-                               '{} km'.format(square_scale / 5),
-                               loc=3,
+                               '{:.2e} km'.format(square_scale / 5),
+                               loc=8,
                                pad=0.2,
                                color='white',
                                frameon=False,
