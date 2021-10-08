@@ -52,7 +52,7 @@ def get_particles(path, number_processes, time):
     return particles, formatted_time
 
 
-def plot(fig, axs, particles, index, time):
+def plot(fig, axs, particles, index, time, cmap, normalizer):
     ax = axs.flatten()[index]
     ax.set_facecolor('xkcd:black')
     ax.spines['left'].set_color('white')
@@ -104,12 +104,13 @@ tracked_index = 0
 for index, time in enumerate(sample_times):
     new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time)
     old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time)
-    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=new_particles)
+    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=new_particles, cmap=cmap, normalizer=normalizer)
     tracked_index += 1
-    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=old_particles)
+    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=old_particles, cmap=cmap, normalizer=normalizer)
     tracked_index += 1
 
 axs.flatten()[0].set_title("New EoS", c="white")
 axs.flatten()[1].set_title("Old EoS", c="white")
-fig.colorbar(ax, ax=axs.ravel().tolist())
+cbar_ax = fig.add_axes([0.85, 0.15, 0.05, 0.7])
+fig.colorbar(ax, cax=cbar_ax)
 plt.savefig("planet_evolution.png", format='png')
