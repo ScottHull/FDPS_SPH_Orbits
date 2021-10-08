@@ -28,6 +28,7 @@ square_scale = 2e7
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=new_path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)
 
+plt.style.use("dark_background")
 nrow = len(sample_times)
 ncol = 2
 fig, axs = plt.subplots(nrow, ncol, figsize=(8, 16), sharex='all',
@@ -36,7 +37,7 @@ fig, axs = plt.subplots(nrow, ncol, figsize=(8, 16), sharex='all',
                                      "left": 0.5 / (ncol + 1), "right": 1 - 0.5 / (ncol + 1)})
 fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
-normalizer = Normalize(0, 10000)
+normalizer = Normalize(1000, 8000)
 
 
 def get_particles(path, number_processes, time):
@@ -54,11 +55,11 @@ def get_particles(path, number_processes, time):
 
 def plot(fig, axs, particles, index, time, cmap, normalizer):
     ax = axs.flatten()[index]
-    ax.set_facecolor('xkcd:black')
-    ax.spines['left'].set_color('white')
-    ax.spines['right'].set_color('white')
-    ax.spines['bottom'].set_color('white')
-    ax.spines['top'].set_color('white')
+    # ax.set_facecolor('xkcd:black')
+    # ax.spines['left'].set_color('white')
+    # ax.spines['right'].set_color('white')
+    # ax.spines['bottom'].set_color('white')
+    # ax.spines['top'].set_color('white')
     ax.scatter(
         [p.position[0] for p in particles if p.position[2] < 0],
         [p.position[1] for p in particles if p.position[2] < 0],
@@ -107,8 +108,8 @@ for index, time in enumerate(sample_times):
     ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=old_particles, cmap=cmap, normalizer=normalizer)
     tracked_index += 1
 
-axs.flatten()[0].set_title("New EoS", c="white")
-axs.flatten()[1].set_title("Old EoS", c="white")
+axs.flatten()[0].set_title("New EoS")
+axs.flatten()[1].set_title("Old EoS")
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
 cbar = fig.colorbar(sm, ax=axs[:,1])
