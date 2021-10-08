@@ -98,13 +98,15 @@ def plot(particles, index, time):
     ax.add_artist(scalebar)
 
 
-
+tracked_index = 0
 for index, time in enumerate(sample_times):
 
     new_particles, new_time = get_particles(path=new_path)
     old_particles, old_time = get_particles(path=old_path)
-    plot(particles=new_particles, index=index, time=new_time)
-    plot(particles=index, index=index + 1, time=new_time)
+    plot(particles=new_particles, index=tracked_index, time=new_time)
+    tracked_index += 1
+    plot(particles=index, index=tracked_index, time=new_time)
+    tracked_index += 1
 
 mpl.rcParams['axes.labelcolor'] = 'white'
 axs[0].set_title("New EoS")
