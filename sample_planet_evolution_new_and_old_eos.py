@@ -3,6 +3,7 @@ import os
 import shutil
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 import matplotlib.font_manager as fm
 
@@ -31,7 +32,7 @@ fig, axs = plt.subplots(len(sample_times), 2, figsize=(8, 16), sharex='all',
                         gridspec_kw={"hspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 
-def get_particles(path):
+def get_particles(path, number_processes, time):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
     combined_file = cf.combine()
     formatted_time = cf.sim_time
@@ -44,7 +45,7 @@ def get_particles(path):
     return particles, formatted_time
 
 
-def plot(particles, index, time):
+def plot(fig, axs, particles, index, time):
     ax = axs.flatten()[index]
     ax.set_facecolor('xkcd:black')
     ax.spines['left'].set_color('white')
@@ -101,11 +102,11 @@ def plot(particles, index, time):
 tracked_index = 0
 for index, time in enumerate(sample_times):
 
-    new_particles, new_time = get_particles(path=new_path)
-    old_particles, old_time = get_particles(path=old_path)
-    plot(particles=new_particles, index=tracked_index, time=new_time)
+    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time)
+    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time)
+    plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=new_particles)
     tracked_index += 1
-    plot(particles=index, index=tracked_index, time=new_time)
+    plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=old_particles)
     tracked_index += 1
 
 mpl.rcParams['axes.labelcolor'] = 'white'
