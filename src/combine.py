@@ -5,13 +5,14 @@ import os
 
 class CombineFile:
 
-    def __init__(self, num_processes, time, output_path):
+    def __init__(self, num_processes, time, output_path, to_fname="merged_{}.dat"):
         self.num_processes = num_processes
         self.time = time
         self.sim_time = None
         self.output_path = output_path
         self.file_format = "results.{}_{}_{}.dat"
         self.curr_process = 0
+        self.to_fname = to_fname
 
     def __get_filename(self):
         return self.output_path + "/" + self.file_format.format(str(self.time).zfill(5),
@@ -35,16 +36,16 @@ class CombineFile:
                 infile.close()
             dfs.append(self.__read_sph_file())
         merged_df = pd.concat(dfs)
-        merged_df.to_csv("merged_{}.dat".format(self.time), index=False, header=False, sep='\t')
+        merged_df.to_csv(self.to_fname.format(self.time), index=False, header=False, sep='\t')
         temp = open("temp.dat", 'w')
         temp.write("{}\n{}\n".format(time, total_N))
-        with open("merged_{}.dat".format(self.time)) as infile:
+        with open(self.to_fname.format(self.time)) as infile:
             for line in infile:
                 temp.write(line)
         infile.close()
         temp.close()
-        os.remove("merged_{}.dat".format(self.time))
-        os.rename("temp.dat", "merged_{}.dat".format(self.time))
+        os.remove(self.to_fname.format(self.time))
+        os.rename("temp.dat", self.to_fname.format(self.time))
 
     def combine_df(self):
         dfs = []
@@ -61,3 +62,17 @@ class CombineFile:
         self.sim_time = time
         merged_df = pd.concat(dfs)
         return merged_df
+
+
+def make_particle_df(particles):
+    return pd.DataFrame({
+        "position": [p.position for p in particles],
+        "radius": [p.distance for p in particles],
+        "tag": [p.tag for p in particles],
+        "label": [p.label for p in particles],
+        "entropy": [p.entropy for p in particles],
+        "temperature": [p.temperature for p in particles],
+        "density": [p.density for p in particles],
+        "pressure": [p.pressure for p in particles],
+        "internal_energy": [p.internal_energy for p in particles],
+    })
