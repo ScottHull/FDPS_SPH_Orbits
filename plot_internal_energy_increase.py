@@ -34,7 +34,7 @@ for time in np.arange(0, end_time + interval, interval):
     total_silicate_internal_energy.append(total_u_silicate)
     total_iron_internal_energy.append(total_u_iron)
 
-fig, ax = plt.subplots(3, 2, figsize=(16, 8))
+fig, ax = plt.subplots(3, 1, figsize=(16, 8))
 ax = ax.flatten()
 ax[0].plot(
     np.arange(0, end_time + interval, interval),
@@ -57,11 +57,11 @@ ax[2].plot(
     color="black"
 )
 ax[2].set_ylabel("Total Iron Energy")
+ax[2].set_xlabel("Iteration")
 
-ax.grid()
+plt.rcParams['axes.grid'] = True
 
 plt.suptitle("GI (Old EoS)")
-plt.supxlabel("Iteration")
 
 plt.savefig("internal_energy_increase.png", format='png')
 
