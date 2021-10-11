@@ -9,6 +9,7 @@ import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.font_manager as fm
+from matplotlib.colors import ListedColormap
 
 from src.identify import ParticleMap
 from src.combine import CombineFile
@@ -35,6 +36,7 @@ ncol = 2
 fig, axs = plt.subplots(1, ncol, figsize=(10, 10),
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
+colours = ListedColormap(['r', 'b', 'y', 'g'])
 
 def get_particles(path, number_processes, time):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
@@ -57,6 +59,7 @@ def plot(fig, axs, particles, index, time):
         s=0.02,
         marker="o",
         c=[p.tag for p in particles if p.position[2] < 0],
+        cmap=colours
     )
     ax.text(
         square_scale - (square_scale / 1.2),
@@ -96,7 +99,7 @@ ax2 = plot(fig=fig, axs=axs, index=1, time=new_time, particles=old_particles)
 
 axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
-legend = ax1.legend(fontsize=6)
+legend = ax1.legend(handles=ax1.legend_elements()[0], labels=["Target Silicate", "Target Iron", "Impactor Silicate", "Impactor Iron"], fontsize=6)
 for handle in legend.legendHandles:
     handle.set_sizes([3.0])
 plt.savefig("planet_evolution_source.png", format='png', dpi=200)
