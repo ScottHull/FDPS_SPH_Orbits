@@ -99,11 +99,32 @@ def plot(fig, axs, particles, index, time, cmap, normalizer):
 def scatter(fig, axs, particles, index):
     ax = axs.flatten()[index]
     ax.scatter(
-        [p.distance for p in particles if p.position[2] < 0],
-        [p.entropy for p in particles if p.position[2] < 0],
-        c=[p.tag for p in particles if p.position[2] < 0],
+        [p.distance for p in particles if p.position[2] < 0 and p.tag == 0],
+        [p.entropy for p in particles if p.position[2] < 0 and p.tag == 0],
         s=0.02,
         marker="o",
+        label="Tar. Silicate"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.position[2] < 0 and p.tag == 1],
+        [p.entropy for p in particles if p.position[2] < 0 and p.tag == 1],
+        s=0.02,
+        marker="o",
+        label="Tar. Iron"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.position[2] < 0 and p.tag == 2],
+        [p.entropy for p in particles if p.position[2] < 0 and p.tag == 2],
+        s=0.02,
+        marker="o",
+        label="Imp. Silicate"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.position[2] < 0 and p.tag == 3],
+        [p.entropy for p in particles if p.position[2] < 0 and p.tag == 3],
+        s=0.02,
+        marker="o",
+        label="Imp. Iron"
     )
     ax.set_xlim(0, square_scale)
     ax.set_box_aspect(1)
@@ -127,5 +148,5 @@ cbaxes = inset_axes(ax1, width="30%", height="3%", loc=2, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
 # cbar.ax.xaxis.set_ticks_position('top')
 cbar.ax.set_title(label_text)
-ax2.legend(labels=["Tar. Silicate", "Tar. Iron", "Imp. Silicate", "Imp. Iron"])
+ax2.legend(fontsize=6)
 plt.savefig("planet_evolution_single_time.png", format='png', dpi=200)
