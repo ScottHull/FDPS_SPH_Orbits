@@ -7,6 +7,7 @@ import matplotlib as mpl
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.font_manager as fm
 
 from src.identify import ParticleMap
@@ -24,20 +25,18 @@ sample_interval = 3
 new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 old_path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
 inc = (max_time - min_time) / sample_interval
-sample_times = [15, 50, 100, 3000]
 square_scale = 2e7
 
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=new_path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)
 
 plt.style.use("dark_background")
-nrow = len(sample_times)
 ncol = 2
-fig, axs = plt.subplots(nrow, ncol, figsize=(10, 16), sharex='all',
+fig, axs = plt.subplots(2, ncol, figsize=(10, 16), sharex='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
-normalizer = Normalize(1000, 8000)
+normalizer = Normalize(0, 8000)
 
 
 def get_particles(path, number_processes, time):
@@ -99,27 +98,79 @@ def plot(fig, axs, particles, index, time, cmap, normalizer):
     return ax
 
 
+def scatter(fig, axs, particles, index):
+    ax = axs.flatten()[index]
+    ax.scatter(
+        [p.distance for p in particles if p.position[2] < 0 and p.tag == 0],
+        [p[1].entropy - p[0].entropy for p in particles if p.position[2] < 0 and p.tag == 0],
+        s=0.02,
+        marker="o",
+        label="Target Silicate"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.position[2] < 0 and p.tag == 1],
+        [p[1].entropy - p[0].entropy for p in particles if p.position[2] < 0 and p.tag == 1],
+        s=0.02,
+        marker="o",
+        label="Target Iron"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.position[2] < 0 and p.tag == 2],
+        [p[1].entropy - p[0].entropy for p in particles if p.position[2] < 0 and p.tag == 2],
+        s=0.02,
+        marker="o",
+        label="Impactor Silicate"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.position[2] < 0 and p.tag == 3],
+        [p[1].entropy - p[0].entropy for p in particles if p.position[2] < 0 and p.tag == 3],
+        s=0.02,
+        marker="o",
+        label="Impactor Iron"
+    )
+    ax.set_xlim(0, square_scale)
+    ax.set_box_aspect(1)
+    return ax
+
+
 new_particles_start, new_time_start = get_particles(path=new_path, number_processes=number_processes, time=min_iteration)
 old_particles_start, old_time_start = get_particles(path=old_path, number_processes=number_processes, time=min_iteration)
 
 tracked_index = 0
-for index, time in enumerate(sample_times):
-    new_particles_end, new_time_end = get_particles(path=new_path, number_processes=number_processes, time=time)
-    old_particles_end, old_time_end = get_particles(path=old_path, number_processes=number_processes, time=time)
-    match_new = match_particle_properties_between_iterations(particles1=new_particles_start,
-                                                             particles2=new_particles_end, property="entropy")
-    match_old = match_particle_properties_between_iterations(particles1=old_particles_start,
-                                                             particles2=old_particles_end, property="entropy")
-    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time_end, particles=match_new, cmap=cmap, normalizer=normalizer)
-    tracked_index += 1
-    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time_end, particles=match_old, cmap=cmap, normalizer=normalizer)
-    tracked_index += 1
+new_particles_end, new_time_end = get_particles(path=new_path, number_processes=number_processes, time=max_iteration)
+old_particles_end, old_time_end = get_particles(path=old_path, number_processes=number_processes, time=max_iteration)
+match_new = match_particle_properties_between_iterations(particles1=new_particles_start,
+                                                         particles2=new_particles_end, property="entropy")
+match_old = match_particle_properties_between_iterations(particles1=old_particles_start,
+                                                         particles2=old_particles_end, property="entropy")
+ax1 = plot(fig=fig, axs=axs, index=1, time=match_new, particles=match_new, cmap=cmap, normalizer=normalizer)
+ax2 = plot(fig=fig, axs=axs, index=2, time=new_time_end, particles=match_old, cmap=cmap, normalizer=normalizer)
+ax3 = scatter(fig=fig, axs=axs, index=2, particles=match_new)
+ax4 = scatter(fig=fig, axs=axs, index=3, particles=match_old)
+axs.flatten()[2].set_ylabel(label)
 
 axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
-cbar = fig.colorbar(sm, ax=axs[:,1], pad=0.2)
-cbar.ax.set_title("Delta {}".format(label))
-plt.axis('off')
-plt.savefig("planet_evolution_timedelta_{}.png".format(label), format='png', dpi=200)
+# cbar = fig.colorbar(sm, ax=axs.flatten()[1])
+cbaxes = inset_axes(ax1, width="30%", height="3%", loc=2, borderpad=1.8)
+cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+cbar.ax.tick_params(labelsize=6)
+# cbar.ax.xaxis.set_ticks_position('top')
+cbar.ax.set_title(label, fontsize=6)
+legend = ax3.legend(fontsize=6)
+for handle in legend.legendHandles:
+    handle.set_sizes([3.0])
+ax4.set_yticks([])
+ax4.set_yticks([], minor=True)
+ax3_ymin, ax3_ymax = ax3.get_ylim()
+ax4_ymin, ax4_ymax = ax4.get_ylim()
+lims = [ax3_ymin, ax3_ymax, ax4_ymin, ax4_ymax]
+scatter_range = [min(lims), max(lims)]
+inc = (scatter_range[1] - scatter_range[0]) * 0.1
+ax3.set_ylim(scatter_range[0] - inc, scatter_range[1] + inc)
+ax4.set_ylim(scatter_range[0] - inc, scatter_range[1] + inc)
+ax3.set_xlabel("Radius (m)")
+ax4.set_xlabel("Radius (m)")
+plt.savefig("planet_evolution_timedelta_single_time_{}.png".format(label), format='png', dpi=200)
