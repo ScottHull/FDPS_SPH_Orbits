@@ -27,3 +27,12 @@ def get_nearest_iteration_to_time(time, sampled_times):
 def seconds_to_hours(seconds):
     # 60 seconds in 1 minute, 60 minutes in 1 hour
     return seconds * (1.0 / 60.0) * (1.0 / 60.0)
+
+def match_particle_properties_between_iterations(particles1, particles2, property):
+    particles = []
+    for p1 in particles1:
+        for p2  in particles2:
+            if p1.particle_id == p2.particle_id:
+                particles.append([p1, p2])
+                break
+    return particles
