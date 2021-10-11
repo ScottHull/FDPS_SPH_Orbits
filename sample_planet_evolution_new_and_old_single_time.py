@@ -33,7 +33,7 @@ all_iterations_and_times = get_all_iterations_and_times(number_processes=number_
 plt.style.use("dark_background")
 ncol = 2
 fig, axs = plt.subplots(2, ncol, figsize=(10, 10),
-                        gridspec_kw={"hspace": 0.0, "wspace": 1.0})
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.01})
 fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
 normalizer = Normalize(1000, 8000)
