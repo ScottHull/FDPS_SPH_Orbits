@@ -21,22 +21,21 @@ number_processes = 100
 sample_interval = 3
 new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 old_path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
+label_text = "Entropy"
 inc = (max_time - min_time) / sample_interval
-sample_times = [0, 15, 20, 30, 80, 200, 3000]
+sample_time = 3000
 square_scale = 2e7
 
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=new_path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)
 
 plt.style.use("dark_background")
-nrow = len(sample_times)
 ncol = 2
-fig, axs = plt.subplots(nrow, ncol, figsize=(10, 16), sharex='all',
+fig, axs = plt.subplots(1, ncol, figsize=(8, 10), sharex='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
 normalizer = Normalize(1000, 8000)
-
 
 def get_particles(path, number_processes, time):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
@@ -96,21 +95,31 @@ def plot(fig, axs, particles, index, time, cmap, normalizer):
     ax.add_artist(scalebar)
     return ax
 
+def scatter(fig, axs, particles, index):
+    ax = axs.flatten()[index]
+    ax.scatter(
+        [p.distance for p in particles if p.position[2] < 0],
+        [p.entropy for p in particles if p.position[2] < 0],
+        c=[p.tag for p in particles if p.position[2] < 0],
+        s=0.02,
+        marker="o",
+    )
+    return ax
 
-tracked_index = 0
-for index, time in enumerate(sample_times):
-    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time)
-    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time)
-    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=new_particles, cmap=cmap, normalizer=normalizer)
-    tracked_index += 1
-    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time, particles=old_particles, cmap=cmap, normalizer=normalizer)
-    tracked_index += 1
+
+new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=sample_time)
+old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=sample_time)
+ax = plot(fig=fig, axs=axs, index=0, time=new_time, particles=new_particles, cmap=cmap, normalizer=normalizer)
+ax = plot(fig=fig, axs=axs, index=1, time=new_time, particles=old_particles, cmap=cmap, normalizer=normalizer)
+ax = scatter(fig=fig, axs=axs, index=2, particles=new_particles)
+ax = scatter(fig=fig, axs=axs, index=3, particles=old_particles)
+axs.flatten()[2].set_ylabel(label_text)
 
 axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
-cbar = fig.colorbar(sm, ax=axs[:,1], pad=0.2)
-cbar.ax.set_title("Entropy")
+cbar = fig.colorbar(sm, ax=axs.flatten()[1], pad=0.2)
+cbar.ax.set_title(label_text)
 plt.axis('off')
-plt.savefig("planet_evolution.png", format='png', dpi=200)
+plt.savefig("planet_evolution_single_time.png", format='png', dpi=200)
