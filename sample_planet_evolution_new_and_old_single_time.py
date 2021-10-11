@@ -33,7 +33,7 @@ all_iterations_and_times = get_all_iterations_and_times(number_processes=number_
 plt.style.use("dark_background")
 ncol = 2
 fig, axs = plt.subplots(2, ncol, figsize=(10, 10),
-                        gridspec_kw={"hspace": 0.0, "wspace": 0.01})
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.05})
 fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
 normalizer = Normalize(1000, 8000)
@@ -148,5 +148,7 @@ cbaxes = inset_axes(ax1, width="30%", height="3%", loc=2, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
 # cbar.ax.xaxis.set_ticks_position('top')
 cbar.ax.set_title(label_text)
-ax2.legend(fontsize=6)
+legend = ax2.legend(fontsize=6)
+for handle in legend.legendHandles:
+    handle.set_sizes([2.0])
 plt.savefig("planet_evolution_single_time.png", format='png', dpi=200)
