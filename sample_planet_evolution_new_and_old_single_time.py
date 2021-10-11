@@ -7,6 +7,7 @@ import matplotlib as mpl
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.font_manager as fm
 
 from src.identify import ParticleMap
@@ -31,7 +32,7 @@ all_iterations_and_times = get_all_iterations_and_times(number_processes=number_
 
 plt.style.use("dark_background")
 ncol = 2
-fig, axs = plt.subplots(1, ncol, figsize=(8, 10), sharex='all',
+fig, axs = plt.subplots(2, ncol, figsize=(10, 10), sharex='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
@@ -104,6 +105,8 @@ def scatter(fig, axs, particles, index):
         s=0.02,
         marker="o",
     )
+    ax.set_xlim(0, square_scale)
+    ax.set_box_aspect(1)
     return ax
 
 
@@ -119,7 +122,7 @@ axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
-cbar = fig.colorbar(sm, ax=axs.flatten()[1], pad=0.2)
+cbaxes = inset_axes(axs.flatten[0], width="30%", height="3%", loc=3)
+cbar = fig.colorbar(ax=cbaxes, ticks=[-square_scale, 0 - (square_scale / 3)], orientation='horizontal')
 cbar.ax.set_title(label_text)
-plt.axis('off')
 plt.savefig("planet_evolution_single_time.png", format='png', dpi=200)
