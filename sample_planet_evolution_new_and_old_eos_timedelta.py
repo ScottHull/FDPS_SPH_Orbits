@@ -109,9 +109,9 @@ for index, time in enumerate(sample_times):
                                                              particles2=new_particles_end, property="entropy")
     match_old = match_particle_properties_between_iterations(particles1=old_particles_start,
                                                              particles2=old_particles_end, property="entropy")
-    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time_end, particles=new_particles_end, cmap=cmap, normalizer=normalizer)
+    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time_end, particles=match_new, cmap=cmap, normalizer=normalizer)
     tracked_index += 1
-    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time_end, particles=old_particles_end, cmap=cmap, normalizer=normalizer)
+    ax = plot(fig=fig, axs=axs, index=tracked_index, time=new_time_end, particles=match_old, cmap=cmap, normalizer=normalizer)
     tracked_index += 1
 
 axs.flatten()[0].set_title("New EoS")
