@@ -61,11 +61,11 @@ def plot(fig, axs, particles, index, time, cmap, normalizer):
     # ax.spines['bottom'].set_color('white')
     # ax.spines['top'].set_color('white')
     ax.scatter(
-        [p[1].position[0] for p in particles if p.position[2] < 0],
-        [p[1].position[1] for p in particles if p.position[2] < 0],
+        [p[1].position[0] for p in particles if p[1].position[2] < 0],
+        [p[1].position[1] for p in particles if p[1].position[2] < 0],
         s=0.02,
         marker="o",
-        c=[cmap(normalizer(p[1].entropy - p[0].entropy)) for p in particles if p.position[2] < 0],
+        c=[cmap(normalizer(p[1].entropy - p[0].entropy)) for p in particles if p[1].position[2] < 0],
     )
     ax.text(
         square_scale - (square_scale / 1.2),

@@ -60,11 +60,11 @@ def plot(fig, axs, particles, index, time, cmap, normalizer):
     # ax.spines['bottom'].set_color('white')
     # ax.spines['top'].set_color('white')
     ax.scatter(
-        [p[1].position[0] for p in particles if p.position[2] < 0],
-        [p[1].position[1] for p in particles if p.position[2] < 0],
+        [p[1].position[0] for p in particles if p[1].position[2] < 0],
+        [p[1].position[1] for p in particles if p[1].position[2] < 0],
         s=0.02,
         marker="o",
-        c=[cmap(normalizer(p[1].entropy - p[0].entropy)) for p in particles if p.position[2] < 0],
+        c=[cmap(normalizer(p[1].entropy - p[0].entropy)) for p in particles if p[1].position[2] < 0],
     )
     ax.text(
         square_scale - (square_scale / 1.2),
@@ -101,29 +101,29 @@ def plot(fig, axs, particles, index, time, cmap, normalizer):
 def scatter(fig, axs, particles, index):
     ax = axs.flatten()[index]
     ax.scatter(
-        [p.distance for p in particles if p.position[2] < 0 and p.tag == 0],
-        [p[1].entropy - p[0].entropy for p in particles if p.position[2] < 0 and p.tag == 0],
+        [p.distance for p in particles if p[1].position[2] < 0 and p.tag == 0],
+        [p[1].entropy - p[0].entropy for p in particles if p[1].position[2] < 0 and p.tag == 0],
         s=0.02,
         marker="o",
         label="Target Silicate"
     )
     ax.scatter(
-        [p.distance for p in particles if p.position[2] < 0 and p.tag == 1],
-        [p[1].entropy - p[0].entropy for p in particles if p.position[2] < 0 and p.tag == 1],
+        [p.distance for p in particles if p[1].position[2] < 0 and p.tag == 1],
+        [p[1].entropy - p[0].entropy for p in particles if p[1].position[2] < 0 and p.tag == 1],
         s=0.02,
         marker="o",
         label="Target Iron"
     )
     ax.scatter(
-        [p.distance for p in particles if p.position[2] < 0 and p.tag == 2],
-        [p[1].entropy - p[0].entropy for p in particles if p.position[2] < 0 and p.tag == 2],
+        [p.distance for p in particles if p[1].position[2] < 0 and p.tag == 2],
+        [p[1].entropy - p[0].entropy for p in particles if p[1].position[2] < 0 and p.tag == 2],
         s=0.02,
         marker="o",
         label="Impactor Silicate"
     )
     ax.scatter(
-        [p.distance for p in particles if p.position[2] < 0 and p.tag == 3],
-        [p[1].entropy - p[0].entropy for p in particles if p.position[2] < 0 and p.tag == 3],
+        [p.distance for p in particles if p[1].position[2] < 0 and p.tag == 3],
+        [p[1].entropy - p[0].entropy for p in particles if p[1].position[2] < 0 and p.tag == 3],
         s=0.02,
         marker="o",
         label="Impactor Iron"
