@@ -57,7 +57,6 @@ def plot(fig, axs, particles, index, time):
         [p.position[1] for p in particles if p.position[2] < 0 and p.tag == 0],
         s=0.02,
         marker="o",
-        c=[p.tag for p in particles if p.position[2] < 0],
         label="Target Silicate"
     )
     ax.scatter(
@@ -65,7 +64,6 @@ def plot(fig, axs, particles, index, time):
         [p.position[1] for p in particles if p.position[2] < 0 and p.tag == 1],
         s=0.02,
         marker="o",
-        c=[p.tag for p in particles if p.position[2] < 0],
         label="Target Iron"
     )
     ax.scatter(
@@ -73,7 +71,6 @@ def plot(fig, axs, particles, index, time):
         [p.position[1] for p in particles if p.position[2] < 0 and p.tag == 2],
         s=0.02,
         marker="o",
-        c=[p.tag for p in particles if p.position[2] < 0],
         label="Impactor Silicate"
     )
     ax.scatter(
@@ -81,7 +78,6 @@ def plot(fig, axs, particles, index, time):
         [p.position[1] for p in particles if p.position[2] < 0 and p.tag == 3],
         s=0.02,
         marker="o",
-        c=[p.tag for p in particles if p.position[2] < 0],
         label="Impactor Iron"
     )
     ax.text(
