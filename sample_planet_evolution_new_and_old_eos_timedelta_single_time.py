@@ -143,8 +143,8 @@ match_new = match_particle_properties_between_iterations(particles1=new_particle
                                                          particles2=new_particles_end, property="entropy")
 match_old = match_particle_properties_between_iterations(particles1=old_particles_start,
                                                          particles2=old_particles_end, property="entropy")
-ax1 = plot(fig=fig, axs=axs, index=1, time=match_new, particles=match_new, cmap=cmap, normalizer=normalizer)
-ax2 = plot(fig=fig, axs=axs, index=2, time=new_time_end, particles=match_old, cmap=cmap, normalizer=normalizer)
+ax1 = plot(fig=fig, axs=axs, index=1, time=new_time_end, particles=match_new, cmap=cmap, normalizer=normalizer)
+ax2 = plot(fig=fig, axs=axs, index=2, time=old_time_end, particles=match_old, cmap=cmap, normalizer=normalizer)
 ax3 = scatter(fig=fig, axs=axs, index=2, particles=match_new)
 ax4 = scatter(fig=fig, axs=axs, index=3, particles=match_old)
 axs.flatten()[2].set_ylabel(label)
