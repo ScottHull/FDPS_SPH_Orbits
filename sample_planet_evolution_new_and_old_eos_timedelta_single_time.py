@@ -25,7 +25,7 @@ sample_interval = 3
 new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 old_path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
 inc = (max_time - min_time) / sample_interval
-square_scale = 2e7
+square_scale = 1e7
 
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=new_path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)

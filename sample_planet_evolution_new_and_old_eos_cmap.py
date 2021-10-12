@@ -14,6 +14,7 @@ from src.identify import ParticleMap
 from src.combine import CombineFile
 from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_iterations_and_times
 
+label = "Entropy"
 min_time = 0.0
 max_time = 3.000030e+05
 min_iteration = 0
@@ -24,7 +25,7 @@ new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 old_path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
 inc = (max_time - min_time) / sample_interval
 sample_times = [0, 15, 20, 30, 80, 200, 3000]
-square_scale = 2e7
+square_scale = 1e7
 
 all_iterations_and_times = get_all_iterations_and_times(number_processes=number_processes, path=new_path,
                                                         min_iteration=min_iteration, max_iteration=max_iteration)
@@ -114,5 +115,6 @@ sm.set_array([])
 cbaxes = inset_axes(axs.flatten()[0], width="30%", height="3%", loc=2, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
 cbar.ax.tick_params(labelsize=6)
+cbar.ax.set_title(label, fontsize=6)
 plt.axis('off')
 plt.savefig("planet_evolution.png", format='png', dpi=200)
