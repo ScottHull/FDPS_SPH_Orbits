@@ -15,7 +15,7 @@ from src.combine import CombineFile
 from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_iterations_and_times, \
     match_particle_properties_between_iterations
 
-label = "Internal Energy"
+label = "Temperature"
 min_time = 0.0
 max_time = 3.000030e+05
 min_iteration = 0
@@ -64,7 +64,7 @@ def plot(fig, axs, particles, index, time, cmap, normalizer):
         [p[1].position[1] for p in particles if p[1].position[2] < 0],
         s=0.02,
         marker="o",
-        c=[cmap(normalizer(p[1].internal_energy - p[0].internal_energy)) for p in particles if p[1].position[2] < 0],
+        c=[cmap(normalizer(p[1].temperature - p[0].temperature)) for p in particles if p[1].position[2] < 0],
     )
     ax.text(
         square_scale - (square_scale / 1.2),
@@ -102,28 +102,28 @@ def scatter(fig, axs, particles, index):
     ax = axs.flatten()[index]
     ax.scatter(
         [p[1].distance for p in particles if p[1].position[2] < 0 and p[1].tag == 0],
-        [p[1].internal_energy - p[0].internal_energy for p in particles if p[1].position[2] < 0 and p[1].tag == 0],
+        [p[1].temperature - p[0].temperature for p in particles if p[1].position[2] < 0 and p[1].tag == 0],
         s=0.02,
         marker="o",
         label="Target Silicate"
     )
     ax.scatter(
         [p[1].distance for p in particles if p[1].position[2] < 0 and p[1].tag == 1],
-        [p[1].internal_energy - p[0].internal_energy for p in particles if p[1].position[2] < 0 and p[1].tag == 1],
+        [p[1].temperature - p[0].temperature for p in particles if p[1].position[2] < 0 and p[1].tag == 1],
         s=0.02,
         marker="o",
         label="Target Iron"
     )
     ax.scatter(
         [p[1].distance for p in particles if p[1].position[2] < 0 and p[1].tag == 2],
-        [p[1].internal_energy - p[0].internal_energy for p in particles if p[1].position[2] < 0 and p[1].tag == 2],
+        [p[1].temperature - p[0].temperature for p in particles if p[1].position[2] < 0 and p[1].tag == 2],
         s=0.02,
         marker="o",
         label="Impactor Silicate"
     )
     ax.scatter(
         [p[1].distance for p in particles if p[1].position[2] < 0 and p[1].tag == 3],
-        [p[1].internal_energy - p[0].internal_energy for p in particles if p[1].position[2] < 0 and p[1].tag == 3],
+        [p[1].temperature - p[0].temperature for p in particles if p[1].position[2] < 0 and p[1].tag == 3],
         s=0.02,
         marker="o",
         label="Impactor Iron"
@@ -140,9 +140,9 @@ tracked_index = 0
 new_particles_end, new_time_end = get_particles(path=new_path, number_processes=number_processes, time=max_iteration)
 old_particles_end, old_time_end = get_particles(path=old_path, number_processes=number_processes, time=max_iteration)
 match_new = match_particle_properties_between_iterations(particles1=new_particles_start,
-                                                         particles2=new_particles_end, property="internal_energy")
+                                                         particles2=new_particles_end, property="temperature")
 match_old = match_particle_properties_between_iterations(particles1=old_particles_start,
-                                                         particles2=old_particles_end, property="internal_energy")
+                                                         particles2=old_particles_end, property="temperature")
 ax1 = plot(fig=fig, axs=axs, index=0, time=new_time_end, particles=match_new, cmap=cmap, normalizer=normalizer)
 ax2 = plot(fig=fig, axs=axs, index=1, time=old_time_end, particles=match_old, cmap=cmap, normalizer=normalizer)
 ax3 = scatter(fig=fig, axs=axs, index=2, particles=match_new)
