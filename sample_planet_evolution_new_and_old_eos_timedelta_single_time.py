@@ -32,7 +32,7 @@ all_iterations_and_times = get_all_iterations_and_times(number_processes=number_
 
 plt.style.use("dark_background")
 ncol = 2
-fig, axs = plt.subplots(2, ncol, figsize=(12, 16), sharex='all',
+fig, axs = plt.subplots(2, ncol, figsize=(12, 16),
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
@@ -147,7 +147,7 @@ ax1 = plot(fig=fig, axs=axs, index=0, time=new_time_end, particles=match_new, cm
 ax2 = plot(fig=fig, axs=axs, index=1, time=old_time_end, particles=match_old, cmap=cmap, normalizer=normalizer)
 ax3 = scatter(fig=fig, axs=axs, index=2, particles=match_new)
 ax4 = scatter(fig=fig, axs=axs, index=3, particles=match_old)
-axs.flatten()[2].set_ylabel(label)
+axs.flatten()[2].set_ylabel("Delta {}".format(label))
 
 axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
