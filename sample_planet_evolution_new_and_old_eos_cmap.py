@@ -7,6 +7,7 @@ import matplotlib as mpl
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.font_manager as fm
 
 from src.identify import ParticleMap
@@ -110,7 +111,8 @@ axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
-cbar = fig.colorbar(sm, ax=axs[:,1], pad=0.2)
-cbar.ax.set_title("Entropy")
+cbaxes = inset_axes(axs.flatten()[0], width="30%", height="3%", loc=2, borderpad=1.8)
+cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+cbar.ax.tick_params(labelsize=6)
 plt.axis('off')
 plt.savefig("planet_evolution.png", format='png', dpi=200)
