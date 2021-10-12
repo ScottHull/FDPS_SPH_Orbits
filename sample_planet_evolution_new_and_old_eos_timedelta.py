@@ -33,11 +33,11 @@ all_iterations_and_times = get_all_iterations_and_times(number_processes=number_
 plt.style.use("dark_background")
 nrow = len(sample_times)
 ncol = 2
-fig, axs = plt.subplots(nrow, ncol, figsize=(10, 16), sharex='all',
+fig, axs = plt.subplots(nrow, ncol, figsize=(12, 16), sharex='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
-normalizer = Normalize(1000, 8000)
+normalizer = Normalize(0, 3000)
 
 
 def get_particles(path, number_processes, time):
