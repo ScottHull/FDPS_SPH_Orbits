@@ -14,6 +14,7 @@ from src.identify import ParticleMap
 from src.combine import CombineFile
 from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_iterations_and_times
 from src.new_and_old_eos import get_particles, scatter, plot
+# from src.animate import animate
 
 min_iteration = 0
 max_iteration = 3000
@@ -73,7 +74,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax4.set_ylim(scatter_range[0] - inc, scatter_range[1] + inc)
     ax3.set_xlabel("Radius (m)")
     ax4.set_xlabel("Radius (m)")
-    plt.savefig(to_path + "/{}.png", format='png', dpi=200)
+    plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
 
 # animate(
 #     start_time=min_iteration,
@@ -83,4 +84,3 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
 #     fps=10,
 #     filename="impact_geometry.mp4",
 # )
-
