@@ -33,13 +33,13 @@ if os.path.exists(to_path):
 os.mkdir(to_path)
 
 plt.style.use("dark_background")
-fig, axs = plt.subplots(2, 2, figsize=(10, 10),
-                        gridspec_kw={"hspace": 0.0, "wspace": 0.08})
-fig.patch.set_facecolor('xkcd:black')
 cmap = cm.get_cmap('jet')
 normalizer = Normalize(min_normalize, max_normalize)
 
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
+    fig, axs = plt.subplots(2, 2, figsize=(10, 10),
+                            gridspec_kw={"hspace": 0.0, "wspace": 0.08})
+    fig.patch.set_facecolor('xkcd:black')
     new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time)
     old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time)
     ax1 = plot(fig=fig, axs=axs, index=0, time=new_time, particles=new_particles, cmap=cmap, normalizer=normalizer,
