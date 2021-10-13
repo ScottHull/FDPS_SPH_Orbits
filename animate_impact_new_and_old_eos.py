@@ -70,8 +70,8 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     lims = [ax3_ymin, ax3_ymax, ax4_ymin, ax4_ymax]
     scatter_range = [min(lims), max(lims)]
     inc = (scatter_range[1] - scatter_range[0]) * 0.1
-    ax3.set_ylim(scatter_range[0] - inc, scatter_range[1] + inc)
-    ax4.set_ylim(scatter_range[0] - inc, scatter_range[1] + inc)
+    ax3.set_ylim(0, scatter_range[1] + inc)
+    ax4.set_ylim(0, scatter_range[1] + inc)
     ax3.set_xlabel("Radius (m)")
     ax4.set_xlabel("Radius (m)")
     plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
