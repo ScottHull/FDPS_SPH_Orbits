@@ -76,11 +76,11 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax4.set_xlabel("Radius (m)")
     plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
 
-# animate(
-#     start_time=min_iteration,
-#     end_time=max_iteration,
-#     interval=sample_interval,
-#     path=to_path,
-#     fps=10,
-#     filename="impact_geometry.mp4",
-# )
+animate(
+    start_time=min_iteration,
+    end_time=max_iteration,
+    interval=sample_interval,
+    path=to_path,
+    fps=10,
+    filename="impact_geometry.mp4",
+)
