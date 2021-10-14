@@ -89,7 +89,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax3.plot(
         old_times,
         old_vmfs,
-        color='pink',
+        color='magenta',
         linewidth=1.0,
         label="Old EoS"
     )
