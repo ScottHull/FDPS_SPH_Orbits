@@ -32,6 +32,11 @@ phase_curve_new = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/forstSTS
 phase_curve_old = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/duniteN_vapour_curve.txt"
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/vmf_animate"
 
+for i in [to_path]:
+    if os.path.exists(i):
+        shutil.rmtree(i)
+    os.mkdir(i)
+
 plt.style.use("dark_background")
 cmap = cm.get_cmap('jet')
 normalizer = Normalize(min_normalize, max_normalize)
