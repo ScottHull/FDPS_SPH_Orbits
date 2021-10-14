@@ -101,7 +101,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         fontsize=10
     )
     ax3.grid()
-    ax3.set_xlim(min_iteration, max_iteration)
+    ax3.set_xlim(min_time, max_time)
     ax3.set_ylim(0, 100)
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
