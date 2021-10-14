@@ -5,7 +5,25 @@ from matplotlib.cm import ScalarMappable
 from src.interpolation import NearestNeighbor1D
 
 
-def calc_vapor_mass_fraction(particles, phase_path="src/phase_data/duniteN_vapour_curve.txt"):
+def get_particle_vapor_fraction(particle, phase_path):
+    phase_df = pd.read_fwf(phase_path, skiprows=1,
+                           names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                  "entropy_sol_liq", "entropy_vap"])
+
+    nearest_neighbor = NearestNeighbor1D()
+    nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=particle.temperature,
+                                                                array=list(phase_df['temperature']))
+    entropy_liq = phase_df['entropy_sol_liq'][nearest_temperature_index]
+    entropy_vap = phase_df['entropy_vap'][nearest_temperature_index]
+    if particle.entropy < entropy_liq:
+        return 0.0
+    elif entropy_liq <= particle.entropy <= entropy_vap:
+        return (particle.entropy - entropy_liq) / (entropy_vap - entropy_liq)
+    elif particle.entropy > entropy_vap:
+        return 1.0
+
+
+def calc_vapor_mass_fraction(particles, phase_path):
     phase_df = pd.read_fwf(phase_path, skiprows=1,
                            names=["temperature", "density_sol_liq", "density_vap", "pressure",
                                   "entropy_sol_liq", "entropy_vap"])
@@ -18,10 +36,6 @@ def calc_vapor_mass_fraction(particles, phase_path="src/phase_data/duniteN_vapou
             num_particles += 1
             entropy_i = p.entropy
             temperature_i = p.temperature
-            # entropy_liq = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
-            #                             interp_array=self.phase_df['entropy_sol_liq'])
-            # entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
-            #                             interp_array=self.phase_df['entropy_vap'])
             nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=temperature_i,
                                                                         array=list(phase_df['temperature']))
             entropy_liq = phase_df['entropy_sol_liq'][nearest_temperature_index]
@@ -34,7 +48,6 @@ def calc_vapor_mass_fraction(particles, phase_path="src/phase_data/duniteN_vapou
                 vapor_mass_fraction += 1.0
 
     vapor_mass_fraction = vapor_mass_fraction / num_particles
-
     return vapor_mass_fraction
 
 def plot_disk_entropy(particles, phase_path="src/phase_data/duniteS_vapour_curve.txt"):
