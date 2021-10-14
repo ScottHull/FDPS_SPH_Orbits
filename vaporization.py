@@ -20,7 +20,7 @@ from src.vapor import calc_vapor_mass_fraction, get_particle_vapor_fraction
 
 min_iteration = 0
 max_iteration = 3000
-sample_interval = 5
+sample_interval = 20
 parameter = "entropy"
 min_normalize = 0
 max_normalize = 8000
@@ -43,10 +43,10 @@ normalizer = Normalize(min_normalize, max_normalize)
 
 cf = CombineFile(num_processes=number_processes, time=min_iteration, output_path=new_path)
 cf.combine()
-min_time = cf.sim_time
+min_time = seconds_to_hours(cf.sim_time)
 cf = CombineFile(num_processes=number_processes, time=max_iteration, output_path=new_path)
 cf.combine()
-max_time = cf.sim_time
+max_time = seconds_to_hours(cf.sim_time)
 
 new_vmfs = []
 old_vmfs = []
@@ -95,8 +95,8 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     )
     ax3.text(
         max_time - (max_time * 0.1),
-        85,
-        "Disk New EoS VMF: {}%\nDisk Old EoS VMF: {}%".format(vmf_new, vmf_old),
+        70,
+        "Disk New EoS VMF: {}%\nDisk Old EoS VMF: {}%".format(round(vmf_new, 4), round(vmf_old, 4)),
         c="white",
         fontsize=10
     )
