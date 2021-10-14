@@ -24,7 +24,7 @@ sample_interval = 20
 parameter = "entropy"
 min_normalize = 0
 max_normalize = 8000
-square_scale = 3e7
+square_scale = 4e7
 number_processes = 100
 new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 old_path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
@@ -82,7 +82,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax3.plot(
         new_times,
         new_vmfs,
-        color='blue',
+        color='aqua',
         linewidth=1.0,
         label="New EoS"
     )
@@ -94,15 +94,15 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         label="Old EoS"
     )
     ax3.text(
-        max_time - (max_time * 0.1),
-        70,
-        "Disk New EoS VMF: {}%\nDisk Old EoS VMF: {}%".format(round(vmf_new, 4), round(vmf_old, 4)),
+        max_time - (max_time * 0.25),
+        50,
+        "Disk New EoS VMF: {}%\nDisk Old EoS VMF: {}%".format(round(vmf_new, 2), round(vmf_old, 2)),
         c="white",
         fontsize=10
     )
-    ax3.grid()
+    ax3.grid(alpha=0.4)
     ax3.set_xlim(min_time, max_time)
-    ax3.set_ylim(0, 100)
+    ax3.set_ylim(0, 60)
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
     # cbar = fig.colorbar(sm, ax=axs.flatten()[1])
