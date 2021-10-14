@@ -48,14 +48,24 @@ old_vmfs = []
 new_times = []
 old_times = []
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
-    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time)
-    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time)
-    new_times.append(seconds_to_hours(new_time))
-    old_times.append(seconds_to_hours(old_time))
-    vmf_new = calc_vapor_mass_fraction(particles=new_particles, phase_path=phase_curve_new) * 100.0
-    vmf_old = calc_vapor_mass_fraction(particles=old_particles, phase_path=phase_curve_old) * 100.0
-    new_vmfs.append(vmf_new)
-    old_vmfs.append(vmf_old)
+    if time >= 10:
+        new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time, solve=True)
+        old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time, solve=True)
+        new_times.append(seconds_to_hours(new_time))
+        old_times.append(seconds_to_hours(old_time))
+        vmf_new = calc_vapor_mass_fraction(particles=new_particles, phase_path=phase_curve_new) * 100.0
+        vmf_old = calc_vapor_mass_fraction(particles=old_particles, phase_path=phase_curve_old) * 100.0
+        new_vmfs.append(vmf_new)
+        old_vmfs.append(vmf_old)
+    else:
+        new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time, solve=False)
+        old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time, solve=False)
+        new_times.append(seconds_to_hours(new_time))
+        old_times.append(seconds_to_hours(old_time))
+        vmf_new = 0.0
+        vmf_old = 0.0
+        new_vmfs.append(vmf_new)
+        old_vmfs.append(vmf_old)
     # Create 2x2 sub plots
     gs = gridspec.GridSpec(2, 2)
     fig = plt.figure(figsize=(16, 9))
@@ -67,7 +77,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax1.set_title("New EoS")
     ax2.set_title("Old EoS")
     ax3.set_xlabel("Time (hrs)")
-    ax3.set_ylabel("Vapor Mass Fraction (%)")
+    ax3.set_ylabel("Disk Vapor Mass Fraction (%)")
     ax1 = plot(fig=fig, axs=axs, index=0, time=new_time, particles=new_particles, cmap=cmap,
                normalizer=normalizer,
                parameter=parameter, square_scale=square_scale)
@@ -91,7 +101,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax3.text(
         max_time - (max_time * 0.1),
         85,
-        "New EoS VMF: {}%\nOld EoS VMF: {}%".format(vmf_new, vmf_old),
+        "Disk New EoS VMF: {}%\nDisk Old EoS VMF: {}%".format(vmf_new, vmf_old),
         c="white",
         fontsize=10
     )
