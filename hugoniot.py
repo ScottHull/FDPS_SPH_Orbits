@@ -88,6 +88,8 @@ for ax in axs.flatten():
     ax.set_xlabel("Pressure")
     ax.set_ylabel("Entropy")
     ax.grid(alpha=0.4)
+axs.flatten()[0].set_title("New EoS")
+axs.flatten()[1].set_title("Old EoS")
 legend = axs.flatten()[0].legend(fontsize=6)
 for handle in legend.legendHandles:
     handle.set_sizes([3.0])
