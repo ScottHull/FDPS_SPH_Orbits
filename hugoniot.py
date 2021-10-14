@@ -34,9 +34,8 @@ old_iron_hugoniot = "src/phase_data/iron__C_hugoniot.txt"
 hug_headers = ["density", "pressure", "temperature", "energy", "sound speed", "entropy",
                                           "shock speed", "part speed", "phase"]
 
-new_iron_hugoniot_df = pd.read_csv(new_iron_hugoniot, skiprows=1, delimiter="\t", names=hug_headers)
-old_iron_hugoniot_df = pd.read_csv(old_iron_hugoniot, skiprows=1, delimiter="\t", names=hug_headers)
-
+new_iron_hugoniot_df = pd.read_fwf(new_iron_hugoniot, skiprows=1, names=hug_headers)
+old_iron_hugoniot_df = pd.read_fwf(old_iron_hugoniot, skiprows=1, names=hug_headers)
 
 plt.style.use("dark_background")
 fig, axs = plt.subplots(1, 2, figsize=(10, 10), sharey='all', sharex='all',
@@ -61,28 +60,28 @@ axs.flatten()[0].scatter(
     [p.entropy for p in new_particles if p.tag == 1],
     s=0.02,
     marker="o",
-    label="Target Iron (New EoS)"
+    label="Target Iron"
 )
 axs.flatten()[0].scatter(
     [p.pressure for p in new_particles if p.tag == 3],
     [p.entropy for p in new_particles if p.tag == 3],
     s=0.02,
     marker="o",
-    label="Impactor Iron (New EoS)"
+    label="Impactor Iron"
 )
 axs.flatten()[1].scatter(
     [p.pressure for p in old_particles if p.tag == 1],
     [p.entropy for p in old_particles if p.tag == 1],
     s=0.02,
     marker="o",
-    label="Target Iron (Old EoS)"
+    label="Target Iron"
 )
 axs.flatten()[1].scatter(
     [p.pressure for p in old_particles if p.tag == 3],
     [p.entropy for p in old_particles if p.tag == 3],
     s=0.02,
     marker="o",
-    label="Impactor Iron (Old EoS)"
+    label="Impactor Iron"
 )
 for ax in axs.flatten():
     ax.set_box_aspect(1)
