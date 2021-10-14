@@ -36,8 +36,12 @@ plt.style.use("dark_background")
 cmap = cm.get_cmap('jet')
 normalizer = Normalize(min_normalize, max_normalize)
 
-min_time = seconds_to_hours(CombineFile(num_processes=number_processes, time=min_iteration, output_path=new_path).combine().sim_time)
-max_time = seconds_to_hours(CombineFile(num_processes=number_processes, time=max_iteration, output_path=new_path).combine().sim_time)
+cf = CombineFile(num_processes=number_processes, time=min_iteration, output_path=new_path)
+cf.combine()
+min_time = cf.sim_time
+cf = CombineFile(num_processes=number_processes, time=max_iteration, output_path=new_path)
+cf.combine()
+max_time = cf.sim_time
 
 new_vmfs = []
 old_vmfs = []
