@@ -80,10 +80,10 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax3.set_ylabel("Disk Vapor Mass Fraction (%)")
     ax1 = plot(fig=fig, axs=axs, index=0, time=new_time, particles=new_particles, cmap=cmap,
                normalizer=normalizer,
-               parameter=parameter, square_scale=square_scale)
+               parameter=parameter, square_scale=square_scale, flatten=False)
     ax2 = plot(fig=fig, axs=axs, index=1, time=new_time, particles=old_particles, cmap=cmap,
                normalizer=normalizer,
-               parameter=parameter, square_scale=square_scale)
+               parameter=parameter, square_scale=square_scale, flatten=False)
     ax3.plot(
         new_times,
         new_vmfs,

@@ -38,8 +38,11 @@ def get_parameter_from_particles(particle, parameter):
     return d[parameter]
 
 
-def plot(fig, axs, particles, index, time, cmap, normalizer, square_scale, parameter):
-    ax = axs.flatten()[index]
+def plot(fig, axs, particles, index, time, cmap, normalizer, square_scale, parameter, flatten=True):
+    if flatten:
+        ax = axs.flatten()[index]
+    else:
+        ax = axs[index]
     # ax.set_facecolor('xkcd:black')
     # ax.spines['left'].set_color('white')
     # ax.spines['right'].set_color('white')
