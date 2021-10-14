@@ -53,7 +53,7 @@ old_vmfs = []
 new_times = []
 old_times = []
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
-    if time >= 10:
+    if time >= 15:
         new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time, solve=True)
         old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time, solve=True)
         new_times.append(seconds_to_hours(new_time))
@@ -73,7 +73,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         old_vmfs.append(vmf_old)
     # Create 2x2 sub plots
     gs = gridspec.GridSpec(2, 2)
-    fig = plt.figure(figsize=(16, 9))
+    fig = plt.figure(figsize=(10, 10))
     fig.patch.set_facecolor('xkcd:black')
     ax1 = fig.add_subplot(gs[0, 0])  # row 0, col 0
     ax2 = fig.add_subplot(gs[0, 1])  # row 0, col 1
