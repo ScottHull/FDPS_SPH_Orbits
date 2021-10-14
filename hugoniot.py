@@ -63,21 +63,21 @@ axs.flatten()[0].scatter(
     marker="o",
     label="Target Iron (New EoS)"
 )
-axs.flatten()[1].scatter(
+axs.flatten()[0].scatter(
     [p.position[0] for p in new_particles if p.position[2] < 0 and p.tag == 3],
     [p.position[1] for p in new_particles if p.position[2] < 0 and p.tag == 3],
     s=0.02,
     marker="o",
     label="Impactor Iron (New EoS)"
 )
-ax.scatter(
+axs.flatten()[1].scatter(
     [p.position[0] for p in old_particles if p.position[2] < 0 and p.tag == 1],
     [p.position[1] for p in old_particles if p.position[2] < 0 and p.tag == 1],
     s=0.02,
     marker="o",
     label="Target Iron (Old EoS)"
 )
-ax.scatter(
+axs.flatten()[1].scatter(
     [p.position[0] for p in old_particles if p.position[2] < 0 and p.tag == 3],
     [p.position[1] for p in old_particles if p.position[2] < 0 and p.tag == 3],
     s=0.02,
