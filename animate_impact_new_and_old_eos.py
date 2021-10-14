@@ -13,74 +13,102 @@ import matplotlib.font_manager as fm
 from src.identify import ParticleMap
 from src.combine import CombineFile
 from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_iterations_and_times
-from src.new_and_old_eos import get_particles, scatter, plot
-# from src.animate import animate
+from src.new_and_old_eos import get_particles, scatter, plot, main_plotting_loop
+from src.animate import animate
 
 min_iteration = 0
 max_iteration = 3000
 sample_interval = 5
-parameter = "entropy"
-min_normalize = 0
-max_normalize = 8000
+min_normalize_entropy = 0
+max_normalize_entropy = 8000
+min_normalize_internal_energy = 0
+max_normalize_internal_energy = 1e7
+min_normalize_temperature = 0
+max_normalize_temperature = 10000
 square_scale = 1e7
 number_processes = 100
-to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/new_and_old_animate"
 new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 old_path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
+to_path_entropy = "/home/theia/scotthull/FDPS_SPH_Orbits/new_and_old_animate_entropy"
+to_path_internal_energy = "/home/theia/scotthull/FDPS_SPH_Orbits/new_and_old_animate_internal_energy"
+to_path_temperature = "/home/theia/scotthull/FDPS_SPH_Orbits/new_and_old_animate_temperature"
+entropy_parameter = "entropy"
+internal_energy_parameter = "internal_energy"
+temperature_parameter = "temperature"
 
-if os.path.exists(to_path):
-    shutil.rmtree(to_path)
-os.mkdir(to_path)
+for i in [to_path_entropy, to_path_internal_energy, to_path_temperature]:
+    if os.path.exists(i):
+        shutil.rmtree(i)
+    os.mkdir(i)
 
 plt.style.use("dark_background")
 cmap = cm.get_cmap('jet')
-normalizer = Normalize(min_normalize, max_normalize)
+normalizer_entropy = Normalize(min_normalize_entropy, max_normalize_entropy)
+normalizer_internal_energy = Normalize(min_normalize_internal_energy, max_normalize_internal_energy)
+normalizer_temperature = Normalize(min_normalize_temperature, max_normalize_temperature)
 
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
-    fig, axs = plt.subplots(2, 2, figsize=(10, 10),
-                            gridspec_kw={"hspace": 0.0, "wspace": 0.08})
-    fig.patch.set_facecolor('xkcd:black')
-    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time)
-    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time)
-    ax1 = plot(fig=fig, axs=axs, index=0, time=new_time, particles=new_particles, cmap=cmap, normalizer=normalizer,
-               parameter=parameter, square_scale=square_scale)
-    ax2 = plot(fig=fig, axs=axs, index=1, time=new_time, particles=old_particles, cmap=cmap, normalizer=normalizer,
-               parameter=parameter, square_scale=square_scale)
-    ax3 = scatter(fig=fig, axs=axs, index=2, particles=new_particles, parameter=parameter, square_scale=square_scale)
-    ax4 = scatter(fig=fig, axs=axs, index=3, particles=old_particles, parameter=parameter, square_scale=square_scale)
-    axs.flatten()[2].set_ylabel(parameter.replace("_", " ").title())
-
-    axs.flatten()[0].set_title("New EoS")
-    axs.flatten()[1].set_title("Old EoS")
-    sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
-    sm.set_array([])
-    # cbar = fig.colorbar(sm, ax=axs.flatten()[1])
-    cbaxes = inset_axes(ax1, width="30%", height="3%", loc=2, borderpad=1.8)
-    cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-    cbar.ax.tick_params(labelsize=6)
-    # cbar.ax.xaxis.set_ticks_position('top')
-    cbar.ax.set_title(parameter.replace("_", " ").title(), fontsize=6)
-    legend = ax3.legend(fontsize=6)
-    for handle in legend.legendHandles:
-        handle.set_sizes([3.0])
-    ax4.set_yticks([])
-    ax4.set_yticks([], minor=True)
-    ax3_ymin, ax3_ymax = ax3.get_ylim()
-    ax4_ymin, ax4_ymax = ax4.get_ylim()
-    lims = [ax3_ymin, ax3_ymax, ax4_ymin, ax4_ymax]
-    scatter_range = [min(lims), max(lims)]
-    inc = (scatter_range[1] - scatter_range[0]) * 0.1
-    ax3.set_ylim(0, scatter_range[1] + inc)
-    ax4.set_ylim(0, scatter_range[1] + inc)
-    ax3.set_xlabel("Radius (m)")
-    ax4.set_xlabel("Radius (m)")
-    plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
+    main_plotting_loop(
+        min_iteration=min_iteration,
+        max_iteration=max_iteration,
+        number_processes=number_processes, 
+        time=time, 
+        new_path=new_path, 
+        old_path=old_path, 
+        normalizer=normalizer_entropy,
+        square_scale=square_scale, 
+        cmap=cmap, 
+        to_path=to_path_entropy, 
+        parameter=entropy_parameter
+    )
+    main_plotting_loop(
+        min_iteration=min_iteration,
+        max_iteration=max_iteration,
+        number_processes=number_processes,
+        time=time,
+        new_path=new_path,
+        old_path=old_path,
+        normalizer=normalizer_internal_energy,
+        square_scale=square_scale,
+        cmap=cmap,
+        to_path=to_path_internal_energy,
+        parameter=internal_energy_parameter
+    )
+    main_plotting_loop(
+        min_iteration=min_iteration,
+        max_iteration=max_iteration,
+        number_processes=number_processes,
+        time=time,
+        new_path=new_path,
+        old_path=old_path,
+        normalizer=normalizer_temperature,
+        square_scale=square_scale,
+        cmap=cmap,
+        to_path=to_path_temperature,
+        parameter=temperature_parameter
+    )
 
 animate(
     start_time=min_iteration,
     end_time=max_iteration,
     interval=sample_interval,
-    path=to_path,
+    path=to_path_entropy,
     fps=10,
-    filename="impact_geometry.mp4",
+    filename="impact_geometry_entropy.mp4",
+)
+animate(
+    start_time=min_iteration,
+    end_time=max_iteration,
+    interval=sample_interval,
+    path=to_path_internal_energy,
+    fps=10,
+    filename="impact_geometry_internal_energy.mp4",
+)
+animate(
+    start_time=min_iteration,
+    end_time=max_iteration,
+    interval=sample_interval,
+    path=to_path_temperature,
+    fps=10,
+    filename="impact_geometry_temperature.mp4",
 )

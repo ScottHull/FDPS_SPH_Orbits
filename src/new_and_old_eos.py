@@ -71,8 +71,8 @@ def plot(fig, axs, particles, index, time, cmap, normalizer, square_scale, param
     ax.set_box_aspect(1)
 
     scalebar = AnchoredSizeBar(ax.transData,
-                               square_scale / 5,
-                               '{:.2e} km'.format(square_scale / 5),
+                               6378.1 * 1000,
+                               r'1 $R_{\bigoplus}$',
                                loc=8,
                                pad=0.3,
                                color='white',
@@ -121,3 +121,49 @@ def scatter(fig, axs, particles, index, square_scale, parameter):
     ax.set_xlim(0, square_scale)
     ax.set_box_aspect(1)
     return ax
+
+
+def main_plotting_loop(min_iteration, max_iteration, number_processes, time, new_path, old_path, normalizer,
+                       square_scale, cmap, to_path, parameter):
+    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time)
+    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time)
+    fig, axs = plt.subplots(2, 2, figsize=(10, 10),
+                            gridspec_kw={"hspace": 0.0, "wspace": 0.08})
+    fig.patch.set_facecolor('xkcd:black')
+    ax1 = plot(fig=fig, axs=axs, index=0, time=new_time, particles=new_particles, cmap=cmap,
+               normalizer=normalizer,
+               parameter=parameter, square_scale=square_scale)
+    ax2 = plot(fig=fig, axs=axs, index=1, time=new_time, particles=old_particles, cmap=cmap,
+               normalizer=normalizer,
+               parameter=parameter, square_scale=square_scale)
+    ax3 = scatter(fig=fig, axs=axs, index=2, particles=new_particles,
+                  parameter=parameter, square_scale=square_scale)
+    ax4 = scatter(fig=fig, axs=axs, index=3, particles=old_particles,
+                  parameter=parameter, square_scale=square_scale)
+    axs.flatten()[2].set_ylabel(parameter.replace("_", " ").title())
+
+    axs.flatten()[0].set_title("New EoS")
+    axs.flatten()[1].set_title("Old EoS")
+    sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+    sm.set_array([])
+    # cbar = fig.colorbar(sm, ax=axs.flatten()[1])
+    cbaxes = inset_axes(ax1, width="30%", height="3%", loc=2, borderpad=1.8)
+    cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+    cbar.ax.tick_params(labelsize=6)
+    # cbar.ax.xaxis.set_ticks_position('top')
+    cbar.ax.set_title(parameter.replace("_", " ").title(), fontsize=6)
+    legend = ax3.legend(fontsize=6, loc='upper left')
+    for handle in legend.legendHandles:
+        handle.set_sizes([3.0])
+    ax4.set_yticks([])
+    ax4.set_yticks([], minor=True)
+    ax3_ymin, ax3_ymax = ax3.get_ylim()
+    ax4_ymin, ax4_ymax = ax4.get_ylim()
+    lims = [ax3_ymin, ax3_ymax, ax4_ymin, ax4_ymax]
+    scatter_range = [min(lims), max(lims)]
+    inc = (scatter_range[1] - scatter_range[0]) * 0.1
+    ax3.set_ylim(0, scatter_range[1] + inc)
+    ax4.set_ylim(0, scatter_range[1] + inc)
+    ax3.set_xlabel("Radius (m)")
+    ax4.set_xlabel("Radius (m)")
+    plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
