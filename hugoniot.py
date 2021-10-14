@@ -40,7 +40,7 @@ old_iron_hugoniot_df = pd.read_csv(old_iron_hugoniot, skiprows=1, delimiter="\t"
 
 plt.style.use("dark_background")
 fig, axs = plt.subplots(1, 2, figsize=(10, 10),
-                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.08})
 fig.patch.set_facecolor('xkcd:black')
 new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=max_iteration, solve=False)
 old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=max_iteration, solve=False)
