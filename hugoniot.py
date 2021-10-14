@@ -28,8 +28,8 @@ square_scale = 4e7
 number_processes = 100
 new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 old_path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
-new_iron_hugoniot = "/home/theia/scotthull/FDPS_SPH/src/phase_data/ironSTS_hugoniot.txt"
-old_iron_hugoniot = "/home/theia/scotthull/FDPS_SPH/src/phase_data/iron__C_hugoniot.txt"
+new_iron_hugoniot = "src/phase_data/ironSTS_hugoniot.txt"
+old_iron_hugoniot = "src/phase_data/iron__C_hugoniot.txt"
 
 hug_headers = ["density", "pressure", "temperature", "energy", "sound speed", "entropy",
                                           "shock speed", "part speed", "phase"]
