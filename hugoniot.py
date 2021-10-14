@@ -57,34 +57,35 @@ axs.flatten()[1].plot(
     color="magenta",
 )
 axs.flatten()[0].scatter(
-    [p.position[0] for p in new_particles if p.position[2] < 0 and p.tag == 1],
-    [p.position[1] for p in new_particles if p.position[2] < 0 and p.tag == 1],
+    [p.pressure for p in new_particles if p.tag == 1],
+    [p.entropy for p in new_particles if p.tag == 1],
     s=0.02,
     marker="o",
     label="Target Iron (New EoS)"
 )
 axs.flatten()[0].scatter(
-    [p.position[0] for p in new_particles if p.position[2] < 0 and p.tag == 3],
-    [p.position[1] for p in new_particles if p.position[2] < 0 and p.tag == 3],
+    [p.pressure for p in new_particles if p.tag == 3],
+    [p.entropy for p in new_particles if p.tag == 3],
     s=0.02,
     marker="o",
     label="Impactor Iron (New EoS)"
 )
 axs.flatten()[1].scatter(
-    [p.position[0] for p in old_particles if p.position[2] < 0 and p.tag == 1],
-    [p.position[1] for p in old_particles if p.position[2] < 0 and p.tag == 1],
+    [p.pressure for p in old_particles if p.tag == 1],
+    [p.entropy for p in old_particles if p.tag == 1],
     s=0.02,
     marker="o",
     label="Target Iron (Old EoS)"
 )
 axs.flatten()[1].scatter(
-    [p.position[0] for p in old_particles if p.position[2] < 0 and p.tag == 3],
-    [p.position[1] for p in old_particles if p.position[2] < 0 and p.tag == 3],
+    [p.pressure for p in old_particles if p.tag == 3],
+    [p.entropy for p in old_particles if p.tag == 3],
     s=0.02,
     marker="o",
     label="Impactor Iron (Old EoS)"
 )
 for ax in axs.flatten():
+    ax.set_box_aspect(1)
     ax.set_xlabel("Pressure")
     ax.set_ylabel("Entropy")
     ax.grid(alpha=0.4)
