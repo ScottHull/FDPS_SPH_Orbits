@@ -23,7 +23,7 @@ def get_particle_vapor_fraction(particle, phase_path):
         return 1.0
 
 
-def calc_vapor_mass_fraction(particles, phase_path):
+def calc_vapor_mass_fraction(particles, phase_path, only_disk=True):
     phase_df = pd.read_fwf(phase_path, skiprows=1,
                            names=["temperature", "density_sol_liq", "density_vap", "pressure",
                                   "entropy_sol_liq", "entropy_vap"])
@@ -32,7 +32,7 @@ def calc_vapor_mass_fraction(particles, phase_path):
     num_particles = 0
     vapor_mass_fraction = 0
     for p in particles:
-        if p.label == "DISK" and p.tag % 2 == 0:
+        if (p.label == "DISK" or not only_disk) and p.tag % 2 == 0:
             num_particles += 1
             entropy_i = p.entropy
             temperature_i = p.temperature
