@@ -72,7 +72,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax1.set_title("New EoS")
     ax2.set_title("Old EoS")
     ax3.set_xlabel("Time (hrs)")
-    ax3.set_ylabel("Disk Vapor Mass Fraction (%)")
+    ax3.set_ylabel("Silicate Vapor Mass Fraction (%)")
     ax1 = plot(fig=fig, axs=axs, index=0, time=new_time, particles=new_particles, cmap=cmap,
                normalizer=normalizer,
                parameter=parameter, square_scale=square_scale, flatten=False)
@@ -96,7 +96,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax3.text(
         max_time - (max_time * 0.25),
         50,
-        "Disk New EoS VMF: {}%\nDisk Old EoS VMF: {}%".format(round(vmf_new, 2), round(vmf_old, 2)),
+        "Silicate New EoS VMF: {}%\nSilicate Old EoS VMF: {}%".format(round(vmf_new, 2), round(vmf_old, 2)),
         c="white",
         fontsize=10
     )
