@@ -39,33 +39,31 @@ old_iron_hugoniot_df = pd.read_csv(old_iron_hugoniot, skiprows=1, delimiter="\t"
 
 
 plt.style.use("dark_background")
-fig = plt.figure(figsize=(10, 10))
+fig, axs = plt.subplots(1, 2, figsize=(10, 10),
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig.patch.set_facecolor('xkcd:black')
 new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=max_iteration, solve=False)
 old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=max_iteration, solve=False)
-ax = fig.add_subplot(111)
-ax.plot(
+axs.flatten()[0].plot(
     new_iron_hugoniot_df["pressure"],
     new_iron_hugoniot_df["entropy"],
     linewidth=1.0,
     color="aqua",
-    label="New Iron"
 )
-ax.plot(
+axs.flatten()[1].plot(
     old_iron_hugoniot_df["pressure"],
     old_iron_hugoniot_df["entropy"],
     linewidth=1.0,
     color="magenta",
-    label="Old Iron"
 )
-ax.scatter(
+axs.flatten()[0].scatter(
     [p.position[0] for p in new_particles if p.position[2] < 0 and p.tag == 1],
     [p.position[1] for p in new_particles if p.position[2] < 0 and p.tag == 1],
     s=0.02,
     marker="o",
     label="Target Iron (New EoS)"
 )
-ax.scatter(
+axs.flatten()[1].scatter(
     [p.position[0] for p in new_particles if p.position[2] < 0 and p.tag == 3],
     [p.position[1] for p in new_particles if p.position[2] < 0 and p.tag == 3],
     s=0.02,
@@ -86,10 +84,11 @@ ax.scatter(
     marker="o",
     label="Impactor Iron (Old EoS)"
 )
-ax.set_xlabel("Pressure")
-ax.set_ylabel("Entropy")
-ax.grid(alpha=0.4)
-legend = ax.legend(fontsize=6)
+for ax in axs.flatten():
+    ax.set_xlabel("Pressure")
+    ax.set_ylabel("Entropy")
+    ax.grid(alpha=0.4)
+legend = axs.flatten()[0].legend(fontsize=6)
 for handle in legend.legendHandles:
     handle.set_sizes([3.0])
 
