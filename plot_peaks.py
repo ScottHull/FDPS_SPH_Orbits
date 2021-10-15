@@ -18,7 +18,7 @@ from src.new_and_old_eos import get_particles, get_peak
 from src.animate import animate
 
 min_iteration = 0
-max_iteration = 200
+max_iteration = 300
 sample_interval = 5
 parameter = "entropy"
 min_normalize = 0
@@ -39,10 +39,10 @@ old_iron_hugoniot_df = pd.read_fwf(old_iron_hugoniot, skiprows=1, names=hug_head
 new_peak, old_peak = get_peak(save=True, parameter="pressure", min_iteration=min_iteration, max_iteration=max_iteration,
                     interval=sample_interval, new_path=new_path, old_path=old_path, number_processes=number_processes)
 
+plt.style.use("dark_background")
 fig, axs = plt.subplots(2, 2, figsize=(12, 10),
                             gridspec_kw={"hspace": 0.1, "wspace": 0.12})
 fig.patch.set_facecolor('xkcd:black')
-plt.style.use("dark_background")
 
 axs.flatten()[0].scatter(
     [new_peak[p]["pressure"] for p in new_peak.keys() if new_peak[p]["tag"] == 0],
