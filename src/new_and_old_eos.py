@@ -4,6 +4,7 @@ import shutil
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import pandas as pd
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
@@ -171,3 +172,62 @@ def main_plotting_loop(min_iteration, max_iteration, number_processes, time, new
     ax3.set_xlabel("Radius (m)")
     ax4.set_xlabel("Radius (m)")
     plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
+
+
+def get_parameter(particle, time, iteration):
+    return {
+        "pressure": particle.pressure,
+        "internal_energy": particle.internal_energy,
+        "entropy": particle.internal_energy,
+        "temperature": particle.temperature,
+        "density": particle.density,
+        "tag": particle.tag,
+        "time": time,
+        "iteration": iteration
+    }
+
+def __peaks_df(peaks, name, save=False):
+    particle_ids = list(peaks.keys())
+    df = pd.DataFrame({
+        "particle_id": particle_ids,
+        "pressure": [peaks[p_id]["pressure"] for p_id in particle_ids],
+        "internal_energy": [peaks[p_id]["internal_energy"] for p_id in particle_ids],
+        "entropy": [peaks[p_id]["entropy"] for p_id in particle_ids],
+        "temperature": [peaks[p_id]["temperature"] for p_id in particle_ids],
+        "density": [peaks[p_id]["density"] for p_id in particle_ids],
+        "tag": [peaks[p_id]["tag"] for p_id in particle_ids],
+        "time": [peaks[p_id]["time"] for p_id in particle_ids],
+        "iteration": [peaks[p_id]["iteration"] for p_id in particle_ids],
+    })
+    if save:
+        df.to_csv("peaks_{}.csv".format(name))
+    return df
+
+def get_peak(save, parameter, min_iteration, max_iteration, interval, new_path, old_path, number_processes, solve=False):
+    d_new = {}
+    d_old = {}
+    __iter = 0
+    for time in np.arange(min_iteration, max_iteration + interval, interval):
+        new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time,
+                                                solve=solve)
+        old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time,
+                                                solve=solve)
+        if __iter == 0:
+            for p in new_particles:
+                d_new.update({p.particle_id: get_parameter(particle=p, time=new_time, iteration=time)})
+            for p in old_particles:
+                d_old.update({p.particle_id: get_parameter(particle=p, time=old_time, iteration=time)})
+        for p in new_particles:
+            params = get_parameter(particle=p, time=new_time, iteration=time)
+            current = d_new[p.particle_id]
+            if params[parameter] > current[parameter]:
+                d_new[p.particle_id] = params
+        for p in new_particles:
+            params = get_parameter(particle=p, time=old_time, iteration=time)
+            current = d_new[p.particle_id]
+            if params[parameter] > current[parameter]:
+                d_new[p.particle_id] = params
+        __iter += 1
+    peaks_new_df = __peaks_df(peaks=d_new, name="new", save=save)
+    peaks_old_df = __peaks_df(peaks=d_old, name="old", save=save)
+    return peaks_new_df, peaks_old_df
