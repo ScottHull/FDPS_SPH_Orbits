@@ -132,7 +132,7 @@ axs.flatten()[3].hist(
 )
 
 for ax in [axs.flatten()[0], axs.flatten()[1]]:
-    ax.set_xlabel("Max. Pressure"),
+    ax.set_xlabel("Max. Pressure (GPa)"),
     ax.grid(alpha=0.4)
     ax.set_box_aspect(1)
     ax.set_xlim(pa_to_gpa(min(old_peak[p]["pressure"] + new_peak[p]["pressure"])),
@@ -145,5 +145,7 @@ legend = axs.flatten()[0].legend(fontsize=6)
 for handle in legend.legendHandles:
     handle.set_sizes([3.0])
 axs.flatten()[0].set_ylabel("Corresponding Entropy")
+axs.flatten()[0].set_title("New EoS")
+axs.flatten()[1].set_title("Old EoS")
 
 plt.savefig("peaks.png", format='png')
