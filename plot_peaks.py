@@ -110,13 +110,13 @@ axs.flatten()[1].scatter(
 )
 
 axs.flatten()[0].plot(
-    new_iron_hugoniot_df["pressure"],
+    [pa_to_gpa(p) for p in new_iron_hugoniot_df["pressure"]],
     new_iron_hugoniot_df["entropy"],
     linewidth=1.0,
     color="magenta",
 )
 axs.flatten()[1].plot(
-    old_iron_hugoniot_df["pressure"],
+    [pa_to_gpa(p) for p in old_iron_hugoniot_df["pressure"]],
     old_iron_hugoniot_df["entropy"],
     linewidth=1.0,
     color="magenta",
