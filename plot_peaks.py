@@ -135,7 +135,8 @@ for ax in [axs.flatten()[0], axs.flatten()[1]]:
     ax.set_xlabel("Max. Pressure"),
     ax.grid(alpha=0.4)
     ax.set_box_aspect(1)
-    ax.set_xlim(0, 0.5e12)
+    ax.set_xlim(pa_to_gpa(min(old_peak[p]["pressure"] + new_peak[p]["pressure"])),
+                pa_to_gpa(max(old_peak[p]["pressure"] + new_peak[p]["pressure"])))
 for ax in [axs.flatten()[2], axs.flatten()[3]]:
     ax.set_xlabel("Time of Max Pressure (hrs)")
     ax.grid(alpha=0.4)
