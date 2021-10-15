@@ -39,9 +39,10 @@ old_iron_hugoniot_df = pd.read_fwf(old_iron_hugoniot, skiprows=1, names=hug_head
 new_peak, old_peak = get_peak(save=True, parameter="pressure", min_iteration=min_iteration, max_iteration=max_iteration,
                     interval=sample_interval, new_path=new_path, old_path=old_path, number_processes=number_processes)
 
-fig, axs = plt.subplots(2, 2, figsize=(10, 10),
-                            gridspec_kw={"hspace": 0.1, "wspace": 0.08})
+fig, axs = plt.subplots(2, 2, figsize=(12, 10),
+                            gridspec_kw={"hspace": 0.1, "wspace": 0.12})
 fig.patch.set_facecolor('xkcd:black')
+plt.style.use("dark_background")
 
 axs.flatten()[0].scatter(
     [new_peak[p]["pressure"] for p in new_peak.keys() if new_peak[p]["tag"] == 0],
@@ -124,7 +125,6 @@ axs.flatten()[3].hist(
 
 for ax in [axs.flatten()[0], axs.flatten()[1]]:
     ax.set_xlabel("Max. Pressure"),
-    ax.set_ylabel("Corresponding Entropy")
     ax.grid(alpha=0.4)
     ax.set_box_aspect(1)
 for ax in [axs.flatten()[2], axs.flatten()[3]]:
@@ -133,5 +133,6 @@ for ax in [axs.flatten()[2], axs.flatten()[3]]:
 legend = axs.flatten()[0].legend(fontsize=6)
 for handle in legend.legendHandles:
     handle.set_sizes([3.0])
+axs.flatten()[0].set_ylabel("Corresponding Entropy")
 
 plt.savefig("peaks.png", format='png')
