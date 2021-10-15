@@ -18,7 +18,7 @@ from src.new_and_old_eos import get_particles, get_peak
 from src.animate import animate
 
 min_iteration = 0
-max_iteration = 100
+max_iteration = 200
 sample_interval = 5
 parameter = "entropy"
 min_normalize = 0
@@ -115,11 +115,11 @@ axs.flatten()[1].plot(
 )
 
 axs.flatten()[2].hist(
-    [new_peak[p]["time"] for p in new_peak.keys()],
+    [seconds_to_hours(new_peak[p]["time"]) for p in new_peak.keys()],
     bins='auto'
 )
 axs.flatten()[3].hist(
-    [new_peak[p]["time"] for p in old_peak.keys()],
+    [seconds_to_hours(new_peak[p]["time"]) for p in old_peak.keys()],
     bins='auto'
 )
 
@@ -127,8 +127,9 @@ for ax in [axs.flatten()[0], axs.flatten()[1]]:
     ax.set_xlabel("Max. Pressure"),
     ax.grid(alpha=0.4)
     ax.set_box_aspect(1)
+    ax.set_xlim(0, 0.5e12)
 for ax in [axs.flatten()[2], axs.flatten()[3]]:
-    ax.set_xlabel("Model Iteration of Max. Time")
+    ax.set_xlabel("Time of Max Pressure (hrs)")
     ax.set_box_aspect(1)
 legend = axs.flatten()[0].legend(fontsize=6)
 for handle in legend.legendHandles:
