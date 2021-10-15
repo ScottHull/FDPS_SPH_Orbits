@@ -39,6 +39,7 @@ old_iron_hugoniot_df = pd.read_fwf(old_iron_hugoniot, skiprows=1, names=hug_head
 new_peak, old_peak = get_peak(save=True, parameter="pressure", min_iteration=min_iteration, max_iteration=max_iteration,
                     interval=sample_interval, new_path=new_path, old_path=old_path, number_processes=number_processes)
 
+plt.style.use("dark_background")
 fig, axs = plt.subplots(2, 2, figsize=(10, 10),
                             gridspec_kw={"hspace": 0.1, "wspace": 0.08})
 fig.patch.set_facecolor('xkcd:black')
