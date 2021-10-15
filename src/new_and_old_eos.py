@@ -222,11 +222,11 @@ def get_peak(save, parameter, min_iteration, max_iteration, interval, new_path, 
             current = d_new[p.particle_id]
             if params[parameter] > current[parameter]:
                 d_new[p.particle_id] = params
-        for p in new_particles:
+        for p in old_particles:
             params = get_parameter(particle=p, time=old_time, iteration=time)
-            current = d_new[p.particle_id]
+            current = d_old[p.particle_id]
             if params[parameter] > current[parameter]:
-                d_new[p.particle_id] = params
+                d_old[p.particle_id] = params
         __iter += 1
     peaks_new_df = __peaks_df(peaks=d_new, name="new", save=save)
     peaks_old_df = __peaks_df(peaks=d_old, name="old", save=save)
