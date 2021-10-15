@@ -230,4 +230,4 @@ def get_peak(save, parameter, min_iteration, max_iteration, interval, new_path, 
         __iter += 1
     peaks_new_df = __peaks_df(peaks=d_new, name="new", save=save)
     peaks_old_df = __peaks_df(peaks=d_old, name="old", save=save)
-    return peaks_new_df, peaks_old_df
+    return d_new, d_old

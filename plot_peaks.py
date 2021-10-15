@@ -133,3 +133,5 @@ for ax in [axs.flatten[2], axs.flatten[3]]:
 legend = axs.flatten[0].legend(fontsize=6)
 for handle in legend.legendHandles:
     handle.set_sizes([3.0])
+
+plt.savefig("peaks.png", format='png')
