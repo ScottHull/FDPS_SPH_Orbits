@@ -48,6 +48,7 @@ normalizer_temperature = Normalize(min_normalize_temperature, max_normalize_temp
 
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
     particles, sample_time = get_particles(path=path, number_processes=number_processes, time=time)
-    fig, axs = plt.subplots(2, 2, figsize=(10, 10),
+    fig, axs = plt.subplots(1, 1, figsize=(8, 10),
                                 gridspec_kw={"hspace": 0.0, "wspace": 0.08})
+    fig.patch.set_facecolor('xkcd:black')
 

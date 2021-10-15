@@ -122,15 +122,15 @@ axs.flatten()[3].hist(
     bins='auto'
 )
 
-for ax in [axs.flatten[0], axs.flatten[1]]:
+for ax in [axs.flatten()[0], axs.flatten()[1]]:
     ax.set_xlabel("Max. Pressure"),
     ax.set_ylabel("Corresponding Entropy")
     ax.grid(alpha=0.4)
     ax.set_box_aspect(1)
-for ax in [axs.flatten[2], axs.flatten[3]]:
+for ax in [axs.flatten()[2], axs.flatten()[3]]:
     ax.set_xlabel("Model Iteration of Max. Time")
     ax.set_box_aspect(1)
-legend = axs.flatten[0].legend(fontsize=6)
+legend = axs.flatten()[0].legend(fontsize=6)
 for handle in legend.legendHandles:
     handle.set_sizes([3.0])
 
