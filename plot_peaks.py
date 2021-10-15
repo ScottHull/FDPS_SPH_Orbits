@@ -18,8 +18,8 @@ from src.new_and_old_eos import get_particles, get_peak
 from src.animate import animate
 
 min_iteration = 0
-max_iteration = 3000
-sample_interval = 20
+max_iteration = 100
+sample_interval = 5
 parameter = "entropy"
 min_normalize = 0
 max_normalize = 8000
