@@ -1,6 +1,7 @@
 import pandas as pd
 import csv
 import os
+from random import randint
 
 
 class CombineFile:
@@ -37,7 +38,8 @@ class CombineFile:
             dfs.append(self.__read_sph_file())
         merged_df = pd.concat(dfs)
         merged_df.to_csv(self.to_fname.format(self.time), index=False, header=False, sep='\t')
-        temp = open("temp.dat", 'w')
+        tmp_fname = "temp{}.dat".format(randint(0, int(1e12)))
+        temp = open(tmp_fname, 'w')
         temp.write("{}\n{}\n".format(time, total_N))
         with open(self.to_fname.format(self.time)) as infile:
             for line in infile:
@@ -45,7 +47,7 @@ class CombineFile:
         infile.close()
         temp.close()
         os.remove(self.to_fname.format(self.time))
-        os.rename("temp.dat", self.to_fname.format(self.time))
+        os.rename(tmp_fname, self.to_fname.format(self.time))
         self.sim_time = time
 
     def combine_df(self):
