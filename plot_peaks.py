@@ -49,7 +49,7 @@ def pa_to_gpa(pa):
 
 plt.style.use("dark_background")
 fig, axs = plt.subplots(2, 2, figsize=(12, 10),
-                            gridspec_kw={"hspace": 0.1, "wspace": 0.12})
+                            gridspec_kw={"hspace": 0.12, "wspace": 0.12})
 fig.patch.set_facecolor('xkcd:black')
 
 axs.flatten()[0].scatter(
