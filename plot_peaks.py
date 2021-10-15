@@ -39,62 +39,70 @@ old_iron_hugoniot_df = pd.read_fwf(old_iron_hugoniot, skiprows=1, names=hug_head
 new_peak, old_peak = get_peak(save=True, parameter="pressure", min_iteration=min_iteration, max_iteration=max_iteration,
                     interval=sample_interval, new_path=new_path, old_path=old_path, number_processes=number_processes)
 
+def pa_to_gpa(pa):
+    """
+    Converts from Pa to GPa
+    :param pa:
+    :return:
+    """
+    return pa * (10 ** -9)
+
 plt.style.use("dark_background")
 fig, axs = plt.subplots(2, 2, figsize=(12, 10),
                             gridspec_kw={"hspace": 0.1, "wspace": 0.12})
 fig.patch.set_facecolor('xkcd:black')
 
 axs.flatten()[0].scatter(
-    [new_peak[p]["pressure"] for p in new_peak.keys() if new_peak[p]["tag"] == 0],
+    [pa_to_gpa(new_peak[p]["pressure"]) for p in new_peak.keys() if new_peak[p]["tag"] == 0],
     [new_peak[p]["entropy"] for p in new_peak.keys() if new_peak[p]["tag"] == 0],
     s=0.02,
     marker="o",
     label="Target Silicate"
 )
 axs.flatten()[0].scatter(
-    [new_peak[p]["pressure"] for p in new_peak.keys() if new_peak[p]["tag"] == 1],
+    [pa_to_gpa(new_peak[p]["pressure"]) for p in new_peak.keys() if new_peak[p]["tag"] == 1],
     [new_peak[p]["entropy"] for p in new_peak.keys() if new_peak[p]["tag"] == 1],
     s=0.02,
     marker="o",
     label="Target Iron"
 )
 axs.flatten()[0].scatter(
-    [new_peak[p]["pressure"] for p in new_peak.keys() if new_peak[p]["tag"] == 2],
+    [pa_to_gpa(new_peak[p]["pressure"]) for p in new_peak.keys() if new_peak[p]["tag"] == 2],
     [new_peak[p]["entropy"] for p in new_peak.keys() if new_peak[p]["tag"] == 2],
     s=0.02,
     marker="o",
     label="Impactor Silicate"
 )
 axs.flatten()[0].scatter(
-    [new_peak[p]["pressure"] for p in new_peak.keys() if new_peak[p]["tag"] == 3],
+    [pa_to_gpa(new_peak[p]["pressure"]) for p in new_peak.keys() if new_peak[p]["tag"] == 3],
     [new_peak[p]["entropy"] for p in new_peak.keys() if new_peak[p]["tag"] == 3],
     s=0.02,
     marker="o",
     label="Impactor Iron"
 )
 axs.flatten()[1].scatter(
-    [old_peak[p]["pressure"] for p in old_peak.keys() if old_peak[p]["tag"] == 0],
+    [pa_to_gpa(old_peak[p]["pressure"]) for p in old_peak.keys() if old_peak[p]["tag"] == 0],
     [old_peak[p]["entropy"] for p in old_peak.keys() if old_peak[p]["tag"] == 0],
     s=0.02,
     marker="o",
     label="Target Silicate"
 )
 axs.flatten()[1].scatter(
-    [old_peak[p]["pressure"] for p in old_peak.keys() if old_peak[p]["tag"] == 1],
+    [pa_to_gpa(old_peak[p]["pressure"]) for p in old_peak.keys() if old_peak[p]["tag"] == 1],
     [old_peak[p]["entropy"] for p in old_peak.keys() if old_peak[p]["tag"] == 1],
     s=0.02,
     marker="o",
     label="Target Iron"
 )
 axs.flatten()[1].scatter(
-    [old_peak[p]["pressure"] for p in old_peak.keys() if old_peak[p]["tag"] == 2],
+    [pa_to_gpa(old_peak[p]["pressure"]) for p in old_peak.keys() if old_peak[p]["tag"] == 2],
     [old_peak[p]["entropy"] for p in old_peak.keys() if old_peak[p]["tag"] == 2],
     s=0.02,
     marker="o",
     label="Impactor Silicate"
 )
 axs.flatten()[1].scatter(
-    [old_peak[p]["pressure"] for p in old_peak.keys() if old_peak[p]["tag"] == 3],
+    [pa_to_gpa(old_peak[p]["pressure"]) for p in old_peak.keys() if old_peak[p]["tag"] == 3],
     [old_peak[p]["entropy"] for p in old_peak.keys() if old_peak[p]["tag"] == 3],
     s=0.02,
     marker="o",
@@ -119,7 +127,7 @@ axs.flatten()[2].hist(
     bins='auto'
 )
 axs.flatten()[3].hist(
-    [seconds_to_hours(new_peak[p]["time"]) for p in old_peak.keys()],
+    [seconds_to_hours(old_peak[p]["time"]) for p in old_peak.keys()],
     bins='auto'
 )
 
@@ -130,6 +138,7 @@ for ax in [axs.flatten()[0], axs.flatten()[1]]:
     ax.set_xlim(0, 0.5e12)
 for ax in [axs.flatten()[2], axs.flatten()[3]]:
     ax.set_xlabel("Time of Max Pressure (hrs)")
+    ax.grid(alpha=0.4)
     ax.set_box_aspect(1)
 legend = axs.flatten()[0].legend(fontsize=6)
 for handle in legend.legendHandles:
