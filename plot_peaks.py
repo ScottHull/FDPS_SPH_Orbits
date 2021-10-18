@@ -49,7 +49,7 @@ def pa_to_gpa(pa):
 
 plt.style.use("dark_background")
 fig, axs = plt.subplots(2, 2, figsize=(12, 10),
-                            gridspec_kw={"hspace": 0.12, "wspace": 0.12})
+                            gridspec_kw={"hspace": 0.14, "wspace": 0.12})
 fig.patch.set_facecolor('xkcd:black')
 
 axs.flatten()[0].scatter(
@@ -114,12 +114,14 @@ axs.flatten()[0].plot(
     new_iron_hugoniot_df["entropy"],
     linewidth=1.0,
     color="magenta",
+    label="Iron Hugoniot"
 )
 axs.flatten()[1].plot(
     [pa_to_gpa(p) for p in old_iron_hugoniot_df["pressure"]],
     old_iron_hugoniot_df["entropy"],
     linewidth=1.0,
     color="magenta",
+    label="Iron Hugoniot"
 )
 
 axs.flatten()[2].hist(
@@ -143,9 +145,10 @@ for ax in [axs.flatten()[2], axs.flatten()[3]]:
     ax.grid(alpha=0.4)
     ax.set_box_aspect(1)
 legend = axs.flatten()[0].legend(fontsize=6)
-for handle in legend.legendHandles:
+for handle in legend.legendHandles[:-1]:
     handle.set_sizes([3.0])
 axs.flatten()[0].set_ylabel("Corresponding Entropy")
+axs.flatten()[3].set_ylabel("Number of Particles")
 axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
 
