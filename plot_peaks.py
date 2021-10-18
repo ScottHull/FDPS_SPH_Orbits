@@ -29,12 +29,16 @@ new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 old_path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
 new_iron_hugoniot = "src/phase_data/ironSTS_hugoniot.txt"
 old_iron_hugoniot = "src/phase_data/iron__C_hugoniot.txt"
+new_silicate_hugoniot = "src/phase_data/forstSTS__hugoniot.txt"
+old_silicate_hugoniot = "src/phase_data/duniteN__hugoniot.txt"
 
 hug_headers = ["density", "pressure", "temperature", "energy", "sound speed", "entropy",
                                           "shock speed", "part speed", "phase"]
 
 new_iron_hugoniot_df = pd.read_fwf(new_iron_hugoniot, skiprows=1, names=hug_headers)
 old_iron_hugoniot_df = pd.read_fwf(old_iron_hugoniot, skiprows=1, names=hug_headers)
+new_silicate_hugoniot_df = pd.read_fwf(new_silicate_hugoniot, skiprows=1, names=hug_headers)
+old_silicate_hugoniot_df = pd.read_fwf(old_silicate_hugoniot, skiprows=1, names=hug_headers)
 
 new_peak, old_peak = get_peak(save=True, parameter="pressure", min_iteration=min_iteration, max_iteration=max_iteration,
                     interval=sample_interval, new_path=new_path, old_path=old_path, number_processes=number_processes)
@@ -122,6 +126,20 @@ axs.flatten()[1].plot(
     linewidth=1.0,
     color="magenta",
     label="Iron Hugoniot"
+)
+axs.flatten()[0].plot(
+    [pa_to_gpa(p) for p in new_silicate_hugoniot_df["pressure"]],
+    new_silicate_hugoniot_df["entropy"],
+    linewidth=1.0,
+    color="magenta",
+    label="Silicate Hugoniot"
+)
+axs.flatten()[1].plot(
+    [pa_to_gpa(p) for p in old_silicate_hugoniot_df["pressure"]],
+    old_silicate_hugoniot_df["entropy"],
+    linewidth=1.0,
+    color="magenta",
+    label="Silicate Hugoniot"
 )
 
 axs.flatten()[2].hist(
