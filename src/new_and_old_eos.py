@@ -178,7 +178,7 @@ def get_parameter(particle, time, iteration):
     return {
         "pressure": particle.pressure,
         "internal_energy": particle.internal_energy,
-        "entropy": particle.internal_energy,
+        "entropy": particle.entropy,
         "temperature": particle.temperature,
         "density": particle.density,
         "tag": particle.tag,
