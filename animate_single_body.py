@@ -19,6 +19,7 @@ from src.animate import animate
 min_iteration = 0
 max_iteration = 3000
 sample_interval = 5
+fps = 5
 min_normalize_entropy = 0
 max_normalize_entropy = 8000
 min_normalize_internal_energy = 0
@@ -97,7 +98,7 @@ animate(
     end_time=max_iteration,
     interval=sample_interval,
     path=to_path_entropy,
-    fps=10,
+    fps=fps,
     filename="single_body_entropy.mp4",
 )
 animate(
@@ -105,7 +106,7 @@ animate(
     end_time=max_iteration,
     interval=sample_interval,
     path=to_path_internal_energy,
-    fps=10,
+    fps=fps,
     filename="single_body_internal_energy.mp4",
 )
 animate(
@@ -113,7 +114,7 @@ animate(
     end_time=max_iteration,
     interval=sample_interval,
     path=to_path_temperature,
-    fps=10,
+    fps=fps,
     filename="single_body_temperature.mp4",
 )
 
