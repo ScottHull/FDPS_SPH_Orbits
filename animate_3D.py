@@ -50,8 +50,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         [p.position[2] for p in particles],
         s=0.02,
         marker="o",
-        c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if
-           p.position[2] < 0],
+        c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles],
     )
     ax.set_xticks([])
     # for minor ticks
