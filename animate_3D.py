@@ -46,6 +46,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
     ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
     ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    ax._axis3don = False
     ax.set_box_aspect(aspect=(1, 1, 1))
     ax.scatter(
         [p.position[0] for p in particles],
@@ -67,7 +68,6 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax.set_xlim(-square_scale, square_scale)
     ax.set_ylim(-square_scale, square_scale)
     ax.set_zlim(-square_scale, square_scale)
-    # ax.set_box_aspect(1)
 
     # scalebar = AnchoredSizeBar(ax.transData,
     #                            6378.1 * 1000,
