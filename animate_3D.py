@@ -67,17 +67,17 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax.set_ylim(-square_scale, square_scale)
     # ax.set_box_aspect(1)
 
-    scalebar = AnchoredSizeBar(ax.transData,
-                               6378.1 * 1000,
-                               r'1 $R_{\bigoplus}$',
-                               loc=8,
-                               pad=0.3,
-                               color='white',
-                               frameon=False,
-                               size_vertical=1,
-                               fontproperties=fm.FontProperties(size=6))
-
-    ax.add_artist(scalebar)
+    # scalebar = AnchoredSizeBar(ax.transData,
+    #                            6378.1 * 1000,
+    #                            r'1 $R_{\bigoplus}$',
+    #                            loc=8,
+    #                            pad=0.3,
+    #                            color='white',
+    #                            frameon=False,
+    #                            size_vertical=1,
+    #                            fontproperties=fm.FontProperties(size=6))
+    #
+    # ax.add_artist(scalebar)
     ax.set_title(
         str(round(seconds_to_hours(seconds), 2)) + " hrs",
         c="white",
