@@ -131,14 +131,14 @@ axs.flatten()[0].plot(
     [pa_to_gpa(p) for p in new_silicate_hugoniot_df["pressure"]],
     new_silicate_hugoniot_df["entropy"],
     linewidth=1.0,
-    color="magenta",
+    color="aqua",
     label="Silicate Hugoniot"
 )
 axs.flatten()[1].plot(
     [pa_to_gpa(p) for p in old_silicate_hugoniot_df["pressure"]],
     old_silicate_hugoniot_df["entropy"],
     linewidth=1.0,
-    color="magenta",
+    color="aqua",
     label="Silicate Hugoniot"
 )
 
@@ -163,8 +163,11 @@ for ax in [axs.flatten()[2], axs.flatten()[3]]:
     ax.grid(alpha=0.4)
     ax.set_box_aspect(1)
 legend = axs.flatten()[0].legend(fontsize=6)
-for handle in legend.legendHandles[:-1]:
-    handle.set_sizes([3.0])
+for handle in legend.legendHandles:
+    try:
+        handle.set_sizes([3.0])
+    except:
+        pass
 axs.flatten()[0].set_ylabel("Corresponding Entropy")
 axs.flatten()[3].set_ylabel("Number of Particles")
 axs.flatten()[0].set_title("New EoS")

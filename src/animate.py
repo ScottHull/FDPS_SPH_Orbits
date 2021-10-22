@@ -8,3 +8,5 @@ def animate(start_time, end_time, interval, path, filename="animation.mp4", fps=
         frames = list(reversed(frames))
     animation = mpy.ImageSequenceClip(frames, fps=fps, load_images=True)
     animation.write_videofile(filename, fps=fps)
+
+
