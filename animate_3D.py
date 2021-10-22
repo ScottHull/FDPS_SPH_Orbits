@@ -26,8 +26,7 @@ max_normalize_parameter = 8000
 path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/3D_animation"
 number_processes = 100
-x_scale = 2e7
-y_scale = x_scale * (9 / 16)
+square_scale = 2e7
 
 for i in [to_path]:
     if os.path.exists(i):
@@ -41,9 +40,11 @@ cmap = cm.get_cmap('jet')
 
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
     particles, seconds = get_particles(path=path, number_processes=number_processes, time=time)
-    fig = plt.figure(figsize=(16, 9))
+    fig = plt.figure(figsize=(10, 10))
     fig.patch.set_facecolor('xkcd:black')
     ax = fig.add_subplot(projection='3d')
+    ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    ax.set_box_aspect(aspect=(1, 1, 1))
     ax.scatter(
         [p.position[0] for p in particles],
         [p.position[1] for p in particles],
@@ -61,9 +62,9 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax.set_zticks([])
     # for minor ticks
     ax.set_zticks([], minor=True)
-    ax.set_xlim(-x_scale, x_scale)
-    ax.set_ylim(-y_scale, y_scale)
-    ax.set_ylim(-x_scale, x_scale)
+    ax.set_xlim(-square_scale, square_scale)
+    ax.set_ylim(-square_scale, square_scale)
+    ax.set_ylim(-square_scale, square_scale)
     # ax.set_box_aspect(1)
 
     scalebar = AnchoredSizeBar(ax.transData,
@@ -87,7 +88,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
     cbar.ax.tick_params(labelsize=6)
     cbar.ax.set_title(parameter.title(), fontsize=6)
-    plt.savefig("{}.png".format(time), format='png', dpi=200)
+    plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
 
 animate(
     start_time=min_iteration,
