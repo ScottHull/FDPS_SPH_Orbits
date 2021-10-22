@@ -17,7 +17,7 @@ from src.combine import CombineFile
 from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_iterations_and_times
 from src.new_and_old_eos import get_particles, scatter, plot, main_plotting_loop
 from src.animate import animate
-from src.hugonoit import entropy_increase_analytical_hugonoit
+from src.hugonoit import entropy_increase_analytical_hugonoit, entropy_increase_table_hugonoit
 
 plt.style.use("dark_background")
 fig, axs = plt.subplots(1, 1, figsize=(10, 10), sharey='all', sharex='all',
@@ -25,20 +25,29 @@ fig, axs = plt.subplots(1, 1, figsize=(10, 10), sharey='all', sharex='all',
 fig.patch.set_facecolor('xkcd:black')
 
 dS, P = entropy_increase_analytical_hugonoit(
-    v_p_list=np.arange(0, 20, 0.1),
+    v_p_list=np.arange(0, 1000, 1),
     s=1.56,
     T=2000,
-    P_i=50,
-    C_0=9,
+    P_i=50 * (10 ** 9),
+    C_0=9 / 1000,
     rho_i=4500
 )
-
-axs.flatten()[0].plot(
+axs.plot(
     P,
     dS,
     color='magenta',
-    linwidth=1.0
+    linewidth=1.0
 )
-axs.flatten()[0].set_xlabel("Pressure")
-axs.flatten()[0].set_ylabel("dS")
-plt.savefig("hugonoit.png", format='png')
+dS, P = entropy_increase_table_hugonoit(hugonoit_path="src/phase_data/forstSTS__hugoniot.txt")
+# axs.plot(
+#     P,
+#     dS,
+#     color='aqua',
+#     linewidth=1.0
+# )
+
+axs.set_xlabel("Pressure (GPa)")
+axs.set_ylabel("dS (10^3)")
+# axs.set_xlim(0, 300)
+# plt.savefig("hugonoit.png", format='png')
+plt.show()
