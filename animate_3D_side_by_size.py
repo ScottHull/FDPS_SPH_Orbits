@@ -79,18 +79,18 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
             str(round(seconds_to_hours(seconds), 2)) + " hrs",
             c="white",
         )
+        sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+        sm.set_array([])
+        cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
+        cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+        cbar.ax.tick_params(labelsize=6)
+        cbar.ax.set_title(parameter.title(), fontsize=6)
     ax1.set_xlim(-square_scale, square_scale)
     ax1.set_ylim(-square_scale, square_scale)
     ax1.set_zlim(-square_scale, square_scale)
     ax2.set_xlim(-3 * square_scale, 3 * square_scale)
     ax2.set_ylim(-3 * square_scale, 3 * square_scale)
     ax2.set_zlim(-3 * square_scale, 3 * square_scale)
-    sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
-    sm.set_array([])
-    cbaxes = inset_axes(ax1, width="30%", height="3%", loc=2, borderpad=1.8)
-    cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-    cbar.ax.tick_params(labelsize=6)
-    cbar.ax.set_title(parameter.title(), fontsize=6)
     plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
 
 animate(
