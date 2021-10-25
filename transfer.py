@@ -21,5 +21,5 @@ scp = SCPClient(ssh.get_transport())
 while True:
     for i in os.listdir(from_path):
         if ".dat" in i:
-            scp.put(to_path + i)
+            scp.put(from_path + i, to_path + i)
             os.remove(from_path + i)
