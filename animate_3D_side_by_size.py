@@ -40,9 +40,9 @@ cmap = cm.get_cmap('jet')
 
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
     particles, seconds = get_particles(path=path, number_processes=number_processes, time=time)
-    fig = plt.figure(figsize=(10, 10))
+    fig = plt.figure(figsize=(16, 9))
     fig.patch.set_facecolor('xkcd:black')
-    ax1, ax2 = fig.add_subplot(211, projection='3d'), fig.add_subplot(212, projection='3d')
+    ax1, ax2 = fig.add_subplot(121, projection='3d'), fig.add_subplot(122, projection='3d')
     axs = [ax1, ax2]
     ax1.scatter(
         [p.position[0] for p in particles],
@@ -56,7 +56,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         [p.position[0] for p in particles],
         [p.position[1] for p in particles],
         [p.position[2] for p in particles],
-        s=0.2,
+        s=0.5,
         marker="o",
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles],
     )
