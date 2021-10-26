@@ -59,11 +59,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if p.position[2] < 0],
     )
     for ax in axs:
-        ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
-        ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
-        ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
-        ax._axis3don = False
-        ax.set_box_aspect(aspect=(1, 1, 1))
+        ax.set_box_aspect(1)
         ax.set_xticks([])
         # for minor ticks
         ax.set_xticks([], minor=True)
