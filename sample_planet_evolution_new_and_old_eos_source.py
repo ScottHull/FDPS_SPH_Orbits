@@ -81,8 +81,8 @@ def plot(fig, axs, particles, index, time):
     ax.set_box_aspect(1)
 
     scalebar = AnchoredSizeBar(ax.transData,
-                               square_scale / 5,
-                               '{:.2e} km'.format(square_scale / 5),
+                               6378.1 * 1000,
+                               r'1 $R_{\bigoplus}$',
                                loc=8,
                                pad=0.3,
                                color='white',
@@ -91,6 +91,7 @@ def plot(fig, axs, particles, index, time):
                                fontproperties=fm.FontProperties(size=6))
 
     ax.add_artist(scalebar)
+    return ax
 
 
 tracked_index = 0
