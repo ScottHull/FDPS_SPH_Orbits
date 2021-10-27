@@ -58,11 +58,11 @@ for index, parameter in enumerate(parameters.keys()):
     ax.set_ylabel(parameter.replace("_", " ").title())
     ax.grid(alpha=0.4)
     if index + 1 == len(parameters.keys()):
-        ax.set_ylabel(r"Radius (1 $R_{\bigoplus}$)")
+        ax.set_xlabel(r"Radius (1 $R_{\bigoplus}$)")
     ax = ax.scatter(
         [get_parameter_from_particles(p, "distance") / distance_normalizer for p in new_particles if p.label == "DISK"],
         [get_parameter_from_particles(p, parameter) for p in new_particles if p.label == "DISK"],
-        s=0.2,
+        s=0.4,
         marker="o",
     )
     tracked_index += 1
@@ -74,12 +74,12 @@ for index, parameter in enumerate(parameters.keys()):
     ax = axs.flatten()[tracked_index].scatter(
         [get_parameter_from_particles(p, "distance") / distance_normalizer for p in old_particles if p.label == "DISK"],
         [get_parameter_from_particles(p, parameter) for p in old_particles if p.label == "DISK"],
-        s=0.2,
+        s=0.4,
         marker="o",
     )
     tracked_index += 1
 
-axs.flatten()[0].set_title("New EoS")
-axs.flatten()[1].set_title("Old EoS")
+axs.flatten()[0].set_title("Disk Particles - New EoS")
+axs.flatten()[1].set_title("Disk Particles - Old EoS")
 plt.savefig("disk_profile.png", format='png', dpi=200)
 
