@@ -16,7 +16,7 @@ from src.combine import CombineFile
 from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_iterations_and_times
 
 
-def get_particles(path, number_processes, time, solve=False):
+def get_particles(path, number_processes, time, eos_phase_path=None, solve=False):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
     combined_file = cf.combine()
     formatted_time = cf.sim_time
@@ -25,7 +25,7 @@ def get_particles(path, number_processes, time, solve=False):
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
     particles = pm.collect_particles(find_orbital_elements=solve)
     if solve:
-        pm.solve(particles=particles)
+        pm.solve(particles=particles, phase_path=eos_phase_path)
     os.remove(f)
     return particles, formatted_time
 

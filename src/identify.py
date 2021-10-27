@@ -134,9 +134,12 @@ class ParticleMap:
                 iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche
             )
 
-    def solve(self, particles, K=0.335, G=6.674 * 10 ** -11):
+    def solve(self, particles, phase_path, K=0.335, G=6.674 * 10 ** -11):
         # K = 0.335 for Earth, K = 2/5 for homogenous body
         self.__convergence_loop(particles=particles, K=K, G=G)
         self.__convergence_loop(particles=particles, K=K, G=G)  # run twice to recalc avg density after initial solution
-        self.vmf = vapor.calc_vapor_mass_fraction(particles=particles)
+        if phase_path is None:
+            self.vmf = None
+        else:
+            self.vmf = vapor.calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
         print("VMF: ", self.vmf)
