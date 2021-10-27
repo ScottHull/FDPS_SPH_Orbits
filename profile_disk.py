@@ -47,8 +47,8 @@ new_particles, new_time = get_particles(path=new_path, number_processes=number_p
                                         solve=True, eos_phase_path="src/phase_data/forstSTS__vapour_curve.txt")
 old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=sample_time,
                                         solve=True, eos_phase_path="src/phase_data/forstSTS__vapour_curve.txt")
-fig, axs = plt.subplots(len(parameters.keys()), 2, figsize=(10, 10), sharex="all",
-                            gridspec_kw={"hspace": 0.0, "wspace": 0.08})
+fig, axs = plt.subplots(len(parameters.keys()), 2, figsize=(12, 20), sharex="all",
+                            gridspec_kw={"hspace": 0.0, "wspace": 0.14})
 fig.patch.set_facecolor('xkcd:black')
 
 tracked_index = 0
@@ -62,7 +62,7 @@ for index, parameter in enumerate(parameters.keys()):
     ax = ax.scatter(
         [get_parameter_from_particles(p, "distance") / distance_normalizer for p in new_particles if p.label == "DISK"],
         [get_parameter_from_particles(p, parameter) for p in new_particles if p.label == "DISK"],
-        s=0.02,
+        s=0.2,
         marker="o",
     )
     tracked_index += 1
@@ -70,11 +70,11 @@ for index, parameter in enumerate(parameters.keys()):
     ax = axs.flatten()[tracked_index]
     ax.grid(alpha=0.4)
     if index + 1 == len(parameters.keys()):
-        ax.set_ylabel(r"Radius (1 $R_{\bigoplus}$)")
+        ax.set_xlabel(r"Radius (1 $R_{\bigoplus}$)")
     ax = axs.flatten()[tracked_index].scatter(
         [get_parameter_from_particles(p, "distance") / distance_normalizer for p in old_particles if p.label == "DISK"],
         [get_parameter_from_particles(p, parameter) for p in old_particles if p.label == "DISK"],
-        s=0.02,
+        s=0.2,
         marker="o",
     )
     tracked_index += 1
