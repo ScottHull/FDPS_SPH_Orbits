@@ -47,6 +47,11 @@ labels = {
         0: "Target Silicate", 1: "Target Iron", 2: "Impactor Silicate", 3: "Impactor Iron",
     }
 
+for i in [to_path]:
+    if os.path.exists(i):
+        shutil.rmtree(i)
+    os.mkdir(i)
+
 def scatter(ax, particles):
     for i in range(0, 4):
         ax = ax.scatter(
