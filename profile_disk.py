@@ -17,7 +17,7 @@ from src.new_and_old_eos import get_particles, scatter, plot, main_plotting_loop
     get_common_yrange
 from src.animate import animate
 
-start_time = 0
+start_time = 50
 end_time = 1000
 sample_interval = 10
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/profile_disk"
