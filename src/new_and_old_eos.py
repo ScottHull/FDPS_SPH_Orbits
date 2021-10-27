@@ -32,7 +32,7 @@ def get_particles(path, number_processes, time, eos_phase_path=None, solve=False
 
 def get_parameter_from_particles(particle, parameter):
     d = {
-        "pressure": particle.pressure,
+        "pressure": particle.pressure / (10 ** 9),
         "internal_energy": particle.internal_energy,
         "entropy": particle.entropy,
         "temperature": particle.temperature,

@@ -15,71 +15,102 @@ from src.combine import CombineFile
 from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_iterations_and_times
 from src.new_and_old_eos import get_particles, scatter, plot, main_plotting_loop, get_parameter_from_particles, \
     get_common_yrange
+from src.animate import animate
 
-sample_time = 3000
-fps = 10
+start_time = 0
+end_time = 1000
+sample_interval = 10
+to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/profile_disk"
+fps = 30
 parameters = {
     "entropy": {
-        "range": [0, 10000],
+        "yrange": [1000, 12000],
     },
     "internal_energy": {
-        "range": [0, 1e7],
+        "yrange": [0.1e7, 6.5e7],
     },
     "pressure": {
-        "range": [0, 500e9],
+        "yrange": [0, 3],
     },
     "temperature": {
-        "range": [0, 10000],
+        "yrange": [2000, 20000],
     },
 }
 for key in parameters.keys():
-    parameters[key].update({"normalizer": Normalize(parameters[key]['range'][0], parameters[key]['range'][1])})
+    parameters[key].update({"normalizer": Normalize(parameters[key]['yrange'][0], parameters[key]['yrange'][1])})
 
 new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 old_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 number_processes = 100
 distance_normalizer = 6371 * 1000
+labels = {
+        0: "Target Silicate", 1: "Target Iron", 2: "Impactor Silicate", 3: "Impactor Iron",
+    }
+
+def scatter(ax, particles):
+    for i in range(0, 4):
+        ax = ax.scatter(
+            [get_parameter_from_particles(p, "distance") / distance_normalizer for p in particles if p.label == "DISK" and p.tag == i],
+            [get_parameter_from_particles(p, parameter) for p in particles if p.label == "DISK" and p.tag == i],
+            s=0.4,
+            marker="o",
+            c="magenta",
+            label=labels[i]
+        )
+        if i == 0:
+            legend = ax.legend(loc='upper left', fontsize=6)
+            for handle in legend.legendHandles:
+                handle.set_sizes([3.0])
+    return ax
 
 plt.style.use("dark_background")
 cmap = cm.get_cmap('jet')
 
-new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=sample_time,
-                                        solve=True, eos_phase_path="src/phase_data/forstSTS__vapour_curve.txt")
-old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=sample_time,
-                                        solve=True, eos_phase_path="src/phase_data/forstSTS__vapour_curve.txt")
-fig, axs = plt.subplots(len(parameters.keys()), 2, figsize=(12, 20), sharex="all",
-                            gridspec_kw={"hspace": 0.0, "wspace": 0.14})
-fig.patch.set_facecolor('xkcd:black')
+for sample_time in np.arange(start_time, end_time + sample_interval, sample_interval):
+    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=sample_time,
+                                            solve=True, eos_phase_path="src/phase_data/forstSTS__vapour_curve.txt")
+    # old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=sample_time,
+    #                                         solve=True, eos_phase_path="src/phase_data/forstSTS__vapour_curve.txt")
+    fig, axs = plt.subplots(len(parameters.keys()), 1, figsize=(12, 20), sharex="all",
+                                gridspec_kw={"hspace": 0.0, "wspace": 0.14})
+    fig.patch.set_facecolor('xkcd:black')
 
-tracked_index = 0
-for index, parameter in enumerate(parameters.keys()):
-    ylims = get_common_yrange(new_particles, old_particles, parameter)
-    ax = axs.flatten()[tracked_index]
-    ax.set_ylabel(parameter.replace("_", " ").title())
-    ax.grid(alpha=0.4)
-    if index + 1 == len(parameters.keys()):
-        ax.set_xlabel(r"Radius (1 $R_{\bigoplus}$)")
-    ax = ax.scatter(
-        [get_parameter_from_particles(p, "distance") / distance_normalizer for p in new_particles if p.label == "DISK"],
-        [get_parameter_from_particles(p, parameter) for p in new_particles if p.label == "DISK"],
-        s=0.4,
-        marker="o",
-    )
-    tracked_index += 1
+    tracked_index = 0
+    for index, parameter in enumerate(parameters.keys()):
+        # ylims = get_common_yrange(new_particles, old_particles, parameter)
+        ax = axs.flatten()[tracked_index]
+        ax.set_ylabel(parameter.replace("_", " ").title())
+        ax.set_xlim(0, 60)
+        ax.set_ylim(parameters[parameter]['yrange'][0], parameters[parameter]['yrange'][1])
+        ax.grid(alpha=0.4)
+        scatter(ax=ax, particles=new_particles)
+        if index + 1 == len(parameters.keys()):
+            ax.set_xlabel(r"Radius (1 $R_{\bigoplus}$)")
+        tracked_index += 1
 
-    ax = axs.flatten()[tracked_index]
-    ax.grid(alpha=0.4)
-    if index + 1 == len(parameters.keys()):
-        ax.set_xlabel(r"Radius (1 $R_{\bigoplus}$)")
-    ax = axs.flatten()[tracked_index].scatter(
-        [get_parameter_from_particles(p, "distance") / distance_normalizer for p in old_particles if p.label == "DISK"],
-        [get_parameter_from_particles(p, parameter) for p in old_particles if p.label == "DISK"],
-        s=0.4,
-        marker="o",
-    )
-    tracked_index += 1
+        # ax = axs.flatten()[tracked_index]
+        # ax.grid(alpha=0.4)
+        # ax.set_xlim(0, 60)
+        # if index + 1 == len(parameters.keys()):
+        #     ax.set_xlabel(r"Radius ($R_{\bigoplus}$)")
+        # ax = axs.flatten()[tracked_index].scatter(
+        #     [get_parameter_from_particles(p, "distance") / distance_normalizer for p in old_particles if p.label == "DISK"],
+        #     [get_parameter_from_particles(p, parameter) for p in old_particles if p.label == "DISK"],
+        #     s=0.4,
+        #     marker="o",
+        # )
+        # tracked_index += 1
 
-axs.flatten()[0].set_title("Disk Particles - New EoS")
-axs.flatten()[1].set_title("Disk Particles - Old EoS")
-plt.savefig("disk_profile.png", format='png', dpi=200)
+    axs.flatten()[0].set_title("Disk Particles - New EoS ({} hrs)".format(seconds_to_hours(new_time)))
+    # axs.flatten()[1].set_title("Disk Particles - Old EoS")
+    plt.savefig(to_path + "/disk_profile.png", format='png', dpi=200)
+
+animate(
+    start_time=start_time,
+    end_time=end_time,
+    interval=sample_interval,
+    path=to_path,
+    fps=fps,
+    filename="profile_disk.mp4",
+)
 
