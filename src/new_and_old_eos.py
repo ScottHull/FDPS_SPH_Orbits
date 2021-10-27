@@ -32,9 +32,13 @@ def get_particles(path, number_processes, time, solve=False):
 
 def get_parameter_from_particles(particle, parameter):
     d = {
-        "entropy": particle.entropy,
+        "pressure": particle.pressure,
         "internal_energy": particle.internal_energy,
+        "entropy": particle.entropy,
         "temperature": particle.temperature,
+        "density": particle.density,
+        "tag": particle.tag,
+        "distance": particle.distance
     }
     return d[parameter]
 
@@ -231,3 +235,13 @@ def get_peak(save, parameter, min_iteration, max_iteration, interval, new_path, 
     peaks_new_df = __peaks_df(peaks=d_new, name="new", save=save)
     peaks_old_df = __peaks_df(peaks=d_old, name="old", save=save)
     return d_new, d_old
+
+def get_common_yrange(new_particles, old_particles, parameter):
+    vals = [
+        get_parameter_from_particles(p, parameter) for p in new_particles
+    ] + [
+        get_parameter_from_particles(p, parameter) for p in old_particles
+    ]
+    min_val, max_val = min(vals), max(vals)
+    buffer = abs(max_val - min_val) * 0.05
+    return [min_val - buffer, max_val + buffer]
