@@ -44,9 +44,9 @@ plt.style.use("dark_background")
 cmap = cm.get_cmap('jet')
 
 new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=sample_time,
-                                        solve=True, eos_phase_path="src/phase_data/forst_STS.rho_u.txt")
+                                        solve=True, eos_phase_path="src/phase_data/forstSTS__vapour_curve.txt")
 old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=sample_time,
-                                        solve=True, eos_phase_path="src/phase_data/forst_STS.rho_u.txt")
+                                        solve=True, eos_phase_path="src/phase_data/forstSTS__vapour_curve.txt")
 fig, axs = plt.subplots(len(parameters.keys()), 2, figsize=(10, 10), sharex="all",
                             gridspec_kw={"hspace": 0.0, "wspace": 0.08})
 fig.patch.set_facecolor('xkcd:black')
