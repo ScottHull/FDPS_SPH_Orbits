@@ -54,26 +54,29 @@ fig.patch.set_facecolor('xkcd:black')
 tracked_index = 0
 for index, parameter in enumerate(parameters.keys()):
     ylims = get_common_yrange(new_particles, old_particles, parameter)
-    ax = axs.flatten()[tracked_index].scatter(
+    ax = axs.flatten()[tracked_index]
+    ax.set_ylabel(parameter.replace("_", " ").title())
+    ax.grid(alpha=0.4)
+    if index + 1 == len(parameters.keys()):
+        ax.set_ylabel(r"Radius (1 $R_{\bigoplus}$)")
+    ax = ax.scatter(
         [get_parameter_from_particles(p, "distance") / distance_normalizer for p in new_particles if p.label == "DISK"],
         [get_parameter_from_particles(p, parameter) for p in new_particles if p.label == "DISK"],
         s=0.02,
         marker="o",
     )
-    ax.set_ylabel(parameter.replace("_", " ").title())
+    tracked_index += 1
+
+    ax = axs.flatten()[tracked_index]
     ax.grid(alpha=0.4)
     if index + 1 == len(parameters.keys()):
         ax.set_ylabel(r"Radius (1 $R_{\bigoplus}$)")
-    tracked_index += 1
     ax = axs.flatten()[tracked_index].scatter(
         [get_parameter_from_particles(p, "distance") / distance_normalizer for p in old_particles if p.label == "DISK"],
         [get_parameter_from_particles(p, parameter) for p in old_particles if p.label == "DISK"],
         s=0.02,
         marker="o",
     )
-    ax.grid(alpha=0.4)
-    if index + 1 == len(parameters.keys()):
-        ax.set_ylabel(r"Radius (1 $R_{\bigoplus}$)")
     tracked_index += 1
 
 axs.flatten()[0].set_title("New EoS")
