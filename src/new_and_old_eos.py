@@ -23,7 +23,7 @@ def get_particles(path, number_processes, time, solve=False):
     # f = os.getcwd() + "/merged_{}.dat".format(closest_iteration_to_time)
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
-    particles = pm.collect_particles(find_orbital_elements=False)
+    particles = pm.collect_particles(find_orbital_elements=solve)
     if solve:
         pm.solve(particles=particles)
     os.remove(f)
