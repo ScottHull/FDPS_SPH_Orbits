@@ -54,7 +54,7 @@ for i in [to_path]:
 
 def scatter(ax, particles):
     for i in range(0, 4):
-        ax = ax.scatter(
+        ax.scatter(
             [get_parameter_from_particles(p, "distance") / distance_normalizer for p in particles if p.label == "DISK" and p.tag == i],
             [get_parameter_from_particles(p, parameter) for p in particles if p.label == "DISK" and p.tag == i],
             s=0.4,
@@ -108,7 +108,7 @@ for sample_time in np.arange(start_time, end_time + sample_interval, sample_inte
 
     axs.flatten()[0].set_title("Disk Particles - New EoS ({} hrs)".format(seconds_to_hours(new_time)))
     # axs.flatten()[1].set_title("Disk Particles - Old EoS")
-    plt.savefig(to_path + "/disk_profile.png", format='png', dpi=200)
+    plt.savefig(to_path + "/{}.png".format(sample_time), format='png', dpi=200)
 
 animate(
     start_time=start_time,
