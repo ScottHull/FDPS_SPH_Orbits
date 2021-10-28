@@ -18,7 +18,7 @@ combined_file = cf.combine()
 f = os.getcwd() + "/merged_{}.dat".format(time)
 pm = ParticleMap(path=f, center=True, relative_velocity=False)
 particles = pm.collect_particles()
-pm.solve(particles=particles)
+pm.solve(particles=particles, phase_path="src/phase_data/forstSTS__vapour_curve.txt")
 if f in os.listdir(os.getcwd()):
     os.remove(f)
 

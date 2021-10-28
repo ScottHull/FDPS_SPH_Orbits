@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from src.animate import animate
 
 start = 0
