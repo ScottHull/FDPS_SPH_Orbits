@@ -52,21 +52,20 @@ for i in [to_path]:
         shutil.rmtree(i)
     os.mkdir(i)
 
-def scatter(ax, particles):
+def scatter(ax, particles, legend):
     ax_first = None
     for i in range(0, 4):
-        s = ax.scatter(
+        ax.scatter(
             [get_parameter_from_particles(p, "distance") / distance_normalizer for p in particles if p.label == "DISK" and p.tag == i],
             [get_parameter_from_particles(p, parameter) for p in particles if p.label == "DISK" and p.tag == i],
             s=0.4,
             marker="o",
             label=labels[i]
         )
-        if i == 0:
-            ax_first = s
-    legend = ax_first.legend(loc='upper left', fontsize=6)
-    for handle in legend.legendHandles:
-        handle.set_sizes([3.0])
+    if legend:
+        legend = ax.legend(loc='upper left', fontsize=6)
+        for handle in legend.legendHandles:
+            handle.set_sizes([3.0])
     return ax
 
 plt.style.use("dark_background")
@@ -89,7 +88,10 @@ for sample_time in np.arange(start_time, end_time + sample_interval, sample_inte
         ax.set_xlim(0, 60)
         ax.set_ylim(parameters[parameter]['yrange'][0], parameters[parameter]['yrange'][1])
         ax.grid(alpha=0.4)
-        scatter(ax=ax, particles=new_particles)
+        legend = False
+        if tracked_index == 0:
+            legend = True
+        scatter(ax=ax, particles=new_particles, legend=legend)
         if index + 1 == len(parameters.keys()):
             ax.set_xlabel(r"Radius (1 $R_{\bigoplus}$)")
         tracked_index += 1
