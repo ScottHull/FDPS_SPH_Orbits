@@ -53,19 +53,20 @@ for i in [to_path]:
     os.mkdir(i)
 
 def scatter(ax, particles):
+    ax_first = None
     for i in range(0, 4):
-        ax.scatter(
+        s = ax.scatter(
             [get_parameter_from_particles(p, "distance") / distance_normalizer for p in particles if p.label == "DISK" and p.tag == i],
             [get_parameter_from_particles(p, parameter) for p in particles if p.label == "DISK" and p.tag == i],
             s=0.4,
             marker="o",
-            c="magenta",
             label=labels[i]
         )
         if i == 0:
-            legend = ax.legend(loc='upper left', fontsize=6)
-            for handle in legend.legendHandles:
-                handle.set_sizes([3.0])
+            ax_first = s
+    legend = ax_first.legend(loc='upper left', fontsize=6)
+    for handle in legend.legendHandles:
+        handle.set_sizes([3.0])
     return ax
 
 plt.style.use("dark_background")
