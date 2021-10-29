@@ -94,7 +94,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax1.set_zlim(-square_scale, square_scale)
     for i in get_cube_verts(square_scale=square_scale):
         ax1.plot(i[0], i[1], i[2], c='white', linewidth=0.3)
-        ax2.plot(3 * i[0], 3 * i[1], 3 * i[2], c='white', linewidth=0.5)
+        ax2.plot([3 * k for k in i[0]], [3 * k for k in i[1]], [3 * k for k in i[2]], c='white', linewidth=0.5)
     ax2.set_xlim(-3 * square_scale, 3 * square_scale)
     ax2.set_ylim(-3 * square_scale, 3 * square_scale)
     ax2.set_zlim(-3 * square_scale, 3 * square_scale)
