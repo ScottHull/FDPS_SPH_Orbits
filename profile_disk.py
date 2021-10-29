@@ -53,7 +53,6 @@ for i in [to_path]:
     os.mkdir(i)
 
 def scatter(ax, particles, legend):
-    ax_first = None
     for i in range(0, 4):
         ax.scatter(
             [get_parameter_from_particles(p, "distance") / distance_normalizer for p in particles if p.label == "DISK" and p.tag == i],
