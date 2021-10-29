@@ -15,6 +15,7 @@ from src.combine import CombineFile
 from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_iterations_and_times
 from src.new_and_old_eos import get_particles, scatter, plot, main_plotting_loop, get_parameter_from_particles
 from src.animate import animate
+from src.plots3D import get_cube_verts
 
 min_iteration = 0
 max_iteration = 3000
@@ -27,6 +28,8 @@ path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/3D_animation_side_by_side"
 number_processes = 100
 square_scale = 1e7
+
+verts = get_cube_verts(square_scale=square_scale)
 
 for i in [to_path]:
     if os.path.exists(i):
@@ -56,6 +59,8 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     axs = [ax1, ax2]
     for ax in axs:
         draw_wireframe(ax=ax, square_scale=square_scale)
+        for i in get_cube_verts(square_scale=1):
+            ax.plot(i[0], i[1], i[2], c='white', linewidth=0.5)
     ax1.scatter(
         [p.position[0] for p in particles],
         [p.position[1] for p in particles],

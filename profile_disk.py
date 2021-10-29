@@ -92,7 +92,7 @@ for sample_time in np.arange(start_time, end_time + sample_interval, sample_inte
             legend = True
         scatter(ax=ax, particles=new_particles, legend=legend)
         if index + 1 == len(parameters.keys()):
-            ax.set_xlabel(r"Radius (1 $R_{\bigoplus}$)")
+            ax.set_xlabel(r"Radius ($R_{\bigoplus}$)")
         tracked_index += 1
 
         # ax = axs.flatten()[tracked_index]
