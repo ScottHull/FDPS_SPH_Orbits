@@ -40,17 +40,6 @@ plt.style.use("dark_background")
 normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
 cmap = cm.get_cmap('jet')
 
-
-def draw_wireframe(ax, square_scale):
-    frames = [
-        [-square_scale, square_scale, 0],
-        [0, -square_scale, square_scale],
-        [square_scale, 0, -square_scale],
-    ]
-    for i in frames:
-        ax.plot(i[0], i[1], i[2], color='white', linewidth=1.0)
-
-
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
     particles, seconds = get_particles(path=path, number_processes=number_processes, time=time)
     fig = plt.figure(figsize=(16, 9))
@@ -58,14 +47,13 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax1, ax2 = fig.add_subplot(121, projection='3d'), fig.add_subplot(122, projection='3d')
     axs = [ax1, ax2]
     for ax in axs:
-        draw_wireframe(ax=ax, square_scale=square_scale)
-        for i in get_cube_verts(square_scale=1):
+        for i in get_cube_verts(square_scale=square_scale):
             ax.plot(i[0], i[1], i[2], c='white', linewidth=0.5)
     ax1.scatter(
         [p.position[0] for p in particles],
         [p.position[1] for p in particles],
         [p.position[2] for p in particles],
-        s=0.02,
+        s=0.04,
         marker="o",
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles],
         alpha=1
