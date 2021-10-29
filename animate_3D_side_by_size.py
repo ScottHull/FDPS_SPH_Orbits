@@ -48,28 +48,28 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     axs = [ax1, ax2]
     ax1.scatter(
         [p.position[0] for p in particles if 
-           p.position[0] <= square_scale and p.position[1] <= square_scale and p.position[2] <= square_scale],
+           abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(p.position[2]) <= square_scale],
         [p.position[1] for p in particles if 
-           p.position[0] <= square_scale and p.position[1] <= square_scale and p.position[2] <= square_scale],
+           abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(p.position[2]) <= square_scale],
         [p.position[2] for p in particles if 
-           p.position[0] <= square_scale and p.position[1] <= square_scale and p.position[2] <= square_scale],
+           abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(p.position[2]) <= square_scale],
         s=0.04,
         marker="o",
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if 
-           p.position[0] <= square_scale and p.position[1] <= square_scale and p.position[2] <= square_scale],
+           abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(p.position[2]) <= square_scale],
         alpha=1
     )
     ax2.scatter(
         [p.position[0] for p in particles if 
-           p.position[0] <= 3 * square_scale and p.position[1] <= 3 * square_scale and p.position[2] <= 3 * square_scale],
+           abs(p.position[0]) <= 3 * square_scale and abs(p.position[1]) <= 3 * square_scale and abs(p.position[2]) <= 3 * square_scale],
         [p.position[1] for p in particles if 
-           p.position[0] <= 3 * square_scale and p.position[1] <= 3 * square_scale and p.position[2] <= 3 * square_scale],
+           abs(p.position[0]) <= 3 * square_scale and abs(p.position[1]) <= 3 * square_scale and abs(p.position[2]) <= 3 * square_scale],
         [p.position[2] for p in particles if 
-           p.position[0] <= 3 * square_scale and p.position[1] <= 3 * square_scale and p.position[2] <= 3 * square_scale],
+           abs(p.position[0]) <= 3 * square_scale and abs(p.position[1]) <= 3 * square_scale and abs(p.position[2]) <= 3 * square_scale],
         s=0.5,
         marker="o",
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if 
-           p.position[0] <= 3 * square_scale and p.position[1] <= 3 * square_scale and p.position[2] <= 3 * square_scale],
+           abs(p.position[0]) <= 3 * square_scale and abs(p.position[1]) <= 3 * square_scale and abs(p.position[2]) <= 3 * square_scale],
         alpha=1
     )
     for ax in axs:
