@@ -46,9 +46,6 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     fig.patch.set_facecolor('xkcd:black')
     ax1, ax2 = fig.add_subplot(121, projection='3d'), fig.add_subplot(122, projection='3d')
     axs = [ax1, ax2]
-    for ax in axs:
-        for i in get_cube_verts(square_scale=square_scale):
-            ax.plot(i[0], i[1], i[2], c='white', linewidth=0.5)
     ax1.scatter(
         [p.position[0] for p in particles],
         [p.position[1] for p in particles],
@@ -72,7 +69,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
         ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
         ax._axis3don = False
-        ax.set_box_aspect(aspect=(1, 1, 1))
+        # ax.set_box_aspect(aspect=(1, 1, 1))
         ax.set_xticks([])
         # for minor ticks
         ax.set_xticks([], minor=True)
@@ -95,6 +92,9 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax1.set_xlim(-square_scale, square_scale)
     ax1.set_ylim(-square_scale, square_scale)
     ax1.set_zlim(-square_scale, square_scale)
+    for i in get_cube_verts(square_scale=square_scale):
+        ax1.plot(i[0], i[1], i[2], c='white', linewidth=0.3)
+        ax2.plot(3 * i[0], 3 * i[1], 3 * i[2], c='white', linewidth=0.5)
     ax2.set_xlim(-3 * square_scale, 3 * square_scale)
     ax2.set_ylim(-3 * square_scale, 3 * square_scale)
     ax2.set_zlim(-3 * square_scale, 3 * square_scale)
