@@ -19,12 +19,12 @@ from src.plots3D import get_cube_verts
 
 min_iteration = 0
 max_iteration = 3000
-sample_interval = 5
-fps = 10
+sample_interval = 1
+fps = 30
 parameter = "entropy"
 min_normalize_parameter = 1000
 max_normalize_parameter = 8000
-path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
+path = "/home/theia/scotthull/gi_new_eos"
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/3D_animation_side_by_side"
 number_processes = 100
 square_scale = 1e7
