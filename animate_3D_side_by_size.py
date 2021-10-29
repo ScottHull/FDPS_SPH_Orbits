@@ -51,6 +51,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         s=0.02,
         marker="o",
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles],
+        alpha=1
     )
     ax2.scatter(
         [p.position[0] for p in particles],
@@ -59,6 +60,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         s=0.5,
         marker="o",
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles],
+        alpha=1
     )
     for ax in axs:
         ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))

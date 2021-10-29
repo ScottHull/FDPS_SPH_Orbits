@@ -58,7 +58,7 @@ def scatter(ax, particles, legend):
         ax.scatter(
             [get_parameter_from_particles(p, "distance") / distance_normalizer for p in particles if p.label == "DISK" and p.tag == i],
             [get_parameter_from_particles(p, parameter) for p in particles if p.label == "DISK" and p.tag == i],
-            s=0.6,
+            s=1,
             marker="o",
             label=labels[i]
         )
@@ -109,7 +109,7 @@ for sample_time in np.arange(start_time, end_time + sample_interval, sample_inte
         # )
         # tracked_index += 1
 
-    axs.flatten()[0].set_title("Disk Particles - New EoS ({} hrs)".format(round(seconds_to_hours(new_time), 2)))
+    axs.flatten()[0].set_title("Disk Particles - New EoS ({} hrs)".format(seconds_to_hours(new_time)))
     # axs.flatten()[1].set_title("Disk Particles - Old EoS")
     plt.savefig(to_path + "/{}.png".format(sample_time), format='png', dpi=200)
 

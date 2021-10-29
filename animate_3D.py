@@ -55,6 +55,7 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
         s=0.02,
         marker="o",
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles],
+        alpha=1
     )
     ax.set_xticks([])
     # for minor ticks
