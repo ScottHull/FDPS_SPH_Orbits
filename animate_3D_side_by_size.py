@@ -61,15 +61,15 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     )
     ax2.scatter(
         [p.position[0] for p in particles if 
-           abs(p.position[0]) <= 3 * square_scale and abs(p.position[1]) <= 3 * square_scale and abs(p.position[2]) <= 3 * square_scale],
+           abs(p.position[0]) <= 5 * square_scale and abs(p.position[1]) <= 5 * square_scale and abs(p.position[2]) <= 5 * square_scale],
         [p.position[1] for p in particles if 
-           abs(p.position[0]) <= 3 * square_scale and abs(p.position[1]) <= 3 * square_scale and abs(p.position[2]) <= 3 * square_scale],
+           abs(p.position[0]) <= 5 * square_scale and abs(p.position[1]) <= 5 * square_scale and abs(p.position[2]) <= 5 * square_scale],
         [p.position[2] for p in particles if 
-           abs(p.position[0]) <= 3 * square_scale and abs(p.position[1]) <= 3 * square_scale and abs(p.position[2]) <= 3 * square_scale],
+           abs(p.position[0]) <= 5 * square_scale and abs(p.position[1]) <= 5 * square_scale and abs(p.position[2]) <= 5 * square_scale],
         s=0.5,
         marker="o",
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if 
-           abs(p.position[0]) <= 3 * square_scale and abs(p.position[1]) <= 3 * square_scale and abs(p.position[2]) <= 3 * square_scale],
+           abs(p.position[0]) <= 5 * square_scale and abs(p.position[1]) <= 5 * square_scale and abs(p.position[2]) <= 5 * square_scale],
         alpha=1
     )
     for ax in axs:
@@ -102,10 +102,10 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     ax1.set_zlim(-square_scale, square_scale)
     for i in get_cube_verts(square_scale=square_scale):
         ax1.plot(i[0], i[1], i[2], c='white', linewidth=0.3)
-        ax2.plot([3 * k for k in i[0]], [3 * k for k in i[1]], [3 * k for k in i[2]], c='white', linewidth=0.5)
-    ax2.set_xlim(-3 * square_scale, 3 * square_scale)
-    ax2.set_ylim(-3 * square_scale, 3 * square_scale)
-    ax2.set_zlim(-3 * square_scale, 3 * square_scale)
+        ax2.plot([5 * k for k in i[0]], [5 * k for k in i[1]], [5 * k for k in i[2]], c='white', linewidth=0.5)
+    ax2.set_xlim(-5 * square_scale, 5 * square_scale)
+    ax2.set_ylim(-5 * square_scale, 5 * square_scale)
+    ax2.set_zlim(-5 * square_scale, 5 * square_scale)
     plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
 
 animate(
