@@ -10,8 +10,9 @@ def createSSHClient(server, user, password):
     client.connect(server, username=user, password=password, port=22)
     return client
 
-from_path = "/scratch/shull4/gi_new_eos/"
-to_path = "/home/theia/scotthull/gi_new_eos/"
+base_folder_name = "gi_new_eos"
+from_path = "/scratch/shull4/{}/".format(base_folder_name)
+to_path = "/home/theia/scotthull/{}/".format(base_folder_name)
 server = "epsl.earth.rochester.edu"
 user = "scotthull"
 password = "PASSWORD"
