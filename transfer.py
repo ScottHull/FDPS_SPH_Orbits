@@ -27,9 +27,9 @@ def transfer_file(scp, full_from_path, full_to_path):
 
 # define worker function before a Pool is instantiated
 def worker(args):
-    scp, full_from_path, full_to_path = args[0], args[1], args[2]
+    inst_scp, full_from_path, full_to_path = args[0], args[1], args[2]
     try:
-        transfer_file(scp, full_from_path, full_to_path)
+        transfer_file(inst_scp, full_from_path, full_to_path)
     except:
         print('error with item')
 
