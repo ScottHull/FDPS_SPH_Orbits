@@ -6,18 +6,22 @@ import matplotlib.pyplot as plt
 from src.identify import ParticleMap
 from src.combine import CombineFile
 from src.animate import animate
+from src.new_and_old_eos import seconds_to_hours
 
 start_time = 0
 end_time = 3000
 interval = 20
 number_processes = 100
-path = "/scratch/shull4/gi"
-output = "/scratch/shull4/track_high_entropy_particles"
+path = "/home/theia/scotthull/gi_new_eos"
+output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles"
+density_output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles_density"
 
-if os.path.exists(output):
-    shutil.rmtree(output)
-os.mkdir(output)
+for o in [output, density_output]:
+    if os.path.exists(o):
+        shutil.rmtree(o)
+    os.mkdir(o)
 
+plt.style.use("dark_background")
 cf_end = CombineFile(num_processes=number_processes, time=end_time, output_path=path)
 formatted_time_end = cf_end.sim_time
 combined_file_end = cf_end.combine()
@@ -31,7 +35,7 @@ end = {}
 high_entropy = {}
 for p in particles:
     end.update({p.particle_id: p.label})
-    if p.entropy > 8000 and p.label == "DISK":
+    if p.entropy > 5000 and p.label == "DISK":
         high_entropy.update({p.particle_id: p.entropy})
 high_entropy_ids = list(high_entropy.keys())
 
@@ -51,37 +55,46 @@ for time in np.arange(0, end_time + interval, interval):
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
+    fig.patch.set_facecolor('xkcd:black')
     ax.scatter(
         [p.position[0] for p in planet],
         [p.position[1] for p in planet],
-        marker="+",
+        marker="o",
         color="blue",
-        label="PLANET"
+        label="PLANET",
+        s=0.2,
+        alpha=0.2
     )
     ax.scatter(
         [p.position[0] for p in disk],
         [p.position[1] for p in disk],
-        marker="+",
+        marker="o",
         color="green",
-        label="DISK"
+        label="DISK",
+        s=0.2,
+        alpha=0.2
     )
     ax.scatter(
         [p.position[0] for p in escape],
         [p.position[1] for p in escape],
-        marker="+",
+        marker="o",
         color="red",
-        label="ESCAPE"
+        label="ESCAPE",
+        s=0.2,
+        alpha=0.2
     )
     ax.scatter(
         [p.position[0] for p in high_entropy_time],
         [p.position[1] for p in high_entropy_time],
-        marker="*",
+        marker="o",
         color="pink",
-        label="S > 8000"
+        label="S > 5000",
+        s=2,
+        alpha=1
     )
     ax.set_xlabel("x")
     ax.set_ylabel("y")
-    ax.set_title("Time: {} sec (iteration: {})".format(formatted_time, time))
+    ax.set_title("Time: {} sec (iteration: {})".format(round(seconds_to_hours(formatted_time), 2), time))
     ax.grid()
     ax.legend(loc="upper left")
     ax.set_xlim(-1e8, 1e8)
@@ -89,11 +102,45 @@ for time in np.arange(0, end_time + interval, interval):
 
     plt.savefig(output + "/{}.png".format(time), format='png')
 
+    fig = plt.figure(figsize=(16, 9))
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111)
+    fig.patch.set_facecolor('xkcd:black')
+    ax.scatter(
+        [p.density for p in disk],
+        [p.entropy for p in disk],
+        alpha=0.2,
+        color='red',
+        label="all disk particles"
+    )
+    ax.scatter(
+        [p.density for p in high_entropy_time],
+        [p.entropy for p in high_entropy_time],
+        alpha=1,
+        color='black',
+        label="entropy > 5000"
+    )
+    ax.set_xlabel("Density")
+    ax.set_ylabel("Entropy")
+    ax.set_title("High Entropy Disk Particles")
+    ax.grid()
+    ax.legend()
+    plt.savefig(density_output + "/{}.png".format(time), format='png')
+
 animate(
-    start_time=0,
+    start_time=start_time,
     end_time=end_time,
     interval=interval,
     path=output,
-    fps=5,
+    fps=15,
     filename="high_entropy_evolution.mp4",
+)
+
+animate(
+    start_time=start_time,
+    end_time=end_time,
+    interval=interval,
+    path=density_output,
+    fps=15,
+    filename="density_high_entropy.mp4",
 )
