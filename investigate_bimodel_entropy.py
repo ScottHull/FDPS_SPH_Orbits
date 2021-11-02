@@ -22,7 +22,7 @@ for o in [output, density_output]:
         shutil.rmtree(o)
     os.mkdir(o)
 
-plt.style.use("dark_background")
+# plt.style.use("dark_background")
 cf_end = CombineFile(num_processes=number_processes, time=end_time, output_path=path)
 combined_file_end = cf_end.combine()
 formatted_time_end = cf_end.sim_time
@@ -56,7 +56,7 @@ for time in np.arange(0, end_time + interval, interval):
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
-    fig.patch.set_facecolor('xkcd:black')
+    # fig.patch.set_facecolor('xkcd:black')
     ax.scatter(
         [p.position[0] for p in planet],
         [p.position[1] for p in planet],
@@ -64,7 +64,7 @@ for time in np.arange(0, end_time + interval, interval):
         color="blue",
         label="PLANET",
         s=0.2,
-        alpha=0.2
+        alpha=0.4
     )
     ax.scatter(
         [p.position[0] for p in disk],
@@ -73,7 +73,7 @@ for time in np.arange(0, end_time + interval, interval):
         color="green",
         label="DISK",
         s=0.2,
-        alpha=0.2
+        alpha=0.4
     )
     ax.scatter(
         [p.position[0] for p in escape],
@@ -82,7 +82,7 @@ for time in np.arange(0, end_time + interval, interval):
         color="red",
         label="ESCAPE",
         s=0.2,
-        alpha=0.2
+        alpha=0.4
     )
     ax.scatter(
         [p.position[0] for p in high_entropy_time],
@@ -109,7 +109,7 @@ for time in np.arange(0, end_time + interval, interval):
     ax.scatter(
         [p.density for p in disk],
         [p.entropy for p in disk],
-        alpha=0.2,
+        alpha=0.4,
         color='red',
         label="all disk particles"
     )
