@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import shutil
 import numpy as np
@@ -11,7 +12,7 @@ from src.new_and_old_eos import seconds_to_hours
 start_time = 0
 end_time = 3000
 interval = 20
-number_processes = 100
+number_processes = 200
 path = "/home/theia/scotthull/gi_new_eos"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles"
 density_output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles_density"
@@ -23,8 +24,8 @@ for o in [output, density_output]:
 
 plt.style.use("dark_background")
 cf_end = CombineFile(num_processes=number_processes, time=end_time, output_path=path)
-formatted_time_end = cf_end.sim_time
 combined_file_end = cf_end.combine()
+formatted_time_end = cf_end.sim_time
 f = os.getcwd() + "/merged_{}.dat".format(end_time)
 pm_end = ParticleMap(path=f, center=False, relative_velocity=False)
 particles = pm_end.collect_particles()
@@ -41,8 +42,8 @@ high_entropy_ids = list(high_entropy.keys())
 
 for time in np.arange(0, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
-    formatted_time = cf.sim_time
     combined_file = cf.combine()
+    formatted_time = cf.sim_time
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
     particles = pm.collect_particles(find_orbital_elements=False)
@@ -102,7 +103,6 @@ for time in np.arange(0, end_time + interval, interval):
 
     plt.savefig(output + "/{}.png".format(time), format='png')
 
-    fig = plt.figure(figsize=(16, 9))
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
     fig.patch.set_facecolor('xkcd:black')
