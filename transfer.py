@@ -2,7 +2,7 @@
 import os
 import paramiko
 from scp import SCPClient
-from multiprocessing.pool import ThreadPool as Pool
+import multiprocessing.dummy as mp
 
 def createSSHClient(server, user, password):
     client = paramiko.SSHClient()
@@ -33,9 +33,8 @@ def worker(scp, full_from_path, full_to_path):
         print('error with item')
 
 while True:
-    pool = Pool(pool_size)
+    pool = mp.Pool(pool_size)
     for i in os.listdir(from_path):
-        if ".dat" in i:
-            pool.apply_async(worker, (scp, from_path + i, to_path + i,))
+        pool.map(worker, (scp, from_path + i, to_path + i,))
     pool.close()
     pool.join()
