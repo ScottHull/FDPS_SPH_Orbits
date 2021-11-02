@@ -18,7 +18,7 @@ output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles"
 density_output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles_density"
 density_output2 = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles_density2"
 
-for o in [output, density_output]:
+for o in [output, density_output, density_output2]:
     if os.path.exists(o):
         shutil.rmtree(o)
     os.mkdir(o)
