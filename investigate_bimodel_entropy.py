@@ -105,7 +105,7 @@ for time in np.arange(0, end_time + interval, interval):
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
-    fig.patch.set_facecolor('xkcd:black')
+    # fig.patch.set_facecolor('xkcd:black')
     ax.scatter(
         [p.density for p in disk],
         [p.entropy for p in disk],
