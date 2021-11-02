@@ -26,7 +26,8 @@ def transfer_file(scp, full_from_path, full_to_path):
     os.remove(from_path + i)
 
 # define worker function before a Pool is instantiated
-def worker(scp, full_from_path, full_to_path):
+def worker(args):
+    scp, full_from_path, full_to_path = args[0], args[1], args[2]
     try:
         transfer_file(scp, full_from_path, full_to_path)
     except:
@@ -35,6 +36,6 @@ def worker(scp, full_from_path, full_to_path):
 while True:
     pool = mp.Pool(pool_size)
     for i in os.listdir(from_path):
-        pool.map(worker, (scp, from_path + i, to_path + i,))
+        pool.map(worker, (scp, from_path + i, to_path + i))
     pool.close()
     pool.join()
