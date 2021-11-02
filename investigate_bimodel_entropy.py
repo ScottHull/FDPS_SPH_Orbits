@@ -36,7 +36,7 @@ end = {}
 high_entropy = {}
 for p in particles:
     end.update({p.particle_id: p.label})
-    if p.entropy > 5000 and p.label == "DISK":
+    if p.entropy > 8000 and p.label == "DISK":
         high_entropy.update({p.particle_id: p.entropy})
 high_entropy_ids = list(high_entropy.keys())
 
@@ -89,7 +89,7 @@ for time in np.arange(0, end_time + interval, interval):
         [p.position[1] for p in high_entropy_time],
         marker="o",
         color="pink",
-        label="S > 5000",
+        label="S > 8000",
         s=2,
         alpha=1
     )
@@ -118,7 +118,7 @@ for time in np.arange(0, end_time + interval, interval):
         [p.entropy for p in high_entropy_time],
         alpha=1,
         color='black',
-        label="entropy > 5000"
+        label="entropy > 8000"
     )
     ax.set_xlabel("Density")
     ax.set_ylabel("Entropy")
