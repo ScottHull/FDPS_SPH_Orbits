@@ -16,6 +16,7 @@ number_processes = 200
 path = "/home/theia/scotthull/gi_new_eos"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles"
 density_output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles_density"
+density_output2 = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_entropy_particles_density2"
 
 for o in [output, density_output]:
     if os.path.exists(o):
@@ -105,7 +106,6 @@ for time in np.arange(0, end_time + interval, interval):
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
-    # fig.patch.set_facecolor('xkcd:black')
     ax.scatter(
         [p.density for p in disk],
         [p.entropy for p in disk],
@@ -127,6 +127,39 @@ for time in np.arange(0, end_time + interval, interval):
     ax.legend()
     plt.savefig(density_output + "/{}.png".format(time), format='png')
 
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111)
+    ax.scatter(
+        [p.density for p in disk if p.tag == 0],
+        [p.entropy for p in disk if p.tag == 0],
+        alpha=0.9,
+        label="target silicate"
+    )
+    ax.scatter(
+        [p.density for p in disk if p.tag == 1],
+        [p.entropy for p in disk if p.tag == 1],
+        alpha=0.9,
+        label="target iron"
+    )
+    ax.scatter(
+        [p.density for p in disk if p.tag == 2],
+        [p.entropy for p in disk if p.tag == 2],
+        alpha=0.9,
+        label="impactor silicate"
+    )
+    ax.scatter(
+        [p.density for p in disk if p.tag == 3],
+        [p.entropy for p in disk if p.tag == 3],
+        alpha=0.9,
+        label="impactor iron"
+    )
+    ax.set_xlabel("Density")
+    ax.set_ylabel("Entropy")
+    ax.set_title("Disk Particles")
+    ax.grid()
+    ax.legend()
+    plt.savefig(density_output2 + "/{}.png".format(time), format='png')
+
 animate(
     start_time=start_time,
     end_time=end_time,
@@ -143,4 +176,13 @@ animate(
     path=density_output,
     fps=15,
     filename="density_high_entropy.mp4",
+)
+
+animate(
+    start_time=start_time,
+    end_time=end_time,
+    interval=interval,
+    path=density_output,
+    fps=15,
+    filename="density2_high_entropy.mp4",
 )
