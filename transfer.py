@@ -30,8 +30,8 @@ def worker(args):
     inst_scp, full_from_path, full_to_path = args[0], args[1], args[2]
     try:
         transfer_file(inst_scp, full_from_path, full_to_path)
-    except:
-        print('error with item')
+    except Exception as e:
+        print(e)
 
 while True:
     pool = mp.Pool(pool_size)
