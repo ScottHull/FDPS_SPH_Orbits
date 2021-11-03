@@ -50,9 +50,13 @@ for time in np.arange(start_time, end_time + interval, interval):
         density, internal_energy,
         marker="o",
         s=1,
+        linewidths=0.2,
         c=[cmap(normalizer(p.entropy)) for p in particles],
         edgecolors='black'
     )
-    plt.colorbar(sc)
+    ax.set_xlabel("Density")
+    ax.set_ylabel("Internal Energy")
+    cbar = fig.colorbar(sc)
+    cbar.ax.set_title("Entropy")
 
     plt.savefig(output + "/{}.png".format(time), format='png', dpi=200)
