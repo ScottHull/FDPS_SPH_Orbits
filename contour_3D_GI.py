@@ -48,10 +48,11 @@ for time in np.arange(start_time, end_time + interval, interval):
     )
     ax.scatter(
         density, internal_energy,
-        marker="+",
-        s=0.4,
+        marker="o",
+        s=1,
         c=[cmap(normalizer(p.entropy)) for p in particles],
+        edgecolors='black'
     )
     plt.colorbar(sc)
 
-    plt.savefig(output + "/{}.png".format(time), format='png')
+    plt.savefig(output + "/{}.png".format(time), format='png', dpi=200)
