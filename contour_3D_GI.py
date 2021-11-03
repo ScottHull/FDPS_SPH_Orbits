@@ -21,6 +21,27 @@ for o in [output]:
         shutil.rmtree(o)
     os.mkdir(o)
 
+for time in np.arange(start_time, end_time + interval, interval):
+    cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
+    combined_file = cf.combine()
+    formatted_time = cf.sim_time
+    f = os.getcwd() + "/merged_{}.dat".format(time)
+    pm = ParticleMap(path=f, center=True, relative_velocity=False)
+    particles = pm.collect_particles(find_orbital_elements=False)
+    os.remove(f)
 
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111)
+    density = [p.density for p in particles],
+    internal_energy = [p.internal_energy for p in particles]
+    entropy = [p.entropy for p in particles]
+    X, Y = np.meshgrid(density, internal_energy)
+    ax.contour(
+        [X, Y,],
+        entropy,
+        20,
+        cmap='jet'
+    )
+    plt.colorbar()
 
-
+    plt.savefig(output + "/{}.png", format=time)
