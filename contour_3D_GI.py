@@ -3,6 +3,8 @@ import os
 import shutil
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import Normalize
+import matplotlib.cm as cm
 
 from src.identify import ParticleMap
 from src.combine import CombineFile
@@ -13,8 +15,14 @@ start_time = 0
 end_time = 3000
 interval = 20
 number_processes = 200
+min_norm = 0
+max_norm = 10000
 path = "/home/theia/scotthull/gi_new_eos"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/3D_contour_GI"
+
+normalizer = Normalize(min_norm, max_norm)
+cmap = cmap = cm.get_cmap('jet')
+sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 
 for o in [output]:
     if os.path.exists(o):
@@ -35,9 +43,14 @@ for time in np.arange(start_time, end_time + interval, interval):
     density = np.array([p.density for p in particles])
     internal_energy = np.array([p.internal_energy for p in particles])
     entropy = [p.entropy for p in particles]
-    plt.tricontourf(
-        density, internal_energy, entropy
+    sc = ax.tricontourf(
+        density, internal_energy, entropy, cmap=cmap, norm=normalizer
     )
-    plt.colorbar()
+    ax.scatter(
+        density, internal_energy, entropy,
+        marker="+",
+        s=0.4
+    )
+    plt.colorbar(sc)
 
-    plt.savefig(output + "/{}.png", format=time)
+    plt.savefig(output + "/{}.png".format(time), format='png')
