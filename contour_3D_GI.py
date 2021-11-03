@@ -32,15 +32,11 @@ for time in np.arange(start_time, end_time + interval, interval):
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
-    density = [p.density for p in particles],
-    internal_energy = [p.internal_energy for p in particles]
+    density = np.array([p.density for p in particles])
+    internal_energy = np.array([p.internal_energy for p in particles])
     entropy = [p.entropy for p in particles]
-    X, Y = np.meshgrid(density, internal_energy)
-    ax.contour(
-        [X, Y,],
-        entropy,
-        20,
-        cmap='jet'
+    plt.tricontourf(
+        density, internal_energy, entropy
     )
     plt.colorbar()
 
