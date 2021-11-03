@@ -36,6 +36,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
     particles = pm.collect_particles(find_orbital_elements=True)
+    pm.solve(particles=particles, phase_path="src/phase_data/forstSTS__vapour_curve.txt")
     os.remove(f)
 
     fig = plt.figure(figsize=(16, 9))
@@ -43,6 +44,9 @@ for time in np.arange(start_time, end_time + interval, interval):
     density = np.array([p.density for p in particles])
     internal_energy = np.array([p.internal_energy for p in particles])
     entropy = [p.entropy for p in particles]
+    disk_density = np.array([p.density for p in particles if p.label == "DISK"])
+    disk_internal_energy = np.array([p.internal_energy for p in particles if p.label == "DISK"])
+    disk_entropy = [p.entropy for p in particles if p.label == "DISK"]
     sc = ax.tricontourf(
         density, internal_energy, entropy, cmap=cmap, norm=normalizer, levels=10
     )
@@ -52,6 +56,13 @@ for time in np.arange(start_time, end_time + interval, interval):
         linewidths=0.2,
         c=[cmap(normalizer(p.entropy)) for p in particles],
         edgecolors='black'
+    )
+    ax.scatter(
+        disk_density, disk_internal_energy,
+        marker="o",
+        linewidths=0.4,
+        c=[cmap(normalizer(p)) for p in disk_entropy],
+        edgecolors='red'
     )
     ax.grid(alpha=0.4)
     ax.set_xlabel("Density")
