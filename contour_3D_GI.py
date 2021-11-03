@@ -35,7 +35,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     formatted_time = cf.sim_time
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
-    particles = pm.collect_particles(find_orbital_elements=False)
+    particles = pm.collect_particles(find_orbital_elements=True)
     os.remove(f)
 
     fig = plt.figure(figsize=(16, 9))
@@ -44,19 +44,19 @@ for time in np.arange(start_time, end_time + interval, interval):
     internal_energy = np.array([p.internal_energy for p in particles])
     entropy = [p.entropy for p in particles]
     sc = ax.tricontourf(
-        density, internal_energy, entropy, cmap=cmap, norm=normalizer
+        density, internal_energy, entropy, cmap=cmap, norm=normalizer, levels=10
     )
     ax.scatter(
         density, internal_energy,
         marker="o",
-        s=1,
         linewidths=0.2,
         c=[cmap(normalizer(p.entropy)) for p in particles],
         edgecolors='black'
     )
     ax.set_xlabel("Density")
     ax.set_ylabel("Internal Energy")
-    cbar = fig.colorbar(sc)
+    ax.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(formatted_time), 2), time))
+    cbar = fig.colorbar(sm)
     cbar.ax.set_title("Entropy")
 
     plt.savefig(output + "/{}.png".format(time), format='png', dpi=200)
