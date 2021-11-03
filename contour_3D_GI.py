@@ -53,6 +53,7 @@ for time in np.arange(start_time, end_time + interval, interval):
         c=[cmap(normalizer(p.entropy)) for p in particles],
         edgecolors='black'
     )
+    ax.grid(alpha=0.4)
     ax.set_xlabel("Density")
     ax.set_ylabel("Internal Energy")
     ax.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(formatted_time), 2), time))
