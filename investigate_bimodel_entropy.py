@@ -156,6 +156,7 @@ for time in np.arange(0, end_time + interval, interval):
     ax.set_xlabel("Density")
     ax.set_ylabel("Entropy")
     ax.set_title("Disk Particles")
+    ax.set_xlim(0, 10)
     ax.grid()
     ax.legend()
     plt.savefig(density_output2 + "/{}.png".format(time), format='png')
@@ -182,7 +183,7 @@ animate(
     start_time=start_time,
     end_time=end_time,
     interval=interval,
-    path=density_output,
+    path=density_output2,
     fps=15,
     filename="density2_high_entropy.mp4",
 )
