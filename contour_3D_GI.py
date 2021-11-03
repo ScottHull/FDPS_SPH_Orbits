@@ -21,7 +21,7 @@ path = "/home/theia/scotthull/gi_new_eos"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/3D_contour_GI"
 
 normalizer = Normalize(min_norm, max_norm)
-cmap = cmap = cm.get_cmap('jet')
+cmap = cm.get_cmap('jet')
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 
 for o in [output]:
@@ -54,7 +54,8 @@ for time in np.arange(start_time, end_time + interval, interval):
         density, internal_energy,
         marker="o",
         linewidths=0.2,
-        c=[cmap(normalizer(p.entropy)) for p in particles],
+        # facecolor=[cmap(normalizer(p.entropy)) for p in particles],
+        facecolor=(0, 0, 0, 0),
         edgecolors='black',
         label="All Particles"
     )
@@ -62,7 +63,8 @@ for time in np.arange(start_time, end_time + interval, interval):
         disk_density, disk_internal_energy,
         marker="o",
         linewidths=1,
-        c=[cmap(normalizer(p)) for p in disk_entropy],
+        # facecolor=[cmap(normalizer(p)) for p in disk_entropy],
+        facecolor=(0, 0, 0, 0),
         edgecolors='red',
         label="Disk Particles"
     )
