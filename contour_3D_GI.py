@@ -47,9 +47,10 @@ for time in np.arange(start_time, end_time + interval, interval):
         density, internal_energy, entropy, cmap=cmap, norm=normalizer
     )
     ax.scatter(
-        density, internal_energy, entropy,
+        density, internal_energy,
         marker="+",
-        s=0.4
+        s=0.4,
+        c=[cmap(normalizer(p.entropy)) for p in particles],
     )
     plt.colorbar(sc)
 
