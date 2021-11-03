@@ -11,7 +11,7 @@ from src.combine import CombineFile
 from src.animate import animate
 from src.new_and_old_eos import seconds_to_hours
 
-start_time = 0
+start_time = 60
 end_time = 3000
 interval = 20
 number_processes = 200
@@ -55,14 +55,16 @@ for time in np.arange(start_time, end_time + interval, interval):
         marker="o",
         linewidths=0.2,
         c=[cmap(normalizer(p.entropy)) for p in particles],
-        edgecolors='black'
+        edgecolors='black',
+        label="All Particles"
     )
     ax.scatter(
         disk_density, disk_internal_energy,
         marker="o",
-        linewidths=0.4,
+        linewidths=1,
         c=[cmap(normalizer(p)) for p in disk_entropy],
-        edgecolors='red'
+        edgecolors='red',
+        label="Disk Particles"
     )
     ax.grid(alpha=0.4)
     ax.set_xlabel("Density")
