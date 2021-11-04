@@ -72,8 +72,8 @@ for time in np.arange(start_time, end_time + interval, interval):
     particles = [p for p in particles if p.particle_id in rand_select]
 
     fig = plt.figure(figsize=(16, 9))
-    ax = fig.add_subplot(122)
     ax2 = fig.add_subplot(211)
+    ax = fig.add_subplot(122)
     sc = ax.tricontourf(
         eos_density,
         eos_internal_energy,
@@ -120,6 +120,8 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax.grid(alpha=0.4)
     ax.set_xlim(-5, 2000)
     ax.set_ylim(0, 8e7)
+    ax2.set_xlim(0, 10)
+    ax2.set_ylim(5000, 12000)
     ax.set_xlabel("Density")
     ax.set_ylabel("Internal Energy")
     ax.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(formatted_time), 2), time))
