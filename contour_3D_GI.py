@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import shutil
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
@@ -11,13 +12,14 @@ from src.combine import CombineFile
 from src.animate import animate
 from src.new_and_old_eos import seconds_to_hours
 
-start_time = 60
+start_time = 80
 end_time = 3000
 interval = 20
 number_processes = 200
 min_norm = 0
 max_norm = 10000
 path = "/home/theia/scotthull/gi_new_eos"
+eos = "src/phase_data/forst_STS.rho_u.txt"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/3D_contour_GI"
 
 normalizer = Normalize(min_norm, max_norm)
@@ -28,6 +30,11 @@ for o in [output]:
     if os.path.exists(o):
         shutil.rmtree(o)
     os.mkdir(o)
+
+eos_df = pd.read_csv(eos, delimiter="\t", skiprows=2, header=None)
+eos_density = eos_df[0]
+eos_internal_energy = eos_df[1]
+eos_entropy = eos_df[5]
 
 for time in np.arange(start_time, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
@@ -41,14 +48,8 @@ for time in np.arange(start_time, end_time + interval, interval):
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
-    density = np.array([p.density for p in particles])
-    internal_energy = np.array([p.internal_energy for p in particles])
-    entropy = [p.entropy for p in particles]
-    disk_density = np.array([p.density for p in particles if p.label == "DISK"])
-    disk_internal_energy = np.array([p.internal_energy for p in particles if p.label == "DISK"])
-    disk_entropy = [p.entropy for p in particles if p.label == "DISK"]
     sc = ax.tricontourf(
-        density, internal_energy, entropy, cmap=cmap, norm=normalizer, levels=10
+        eos_density, eos_internal_energy, eos_entropy, cmap=cmap, norm=normalizer, levels=10
     )
     ax.scatter(
         density, internal_energy,
