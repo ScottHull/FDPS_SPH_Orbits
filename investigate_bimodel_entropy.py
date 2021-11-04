@@ -96,7 +96,7 @@ for time in np.arange(0, end_time + interval, interval):
     )
     ax.set_xlabel("x")
     ax.set_ylabel("y")
-    ax.set_title("Time: {} sec (iteration: {})".format(round(seconds_to_hours(formatted_time), 2), time))
+    ax.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(formatted_time), 2), time))
     ax.grid()
     ax.legend(loc="upper left")
     ax.set_xlim(-1e8, 1e8)

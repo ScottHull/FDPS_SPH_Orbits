@@ -32,7 +32,7 @@ for o in [output]:
         shutil.rmtree(o)
     os.mkdir(o)
 
-eos_df = pd.read_csv(eos, delimiter="\t", skiprows=2, header=None)
+eos_df = pd.read_fwf(eos, skiprows=2, header=None)
 eos_density = eos_df[0]
 eos_internal_energy = eos_df[1]
 eos_entropy = eos_df[5]
@@ -53,7 +53,13 @@ for p in particles:
     if p.entropy > 8000 and p.label == "DISK":
         high_entropy.update({p.particle_id: p.entropy})
 high_entropy_ids = list(high_entropy.keys())
-rand_select = [high_entropy_ids[randint(0, len(high_entropy_ids) - 1)] for i in range(0, 30)]
+rand_select = [high_entropy_ids[randint(0, len(high_entropy_ids) - 1)] for i in range(0, 5)]
+colors = ["black", "red", "blue", "green", "white"]
+c_dict = {}
+for index, i in enumerate(rand_select):
+    c_dict.update({i: colors[index]})
+
+prev_particles = {}
 
 for time in np.arange(start_time, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
@@ -68,18 +74,40 @@ for time in np.arange(start_time, end_time + interval, interval):
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
     sc = ax.tricontourf(
-        eos_density, eos_internal_energy, eos_entropy, cmap=cmap, norm=normalizer, levels=10
+        eos_density,
+        eos_internal_energy,
+        eos_entropy,
+        cmap=cmap,
+        norm=normalizer,
+        levels=20
     )
-    ax.scatter(
-        [p.density for p in particles],
-        [p.internal_energy for p in particles],
-        marker="o",
-        linewidths=0.2,
-        # facecolor=[cmap(normalizer(p.entropy)) for p in particles],
-        facecolor=(0, 0, 0, 0),
-        edgecolors='black',
-        label="All Particles"
-    )
+    for p in particles:
+        ax.scatter(
+            [p.density],
+            [p.internal_energy],
+            marker="o",
+            linewidths=1,
+            # facecolor=[cmap(normalizer(p.entropy)) for p in particles],
+            facecolor=(0, 0, 0, 0),
+            edgecolors=c_dict[p.particle_id],
+            label="All Particles"
+        )
+    prev_particles_tmp = {}
+    if time == start_time:
+        for p in particles:
+            prev_particles_tmp.update({p.particle_id: []})
+    for p in particles:
+        prev_particles[p.particle_id].append(p)
+    if time > start_time:
+        for p in particles:
+            prev = prev_particles[p.particle_id]
+            ax.plot(
+                [p2.density for p2 in prev],
+                [p2.internal_energy for p2 in prev],
+                c=c_dict[p.particle_id],
+                linewidth=2.0
+            )
+    prev_particles = prev_particles_tmp
     ax.grid(alpha=0.4)
     ax.set_xlim(-5, 2000)
     ax.set_ylim(0, 8e7)
