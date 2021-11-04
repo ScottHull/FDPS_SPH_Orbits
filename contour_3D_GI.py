@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import shutil
+from random import randint
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -36,15 +37,33 @@ eos_density = eos_df[0]
 eos_internal_energy = eos_df[1]
 eos_entropy = eos_df[5]
 
+cf_end = CombineFile(num_processes=number_processes, time=end_time, output_path=path)
+combined_file_end = cf_end.combine()
+formatted_time_end = cf_end.sim_time
+f = os.getcwd() + "/merged_{}.dat".format(end_time)
+pm_end = ParticleMap(path=f, center=False, relative_velocity=False)
+particles = pm_end.collect_particles()
+pm_end.solve(particles=particles, phase_path="src/phase_data/forstSTS__vapour_curve.txt")
+os.remove(f)
+
+end = {}
+high_entropy = {}
+for p in particles:
+    end.update({p.particle_id: p.label})
+    if p.entropy > 8000 and p.label == "DISK":
+        high_entropy.update({p.particle_id: p.entropy})
+high_entropy_ids = list(high_entropy.keys())
+rand_select = [high_entropy_ids[randint(0, len(high_entropy_ids) - 1)] for i in range(0, 30)]
+
 for time in np.arange(start_time, end_time + interval, interval):
     cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
     combined_file = cf.combine()
     formatted_time = cf.sim_time
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
-    particles = pm.collect_particles(find_orbital_elements=True)
-    pm.solve(particles=particles, phase_path="src/phase_data/forstSTS__vapour_curve.txt")
+    particles = pm.collect_particles(find_orbital_elements=False)
     os.remove(f)
+    particles = [p for p in particles if p.particle_id in rand_select]
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
@@ -52,7 +71,8 @@ for time in np.arange(start_time, end_time + interval, interval):
         eos_density, eos_internal_energy, eos_entropy, cmap=cmap, norm=normalizer, levels=10
     )
     ax.scatter(
-        density, internal_energy,
+        [p.density for p in particles],
+        [p.internal_energy for p in particles],
         marker="o",
         linewidths=0.2,
         # facecolor=[cmap(normalizer(p.entropy)) for p in particles],
@@ -60,16 +80,9 @@ for time in np.arange(start_time, end_time + interval, interval):
         edgecolors='black',
         label="All Particles"
     )
-    ax.scatter(
-        disk_density, disk_internal_energy,
-        marker="o",
-        linewidths=1,
-        # facecolor=[cmap(normalizer(p)) for p in disk_entropy],
-        facecolor=(0, 0, 0, 0),
-        edgecolors='red',
-        label="Disk Particles"
-    )
     ax.grid(alpha=0.4)
+    ax.set_xlim(-5, 2000)
+    ax.set_ylim(0, 8e7)
     ax.set_xlabel("Density")
     ax.set_ylabel("Internal Energy")
     ax.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(formatted_time), 2), time))
