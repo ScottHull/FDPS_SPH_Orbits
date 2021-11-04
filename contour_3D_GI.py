@@ -95,9 +95,9 @@ for time in np.arange(start_time, end_time + interval, interval):
     prev_particles_tmp = {}
     if time == start_time:
         for p in particles:
-            prev_particles_tmp.update({p.particle_id: []})
+            prev_particles.update({p.particle_id: []})
     for p in particles:
-        prev_particles_tmp[p.particle_id].append(p)
+        prev_particles[p.particle_id].append(p)
     prev_particles = prev_particles_tmp
     if time > start_time:
         for p in particles:
