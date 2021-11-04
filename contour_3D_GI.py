@@ -72,14 +72,15 @@ for time in np.arange(start_time, end_time + interval, interval):
     particles = [p for p in particles if p.particle_id in rand_select]
 
     fig = plt.figure(figsize=(16, 9))
-    ax = fig.add_subplot(111)
+    ax = fig.add_subplot(122)
+    ax2 = fig.add_subplot(211)
     sc = ax.tricontourf(
         eos_density,
         eos_internal_energy,
         eos_entropy,
         cmap=cmap,
         norm=normalizer,
-        levels=20
+        levels=50
     )
     for p in particles:
         ax.scatter(
@@ -107,12 +108,23 @@ for time in np.arange(start_time, end_time + interval, interval):
                 c=c_dict[p.particle_id],
                 linewidth=2.0
             )
+            ax2.plot(
+                [p2.pressure / (10 ** 9) for p2 in prev],
+                [p2.entropy for p2 in prev],
+                c=c_dict[p.particle_id],
+                linewidth=2.0
+            )
+            ax.set_xlabel("Pressure (GPa")
+            ax.set_ylabel("Entropy")
+            ax.grid(alpha=0.4)
     ax.grid(alpha=0.4)
     ax.set_xlim(-5, 2000)
     ax.set_ylim(0, 8e7)
     ax.set_xlabel("Density")
     ax.set_ylabel("Internal Energy")
     ax.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(formatted_time), 2), time))
+    ax2.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(formatted_time), 2), time))
+
     cbar = fig.colorbar(sm)
     cbar.ax.set_title("Entropy")
 
