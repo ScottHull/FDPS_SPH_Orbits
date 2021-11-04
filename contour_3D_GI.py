@@ -54,7 +54,7 @@ for p in particles:
         high_entropy.update({p.particle_id: p.entropy})
 high_entropy_ids = list(high_entropy.keys())
 rand_select = [high_entropy_ids[randint(0, len(high_entropy_ids) - 1)] for i in range(0, 5)]
-colors = ["black", "red", "blue", "green", "white"]
+colors = ["black", "red", "blue", "green", "gray"]
 c_dict = {}
 for index, i in enumerate(rand_select):
     c_dict.update({i: colors[index]})
