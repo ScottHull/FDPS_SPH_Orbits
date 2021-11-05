@@ -17,9 +17,9 @@ from src.animate import animate
 from src.new_and_old_eos import seconds_to_hours, get_particles, get_parameter_from_particles
 from src.plots3D import get_cube_verts
 
-start_time = 80
-end_time = 3000
-interval = 20
+start_time = 0
+end_time = 1500
+interval = 5
 number_processes = 200
 min_norm = 0
 max_norm = 10000
@@ -34,7 +34,7 @@ normalizer = Normalize(min_norm, max_norm)
 cmap = cm.get_cmap('jet')
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 
-for o in [output]:
+for o in [output, output_3D]:
     if os.path.exists(o):
         shutil.rmtree(o)
     os.mkdir(o)
@@ -136,7 +136,7 @@ for time in np.arange(start_time, end_time + interval, interval):
         cbar.ax.set_title(parameter.title(), fontsize=6)
         for p in select_particles_at_time:
             ax.scatter(
-                [p.position[0]], [p.position[1]], [p.position[2]], s=10, c=c_dict[p.particle_id], marker="*"
+                [p.position[0]], [p.position[1]], [p.position[2]], s=20, c=c_dict[p.particle_id], marker="*"
             )
     ax1.set_xlim(-square_scale, square_scale)
     ax1.set_ylim(-square_scale, square_scale)
@@ -149,7 +149,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax2.set_zlim(-5 * square_scale, 5 * square_scale)
     plt.savefig(output_3D + "/{}.png".format(time), format='png', dpi=200)
 
-    fig_contour = plt.figure(fig_contoursize=(16, 9))
+    fig_contour = plt.figure(fig_contour=(16, 9))
     ax2_countour = fig_contour.add_subplot(121)
     ax_countour = fig_contour.add_subplot(122)
     sc = ax_countour.tricontourf(
