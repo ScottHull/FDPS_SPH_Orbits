@@ -149,7 +149,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax2.set_zlim(-5 * square_scale, 5 * square_scale)
     plt.savefig(output_3D + "/{}.png".format(time), format='png', dpi=200)
 
-    fig_contour = plt.figure(fig_contour=(16, 9))
+    fig_contour = plt.figure(fig=(16, 9))
     ax2_countour = fig_contour.add_subplot(121)
     ax_countour = fig_contour.add_subplot(122)
     sc = ax_countour.tricontourf(

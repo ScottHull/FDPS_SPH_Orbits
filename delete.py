@@ -30,6 +30,6 @@ def worker(args):
 while True:
     pool = mp.Pool(pool_size)
     for i in os.listdir(from_path):
-        pool.map(worker, [[scp, from_path + i, to_path + i]])
+        pool.map(worker, [[None, from_path + i, to_path + i]])
     pool.close()
     pool.join()
