@@ -25,7 +25,7 @@ min_norm = 0
 max_norm = 10000
 parameter = "entropy"
 square_scale = 1e7
-path = "/home/theia/scotthull/gi_new_eos"
+path = "/home/theia/scotthull/200k/gi_new_eos"
 eos = "src/phase_data/forst_STS.rho_u.txt"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/3D_contour_GI"
 output_3D = "/home/theia/scotthull/FDPS_SPH_Orbits/mapped_3D_contour_GI"
@@ -136,7 +136,7 @@ for time in np.arange(start_time, end_time + interval, interval):
         cbar.ax.set_title(parameter.title(), fontsize=6)
         for p in select_particles_at_time:
             ax.scatter(
-                [p.position[0]], [p.position[1]], [p.position[2]], s=20, c=c_dict[p.particle_id], marker="*", alpha=0.1
+                [p.position[0]], [p.position[1]], [p.position[2]], s=50, c=c_dict[p.particle_id], marker="*", alpha=0.1
             )
     ax1.set_xlim(-square_scale, square_scale)
     ax1.set_ylim(-square_scale, square_scale)
@@ -150,8 +150,9 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.savefig(output_3D + "/{}.png".format(time), format='png', dpi=200)
 
     fig_contour = plt.figure(figsize=(16, 9))
-    ax2_countour = fig_contour.add_subplot(121)
-    ax_countour = fig_contour.add_subplot(122)
+    ax2_countour = fig_contour.add_subplot(131)
+    ax_countour = fig_contour.add_subplot(132)
+    ax3_countour = fig_contour.add_subplot(133)
     sc = ax_countour.tricontourf(
         eos_density,
         eos_internal_energy,
@@ -162,6 +163,26 @@ for time in np.arange(start_time, end_time + interval, interval):
     )
     for p in select_particles_at_time:
         ax_countour.scatter(
+            [p.density],
+            [p.internal_energy],
+            marker="o",
+            linewidths=1,
+            # facecolor=[cmap(normalizer(p.entropy)) for p in select_particles],
+            facecolor=(0, 0, 0, 0),
+            edgecolors=c_dict[p.particle_id],
+            label="All select_particles"
+        )
+        ax2_countour.scatter(
+            [p.density],
+            [p.internal_energy],
+            marker="o",
+            linewidths=1,
+            # facecolor=[cmap(normalizer(p.entropy)) for p in select_particles],
+            facecolor=(0, 0, 0, 0),
+            edgecolors=c_dict[p.particle_id],
+            label="All select_particles"
+        )
+        ax3_countour.scatter(
             [p.density],
             [p.internal_energy],
             marker="o",
@@ -192,6 +213,12 @@ for time in np.arange(start_time, end_time + interval, interval):
                 c=c_dict[p.particle_id],
                 linewidth=2.0
             )
+            ax3_countour.plot(
+                [p2.density for p2 in prev],
+                [p2.entropy for p2 in prev],
+                c=c_dict[p.particle_id],
+                linewidth=2.0
+            )
     ax2_countour.set_xlabel("Pressure (GPa")
     ax2_countour.set_ylabel("Entropy")
     ax2_countour.grid(alpha=0.4)
@@ -206,6 +233,6 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax2_countour.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(seconds), 2), time))
 
     cbar = fig_contour.colorbar(sm)
-    cbar.ax_countour.set_title("Entropy")
+    cbar.ax.set_title("Entropy")
 
     plt.savefig(output + "/{}.png".format(time), format='png', dpi=200)
