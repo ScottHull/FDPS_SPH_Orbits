@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import shutil
 from src.report import BuildReports
 
 start_time = 0
@@ -9,6 +10,10 @@ number_processes = 200
 from_path = "/home/theia/scotthull/200k/gi_new_eos"
 to_path = "/home/theia/scotthull/200k/formatted_gi_new_eos"
 eos_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
+
+if os.path.exists(to_path):
+    shutil.rmtree(to_path)
+os.mkdir(to_path)
 
 r = BuildReports(
     to_dir=to_path,

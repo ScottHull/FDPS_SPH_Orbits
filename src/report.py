@@ -50,7 +50,7 @@ class BuildReports:
         os.remove(f)
         particle_df = make_particle_df(particles=particles)
         particle_df.to_csv(self.to_dir + "/{}".format(fname))
-        with open(fname, 'r+') as infile:
+        with open(self.to_dir + "/{}".format(fname), 'r+') as infile:
             content = infile.read()
             infile.seek(0, 0)
             infile.write("{}\n{}\n".format(formatted_time, total_particles) + content)
