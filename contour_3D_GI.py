@@ -150,8 +150,8 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.savefig(output_3D + "/{}.png".format(time), format='png', dpi=200)
 
     fig_contour = plt.figure(figsize=(16, 9))
-    ax2_countour = fig_contour.add_subplot(131)
-    ax_countour = fig_contour.add_subplot(132)
+    ax2_countour = fig_contour.add_subplot(132)
+    ax_countour = fig_contour.add_subplot(131)
     ax3_countour = fig_contour.add_subplot(133)
     sc = ax_countour.tricontourf(
         eos_density,
@@ -173,8 +173,8 @@ for time in np.arange(start_time, end_time + interval, interval):
             label="All select_particles"
         )
         ax2_countour.scatter(
-            [p.density],
-            [p.internal_energy],
+            [p.pressure],
+            [p.entropy],
             marker="o",
             linewidths=1,
             # facecolor=[cmap(normalizer(p.entropy)) for p in select_particles],
@@ -184,7 +184,7 @@ for time in np.arange(start_time, end_time + interval, interval):
         )
         ax3_countour.scatter(
             [p.density],
-            [p.internal_energy],
+            [p.entropy],
             marker="o",
             linewidths=1,
             # facecolor=[cmap(normalizer(p.entropy)) for p in select_particles],
