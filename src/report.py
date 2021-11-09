@@ -46,7 +46,7 @@ class BuildReports:
         total_particles = cf.total_particles
         f = os.getcwd() + "/{}".format(fname)
         pm = ParticleMap(path=f, center=True, relative_velocity=False)
-        particles = pm.collect_particles(find_orbital_elements=False)
+        particles = pm.collect_particles(find_orbital_elements=solve)
         if solve:
             pm.solve(particles=particles, phase_path=self.eos_phase_path)
         os.remove(f)
