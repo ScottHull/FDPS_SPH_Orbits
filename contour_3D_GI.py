@@ -151,8 +151,8 @@ for time in np.arange(start_time, end_time + interval, interval):
 
     fig_contour = plt.figure(figsize=(16, 9))
     ax2_countour = fig_contour.add_subplot(132)
-    ax_countour = fig_contour.add_subplot(131)
-    ax3_countour = fig_contour.add_subplot(133)
+    ax_countour = fig_contour.add_subplot(133)
+    ax3_countour = fig_contour.add_subplot(131)
     sc = ax_countour.tricontourf(
         eos_density,
         eos_internal_energy,
@@ -219,14 +219,19 @@ for time in np.arange(start_time, end_time + interval, interval):
                 c=c_dict[p.particle_id],
                 linewidth=2.0
             )
-    ax2_countour.set_xlabel("Pressure (GPa")
+    ax2_countour.set_xlabel("Pressure (GPa)")
     ax2_countour.set_ylabel("Entropy")
+    ax3_countour.set_xlabel("Density")
+    ax3_countour.set_ylabel("Entropy")
+    ax3_countour.grid(alpha=0.4)
     ax2_countour.grid(alpha=0.4)
     ax_countour.grid(alpha=0.4)
     ax_countour.set_xlim(-5, 2000)
     ax_countour.set_ylim(0, 8e7)
     ax2_countour.set_xlim(0, 10)
     ax2_countour.set_ylim(5000, 12000)
+    ax3_countour.set_xlim(0, 4000)
+    ax3_countour.set_ylim(5000, 12000)
     ax_countour.set_xlabel("Density")
     ax_countour.set_ylabel("Internal Energy")
     ax_countour.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(seconds), 2), time))
