@@ -4,12 +4,27 @@ import os
 from random import randint
 
 
+def make_particle_df(particles):
+    return pd.DataFrame({
+        "id": [p.particle_id for p in particles],
+        "position": [p.position for p in particles],
+        "radius": [p.distance for p in particles],
+        "tag": [p.tag for p in particles],
+        "label": [p.label for p in particles],
+        "entropy": [p.entropy for p in particles],
+        "temperature": [p.temperature for p in particles],
+        "density": [p.density for p in particles],
+        "pressure": [p.pressure for p in particles],
+        "internal_energy": [p.internal_energy for p in particles],
+    })
+
 class CombineFile:
 
     def __init__(self, num_processes, time, output_path, to_fname="merged_{}.dat"):
         self.num_processes = num_processes
         self.time = time
         self.sim_time = None
+        self.total_particles = None
         self.output_path = output_path
         self.file_format = "results.{}_{}_{}.dat"
         self.curr_process = 0
@@ -49,6 +64,7 @@ class CombineFile:
         os.remove(self.to_fname.format(self.time))
         os.rename(tmp_fname, self.to_fname.format(self.time))
         self.sim_time = time
+        self.total_particles = total_N
 
     def combine_df(self):
         dfs = []
@@ -66,16 +82,3 @@ class CombineFile:
         merged_df = pd.concat(dfs)
         return merged_df
 
-
-def make_particle_df(particles):
-    return pd.DataFrame({
-        "position": [p.position for p in particles],
-        "radius": [p.distance for p in particles],
-        "tag": [p.tag for p in particles],
-        "label": [p.label for p in particles],
-        "entropy": [p.entropy for p in particles],
-        "temperature": [p.temperature for p in particles],
-        "density": [p.density for p in particles],
-        "pressure": [p.pressure for p in particles],
-        "internal_energy": [p.internal_energy for p in particles],
-    })

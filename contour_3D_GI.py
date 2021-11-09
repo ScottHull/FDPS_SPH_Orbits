@@ -237,7 +237,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax_countour.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(seconds), 2), time))
     ax2_countour.set_title("Time: {} hrs (iteration: {})".format(round(seconds_to_hours(seconds), 2), time))
 
-    cbar = fig_contour.colorbar(sm)
+    cbar = fig_contour.colorbar(sm, ax=ax_countour)
     cbar.ax.set_title("Entropy")
 
     plt.savefig(output + "/{}.png".format(time), format='png', dpi=200)
