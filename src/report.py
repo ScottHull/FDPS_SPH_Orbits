@@ -35,10 +35,10 @@ class BuildReports:
         })
 
     def __get_end_state(self):
-        particles = self.__build_report_at_time(time=self.end_time)
+        particles = self.__build_report_at_time(time=self.end_time, solve=True)
         self.labels = dict([(p.particle_id, p.label) for p in particles])
 
-    def __build_report_at_time(self, time):
+    def __build_report_at_time(self, time, solve=False):
         fname = "merged_{}_{}.dat".format(time, randint(0, 1000000))
         cf = CombineFile(num_processes=self.number_processes, time=time, output_path=self.from_dir, to_fname=fname)
         combined_file = cf.combine()
@@ -47,6 +47,8 @@ class BuildReports:
         f = os.getcwd() + "/{}".format(fname)
         pm = ParticleMap(path=f, center=True, relative_velocity=False)
         particles = pm.collect_particles(find_orbital_elements=False)
+        if solve:
+            pm.solve(particles=particles, phase_path=self.eos_phase_path)
         os.remove(f)
         particle_df = make_particle_df(particles=particles)
         particle_df.to_csv(self.to_dir + "/{}".format(fname))
