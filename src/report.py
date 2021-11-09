@@ -40,6 +40,7 @@ class BuildReports:
 
     def __build_report_at_time(self, time, solve=False):
         fname = "merged_{}_{}.dat".format(time, randint(0, 1000000))
+        to_fname = "{}.csv".format(time)
         cf = CombineFile(num_processes=self.number_processes, time=time, output_path=self.from_dir, to_fname=fname)
         combined_file = cf.combine()
         formatted_time = cf.sim_time
@@ -51,8 +52,8 @@ class BuildReports:
             pm.solve(particles=particles, phase_path=self.eos_phase_path)
         os.remove(f)
         particle_df = make_particle_df(particles=particles)
-        particle_df.to_csv(self.to_dir + "/{}".format(fname))
-        with open(self.to_dir + "/{}".format(fname), 'r+') as infile:
+        particle_df.to_csv(self.to_dir + "/{}".format(to_fname))
+        with open(self.to_dir + "/{}".format(to_fname), 'r+') as infile:
             content = infile.read()
             infile.seek(0, 0)
             infile.write("{}\n{}\n".format(formatted_time, total_particles) + content)
