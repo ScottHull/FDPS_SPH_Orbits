@@ -173,7 +173,7 @@ for time in np.arange(start_time, end_time + interval, interval):
             label="All select_particles"
         )
         ax2_countour.scatter(
-            [p.pressure],
+            [p.pressure / (10 ** 9)],
             [p.entropy],
             marker="o",
             linewidths=1,
