@@ -61,6 +61,6 @@ class BuildReports:
         self.__get_end_state()
         pool = mp.Pool(mp_pool_size)
         for time in np.arange(self.start_time, self.end_time + self.interval, self.interval):
-            pool.map(self.__build_report_at_time, time)
+            pool.map(self.__build_report_at_time, [time])
         pool.close()
         pool.join()
