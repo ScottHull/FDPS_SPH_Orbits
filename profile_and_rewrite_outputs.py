@@ -1,5 +1,5 @@
+#!/usr/bin/env python3
 import os
-
 from src.report import BuildReports
 
 start_time = 0
