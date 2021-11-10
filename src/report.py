@@ -40,10 +40,11 @@ class BuildReports:
         })
 
     def __get_end_state(self):
-        particles = self.__build_report_at_time(time=self.end_time, solve=True)
+        particles = self.__build_report_at_time(time=self.end_time, solve=True, save=False)
         self.labels = dict([(p.particle_id, p.label) for p in particles])
+        self.__build_report_at_time(time=self.end_time, solve=False, save=True)
 
-    def __build_report_at_time(self, time, solve=False):
+    def __build_report_at_time(self, time, solve=False, save=True):
         fname = "merged_{}_{}.dat".format(time, randint(0, 1000000))
         to_fname = "{}.csv".format(time)
         cf = CombineFile(num_processes=self.number_processes, time=time, output_path=self.from_dir, to_fname=fname)
@@ -56,13 +57,14 @@ class BuildReports:
         if solve:
             pm.solve(particles=particles, phase_path=self.eos_phase_path)
         os.remove(f)
-        particle_df = self.__build_df_from_endstate(particles=particles)
-        particle_df.to_csv(self.to_dir + "/{}".format(to_fname))
-        with open(self.to_dir + "/{}".format(to_fname), 'r+') as infile:
-            content = infile.read()
-            infile.seek(0, 0)
-            infile.write("{}\n{}\n".format(formatted_time, total_particles) + content)
-        infile.close()
+        if save:
+            particle_df = self.__build_df_from_endstate(particles=particles)
+            particle_df.to_csv(self.to_dir + "/{}".format(to_fname))
+            with open(self.to_dir + "/{}".format(to_fname), 'r+') as infile:
+                content = infile.read()
+                infile.seek(0, 0)
+                infile.write("{}\n{}\n".format(formatted_time, total_particles) + content)
+            infile.close()
         return particles
 
     def make_reports(self, mp_pool_size=5):
