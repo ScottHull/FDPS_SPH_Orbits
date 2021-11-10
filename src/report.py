@@ -4,7 +4,7 @@ import numpy as np
 from random import randint
 import multiprocessing.dummy as mp
 
-from src.combine import CombineFile, make_particle_df
+from src.combine import CombineFile
 from src.identify import ParticleMap
 
 
@@ -23,7 +23,12 @@ class BuildReports:
     def __build_df_from_endstate(self, particles):
         return pd.DataFrame({
             "id": [p.particle_id for p in particles],
-            "position": [p.position for p in particles],
+            "x": [p.position[0] for p in particles],
+            "y": [p.position[1] for p in particles],
+            "z": [p.position[2] for p in particles],
+            "vx": [p.velocity[0] for p in particles],
+            "vy": [p.velocity[1] for p in particles],
+            "vz": [p.velocity[2] for p in particles],
             "radius": [p.distance for p in particles],
             "tag": [p.tag for p in particles],
             "label": [self.labels[p.particle_id] for p in particles],
@@ -51,7 +56,7 @@ class BuildReports:
         if solve:
             pm.solve(particles=particles, phase_path=self.eos_phase_path)
         os.remove(f)
-        particle_df = make_particle_df(particles=particles)
+        particle_df = self.__build_df_from_endstate(particles=particles)
         particle_df.to_csv(self.to_dir + "/{}".format(to_fname))
         with open(self.to_dir + "/{}".format(to_fname), 'r+') as infile:
             content = infile.read()
