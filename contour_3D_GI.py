@@ -136,7 +136,7 @@ for time in np.arange(start_time, end_time + interval, interval):
         cbar.ax.set_title(parameter.title(), fontsize=6)
         for p in select_particles_at_time:
             ax.scatter(
-                [p.position[0]], [p.position[1]], [p.position[2]], s=50, c=c_dict[p.particle_id], marker="*", alpha=0.1
+                [p.position[0]], [p.position[1]], [p.position[2]], s=50, c=c_dict[p.particle_id], marker="*", alpha=1
             )
     ax1.set_xlim(-square_scale, square_scale)
     ax1.set_ylim(-square_scale, square_scale)
