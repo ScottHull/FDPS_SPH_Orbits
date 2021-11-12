@@ -39,15 +39,12 @@ plt.style.use("dark_background")
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 fig.patch.set_facecolor('xkcd:black')
-
-
 # s = UnivariateSpline(
 #     radius,
 #     temperature,
 #     s=5
 # )
 # avg_temp = s(radius)
-
 for index, d in enumerate(disk_dfs):
     ax.scatter(
         [i / radius_earth for i in d['radius']],
@@ -62,6 +59,9 @@ ax.set_title("iteration {}".format(time))
 ax.legend()
 plt.savefig("disk_temp_profile.png", format='png', dpi=400)
 
+fig = plt.figure(figsize=(16, 9))
+ax = fig.add_subplot(111)
+fig.patch.set_facecolor('xkcd:black')
 for index, d in enumerate(disk_dfs):
     ax.scatter(
         [i / radius_earth for i in d['radius']],
