@@ -50,9 +50,9 @@ fig.patch.set_facecolor('xkcd:black')
 
 for index, d in enumerate(disk_dfs):
     ax.scatter(
-        [i / radius_earth for i in d['distance']],
+        [i / radius_earth for i in d['radius']],
         d['temperature'],
-        s=0.2,
+        s=1,
         label=labels[tags[index]]
     )
 ax.grid(alpha=0.4)
@@ -60,4 +60,4 @@ ax.set_xlabel(r"Radius ($R_{\bigoplus}$)")
 ax.set_ylabel("Disk Temperature")
 ax.set_title("iteration {}".format(time))
 ax.legend()
-plt.savefig("disk_temp_profile.png", format='png')
+plt.savefig("disk_temp_profile.png", format='png', dpi=200)
