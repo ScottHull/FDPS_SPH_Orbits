@@ -17,28 +17,22 @@ from src.combine import CombineFile
 
 time = 3000
 number_processes = 200
-path = "/home/theia/scotthull/200k/gi_new_eos"
+path = "/home/theia/scotthull/200k/formatted_gi_new_eos/3000.csv"
 radius_earth = 6371 * 1000
 
-cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
-combined_file = cf.combine()
-formatted_time = cf.sim_time
-f = os.getcwd() + "/merged_{}.dat".format(time)
-pm = ParticleMap(path=f, center=False, relative_velocity=False)
-particles = pm.collect_particles()
-pm.solve(particles=particles, phase_path="src/phase_data/forstSTS__vapour_curve.txt")
-os.remove(f)
+df = pd.read_csv(path, delimiter=",", skiprows=2)
+disk_df = df.loc[df['label'] == "DISK"]
+radius, temperature, pressure = [i / radius_earth for i in disk_df['distance']], disk_df['temperature'], disk_df['pressure']
 
 plt.style.use("dark_background")
 fig = plt.figure()
 ax = fig.add_subplot(111)
 fig.patch.set_facecolor('xkcd:black')
 
-disk = [p for p in particles if p.label == "DISK"]
-radius = [p.distance / radius_earth for p in disk]
+
 s = UnivariateSpline(
     radius,
-    [p.temperature for p in disk],
+    temperature,
     s=5
 )
 avg_temp = s(radius)
