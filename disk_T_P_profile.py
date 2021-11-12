@@ -36,7 +36,7 @@ labels = {
 }
 
 plt.style.use("dark_background")
-fig = plt.figure()
+fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 fig.patch.set_facecolor('xkcd:black')
 
@@ -60,4 +60,4 @@ ax.set_xlabel(r"Radius ($R_{\bigoplus}$)")
 ax.set_ylabel("Disk Temperature")
 ax.set_title("iteration {}".format(time))
 ax.legend()
-plt.savefig("disk_temp_profile.png", format='png', dpi=200)
+plt.savefig("disk_temp_profile.png", format='png', dpi=400)
