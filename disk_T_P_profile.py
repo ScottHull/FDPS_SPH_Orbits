@@ -61,3 +61,17 @@ ax.set_ylabel("Disk Temperature")
 ax.set_title("iteration {}".format(time))
 ax.legend()
 plt.savefig("disk_temp_profile.png", format='png', dpi=400)
+
+for index, d in enumerate(disk_dfs):
+    ax.scatter(
+        [i / radius_earth for i in d['radius']],
+        d['pressure'],
+        s=1,
+        label=labels[tags[index]]
+    )
+ax.grid(alpha=0.4)
+ax.set_xlabel(r"Radius ($R_{\bigoplus}$)")
+ax.set_ylabel("Disk Pressure")
+ax.set_title("iteration {}".format(time))
+ax.legend()
+plt.savefig("disk_pres_profile.png", format='png', dpi=400)
