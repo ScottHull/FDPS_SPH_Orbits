@@ -26,7 +26,7 @@ def get_nearest_iteration_to_time(time, sampled_times):
 
 def seconds_to_hours(seconds):
     # 60 seconds in 1 minute, 60 minutes in 1 hour
-    return seconds * (1.0 / 60.0) * (1.0 / 60.0)
+    return round(seconds * (1.0 / 60.0) * (1.0 / 60.0), 2)
 
 def match_particle_properties_between_iterations(particles1, particles2, property):
     particles = []
@@ -36,3 +36,10 @@ def match_particle_properties_between_iterations(particles1, particles2, propert
                 particles.append([p1, p2])
                 break
     return particles
+
+def get_max_time(max_iteration, path):
+    with open(path + "/{}.csv".format(max_iteration)) as infile:
+        reader = csv.reader(infile, delimiter=",")
+        max_time = float(next(reader)[0])
+        infile.close()
+        return max_time

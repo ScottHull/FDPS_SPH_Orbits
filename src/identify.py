@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 from math import pi, sqrt
 from copy import copy
@@ -35,6 +37,12 @@ class ParticleMap:
                 target_iron=True
             )  # COM of the target iron
         self.relative_velocity = relative_velocity
+
+    def report(self, name="disk_profile.txt"):
+        if name in os.listdir(os.getcwd()):
+            os.remove(name)
+
+
 
     def collect_particles(self, find_orbital_elements=True):
         return classify.collect_particles(
@@ -133,8 +141,26 @@ class ParticleMap:
                 PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass, NEW_Z_ANGULAR_MOMENTUM_DISK,
                 iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche
             )
+            self.profile_report  = {
+                "num_particles_planet": NUM_PARTICLES_PLANET,
+                "num_particles_disk": NUM_PARTICLES_IN_DISK,
+                "num_particles_escaping": NUM_PARTICLES_ESCAPING,
+                "num_particles_error": NUM_PARTICLES_NO_CLASSIFICATION,
+                "total_particles": TOTAL_PARTICLES,
+                "particles_beyond_roche": PARTICLES_BEYOND_ROCHE,
+                "mass_protoplanet": NEW_MASS_PROTOPLANET,
+                "mass_disk": NEW_MASS_DISK,
+                "mass_escaped": NEW_MASS_ESCAPED,
+                "total_angular_momentum": total_angular_momentum,
+                "z_angular_momentum_disk": NEW_Z_ANGULAR_MOMENTUM_DISK,
+                "average_density": self.avg_density,
+                "mass_beyond_roche": MASS_BEYOND_ROCHE,
+                "satellite_mass": satellite_mass,
+                "iron_disk_mass_fraction": iron_disk_mass_fraction,
+                "iron_disk_mass_fraction_beyond_roche": iron_disk_mass_fraction_beyond_roche
+            }
 
-    def solve(self, particles, phase_path, K=0.335, G=6.674 * 10 ** -11):
+    def solve(self, particles, phase_path, K=0.335, G=6.674 * 10 ** -11, report_name="disk_profile.txt"):
         # K = 0.335 for Earth, K = 2/5 for homogenous body
         self.__convergence_loop(particles=particles, K=K, G=G)
         self.__convergence_loop(particles=particles, K=K, G=G)  # run twice to recalc avg density after initial solution
@@ -142,4 +168,5 @@ class ParticleMap:
             self.vmf = None
         else:
             self.vmf = vapor.calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
-        print("VMF: ", self.vmf)
+        self.profile_report.update({"vmf": self.vmf})
+        self.report(name=report_name)

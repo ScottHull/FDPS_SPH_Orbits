@@ -69,7 +69,7 @@ for index, d in enumerate(disk_dfs):
         s=1,
         label=labels[tags[index]]
     )
-ax.set_ylim(0, 10)
+ax.set_ylim(0, 0.1e9)
 ax.grid(alpha=0.4)
 ax.set_xlabel(r"Radius ($R_{\bigoplus}$)")
 ax.set_ylabel("Disk Pressure")
