@@ -4,6 +4,7 @@ import numpy as np
 from new_and_old_eos import vmf_evolution
 from src.new_and_old_eos import get_particles
 from src.time import get_max_time, seconds_to_hours
+from src.read import get_particles_from_formatted
 
 min_iteration = 0
 max_iteration = 2650
@@ -34,10 +35,15 @@ vmf = vmf_evolution.VMFtimeseries(
 # cycle through outputs
 for iteration in np.arange(min_iteration, max_iteration + increment, increment):
     if iteration < 50 and iteration % 10 == 0:
-        new_particles, new_time = get_particles(path=new_eos_formatted_path, number_processes=num_processes_new,
-                                                time=iteration,
-                                                solve=True)
-        old_particles, old_time = get_particles(path=old_eos_formatted_path, number_processes=num_processes_old,
-                                                time=iteration,
-                                                solve=True)
+        new_time, new_num_particles, new_particles = get_particles(
+            number_processes=num_processes_new,
+            path=new_eos_formatted_path,
+            time=iteration
+        )
+        old_time, old_num_particles, old_particles = get_particles(
+            number_processes=num_processes_old,
+            path=old_eos_formatted_path,
+            time=iteration
+        )
+
 

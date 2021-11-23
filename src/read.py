@@ -1,7 +1,9 @@
 import csv
 import pandas as pd
 
-def get_particles_from_formatted(path, iteration):
+from src.identify import ParticleMap
+
+def get_particles_from_formatted(path, iteration, solve=False):
     f = "{}/{}.csv".format(path, iteration)
     time = 0
     num_particles = 0
@@ -10,6 +12,5 @@ def get_particles_from_formatted(path, iteration):
         time = float(next(reader)[0])
         num_particles = float(next(reader)[0])
         infile.close()
-
     df = pd.read_csv(f, delimiter=",", skiprows=2, index_col="id")
-    return df
+    return time, num_particles, df

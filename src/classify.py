@@ -46,43 +46,90 @@ def refine_target_velocity(particles):
     ]
 
 
-def collect_particles(output, com, mass_protoearth, relative_velocity=False, find_orbital_elements=True):
+def collect_particles(output, com, mass_protoearth, relative_velocity=False, find_orbital_elements=True, formatted=False):
+    """
+    Columns for formatted files:
+    id,x,y,z,vx,vy,vz,mass,radius,tag,label,entropy,temperature,density,pressure,internal_energy
+    :param output:
+    :param com:
+    :param mass_protoearth:
+    :param relative_velocity:
+    :param find_orbital_elements:
+    :param formatted:
+    :return:
+    """
     print("Collecting particles...")
     particles = []
     target_velocity = [0, 0, 0]
     if relative_velocity:
-        target_velocity = calc_target_velocity(
-            vx=output[6],
-            vy=output[7],
-            vz=output[8],
-            tags=output[1]
-        )
-    for row in output.index:
-        position = [float(output[3][row]) - com[0], float(output[4][row]) - com[1],
-                    float(output[5][row]) - com[2]]
-        velocity = [float(output[6][row]), float(output[7][row]), float(output[8][row])]
-        relative_velocity = [
-            velocity[0] - target_velocity[0],
-            velocity[1] - target_velocity[1],
-            velocity[2] - target_velocity[2]
-        ]
-        p = elements.Particle(
-            particle_id=int(output[0][row]),
-            tag=int(output[1][row]),
-            mass=float(output[2][row]),
-            position=position,
-            velocity=velocity,
-            relative_velocity=relative_velocity,
-            density=float(output[9][row]),
-            internal_energy=float(output[10][row]),
-            pressure=float(output[11][row]),
-            potential_energy=float(output[12][row]),
-            entropy=float(output[13][row]),
-            temperature=float(output[14][row]),
-            mass_grav_body=float(mass_protoearth),
-            calculate_elements=find_orbital_elements
-        )
-        particles.append(p)
+        if not formatted:
+            target_velocity = calc_target_velocity(
+                vx=output[6],
+                vy=output[7],
+                vz=output[8],
+                tags=output[1]
+            )
+        else:
+            target_velocity = calc_target_velocity(
+                vx=output["vx"],
+                vy=output["vy"],
+                vz=output["vz"],
+                tags=output["tag"]
+            )
+    if not formatted:
+        for row in output.index:
+            position = [float(output[3][row]) - com[0], float(output[4][row]) - com[1],
+                        float(output[5][row]) - com[2]]
+            velocity = [float(output[6][row]), float(output[7][row]), float(output[8][row])]
+            relative_velocity = [
+                velocity[0] - target_velocity[0],
+                velocity[1] - target_velocity[1],
+                velocity[2] - target_velocity[2]
+            ]
+            p = elements.Particle(
+                particle_id=int(output[0][row]),
+                tag=int(output[1][row]),
+                mass=float(output[2][row]),
+                position=position,
+                velocity=velocity,
+                relative_velocity=relative_velocity,
+                density=float(output[9][row]),
+                internal_energy=float(output[10][row]),
+                pressure=float(output[11][row]),
+                potential_energy=float(output[12][row]),
+                entropy=float(output[13][row]),
+                temperature=float(output[14][row]),
+                mass_grav_body=float(mass_protoearth),
+                calculate_elements=find_orbital_elements
+            )
+            particles.append(p)
+    else:
+        for row in output.index:
+            position = [float(output["x"][row]) - com[0], float(output["y"][row]) - com[1],
+                        float(output["z"][row]) - com[2]]
+            velocity = [float(output["vx"][row]), float(output["vy"][row]), float(output["vz"][row])]
+            relative_velocity = [
+                velocity[0] - target_velocity[0],
+                velocity[1] - target_velocity[1],
+                velocity[2] - target_velocity[2]
+            ]
+            p = elements.Particle(
+                particle_id=int(output["id"][row]),
+                tag=int(output["tag"][row]),
+                mass=float(output["mass"][row]),
+                position=position,
+                velocity=velocity,
+                relative_velocity=relative_velocity,
+                density=float(output["density"][row]),
+                internal_energy=float(output["internal_energy"][row]),
+                pressure=float(output["pressure"][row]),
+                potential_energy=float(output["potential_energy"][row]),
+                entropy=float(output["entropy"][row]),
+                temperature=float(output["temperature"][row]),
+                mass_grav_body=float(mass_protoearth),
+                calculate_elements=find_orbital_elements
+            )
+            particles.append(p)
     print("Collected particles!")
     return particles
 

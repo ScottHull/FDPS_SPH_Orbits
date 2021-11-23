@@ -29,6 +29,7 @@ class BuildReports:
             "vx": [p.velocity[0] for p in particles],
             "vy": [p.velocity[1] for p in particles],
             "vz": [p.velocity[2] for p in particles],
+            "mass": [p.mass for p in particles],
             "radius": [p.distance for p in particles],
             "tag": [p.tag for p in particles],
             "label": [self.labels[p.particle_id] for p in particles],
@@ -37,6 +38,7 @@ class BuildReports:
             "density": [p.density for p in particles],
             "pressure": [p.pressure for p in particles],
             "internal_energy": [p.internal_energy for p in particles],
+            "potential_energy": [p.potential_energy for p in particles]
         })
 
     def __get_end_state(self):
