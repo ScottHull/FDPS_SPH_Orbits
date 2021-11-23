@@ -11,13 +11,17 @@ from src import elements, centering, classify, vapor
 class ParticleMap:
 
     def __init__(self, path, center, relative_velocity=False, centering_resolution=1e5,
-                 centering_delta=1e7, a=(12713.6 / 2.0) * 1000.0, b=(12756.2 / 2.0) * 1000.0):
+                 centering_delta=1e7, a=(12713.6 / 2.0) * 1000.0, b=(12756.2 / 2.0) * 1000.0, formatted=False):
         self.path = path
         self.time = None
+        self.formatted = formatted
         with open(path, 'r') as infile:  # get simulation time from combined file
             self.time = float(infile.readline().strip())
             infile.close()
-        self.output = pd.read_csv(self.path, skiprows=2, header=None, delimiter="\t")
+        if not formatted:
+            self.output = pd.read_csv(self.path, skiprows=2, header=None, delimiter="\t")
+        else:
+            self.output = pd.read_csv(self.path, skiprows=2, delimiter=",")
         # self.a = a  # present-day equatorial radius of the Earth in m
         self.a = 1.099e7
         self.b = b  # present-day polar radius of the Earth in m
@@ -28,21 +32,29 @@ class ParticleMap:
         self.centering_delta = centering_delta
         self.com = [0, 0, 0]
         if center:
-            self.com = centering.center_of_mass(
-                x_coords=self.output[3],
-                y_coords=self.output[4],
-                z_coords=self.output[5],
-                masses=self.output[2],
-                particle_tags=self.output[1],
-                target_iron=True
-            )  # COM of the target iron
+            if not formatted:
+                self.com = centering.center_of_mass(
+                    x_coords=self.output[3],
+                    y_coords=self.output[4],
+                    z_coords=self.output[5],
+                    masses=self.output[2],
+                    particle_tags=self.output[1],
+                    target_iron=True
+                )  # COM of the target iron
+            else:
+                self.com = centering.center_of_mass(
+                    x_coords=self.output['x'],
+                    y_coords=self.output['y'],
+                    z_coords=self.output['z'],
+                    masses=self.output['mass'],
+                    particle_tags=self.output['tag'],
+                    target_iron=True
+                )  # COM of the target iron
         self.relative_velocity = relative_velocity
 
     def report(self, name="disk_profile.txt"):
         if name in os.listdir(os.getcwd()):
             os.remove(name)
-
-
 
     def collect_particles(self, find_orbital_elements=True):
         return classify.collect_particles(
@@ -50,7 +62,8 @@ class ParticleMap:
             com=self.com,
             mass_protoearth=self.mass_protoearth,
             find_orbital_elements=find_orbital_elements,
-            relative_velocity=self.relative_velocity
+            relative_velocity=self.relative_velocity,
+            formatted=self.formatted
         )
 
     def __convergence_loop(self, particles, K, G):
@@ -141,7 +154,7 @@ class ParticleMap:
                 PARTICLES_BEYOND_ROCHE, MASS_BEYOND_ROCHE, satellite_mass, NEW_Z_ANGULAR_MOMENTUM_DISK,
                 iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche
             )
-            self.profile_report  = {
+            self.profile_report = {
                 "num_particles_planet": NUM_PARTICLES_PLANET,
                 "num_particles_disk": NUM_PARTICLES_IN_DISK,
                 "num_particles_escaping": NUM_PARTICLES_ESCAPING,
