@@ -14,10 +14,10 @@ num_processes_new = 200
 num_processes_old = 100
 new_eos_silicate_phase_curve = "src/phase_data/forstSTS__vapour_curve.txt"
 old_eos_silicate_phase_curve = "src/phase_data/duniteN_vapour_curve.txt"
-new_eos_formatted_path = "/home/theia/scotthull/1M/formatted_gi_new_eos"
-old_eos_formatted_path = "/home/theia/scotthull/1M/formatted_gi_old_eos"
-new_eos_unformatted_path = "/home/theia/scotthull/1M/gi_new_eos"
-old_eos_unformatted_path = "/home/theia/scotthull/1M/gi_new_eos"
+new_eos_formatted_path = "/home/theia/scotthull/1M/formatted_gi_new_eos_b_073"
+old_eos_formatted_path = "/home/theia/scotthull/1M/formatted_gi_old_eos_b_073"
+new_eos_unformatted_path = "/home/theia/scotthull/1M/gi_new_eos_b_073"
+old_eos_unformatted_path = "/home/theia/scotthull/1M/gi_old_eos_b_073"
 
 
 # profile the end-state disk

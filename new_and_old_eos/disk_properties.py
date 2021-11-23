@@ -14,13 +14,15 @@ from src.new_and_old_eos import get_parameter_from_particles
 
 class DiskProperties:
 
-    def __init__(self, new_eos_path, old_eos_path, properties=None, formatted=True):
+    def __init__(self, new_eos_path, old_eos_path, new_num_processes, old_num_processes, properties=None, formatted=True):
         if properties is None:
             properties = ['entropy', 'pressure', 'density', 'temperature']
         self.properties = properties
         self.formatted = formatted
         self.new_eos_path = new_eos_path
         self.old_eos_path = old_eos_path
+        self.new_num_processes = new_num_processes
+        self.old_num_processes = old_num_processes
         self.end_state_particles_new_eos = {}
         self.end_state_particles_old_eos = {}
         self.earth_radius = 6371 * 1000
@@ -31,21 +33,21 @@ class DiskProperties:
             4: "Impactor Iron"
         }
 
-    def get_end_state_disk_particles(self, end_iteration, formatted=False, number_processes=200):
+    def get_end_state_disk_particles(self, end_iteration, formatted=False):
         if formatted:
             pm_new = ParticleMap(path=self.new_eos_path + "/{}.csv".format(end_iteration), center=True,
                                  relative_velocity=False, formatted=self.formatted).collect_particles()
             pm_old = ParticleMap(path=self.old_eos_path + "/{}.csv".format(end_iteration), center=True,
                                  relative_velocity=False, formatted=self.formatted).collect_particles()
         else:
-            cf = CombineFile(num_processes=number_processes, time=end_iteration, output_path=self.new_eos_path)
+            cf = CombineFile(num_processes=self.new_num_processes, time=end_iteration, output_path=self.new_eos_path)
             formatted_time = cf.sim_time
             combined_file = cf.combine()
             f = os.getcwd() + "/merged_{}.dat".format(end_iteration)
             pm_new = ParticleMap(path=f, center=True, relative_velocity=False).collect_particles()
             os.remove(f)
             
-            cf = CombineFile(num_processes=number_processes, time=end_iteration, output_path=self.old_eos_path)
+            cf = CombineFile(num_processes=self.old_num_processes, time=end_iteration, output_path=self.old_eos_path)
             formatted_time = cf.sim_time
             combined_file = cf.combine()
             f = os.getcwd() + "/merged_{}.dat".format(end_iteration)
