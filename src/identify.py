@@ -1,5 +1,4 @@
 import os
-
 import pandas as pd
 from math import pi, sqrt
 from copy import copy
@@ -55,6 +54,12 @@ class ParticleMap:
     def report(self, name="disk_profile.txt"):
         if name in os.listdir(os.getcwd()):
             os.remove(name)
+        outfile = open(name, "w")
+        for key in self.profile_report.values():
+            value = self.profile_report[key]
+            line = "{}\t{}\n".format(key, value)
+            outfile.write(line)
+        outfile.close()
 
     def collect_particles(self, find_orbital_elements=True):
         return classify.collect_particles(
@@ -170,7 +175,9 @@ class ParticleMap:
                 "mass_beyond_roche": MASS_BEYOND_ROCHE,
                 "satellite_mass": satellite_mass,
                 "iron_disk_mass_fraction": iron_disk_mass_fraction,
-                "iron_disk_mass_fraction_beyond_roche": iron_disk_mass_fraction_beyond_roche
+                "iron_disk_mass_fraction_beyond_roche": iron_disk_mass_fraction_beyond_roche,
+                "a": self.a,
+                "b": self.b,
             }
 
     def solve(self, particles, phase_path, K=0.335, G=6.674 * 10 ** -11, report_name="disk_profile.txt"):
@@ -182,4 +189,5 @@ class ParticleMap:
         else:
             self.vmf = vapor.calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
         self.profile_report.update({"vmf": self.vmf})
+        self.profile_report.update({"name": report_name})
         self.report(name=report_name)

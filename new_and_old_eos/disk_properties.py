@@ -89,7 +89,7 @@ class DiskProperties:
             for ax in [new_ax, old_ax]:
                 ax.grid(alpha=0.4)
                 if index - -1 == len(self.properties):
-                    ax.set_xlabel("r'Radius ($R_{\bigoplus}$)',")
+                    ax.set_xlabel("r'Radius ($R_{\bigoplus}$)'")
             index_tracker += 2
         fig.save(name.format(iteration), format='png')
         return fig
