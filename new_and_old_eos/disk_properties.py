@@ -8,6 +8,7 @@ from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 from src.identify import ParticleMap
+from src.combine import CombineFile
 from src.new_and_old_eos import get_parameter_from_particles
 
 
@@ -30,11 +31,26 @@ class DiskProperties:
             4: "Impactor Iron"
         }
 
-    def get_end_state_disk_particles(self, end_iteration):
-        pm_new = ParticleMap(path=self.new_eos_path + "/{}.csv".format(end_iteration), center=True,
-                             relative_velocity=False, formatted=self.formatted).collect_particles()
-        pm_old = ParticleMap(path=self.old_eos_path + "/{}.csv".format(end_iteration), center=True,
-                             relative_velocity=False, formatted=self.formatted).collect_particles()
+    def get_end_state_disk_particles(self, end_iteration, formatted=False, number_processes=200):
+        if formatted:
+            pm_new = ParticleMap(path=self.new_eos_path + "/{}.csv".format(end_iteration), center=True,
+                                 relative_velocity=False, formatted=self.formatted).collect_particles()
+            pm_old = ParticleMap(path=self.old_eos_path + "/{}.csv".format(end_iteration), center=True,
+                                 relative_velocity=False, formatted=self.formatted).collect_particles()
+        else:
+            cf = CombineFile(num_processes=number_processes, time=end_iteration, output_path=self.new_eos_path)
+            formatted_time = cf.sim_time
+            combined_file = cf.combine()
+            f = os.getcwd() + "/merged_{}.dat".format(end_iteration)
+            pm_new = ParticleMap(path=f, center=True, relative_velocity=False).collect_particles()
+            os.remove(f)
+            
+            cf = CombineFile(num_processes=number_processes, time=end_iteration, output_path=self.old_eos_path)
+            formatted_time = cf.sim_time
+            combined_file = cf.combine()
+            f = os.getcwd() + "/merged_{}.dat".format(end_iteration)
+            pm_old = ParticleMap(path=f, center=True, relative_velocity=False).collect_particles()
+            os.remove(f)
         for i in list(zip(["new", "old"], [pm_new, pm_old])):
             ids = [p.particle_id for p in i[1] if p.label == "DISK"]
             label = [p.label for p in i[1] if p.label == "DISK"]
