@@ -55,7 +55,7 @@ class ParticleMap:
         if name in os.listdir(os.getcwd()):
             os.remove(name)
         outfile = open(name, "w")
-        for key in self.profile_report.values():
+        for key in self.profile_report.keys():
             value = self.profile_report[key]
             line = "{}\t{}\n".format(key, value)
             outfile.write(line)
@@ -190,4 +190,5 @@ class ParticleMap:
             self.vmf = vapor.calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
         self.profile_report.update({"vmf": self.vmf})
         self.profile_report.update({"name": report_name})
+        self.profile_report.update({'phase_path': phase_path})
         self.report(name=report_name)

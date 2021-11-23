@@ -11,9 +11,9 @@ from_path = "/home/theia/scotthull/200k/gi_new_eos"
 to_path = "/home/theia/scotthull/200k/formatted_gi_new_eos"
 eos_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 
-if os.path.exists(to_path):
-    shutil.rmtree(to_path)
-os.mkdir(to_path)
+# if os.path.exists(to_path):
+#     shutil.rmtree(to_path)
+# os.mkdir(to_path)
 
 r = BuildReports(
     to_dir=to_path,
