@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 from random import randint
 
@@ -21,5 +22,5 @@ combined_file = cf.combine()
 formatted_time = cf.sim_time
 f = os.getcwd() + "/{}".format(to_fname)
 pm = ParticleMap(path=f, center=True, relative_velocity=False)
-particles = pm.collect_particles(find_orbital_elements=False)
+particles = pm.collect_particles(find_orbital_elements=True)
 pm.solve(particles=particles, phase_path=phase_path, report_name="{}.txt".format(output_name))
