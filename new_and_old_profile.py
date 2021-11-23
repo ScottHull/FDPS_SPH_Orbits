@@ -26,7 +26,9 @@ disk_profile = disk_properties.DiskProperties(
     new_eos_path=new_eos_unformatted_path,
     old_eos_path=old_eos_unformatted_path,
     properties=None,
-    formatted=False
+    formatted=False,
+    new_num_processes=num_processes_new,
+    old_num_processes=num_processes_old
 )
 plt.style.use("dark_background")
 fig, axs = plt.subplots(len(parameters), 2, figsize=(12, 20), sharex="all",
