@@ -73,8 +73,8 @@ class DiskProperties:
 
     def profile_disk_at_time(self, new_eos_particles, old_eos_particles, fig, axs, iteration, name="disk_profile_{}.png"):
         axs = axs.flatten()
-        new_disk_particles = [p for p in new_eos_particles if self.end_state_particles_new_eos[p.particle_id] == "DISK"]
-        old_disk_particles = [p for p in old_eos_particles if self.end_state_particles_old_eos[p.particle_id] == "DISK"]
+        new_disk_particles = [p for p in new_eos_particles if p.particle_id in self.end_state_particles_new_eos.keys()]
+        old_disk_particles = [p for p in old_eos_particles if p.particle_id in self.end_state_particles_old_eos.keys()]
         index_tracker = 0  # for incrementing a duel-column new/old EOS setup
         for index, prop in enumerate(self.properties):
             new_index, old_index = index_tracker, index_tracker + 1
