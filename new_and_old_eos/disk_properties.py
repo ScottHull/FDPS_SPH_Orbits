@@ -34,8 +34,8 @@ class DiskProperties:
             4: "Impactor Iron"
         }
 
-    def get_end_state_disk_particles(self, end_iteration, formatted=False):
-        if formatted:
+    def get_end_state_disk_particles(self, end_iteration):
+        if self.formatted:
             pm_new = ParticleMap(path=self.new_eos_path + "/{}.csv".format(end_iteration), center=True,
                                  relative_velocity=False, formatted=self.formatted).collect_particles()
             pm_old = ParticleMap(path=self.old_eos_path + "/{}.csv".format(end_iteration), center=True,
