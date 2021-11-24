@@ -28,13 +28,16 @@ def calc_target_velocity(vx, vy, vz, tags):
 
 
 def get_iron_fraction(particles):
-    roche_limit = get_roche_radius()
-    disk_particles = [p for p in particles if p.label == "DISK"]
-    total_disk_mass = sum([p.mass for p in disk_particles])
-    total_iron_disk_mass = sum([p.mass for p in disk_particles if p.tag % 2 != 0])
-    total_iron_disk_mass_beyond_roche = sum(
-        [p.mass for p in disk_particles if p.tag % 2 != 0 and p.distance > roche_limit])
-    return total_iron_disk_mass / total_disk_mass, total_iron_disk_mass_beyond_roche / total_disk_mass
+    try:
+        roche_limit = get_roche_radius()
+        disk_particles = [p for p in particles if p.label == "DISK"]
+        total_disk_mass = sum([p.mass for p in disk_particles])
+        total_iron_disk_mass = sum([p.mass for p in disk_particles if p.tag % 2 != 0])
+        total_iron_disk_mass_beyond_roche = sum(
+            [p.mass for p in disk_particles if p.tag % 2 != 0 and p.distance > roche_limit])
+        return total_iron_disk_mass / total_disk_mass, total_iron_disk_mass_beyond_roche / total_disk_mass
+    except Exception as e:
+        return 0.0
 
 
 def refine_target_velocity(particles):
