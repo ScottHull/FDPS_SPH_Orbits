@@ -25,9 +25,10 @@ parameter = "entropy"
 min_normalize = 0
 max_normalize = 8000
 square_scale = 4e7
-number_processes = 100
-new_path = "/home/theia/scotthull/sph_simulations/gi_new_eos"
-old_path = "/home/theia/scotthull/sph_simulations/gi_old_eos"
+number_processes_new_eos = 200
+number_processes_old_eos = 100
+new_path = "/home/theia/scotthull/1M/gi_new_eos_b_073"
+old_path = "/home/theia/scotthull/1M/gi_old_eos_b_073"
 phase_curve_new = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/forstSTS__vapour_curve.txt"
 phase_curve_old = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/duniteN_vapour_curve.txt"
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/vmf_animate"
@@ -41,10 +42,10 @@ plt.style.use("dark_background")
 cmap = cm.get_cmap('jet')
 normalizer = Normalize(min_normalize, max_normalize)
 
-cf = CombineFile(num_processes=number_processes, time=min_iteration, output_path=new_path)
+cf = CombineFile(num_processes=number_processes_new_eos, time=min_iteration, output_path=new_path)
 cf.combine()
 min_time = seconds_to_hours(cf.sim_time)
-cf = CombineFile(num_processes=number_processes, time=max_iteration, output_path=new_path)
+cf = CombineFile(num_processes=number_processes_new_eos, time=max_iteration, output_path=new_path)
 cf.combine()
 max_time = seconds_to_hours(cf.sim_time)
 
@@ -53,8 +54,8 @@ old_vmfs = []
 new_times = []
 old_times = []
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
-    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time, solve=True)
-    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time, solve=True)
+    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes_old_eos, time=time, solve=True)
+    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes_old_eos, time=time, solve=True)
     new_disk_particles = []
     new_times.append(seconds_to_hours(new_time))
     old_times.append(seconds_to_hours(old_time))
