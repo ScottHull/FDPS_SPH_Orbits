@@ -37,7 +37,7 @@ def get_iron_fraction(particles):
             [p.mass for p in disk_particles if p.tag % 2 != 0 and p.distance > roche_limit])
         return total_iron_disk_mass / total_disk_mass, total_iron_disk_mass_beyond_roche / total_disk_mass
     except Exception as e:
-        return 0.0
+        return 0.0, 0.0
 
 
 def refine_target_velocity(particles):
