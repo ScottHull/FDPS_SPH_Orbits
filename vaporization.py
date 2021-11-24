@@ -54,7 +54,7 @@ old_vmfs = []
 new_times = []
 old_times = []
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
-    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes_old_eos, time=time, solve=True)
+    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes_new_eos, time=time, solve=True)
     old_particles, old_time = get_particles(path=old_path, number_processes=number_processes_old_eos, time=time, solve=True)
     new_disk_particles = []
     new_times.append(seconds_to_hours(new_time))

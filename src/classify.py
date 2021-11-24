@@ -171,10 +171,14 @@ def is_planet(p, a):
     :param a:
     :return:
     """
-    if abs(p.distance) < a:
-        p.label = "PLANET"
-        return True
-    return False
+    try:
+        if abs(p.distance) < a:
+            p.label = "PLANET"
+            return True
+        return False
+    except Exception as e:
+        p.label = "ERROR"
+        return False
 
 
 def circular_orbit_beyond_roche(p):
@@ -185,10 +189,14 @@ def circular_orbit_beyond_roche(p):
 
 
 def will_be_planet_circular_orbit(p, a):
-    if abs(p.radius_circular_orbit) < a:
-        p.label = "PLANET"
-        return True
-    return False
+    try:
+        if abs(p.radius_circular_orbit) < a:
+            p.label = "PLANET"
+            return True
+        return False
+    except Exception as e:
+        p.label = "ERROR"
+        return False
 
 
 def will_be_planet(p, a):
@@ -198,24 +206,36 @@ def will_be_planet(p, a):
     :param a:
     :return:
     """
-    if p.eccentricity < 1.0 and abs(p.periapsis) <= a:
-        p.label = "PLANET"
-        return True
-    return False
+    try:
+        if p.eccentricity < 1.0 and abs(p.periapsis) <= a:
+            p.label = "PLANET"
+            return True
+        return False
+    except Exception as e:
+        p.label = "ERROR"
+        return False
 
 
 def is_disk(p, a):
-    if p.eccentricity <= 1.0 and abs(p.periapsis) > a:
-        p.label = "DISK"
-        return True
-    return False
+    try:
+        if p.eccentricity <= 1.0 and abs(p.periapsis) > a:
+            p.label = "DISK"
+            return True
+        return False
+    except Exception as e:
+        p.label = "ERROR"
+        return False
 
 
 def is_escape(p, a):
-    if p.eccentricity > 1.0:
-        p.label = "ESCAPE"
-        return True
-    return False
+    try:
+        if p.eccentricity > 1.0:
+            p.label = "ESCAPE"
+            return True
+        return False
+    except Exception as e:
+        p.label = "ERROR"
+        return False
 
 
 def log(iteration, error, a,

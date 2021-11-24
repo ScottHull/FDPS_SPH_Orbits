@@ -50,6 +50,17 @@ class ParticleMap:
                     target_iron=True
                 )  # COM of the target iron
         self.relative_velocity = relative_velocity
+        self.EARTH_MASS = 5.972 * 10 ** 24
+        self.LUNAR_MASS = 7.34767309 * 10 ** 22
+        self.L_EM = 3.5 * 10 ** 34
+        self.targets = {
+            "disk mass beyond roche": "0.92 M_L = {} kg".format(0.92 / self.LUNAR_MASS),
+            "protoplanet mass": "1 M_E = {} kg".format(1 * self.EARTH_MASS),
+            "disk mass": "1.62 M_L = {} kg".format(1.62 * self.LUNAR_MASS),
+            "escaping mass": "0.41 M_L = {} kg".format(0.41 * self.LUNAR_MASS),
+            "disk angular momentum": "0.31 L_EM = {} kg m^2 / s".format(0.31 * self.L_EM),
+            "total angular momentum": "1 L_EM = {} kg m^2 / s".format(1 * self.L_EM),
+        }
 
     def report(self, name="disk_profile.txt"):
         if name in os.listdir(os.getcwd()):

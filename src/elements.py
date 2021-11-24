@@ -113,18 +113,21 @@ class Particle:
         return self.semi_major_axis * (1.0 - self.eccentricity)
 
     def recalculate_elements(self, mass_grav_body):
-        self.mass_grav_body = mass_grav_body
-        self.distance = np.linalg.norm(self.position)
-        self.angular_momentum_vector = self.__angular_momentum_vector()
-        self.angular_momentum = self.__angular_momentum()
-        self.momentum_vector = self.__total_momentum_vector()
-        self.semi_major_axis = self.__semi_major_axis()
-        self.orbital_energy = self.__total_orbital_energy()
-        self.eccentricity = self.__eccentricity()
-        self.eccentricity_vector = self.__eccentricity_vector()
-        self.periapsis_node_vector = self.__node_vector()
-        self.inclination = self.__inclination()
-        self.longitude_of_ascending_node = self.__longitude_of_ascending_node()
-        self.argument_of_periapsis = self.__argument_of_periapsis()
-        # self.true_anomaly = self.__true_anomaly()
-        self.periapsis = self.__periapsis()
+        try:
+            self.mass_grav_body = mass_grav_body
+            self.distance = np.linalg.norm(self.position)
+            self.angular_momentum_vector = self.__angular_momentum_vector()
+            self.angular_momentum = self.__angular_momentum()
+            self.momentum_vector = self.__total_momentum_vector()
+            self.semi_major_axis = self.__semi_major_axis()
+            self.orbital_energy = self.__total_orbital_energy()
+            self.eccentricity = self.__eccentricity()
+            self.eccentricity_vector = self.__eccentricity_vector()
+            self.periapsis_node_vector = self.__node_vector()
+            self.inclination = self.__inclination()
+            self.longitude_of_ascending_node = self.__longitude_of_ascending_node()
+            self.argument_of_periapsis = self.__argument_of_periapsis()
+            # self.true_anomaly = self.__true_anomaly()
+            self.periapsis = self.__periapsis()
+        except Exception as e:
+            self.label = "ERROR"
