@@ -196,7 +196,7 @@ class ParticleMap:
                 "b": self.b,
             }
 
-    def solve(self, particles, phase_path, K=0.335, G=6.674 * 10 ** -11, report_name="disk_profile.txt"):
+    def solve(self, particles, phase_path, K=0.335, G=6.674 * 10 ** -11, report_name="disk_profile.txt", iteration="UNSPECIFIED", simulation_time="UNSPECIFIED"):
         # K = 0.335 for Earth, K = 2/5 for homogenous body
         self.__convergence_loop(particles=particles, K=K, G=G)
         self.__convergence_loop(particles=particles, K=K, G=G)  # run twice to recalc avg density after initial solution
@@ -207,4 +207,6 @@ class ParticleMap:
         self.profile_report.update({"disk vmf": self.vmf})
         self.profile_report.update({"name": report_name})
         self.profile_report.update({'phase_path': phase_path})
+        self.profile_report.update({'iteration profiled (corresponds to output number)': iteration})
+        self.profile_report.update({'simulation time': simulation_time})
         self.report(name=report_name)

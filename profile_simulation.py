@@ -23,4 +23,4 @@ formatted_time = cf.sim_time
 f = os.getcwd() + "/{}".format(to_fname)
 pm = ParticleMap(path=f, center=True, relative_velocity=False)
 particles = pm.collect_particles(find_orbital_elements=True)
-pm.solve(particles=particles, phase_path=phase_path, report_name="{}.txt".format(output_name))
+pm.solve(particles=particles, phase_path=phase_path, report_name="{}.txt".format(output_name), iteration=end_iteration, simulation_time=formatted_time)
