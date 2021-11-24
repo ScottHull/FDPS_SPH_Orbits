@@ -47,7 +47,10 @@ def calc_vapor_mass_fraction(particles, phase_path, only_disk=True):
             elif entropy_i > entropy_vap:
                 vapor_mass_fraction += 1.0
 
-    vapor_mass_fraction = vapor_mass_fraction / num_particles
+    try:
+        vapor_mass_fraction = vapor_mass_fraction / num_particles
+    except Exception as e:  # likely if there are no disk particles
+        return 0.0
     return vapor_mass_fraction
 
 def plot_disk_entropy(particles, phase_path="src/phase_data/duniteS_vapour_curve.txt"):
