@@ -53,12 +53,13 @@ old_vmfs = []
 new_times = []
 old_times = []
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
-    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time, solve=False)
-    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time, solve=False)
+    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes, time=time, solve=True)
+    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes, time=time, solve=True)
+    new_disk_particles = []
     new_times.append(seconds_to_hours(new_time))
     old_times.append(seconds_to_hours(old_time))
-    vmf_new = calc_vapor_mass_fraction(particles=new_particles, phase_path=phase_curve_new, only_disk=False) * 100.0
-    vmf_old = calc_vapor_mass_fraction(particles=old_particles, phase_path=phase_curve_old, only_disk=False) * 100.0
+    vmf_new = calc_vapor_mass_fraction(particles=new_particles, phase_path=phase_curve_new, only_disk=True) * 100.0
+    vmf_old = calc_vapor_mass_fraction(particles=old_particles, phase_path=phase_curve_old, only_disk=True) * 100.0
     new_vmfs.append(vmf_new)
     old_vmfs.append(vmf_old)
     # Create 2x2 sub plots

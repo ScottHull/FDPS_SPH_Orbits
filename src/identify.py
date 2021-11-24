@@ -188,7 +188,7 @@ class ParticleMap:
             self.vmf = None
         else:
             self.vmf = vapor.calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
-        self.profile_report.update({"vmf": self.vmf})
+        self.profile_report.update({"disk vmf": self.vmf})
         self.profile_report.update({"name": report_name})
         self.profile_report.update({'phase_path': phase_path})
         self.report(name=report_name)
