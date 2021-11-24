@@ -14,7 +14,8 @@ from src.new_and_old_eos import get_parameter_from_particles
 
 class DiskProperties:
 
-    def __init__(self, new_eos_path, old_eos_path, new_num_processes, old_num_processes, properties=None, formatted=True):
+    def __init__(self, new_eos_path, old_eos_path, new_num_processes, old_num_processes, properties=None,
+                 formatted=True):
         if properties is None:
             properties = ['entropy', 'pressure', 'density', 'temperature']
         self.properties = properties
@@ -46,7 +47,7 @@ class DiskProperties:
             f = os.getcwd() + "/merged_{}.dat".format(end_iteration)
             pm_new = ParticleMap(path=f, center=True, relative_velocity=False).collect_particles()
             os.remove(f)
-            
+
             cf = CombineFile(num_processes=self.old_num_processes, time=end_iteration, output_path=self.old_eos_path)
             formatted_time = cf.sim_time
             combined_file = cf.combine()
@@ -71,7 +72,8 @@ class DiskProperties:
                 s=s
             )
 
-    def profile_disk_at_time(self, new_eos_particles, old_eos_particles, fig, axs, iteration, name="disk_profile_{}.png"):
+    def profile_disk_at_time(self, new_eos_particles, old_eos_particles, fig, axs, iteration,
+                             name="disk_profile_{}.png"):
         axs = axs.flatten()
         new_disk_particles = [p for p in new_eos_particles if p.particle_id in self.end_state_particles_new_eos.keys()]
         old_disk_particles = [p for p in old_eos_particles if p.particle_id in self.end_state_particles_old_eos.keys()]
@@ -89,7 +91,7 @@ class DiskProperties:
             for ax in [new_ax, old_ax]:
                 ax.grid(alpha=0.4)
                 if index - -1 == len(self.properties):
-                    ax.set_xlabel("r'Radius ($R_{\bigoplus}$)'")
+                    ax.set_xlabel(r'Radius $R_{\bigoplus}$')
             index_tracker += 2
         fig.save(name.format(iteration), format='png')
         return fig

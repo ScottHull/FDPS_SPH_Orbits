@@ -27,7 +27,7 @@ disk_profile = disk_properties.DiskProperties(
     new_eos_path=new_eos_unformatted_path,
     old_eos_path=old_eos_unformatted_path,
     properties=None,
-    formatted=False,
+    formatted=True,
     new_num_processes=num_processes_new,
     old_num_processes=num_processes_old
 )
@@ -41,7 +41,7 @@ disk_profile.profile_disk_at_time(
     axs=axs,
     iteration=max_iteration,
     new_eos_particles=pm_end_new_eos,
-    old_eos_particles=pm_end_old_eos
+    old_eos_particles=pm_end_old_eos,
 )
 
 
