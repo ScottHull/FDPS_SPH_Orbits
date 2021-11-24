@@ -132,6 +132,7 @@ def collect_particles(output, com, mass_protoearth, relative_velocity=False, fin
                 mass_grav_body=float(mass_protoearth),
                 calculate_elements=find_orbital_elements
             )
+            p.label = output['label'][row]
             particles.append(p)
     print("Collected particles!")
     return particles
