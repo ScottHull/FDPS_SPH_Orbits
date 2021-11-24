@@ -9,10 +9,10 @@ from src.time import get_max_time, seconds_to_hours
 from src.read import get_particles_from_formatted
 
 min_iteration = 0
-max_iteration = 2650
+max_iteration = 3000
 increment = 10
 num_processes_new = 200
-num_processes_old = 100
+num_processes_old = 200
 new_eos_silicate_phase_curve = "src/phase_data/forstSTS__vapour_curve.txt"
 old_eos_silicate_phase_curve = "src/phase_data/duniteN_vapour_curve.txt"
 new_eos_formatted_path = "/home/theia/scotthull/1M/formatted_gi_new_eos_b_073"
@@ -27,7 +27,7 @@ disk_profile = disk_properties.DiskProperties(
     new_eos_path=new_eos_unformatted_path,
     old_eos_path=old_eos_unformatted_path,
     properties=None,
-    formatted=False,
+    formatted=True,
     new_num_processes=num_processes_new,
     old_num_processes=num_processes_old
 )
