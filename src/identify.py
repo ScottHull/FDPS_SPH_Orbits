@@ -180,7 +180,7 @@ class ParticleMap:
                 "mass_protoplanet": NEW_MASS_PROTOPLANET,
                 "mass_protoplanet (M_E)": NEW_MASS_PROTOPLANET / self.EARTH_MASS,
                 "mass_disk": NEW_MASS_DISK,
-                "mass_disk (M_L)": NEW_MASS_DISK / self.LUNAR_MASS
+                "mass_disk (M_L)": NEW_MASS_DISK / self.LUNAR_MASS,
                 "mass_escaped": NEW_MASS_ESCAPED,
                 "mass_escaped (M_L)": NEW_MASS_ESCAPED / self.LUNAR_MASS,
                 "total_angular_momentum": total_angular_momentum,
