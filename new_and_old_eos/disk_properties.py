@@ -24,6 +24,8 @@ class DiskProperties:
         self.old_eos_path = old_eos_path
         self.new_num_processes = new_num_processes
         self.old_num_processes = old_num_processes
+        self.new_eos_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
+        self.old_eos_phase_path = "src/phase_data/duniteN_vapour_curve.txt"
         self.end_state_particles_new_eos = {}
         self.end_state_particles_old_eos = {}
         self.earth_radius = 6371 * 1000
@@ -45,7 +47,8 @@ class DiskProperties:
             formatted_time = cf.sim_time
             combined_file = cf.combine()
             f = os.getcwd() + "/merged_{}.dat".format(end_iteration)
-            pm_new = ParticleMap(path=f, center=True, relative_velocity=False).collect_particles()
+            pm_new = ParticleMap(path=f, center=True, relative_velocity=False)
+            pm_new.solve(particles=pm_new, phase_path=self.new_eos_phase_path)
             os.remove(f)
 
             cf = CombineFile(num_processes=self.old_num_processes, time=end_iteration, output_path=self.old_eos_path)
@@ -53,6 +56,7 @@ class DiskProperties:
             combined_file = cf.combine()
             f = os.getcwd() + "/merged_{}.dat".format(end_iteration)
             pm_old = ParticleMap(path=f, center=True, relative_velocity=False).collect_particles()
+            pm_old.solve(particles=pm_new, phase_path=self.old_eos_phase_path)
             os.remove(f)
         for i in list(zip(["new", "old"], [pm_new, pm_old])):
             ids = [p.particle_id for p in i[1] if p.label == "DISK"]

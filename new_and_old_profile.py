@@ -27,7 +27,7 @@ disk_profile = disk_properties.DiskProperties(
     new_eos_path=new_eos_unformatted_path,
     old_eos_path=old_eos_unformatted_path,
     properties=None,
-    formatted=True,
+    formatted=False,
     new_num_processes=num_processes_new,
     old_num_processes=num_processes_old
 )
