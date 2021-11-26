@@ -48,23 +48,22 @@ for v in vars:
     both = [new_ax, old_ax]
     all_y_values = []
     for tag in labels.keys():
-        new_y = [get_parameter_from_particles(particle=p, parameter=v) for p in new_particles if p.tag == tag]
-        old_y = [get_parameter_from_particles(particle=p, parameter=v) for p in old_particles if p.tag == tag]
+        new_y = [get_parameter_from_particles(particle=p, parameter=v) for p in new_particles if p.tag == tag and p.label == "DISK"]
+        old_y = [get_parameter_from_particles(particle=p, parameter=v) for p in old_particles if p.tag == tag and p.label == "DISK"]
         all_y_values += new_y + old_y
         new_ax.scatter(
-            [p.distance / r_earth for p in new_particles if p.tag == tag],
+            [p.distance / r_earth for p in new_particles if p.tag == tag and p.label == "DISK"],
             new_y,
             s=2,
             label=labels[tag],
         )
         old_ax.scatter(
-            [p.distance / r_earth for p in old_particles if p.tag == tag],
+            [p.distance / r_earth for p in old_particles if p.tag == tag and p.label == "DISK"],
             old_y,
             s=2,
             label=labels[tag]
         )
-    old_ax.set_yticks([])
-    old_ax.set_yticks([], minor=True)
+    old_ax.set_yticklabels([])
     new_ax.set_ylabel(v)
     for ax in both:
         ax.set_ylim(min(all_y_values), max(all_y_values))
