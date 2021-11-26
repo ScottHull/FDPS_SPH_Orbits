@@ -29,7 +29,8 @@ new_time, new_particles = get_particles(
     number_processes=num_processes_new,
     path=new_eos_formatted_path,
     time=iteration,
-    solve=True
+    solve=True,
+    form
 )
 old_time, old_particles = get_particles(
     number_processes=num_processes_old,
