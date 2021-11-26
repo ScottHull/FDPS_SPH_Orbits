@@ -13,7 +13,7 @@ eos_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 
 # if os.path.exists(to_path):
 #     shutil.rmtree(to_path)
-# os.mkdir(to_path)
+os.mkdir(to_path)
 
 r = BuildReports(
     to_dir=to_path,

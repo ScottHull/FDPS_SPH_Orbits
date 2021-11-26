@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import pandas
 import matplotlib.pyplot as plt
 
@@ -29,14 +30,14 @@ new_time, new_particles = get_particles(
     number_processes=num_processes_new,
     path=new_eos_formatted_path,
     time=iteration,
-    solve=True,
+    solve=False,  # if using formatted, already solved!
     formatted=True
 )
 old_time, old_particles = get_particles(
     number_processes=num_processes_old,
     path=old_eos_formatted_path,
     time=iteration,
-    solve=True,
+    solve=False,  # if using formatted, already solved!
     formatted=True
 )
 

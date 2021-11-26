@@ -33,7 +33,8 @@ def get_particles(path, number_processes, time, eos_phase_path=None, solve=False
     particles = pm.collect_particles(find_orbital_elements=solve)
     if solve:
         pm.solve(particles=particles, phase_path=eos_phase_path)
-    os.remove(f)
+    if not formatted:
+        os.remove(f)
     return particles, formatted_time
 
 
