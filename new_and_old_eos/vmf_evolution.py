@@ -55,7 +55,7 @@ class VMFtimeseries:
         ax1 = plot(fig=fig, axs=axs, index=0, time=new_time, particles=new_particles, cmap=self.cmap,
                    normalizer=self.normalizer,
                    parameter=self.parameter, square_scale=self.square_scale, flatten=False)
-        ax2 = plot(fig=fig, axs=axs, index=1, time=new_time, particles=old_particles, cmap=self.cmap,
+        ax2 = plot(fig=fig, axs=axs, index=1, time=old_time, particles=old_particles, cmap=self.cmap,
                    normalizer=self.normalizer,
                    parameter=self.parameter, square_scale=self.square_scale, flatten=False)
         ax3.plot(
@@ -93,10 +93,16 @@ class VMFtimeseries:
         legend = ax3.legend(fontsize=6, loc='upper left')
         plt.savefig(self.to_path + "/{}.png".format(iteration), format='png', dpi=200)
 
-    def get_vmfs(self, new_particles, old_particles, new_time, old_time):
+    def get_vmfs(self, iteration, new_particles, old_particles, new_time, old_time):
         vmf_new = calc_vapor_mass_fraction(particles=new_particles, phase_path=self.new_phase_path, only_disk=True) * 100.0
         vmf_old = calc_vapor_mass_fraction(particles=old_particles, phase_path=self.old_phase_path, only_disk=True) * 100.0
         self.text.write("{},{},{},{}\n".format(new_time, old_time, vmf_new, vmf_old))
-        self.__build_vmf_new_old_plot(new_particles, old_particles, new_time, old_time)
+        self.__build_vmf_new_old_plot(
+            iteration=iteration,
+            new_particles=new_particles,
+            old_particles=old_particles,
+            new_time=new_time,
+            old_time=old_time
+        )
 
 

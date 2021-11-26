@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import shutil
+from random import randint
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -17,11 +18,10 @@ from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_it
 
 
 def get_particles(path, number_processes, time, eos_phase_path=None, solve=False):
-    cf = CombineFile(num_processes=number_processes, time=time, output_path=path)
+    f = os.getcwd() + "/merged_{}_{}.dat".format(time, randint(0, 1000000))
+    cf = CombineFile(num_processes=number_processes, time=time, output_path=path, to_fname=f)
     combined_file = cf.combine()
     formatted_time = cf.sim_time
-    # f = os.getcwd() + "/merged_{}.dat".format(closest_iteration_to_time)
-    f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
     particles = pm.collect_particles(find_orbital_elements=solve)
     if solve:
