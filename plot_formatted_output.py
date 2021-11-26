@@ -63,3 +63,4 @@ for v in vars:
 
 axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
+plt.savefig("end_state_formatted.png", format='png')
