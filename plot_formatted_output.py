@@ -23,7 +23,7 @@ plt.style.use("dark_background")
 vars = ["entropy", "temperature", "pressure"]
 
 fig, axs = plt.subplots(len(vars), 2, figsize=(8, 16), sharex='all',
-                        gridspec_kw={"hspace": 0.14, "wspace": 0.14})
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.05})
 fig.patch.set_facecolor('xkcd:black')
 
 new_particles, new_time = get_particles(
@@ -67,7 +67,7 @@ for v in vars:
     old_ax.set_yticks([], minor=True)
     new_ax.set_ylabel(v)
     for ax in both:
-        ax.set_lim(min(all_y_values), max(all_y_values))
+        ax.set_ylim(min(all_y_values), max(all_y_values))
         ax.grid(alpha=0.4)
     if v == vars[-1]:
         for ax in both:
