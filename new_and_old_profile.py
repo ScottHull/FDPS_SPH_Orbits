@@ -65,12 +65,20 @@ for iteration in np.arange(min_iteration, max_iteration + increment, increment):
     new_time, new_particles = get_particles(
         number_processes=num_processes_new,
         path=new_eos_unformatted_path,
-        time=iteration
+        time=iteration,
+        solve=True
     )
     old_time, old_particles = get_particles(
         number_processes=num_processes_old,
         path=old_eos_unformatted_path,
-        time=iteration
+        time=iteration,
+        solve=True
     )
-
+    vmf.get_vmfs(
+        iteration=iteration,
+        new_particles=new_particles,
+        old_particles=old_particles,
+        new_time=new_time,
+        old_time=old_time,
+    )
 
