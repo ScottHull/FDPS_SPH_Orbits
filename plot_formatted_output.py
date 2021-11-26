@@ -61,6 +61,7 @@ for v in vars:
     if v == vars[-1]:
         for ax in both:
             ax.set_xlabel(r'Radius $R_{\bigoplus}$')
+    plotting_index += 2
 
 axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
