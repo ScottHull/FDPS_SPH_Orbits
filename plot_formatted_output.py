@@ -6,8 +6,8 @@ from src.new_and_old_eos import get_particles, get_parameter_from_particles
 iteration = 3000
 num_processes_new = 200
 num_processes_old = 200
-new_eos_formatted_path = "formatted_gi_new_eos_b_073"
-old_eos_formatted_path = "formatted_gi_old_eos_b_073"
+new_eos_formatted_path = "/home/theia/scotthull/1M/formatted_gi_new_eos_b_073"
+old_eos_formatted_path = "/home/theia/scotthull/1M/formatted_gi_old_eos_b_073"
 r_earth = 6371 * 1000
 
 labels = {
