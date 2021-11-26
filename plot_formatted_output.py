@@ -50,10 +50,14 @@ for v in vars:
         new_ax.scatter(
             [p.distance / r_earth for p in new_particles if p.tag == tag],
             [get_parameter_from_particles(particle=p, parameter=v) for p in new_particles if p.tag == tag],
+            s=2,
+            label=labels[tag],
         )
         old_ax.scatter(
             [p.distance / r_earth for p in old_particles if p.tag == tag],
             [get_parameter_from_particles(particle=p, parameter=v) for p in old_particles if p.tag == tag],
+            s=2,
+            label=labels[tag]
         )
     new_ax.set_ylabel(v)
     for ax in both:
@@ -65,4 +69,7 @@ for v in vars:
 
 axs.flatten()[0].set_title("New EoS")
 axs.flatten()[1].set_title("Old EoS")
+legend = axs.flatten()[0].legend(loc='upper right')
+for handle in legend.legendHandles:
+    handle.set_sizes([4.0])
 plt.savefig("end_state_formatted.png", format='png')
