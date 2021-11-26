@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import csv
 import shutil
 from random import randint
 import numpy as np
@@ -18,10 +19,16 @@ from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_it
 
 
 def get_particles(path, number_processes, time, eos_phase_path=None, solve=False, formatted=False):
-    f = os.getcwd() + "/merged_{}_{}.dat".format(time, randint(0, 1000000))
-    cf = CombineFile(num_processes=number_processes, time=time, output_path=path, to_fname=f)
-    combined_file = cf.combine()
-    formatted_time = cf.sim_time
+    if not formatted:
+        f = os.getcwd() + "/merged_{}_{}.dat".format(time, randint(0, 1000000))
+        cf = CombineFile(num_processes=number_processes, time=time, output_path=path, to_fname=f)
+        combined_file = cf.combine()
+        formatted_time = cf.sim_time
+    else:
+        f = path + "/{}.csv".format(time)
+        with open(f, 'r') as infile:
+            reader = csv.reader(infile, delimiter="\t")
+            formatted_time = float(next(reader)[0])
     pm = ParticleMap(path=f, center=True, relative_velocity=False, formatted=formatted)
     particles = pm.collect_particles(find_orbital_elements=solve)
     if solve:
@@ -56,7 +63,8 @@ def plot(fig, axs, particles, index, time, cmap, normalizer, square_scale, param
     ax.scatter(
         [p.position[0] for p in particles if p.position[2] < 0],
         [p.position[1] for p in particles if p.position[2] < 0],
-        c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if p.position[2] < 0],
+        c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if
+           p.position[2] < 0],
         s=0.02,
         marker="o",
     )
@@ -189,6 +197,7 @@ def get_parameter(particle, time, iteration):
         "iteration": iteration
     }
 
+
 def __peaks_df(peaks, name, save=False):
     particle_ids = list(peaks.keys())
     df = pd.DataFrame({
@@ -206,7 +215,9 @@ def __peaks_df(peaks, name, save=False):
         df.to_csv("peaks_{}.csv".format(name))
     return df
 
-def get_peak(save, parameter, min_iteration, max_iteration, interval, new_path, old_path, number_processes, solve=False):
+
+def get_peak(save, parameter, min_iteration, max_iteration, interval, new_path, old_path, number_processes,
+             solve=False):
     d_new = {}
     d_old = {}
     __iter = 0
@@ -235,12 +246,13 @@ def get_peak(save, parameter, min_iteration, max_iteration, interval, new_path, 
     peaks_old_df = __peaks_df(peaks=d_old, name="old", save=save)
     return d_new, d_old
 
+
 def get_common_yrange(new_particles, old_particles, parameter):
     vals = [
-        get_parameter_from_particles(p, parameter) for p in new_particles
-    ] + [
-        get_parameter_from_particles(p, parameter) for p in old_particles
-    ]
+               get_parameter_from_particles(p, parameter) for p in new_particles
+           ] + [
+               get_parameter_from_particles(p, parameter) for p in old_particles
+           ]
     min_val, max_val = min(vals), max(vals)
     buffer = abs(max_val - min_val) * 0.05
     return [min_val - buffer, max_val + buffer]
