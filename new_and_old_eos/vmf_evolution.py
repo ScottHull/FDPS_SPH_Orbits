@@ -104,5 +104,3 @@ class VMFtimeseries:
             new_time=new_time,
             old_time=old_time
         )
-
-
