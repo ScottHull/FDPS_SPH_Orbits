@@ -30,13 +30,14 @@ new_time, new_particles = get_particles(
     path=new_eos_formatted_path,
     time=iteration,
     solve=True,
-    form
+    formatted=True
 )
 old_time, old_particles = get_particles(
     number_processes=num_processes_old,
     path=old_eos_formatted_path,
     time=iteration,
-    solve=True
+    solve=True,
+    formatted=True
 )
 
 plotting_index = 0
