@@ -64,12 +64,12 @@ vmf = vmf_evolution.VMFtimeseries(
 for iteration in np.arange(min_iteration, max_iteration + increment, increment):
     new_time, new_num_particles, new_particles = get_particles(
         number_processes=num_processes_new,
-        path=new_eos_formatted_path,
+        path=new_eos_unformatted_path,
         time=iteration
     )
     old_time, old_num_particles, old_particles = get_particles(
         number_processes=num_processes_old,
-        path=old_eos_formatted_path,
+        path=old_eos_unformatted_path,
         time=iteration
     )
 

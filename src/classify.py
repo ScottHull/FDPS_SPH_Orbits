@@ -81,7 +81,7 @@ def collect_particles(output, com, mass_protoearth, relative_velocity=False, fin
                 tags=output["tag"]
             )
     if not formatted:
-        for row in range(0, len(output[output.keys()[0]])):
+        for row in range(0, len(output[list(output.keys())[0]])):
             position = [float(output[3][row]) - com[0], float(output[4][row]) - com[1],
                         float(output[5][row]) - com[2]]
             velocity = [float(output[6][row]), float(output[7][row]), float(output[8][row])]
@@ -108,7 +108,7 @@ def collect_particles(output, com, mass_protoearth, relative_velocity=False, fin
             )
             particles.append(p)
     else:
-        for row in range(0, len(output[output.keys()[0]])):
+        for row in range(0, len(output[list(output.keys())[0]])):
             position = [float(output["x"][row]) - com[0], float(output["y"][row]) - com[1],
                         float(output["z"][row]) - com[2]]
             velocity = [float(output["vx"][row]), float(output["vy"][row]), float(output["vz"][row])]
