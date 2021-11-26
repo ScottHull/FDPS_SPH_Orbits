@@ -26,14 +26,14 @@ fig, axs = plt.subplots(len(vars), 2, figsize=(8, 16), sharex='all',
                         gridspec_kw={"hspace": 0.14, "wspace": 0.14})
 fig.patch.set_facecolor('xkcd:black')
 
-new_time, new_particles = get_particles(
+new_particles, new_time = get_particles(
     number_processes=num_processes_new,
     path=new_eos_formatted_path,
     time=iteration,
     solve=False,  # if using formatted, already solved!
     formatted=True
 )
-old_time, old_particles = get_particles(
+old_particles, old_time = get_particles(
     number_processes=num_processes_old,
     path=old_eos_formatted_path,
     time=iteration,
