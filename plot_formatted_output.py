@@ -12,10 +12,10 @@ old_eos_formatted_path = "/home/theia/scotthull/1M/formatted_gi_old_eos_b_073"
 r_earth = 6371 * 1000
 
 labels = {
-    1: "Target Silicate",
-    2: "Target Iron",
-    3: "Impactor Silicate",
-    4: "Impactor Iron"
+    0: "Target Silicate",
+    1: "Target Iron",
+    2: "Impactor Silicate",
+    3: "Impactor Iron"
 }
 
 plt.style.use("dark_background")
