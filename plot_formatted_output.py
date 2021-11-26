@@ -46,21 +46,28 @@ for v in vars:
     new_index, old_index = plotting_index, plotting_index + 1
     new_ax, old_ax = axs.flatten()[new_index], axs.flatten()[old_index]
     both = [new_ax, old_ax]
+    all_y_values = []
     for tag in labels.keys():
+        new_y = [get_parameter_from_particles(particle=p, parameter=v) for p in new_particles if p.tag == tag]
+        old_y = [get_parameter_from_particles(particle=p, parameter=v) for p in old_particles if p.tag == tag]
+        all_y_values += new_y + old_y
         new_ax.scatter(
             [p.distance / r_earth for p in new_particles if p.tag == tag],
-            [get_parameter_from_particles(particle=p, parameter=v) for p in new_particles if p.tag == tag],
+            new_y,
             s=2,
             label=labels[tag],
         )
         old_ax.scatter(
             [p.distance / r_earth for p in old_particles if p.tag == tag],
-            [get_parameter_from_particles(particle=p, parameter=v) for p in old_particles if p.tag == tag],
+            old_y,
             s=2,
             label=labels[tag]
         )
+    old_ax.set_yticks([])
+    old_ax.set_yticks([], minor=True)
     new_ax.set_ylabel(v)
     for ax in both:
+        ax.set_lim(min(all_y_values), max(all_y_values))
         ax.grid(alpha=0.4)
     if v == vars[-1]:
         for ax in both:
