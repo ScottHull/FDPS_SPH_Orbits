@@ -20,7 +20,7 @@ else:
 if "formatted" in path:
     f = path + "/{}.csv".format(end_iteration)
     pm = ParticleMap(path=f, center=True, relative_velocity=False, formatted=True)
-    particles = pm.collect_particles(find_orbital_elements=True)
+    particles = pm.collect_particles(find_orbital_elements=False)
     vmf = calc_vapor_mass_fraction(particles=particles, phase_path=phase_path, only_disk=True) * 100.0
 
     pm.profile_report.update({"disk vmf": vmf})

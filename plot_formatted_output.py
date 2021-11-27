@@ -63,6 +63,18 @@ for v in vars:
             s=2,
             label=labels[tag]
         )
+        if v == 'entropy':
+            num_disk_particles_new = len([p.entropy for p in new_particles if p.label == "DISK"])
+            num_disk_particles_old = len([p.entropy for p in old_particles if p.label == "DISK"])
+            max_s_new = [p.entropy for p in new_particles if p.label == "DISK" and p.entropy > 8000]
+            max_s_old = [p.entropy for p in old_particles if p.label == "DISK" and p.entropy > 8000]
+            print(
+                "There are {}% new eos particles > 8000 entropy ({}/{})\n"
+                "There are {}% old eos particles > 8000 entropy ({}/{})".format(
+                    len(max_s_new) / num_disk_particles_new * 100, len(max_s_new), num_disk_particles_new,
+                    len(max_s_old) / num_disk_particles_old * 100, len(max_s_old), num_disk_particles_old,
+                )
+            )
     old_ax.set_yticklabels([])
     new_ax.set_ylabel(v)
     for ax in both:
