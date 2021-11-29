@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from math import pi, sqrt
+import numpy as np
 from copy import copy
 import csv
 
@@ -142,6 +143,7 @@ class ParticleMap:
             self.mass_protoearth = copy(NEW_MASS_PROTOPLANET)
             iteration += 1
             total_angular_momentum = sum([i.angular_momentum_vector[2] for i in particles])  # in z-direction
+            disk_angular_momentum = sum([np.linalg.norm(i.angular_momentum_vector) for i in particles if i.label == "DISK"])
             satellite_mass = classify.predicted_satellite_mass(
                 disk_angular_momentum=NEW_Z_ANGULAR_MOMENTUM_DISK,
                 mass_target=NEW_MASS_PROTOPLANET,
@@ -185,10 +187,13 @@ class ParticleMap:
                 "mass_escaped (M_L)": NEW_MASS_ESCAPED / self.LUNAR_MASS,
                 "total_angular_momentum": total_angular_momentum,
                 "total_angular_momentum (L_EM)": total_angular_momentum / self.L_EM,
+                "disk_angular_momentum": disk_angular_momentum,
+                "disk_angular_momentum (L_EM)": disk_angular_momentum / self.L_EM,
                 "z_angular_momentum_disk": NEW_Z_ANGULAR_MOMENTUM_DISK,
                 "z_angular_momentum_disk (L_EM)": NEW_Z_ANGULAR_MOMENTUM_DISK / self.L_EM,
                 "average_density": self.avg_density,
-                "mass_beyond_roche": MASS_BEYOND_ROCHE,
+                "disk_mass_beyond_roche": MASS_BEYOND_ROCHE,
+                "disk_mass_beyond_roche (M_L)": MASS_BEYOND_ROCHE / self.LUNAR_MASS,
                 "satellite_mass": satellite_mass,
                 "iron_disk_mass_fraction": iron_disk_mass_fraction,
                 "iron_disk_mass_fraction_beyond_roche": iron_disk_mass_fraction_beyond_roche,
