@@ -20,6 +20,7 @@ class BuildReports:
         self.interval = interval
         self.labels = {}
         self.accessory_path = accessory_path
+        os.mkdir(accessory_path)
         self.__get_end_state()
 
     def __output_disk_state(self, particles, time, vmf):
