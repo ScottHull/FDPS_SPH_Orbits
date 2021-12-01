@@ -22,7 +22,7 @@ from src.report import BuildReports
 
 min_iteration = 0
 max_iteration = 3000
-sample_interval = 20
+sample_interval = 100
 parameter = "entropy"
 min_normalize = 0
 max_normalize = 8000
@@ -39,10 +39,15 @@ to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/vmf_animate_{}_{}".format(new_n
 particle_count_path = "/home/theia/scotthull/FDPS_SPH_Orbits/particle_counts_{}_{}".format(new_name, old_name)
 new_accessory_path = "/home/theia/scotthull/FDPS_SPH_Orbits/{}_disk_data".format(new_name)
 old_accessory_path = "/home/theia/scotthull/FDPS_SPH_Orbits/{}_disk_data".format(old_name)
+report_to_dir_new_eos = "/home/theia/scotthull/1M/{}_at_time".format(new_name)
+report_to_dir_old_eos = "/home/theia/scotthull/1M/{}_at_time".format(old_name)
 
 for i in [to_path, particle_count_path]:
     if os.path.exists(i):
         shutil.rmtree(i)
+    os.mkdir(i)
+
+for i in [report_to_dir_new_eos, report_to_dir_old_eos]:
     os.mkdir(i)
 
 plt.style.use("dark_background")
@@ -63,7 +68,7 @@ new_reports = BuildReports(
     eos_phase_path=phase_curve_new,
     from_dir=new_path,
     number_processes=number_processes_new_eos,
-    to_dir="/home/theia/scotthull/1M/{}_at_time".format(new_name)
+    to_dir=report_to_dir_new_eos
 )
 old_reports = BuildReports(
     accessory_path=old_accessory_path,
@@ -72,7 +77,7 @@ old_reports = BuildReports(
     eos_phase_path=phase_curve_old,
     from_dir=old_path,
     number_processes=number_processes_old_eos,
-    to_dir="/home/theia/scotthull/1M/{}_at_time".format(old_name)
+    to_dir=report_to_dir_old_eos
 )
 
 new_vmfs = []
