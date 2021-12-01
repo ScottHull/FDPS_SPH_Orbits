@@ -27,7 +27,7 @@ class BuildReports:
         avg_disk_entropy = [p.entropy for p in particles if p.label == "DISK"]
         avg_disk_entropy = sum(avg_disk_entropy) / len(avg_disk_entropy)
         disk_mass = sum([p.mass for p in particles if p.label == "DISK"])
-        line = "disk vmf\t{}\navg disk entropy\t{}\ndisk mass\t{}\n".format(vmf, avg_disk_entropy, disk_mass)
+        line = "time\t{}\ndisk vmf\t{}\navg disk entropy\t{}\ndisk mass\t{}\n".format(time, vmf, avg_disk_entropy, disk_mass)
         output.write(line)
         output.close()
 
