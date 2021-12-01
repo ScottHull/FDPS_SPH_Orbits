@@ -64,7 +64,7 @@ class BuildReports:
         self.build_report_at_time(time=self.end_time, solve=False, save=True)
 
     def build_report_at_time(self, time, solve=False, save=True):
-        fname = "merged_{}_{}.dat".format(time, randint(0, 1000000))
+        fname = "merged_{}_{}_reportsproc.dat".format(time, randint(0, 1000000))
         to_fname = "{}.csv".format(time)
         cf = CombineFile(num_processes=self.number_processes, time=time, output_path=self.from_dir, to_fname=fname)
         combined_file = cf.combine()
