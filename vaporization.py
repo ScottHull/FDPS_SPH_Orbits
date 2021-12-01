@@ -10,6 +10,7 @@ import matplotlib.gridspec as gridspec
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.font_manager as fm
+import multiprocessing.dummy as mp
 
 from src.identify import ParticleMap
 from src.combine import CombineFile
@@ -17,6 +18,7 @@ from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_it
 from src.new_and_old_eos import get_particles, scatter, plot, main_plotting_loop
 from src.animate import animate
 from src.vapor import calc_vapor_mass_fraction, get_particle_vapor_fraction
+from src.report import BuildReports
 
 min_iteration = 0
 max_iteration = 3000
@@ -26,12 +28,16 @@ min_normalize = 0
 max_normalize = 8000
 square_scale = 4e7
 number_processes_new_eos = 200
-number_processes_old_eos = 100
-new_path = "/home/theia/scotthull/1M/gi_new_eos_b_073"
-old_path = "/home/theia/scotthull/1M/gi_old_eos_b_073"
+number_processes_old_eos = 200
+new_name = "gi_new_eos_b_073"
+old_name = "gi_old_eos_b_073"
+new_path = "/home/theia/scotthull/1M/{}".format(new_name)
+old_path = "/home/theia/scotthull/1M/{}".format(old_name)
 phase_curve_new = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/forstSTS__vapour_curve.txt"
 phase_curve_old = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/duniteN_vapour_curve.txt"
-to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/vmf_animate"
+to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/vmf_animate_{}_{}".format(new_name, old_name)
+new_accessory_path = "/home/theia/scotthull/FDPS_SPH_Orbits/{}_disk_data".format(new_name)
+old_accessory_path = "/home/theia/scotthull/FDPS_SPH_Orbits/{}_disk_data".format(old_name)
 
 for i in [to_path]:
     if os.path.exists(i):
@@ -49,14 +55,36 @@ cf = CombineFile(num_processes=number_processes_new_eos, time=max_iteration, out
 cf.combine()
 max_time = seconds_to_hours(cf.sim_time)
 
+new_reports = BuildReports(
+    accessory_path=new_accessory_path,
+    start_time=min_iteration,
+    end_time=max_iteration,
+    eos_phase_path=phase_curve_new,
+    from_dir=new_path,
+    number_processes=number_processes_new_eos,
+    to_dir="/home/theia/scotthull/1M/{}_at_time".format(new_name)
+)
+old_reports = BuildReports(
+    accessory_path=old_accessory_path,
+    start_time=min_iteration,
+    end_time=max_iteration,
+    eos_phase_path=phase_curve_old,
+    from_dir=old_path,
+    number_processes=number_processes_old_eos,
+    to_dir="/home/theia/scotthull/1M/{}_at_time".format(old_name)
+)
+
 new_vmfs = []
 old_vmfs = []
 new_times = []
 old_times = []
-for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
+
+def __loop(time):
     print("VAPORIZATION CODE AT {}".format(time))
-    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes_new_eos, time=time, solve=True)
-    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes_old_eos, time=time, solve=True)
+    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes_new_eos, time=time,
+                                            solve=True)
+    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes_old_eos, time=time,
+                                            solve=True)
     new_disk_particles = []
     new_times.append(seconds_to_hours(new_time))
     old_times.append(seconds_to_hours(old_time))
@@ -116,6 +144,13 @@ for time in np.arange(min_iteration, max_iteration + sample_interval, sample_int
     cbar.ax.set_title(parameter.replace("_", " ").title(), fontsize=6)
     legend = ax3.legend(fontsize=6, loc='upper left')
     plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
+
+
+pool = mp.Pool(5)
+for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
+    pool.map(__loop, [time])
+pool.close()
+pool.join()
 
 animate(
     start_time=min_iteration,

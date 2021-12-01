@@ -31,6 +31,7 @@ class ParticleMap:
         self.centering_resolution = centering_resolution
         self.centering_delta = centering_delta
         self.com = [0, 0, 0]
+        self.vmf = None
         if center:
             if not formatted:
                 self.com = centering.center_of_mass(
