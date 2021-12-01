@@ -201,6 +201,9 @@ class ParticleMap:
                 "a": self.a,
                 "b": self.b,
             }
+            self.num_particles_planet = NUM_PARTICLES_PLANET
+            self.num_particles_disk = NUM_PARTICLES_IN_DISK
+            self.num_particles_escaping = NUM_PARTICLES_ESCAPING
 
     def solve(self, particles, phase_path, K=0.335, G=6.674 * 10 ** -11, report_name="disk_profile.txt", iteration="UNSPECIFIED", simulation_time="UNSPECIFIED"):
         # K = 0.335 for Earth, K = 2/5 for homogenous body

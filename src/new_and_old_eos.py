@@ -18,7 +18,7 @@ from src.combine import CombineFile
 from src.time import get_nearest_iteration_to_time, seconds_to_hours, get_all_iterations_and_times
 
 
-def get_particles(path, number_processes, time, eos_phase_path=None, solve=False, formatted=False):
+def get_particles(path, number_processes, time, eos_phase_path=None, solve=False, formatted=False, return_pm=False):
     if not formatted:
         f = os.getcwd() + "/merged_{}_{}.dat".format(time, randint(0, 1000000))
         cf = CombineFile(num_processes=number_processes, time=time, output_path=path, to_fname=f)
@@ -35,6 +35,8 @@ def get_particles(path, number_processes, time, eos_phase_path=None, solve=False
         pm.solve(particles=particles, phase_path=eos_phase_path)
     if not formatted:
         os.remove(f)
+    if return_pm:
+        return particles, formatted_time, pm
     return particles, formatted_time
 
 

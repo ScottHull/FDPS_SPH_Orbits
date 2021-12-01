@@ -36,10 +36,11 @@ old_path = "/home/theia/scotthull/1M/{}".format(old_name)
 phase_curve_new = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/forstSTS__vapour_curve.txt"
 phase_curve_old = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/duniteN_vapour_curve.txt"
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/vmf_animate_{}_{}".format(new_name, old_name)
+particle_count_path = "/home/theia/scotthull/FDPS_SPH_Orbits/particle_counts_{}_{}".format(new_name, old_name)
 new_accessory_path = "/home/theia/scotthull/FDPS_SPH_Orbits/{}_disk_data".format(new_name)
 old_accessory_path = "/home/theia/scotthull/FDPS_SPH_Orbits/{}_disk_data".format(old_name)
 
-for i in [to_path]:
+for i in [to_path, particle_count_path]:
     if os.path.exists(i):
         shutil.rmtree(i)
     os.mkdir(i)
@@ -81,9 +82,9 @@ old_times = []
 
 def __loop(time):
     print("VAPORIZATION CODE AT {}".format(time))
-    new_particles, new_time = get_particles(path=new_path, number_processes=number_processes_new_eos, time=time,
+    new_particles, new_time, pm_new = get_particles(path=new_path, number_processes=number_processes_new_eos, time=time,
                                             solve=True)
-    old_particles, old_time = get_particles(path=old_path, number_processes=number_processes_old_eos, time=time,
+    old_particles, old_time, pm_old = get_particles(path=old_path, number_processes=number_processes_old_eos, time=time,
                                             solve=True)
     new_disk_particles = []
     new_times.append(seconds_to_hours(new_time))
@@ -145,6 +146,23 @@ def __loop(time):
     legend = ax3.legend(fontsize=6, loc='upper left')
     plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
 
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111)
+    rects1 = ax.bar(1, [pm_new.num_particles_planet, pm_old.num_particles_planet], width=0.8, label='Planet')
+    rects2 = ax.bar(2, [pm_new.num_particles_disk, pm_old.num_particles_disk], width=0.8, label='Disk')
+    rects3 = ax.bar(3, [pm_new.num_particles_escaping, pm_old.num_particles_escaping], width=0.8, label='Escaping')
+
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    ax.set_ylabel('Particles')
+    ax.set_title('Number of Particles in Planet, Disk, Escaping')
+    ax.set_xticks([1, 2], ["New EoS", "Old EoS"])
+    ax.legend()
+
+    ax.bar_label(rects1, padding=3)
+    ax.bar_label(rects2, padding=3)
+    ax.bar_label(rects3, padding=3)
+    fig.tight_layout()
+    plt.savefig(particle_count_path + "/{}.png".format(time), format='png')
 
 pool = mp.Pool(5)
 for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
