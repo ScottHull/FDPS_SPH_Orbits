@@ -1,4 +1,4 @@
-import pandas as pd
+from scipy.interpolate import UnivariateSpline
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -31,9 +31,10 @@ labels = {
 }
 
 def __mean_curve(x, y):
-    mean_x = np.mean(x, axis=0)
-    mean_y = np.mean(y, axis=0)
-    return mean_x, mean_y
+    s = UnivariateSpline(x, y, s=5)
+    xs = np.linspace(0, int(max(y)), 10000)
+    ys = s(xs)
+    return xs, ys
 
 def thermal_profile(new_particles, old_particles, earth_radius = 6371 * 1000):
 
