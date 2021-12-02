@@ -31,7 +31,11 @@ labels = {
 }
 
 def __mean_curve(x, y):
-    s = UnivariateSpline(x, y, s=5)
+    combined = list(zip(x, y))
+    sort = sorted(combined, key=lambda tup: tup[0])
+    x = [i[0] for i in sort]
+    y = [i[1] for i in sort]
+    s = UnivariateSpline(x, y)
     xs = np.linspace(0, int(max(y)), 10000)
     ys = s(xs)
     return xs, ys
