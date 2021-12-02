@@ -31,10 +31,9 @@ labels = {
 }
 
 def __mean_curve(x, y):
-    mean_x_axis = [i for i in range(int(max(x)))]
-    ys_interp = [np.interp(mean_x_axis, x[i], y[i]) for i in range(len(x))]
-    mean_y_axis = np.mean(ys_interp, axis=0)
-    return mean_x_axis, mean_y_axis
+    mean_x = np.mean(x, axis=0)
+    mean_y = np.mean(y, axis=0)
+    return mean_x, mean_y
 
 def thermal_profile(new_particles, old_particles, earth_radius = 6371 * 1000):
 
