@@ -86,9 +86,9 @@ def thermal_profile(new_particles, old_particles, earth_radius = 6371 * 1000):
 
 
 new_particles, new_time, pm_new = get_particles(path=new_path, number_processes=new_processes, time=time,
-                                                solve=False)
+                                                solve=False, formatted=True)
 old_particles, old_time, pm_old = get_particles(path=old_path, number_processes=old_processes, time=time,
-                                                solve=False)
+                                                solve=False, formatted=True)
 
 thermal_profile(new_particles=new_particles, old_particles=old_particles)
 
