@@ -88,9 +88,9 @@ old_times = []
 def __loop(time):
     print("VAPORIZATION CODE AT {}".format(time))
     new_particles, new_time, pm_new = get_particles(path=new_path, number_processes=number_processes_new_eos, time=time,
-                                            solve=True)
+                                            solve=True, return_pm=True)
     old_particles, old_time, pm_old = get_particles(path=old_path, number_processes=number_processes_old_eos, time=time,
-                                            solve=True)
+                                            solve=True, return_pm=True)
     new_disk_particles = []
     new_times.append(seconds_to_hours(new_time))
     old_times.append(seconds_to_hours(old_time))
