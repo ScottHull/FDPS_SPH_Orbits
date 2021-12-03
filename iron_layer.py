@@ -52,6 +52,10 @@ def iron_layer_delta_temperature(t_particles, t_0_particles):
     delta_t = [p.temperature - t_0_particles[p.particle_id].temperature for p in t_particles]
     return delta_t
 
+def iron_layer_density_delta(t_particles, t_0_particles):
+    t_0_particles = map_t0_particles(t_0_particles=t_0_particles)
+    delta_rho = [p.density - t_0_particles[p.particle_id].density for p in t_particles]
+    return delta_rho
 
 
 def identify_iron_layer_particles(new_particles, old_particles, earth_radius=6371 * 1000):
@@ -147,12 +151,37 @@ old_ax.scatter(
 new_ax.set_title("New EoS")
 old_ax.set_title("Old EoS")
 new_ax.set_ylabel("Delta T (K)")
-new_ax.set_ylabel("Temperature (K)")
 for ax in [new_ax, old_ax]:
     ax.set_xlabel(r'Radius $R_{\bigoplus}$')
     ax.grid(alpha=0.4)
 plt.savefig("delta_T_iron_layer.png", format='png')
 
+
+new_delta_rho = iron_layer_density_delta(t_0_particles=new_particles_t0, t_particles=new_particles)
+old_delta_rho = iron_layer_density_delta(t_0_particles=old_particles_t0, t_particles=old_particles)
+fig, axs = plt.subplots(1, 2, figsize=(10, 16), sharex='all', sharey='all',
+                            gridspec_kw={"hspace": 0.0, "wspace": 0.10})
+fig.patch.set_facecolor('xkcd:black')
+new_ax, old_ax = axs.flatten()[0], axs.flatten()[1]
+new_ax.scatter(
+    [p.distance / (6371 * 1000) for p in new_particles],
+    new_delta_rho,
+    color='magenta',
+    s=2
+)
+old_ax.scatter(
+    [p.distance / (6371 * 1000) for p in old_particles],
+    old_delta_rho,
+    color='magenta',
+    s=2
+)
+new_ax.set_title("New EoS")
+old_ax.set_title("Old EoS")
+new_ax.set_ylabel("Delta Density (kg/m3)")
+for ax in [new_ax, old_ax]:
+    ax.set_xlabel(r'Radius $R_{\bigoplus}$')
+    ax.grid(alpha=0.4)
+plt.savefig("delta_rho_iron_layer.png", format='png')
 
 
 
