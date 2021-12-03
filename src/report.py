@@ -64,20 +64,23 @@ class BuildReports:
         self.labels = dict([(p.particle_id, p.label) for p in particles])
         self.build_report_at_time(time=self.end_time, solve=False, save=True)
 
-    def build_report_at_time(self, time, solve=False, save=True):
-        fname = "merged_{}_{}_reportsproc.dat".format(time, randint(0, 1000000))
+    def build_report_at_time(self, time, pm=None, formatted_time=None, total_particles=None, solve=False, save=True):
         to_fname = "{}.csv".format(time)
-        cf = CombineFile(num_processes=self.number_processes, time=time, output_path=self.from_dir, to_fname=fname)
-        combined_file = cf.combine()
-        formatted_time = cf.sim_time
-        total_particles = cf.total_particles
-        f = os.getcwd() + "/{}".format(fname)
-        pm = ParticleMap(path=f, center=True, relative_velocity=False)
-        particles = pm.collect_particles(find_orbital_elements=solve)
-        if solve:
-            pm.solve(particles=particles, phase_path=self.eos_phase_path)
-            self.__output_disk_state(time=time, particles=particles, vmf=pm.vmf)
-        os.remove(f)
+        if not pm:
+            fname = "merged_{}_{}_reportsproc.dat".format(time, randint(0, 1000000))
+            cf = CombineFile(num_processes=self.number_processes, time=time, output_path=self.from_dir, to_fname=fname)
+            combined_file = cf.combine()
+            formatted_time = cf.sim_time
+            total_particles = cf.total_particles
+            f = os.getcwd() + "/{}".format(fname)
+            pm = ParticleMap(path=f, center=True, relative_velocity=False)
+            particles = pm.collect_particles(find_orbital_elements=solve)
+            if solve:
+                pm.solve(particles=particles, phase_path=self.eos_phase_path)
+                self.__output_disk_state(time=time, particles=particles, vmf=pm.vmf)
+            os.remove(f)
+        else:
+            particles = pm.particles
         if save:
             particle_df = self.__build_df_from_endstate(particles=particles)
             particle_df.to_csv(self.to_dir + "/{}".format(to_fname))
@@ -87,6 +90,7 @@ class BuildReports:
                 infile.write("{}\n{}\n".format(formatted_time, total_particles) + content)
             infile.close()
         return particles
+
 
     def make_reports(self, accessory_path, mp_pool_size=5):
         os.mkdir(accessory_path)

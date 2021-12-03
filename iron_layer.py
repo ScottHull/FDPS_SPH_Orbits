@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from scipy.interpolate import UnivariateSpline
 import numpy as np
 import matplotlib.pyplot as plt

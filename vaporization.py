@@ -48,7 +48,10 @@ for i in [to_path, particle_count_path]:
     os.mkdir(i)
 
 for i in [report_to_dir_new_eos, report_to_dir_old_eos]:
-    os.mkdir(i)
+    try:
+        os.mkdir(i)
+    except:
+        pass
 
 plt.style.use("dark_background")
 cmap = cm.get_cmap('jet')
@@ -98,6 +101,10 @@ def __loop(time):
     vmf_old = calc_vapor_mass_fraction(particles=old_particles, phase_path=phase_curve_old, only_disk=True) * 100.0
     new_vmfs.append(vmf_new)
     old_vmfs.append(vmf_old)
+
+    new_reports.build_report_at_time(time=time, pm=pm_new, formatted_time=new_time)
+    old_reports.build_report_at_time(time=time, pm=pm_old, formatted_time=old_time)
+
     # Create 2x2 sub plots
     gs = gridspec.GridSpec(2, 2)
     fig = plt.figure(figsize=(10, 10))
@@ -151,21 +158,25 @@ def __loop(time):
     legend = ax3.legend(fontsize=6, loc='upper left')
     plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
 
+    x = np.arange(3)  # the label locations
+    width = 0.35  # the width of the bars
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
-    rects1 = ax.bar(1, [pm_new.num_particles_planet, pm_old.num_particles_planet], width=0.8, label='Planet')
-    rects2 = ax.bar(2, [pm_new.num_particles_disk, pm_old.num_particles_disk], width=0.8, label='Disk')
-    rects3 = ax.bar(3, [pm_new.num_particles_escaping, pm_old.num_particles_escaping], width=0.8, label='Escaping')
+    rects1 = ax.bar(x - width / 2, [pm_new.num_particles_planet, pm_new.num_particles_disk, pm_new.num_particles_escaping], width, label='New EoS')
+    rects2 = ax.bar(x + width / 2, [pm_old.num_particles_planet, pm_old.num_particles_disk, pm_old.num_particles_escaping], width, label='Old EoS')
+
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
     ax.set_ylabel('Particles')
     ax.set_title('Number of Particles in Planet, Disk, Escaping')
-    ax.set_xticks([1, 2], ["New EoS", "Old EoS"])
+    # ax.set_xticks([1, 2, 3], ["Planet", "Disk", "Escaping"])
+    ax.set_xticklabels(["", "Planet", "", "Disk", "", "Escaping", ""])
+    ax.grid(alpha=0.4)
     ax.legend()
 
-    ax.bar_label(rects1, padding=3)
-    ax.bar_label(rects2, padding=3)
-    ax.bar_label(rects3, padding=3)
+    # ax.bar_label(rects1, padding=3)
+    # ax.bar_label(rects2, padding=3)
+    # ax.bar_label(rects3, padding=3)
     fig.tight_layout()
     plt.savefig(particle_count_path + "/{}.png".format(time), format='png')
 

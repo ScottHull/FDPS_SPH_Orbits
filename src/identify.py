@@ -75,7 +75,7 @@ class ParticleMap:
         outfile.close()
 
     def collect_particles(self, find_orbital_elements=True):
-        return classify.collect_particles(
+        self.particles = classify.collect_particles(
             output=self.output,
             com=self.com,
             mass_protoearth=self.mass_protoearth,
@@ -83,6 +83,7 @@ class ParticleMap:
             relative_velocity=self.relative_velocity,
             formatted=self.formatted
         )
+        return self.particles
 
     def __convergence_loop(self, particles, K, G):
         iteration = 0
