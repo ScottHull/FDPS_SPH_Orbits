@@ -26,6 +26,8 @@ time = 3000
 start_time = 0
 new_path = "/home/theia/scotthull/1M/formatted_gi_new_eos_b_073"
 old_path = "/home/theia/scotthull/1M/formatted_gi_old_eos_b_073"
+new_path_unformatted = "/home/theia/scotthull/1M/gi_new_eos_b_073"
+old_path_unformatted = "/home/theia/scotthull/1M/gi_old_eos_b_073"
 new_processes = 200
 old_processes = 200
 
@@ -117,9 +119,9 @@ new_particles, new_time = get_particles(path=new_path, number_processes=new_proc
                                         solve=False, formatted=True)
 old_particles, old_time = get_particles(path=old_path, number_processes=old_processes, time=time,
                                         solve=False, formatted=True)
-new_particles_t0, new_time_t0 = get_particles(path=new_path, number_processes=new_processes, time=start_time,
+new_particles_t0, new_time_t0 = get_particles(path=new_path_unformatted, number_processes=new_processes, time=start_time,
                                         solve=True, formatted=False)
-old_particles_t0, old_time_t0 = get_particles(path=old_path, number_processes=old_processes, time=start_time,
+old_particles_t0, old_time_t0 = get_particles(path=old_path_unformatted, number_processes=old_processes, time=start_time,
                                         solve=True, formatted=False)
 
 new_t0_dict = map_t0_particles(t_0_particles=new_particles_t0)
