@@ -49,32 +49,32 @@ def map_t0_particles(t_0_particles):
 
 def iron_layer_delta_temperature(t_particles, t_0_particles):
     t_0_particles = map_t0_particles(t_0_particles=t_0_particles)
-    delta_t = [p.temperature - t_0_particles[p.particle_id].temperature for p in t_particles]
+    delta_t = [p.temperature - t_0_particles[p.particle_id].temperature for p in t_particles if p.distance / (6371 * 1000) < 1.5 and p.tag == 3]
     return delta_t
 
 def iron_layer_density_delta(t_particles, t_0_particles):
     t_0_particles = map_t0_particles(t_0_particles=t_0_particles)
-    delta_rho = [p.density - t_0_particles[p.particle_id].density for p in t_particles]
+    delta_rho = [p.density - t_0_particles[p.particle_id].density for p in t_particles if p.distance / (6371 * 1000) < 1.5 and p.tag == 3]
     return delta_rho
 
 
 def identify_iron_layer_particles(new_particles, old_particles, earth_radius=6371 * 1000):
-    new_impactor_iron_particles = [p for p in new_particles if p.label == "PLANET" and p.tag == 3]
-    old_impactor_iron_particles = [p for p in old_particles if p.label == "PLANET" and p.tag == 3]
+    new_impactor_iron_particles = [p for p in new_particles if p.label == "PLANET" and p.tag == 3 and p.distance / (6371 * 1000) < 1.5]
+    old_impactor_iron_particles = [p for p in old_particles if p.label == "PLANET" and p.tag == 3 and p.distance / (6371 * 1000) < 1.5]
 
-    fig, axs = plt.subplots(1, 2, figsize=(10, 16), sharex='all', sharey='all',
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.0, "wspace": 0.10})
     fig.patch.set_facecolor('xkcd:black')
     new_ax, old_ax = axs.flatten()[0], axs.flatten()[1]
     new_ax.scatter(
-        [p.distance / earth_radius for p in new_particles],
-        [p.temperature for p in new_particles],
+        [p.distance / earth_radius for p in new_particles if p.distance / (6371 * 1000) < 1.5],
+        [p.temperature for p in new_particles if p.distance / (6371 * 1000) < 1.5],
         s=2,
         color='magenta'
     )
     old_ax.scatter(
-        [p.distance / earth_radius for p in new_impactor_iron_particles],
-        [p.temperature for p in old_impactor_iron_particles],
+        [p.distance / earth_radius for p in new_impactor_iron_particles if p.distance / (6371 * 1000) < 1.5],
+        [p.temperature for p in old_impactor_iron_particles if p.distance / (6371 * 1000) < 1.5],
         s=2,
         color='magenta'
     )
@@ -86,7 +86,7 @@ def identify_iron_layer_particles(new_particles, old_particles, earth_radius=637
 
 
 def thermal_profile(new_particles, old_particles, earth_radius=6371 * 1000):
-    fig, axs = plt.subplots(1, 2, figsize=(10, 16), sharex='all', sharey='all',
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.0, "wspace": 0.10})
     fig.patch.set_facecolor('xkcd:black')
     new_ax, old_ax = axs.flatten()[0], axs.flatten()[1]
@@ -98,14 +98,14 @@ def thermal_profile(new_particles, old_particles, earth_radius=6371 * 1000):
         ax.grid(alpha=0.4)
     for label in labels.keys():
         new_ax.scatter(
-            [p.distance / earth_radius for p in new_particles if p.label == "PLANET" and p.tag == label],
-            [p.temperature for p in new_particles if p.label == "PLANET" and p.tag == label],
+            [p.distance / earth_radius for p in new_particles if p.label == "PLANET" and p.tag == label and p.distance / (6371 * 1000) < 1.5],
+            [p.temperature for p in new_particles if p.label == "PLANET" and p.tag == label and p.distance / (6371 * 1000) < 1.5],
             label=labels[label],
             s=1
         )
         old_ax.scatter(
-            [p.distance / earth_radius for p in old_particles if p.label == "PLANET" and p.tag == label],
-            [p.temperature for p in old_particles if p.label == "PLANET" and p.tag == label],
+            [p.distance / earth_radius for p in old_particles if p.label == "PLANET" and p.tag == label and p.distance / (6371 * 1000) < 1.5],
+            [p.temperature for p in old_particles if p.label == "PLANET" and p.tag == label and p.distance / (6371 * 1000) < 1.5],
             label=labels[label],
             s=1
         )
@@ -132,18 +132,18 @@ new_t0_dict = map_t0_particles(t_0_particles=new_particles_t0)
 old_t0_dict = map_t0_particles(t_0_particles=old_particles_t0)
 new_delta_t = iron_layer_delta_temperature(t_0_particles=new_particles_t0, t_particles=new_particles)
 old_delta_t = iron_layer_delta_temperature(t_0_particles=old_particles_t0, t_particles=old_particles)
-fig, axs = plt.subplots(1, 2, figsize=(10, 16), sharex='all', sharey='all',
+fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.0, "wspace": 0.10})
 fig.patch.set_facecolor('xkcd:black')
 new_ax, old_ax = axs.flatten()[0], axs.flatten()[1]
 new_ax.scatter(
-    [p.distance / (6371 * 1000) for p in new_particles],
+    [p.distance / (6371 * 1000) for p in new_particles if p.distance / (6371 * 1000) < 1.5],
     new_delta_t,
     color='magenta',
     s=2
 )
 old_ax.scatter(
-    [p.distance / (6371 * 1000) for p in old_particles],
+    [p.distance / (6371 * 1000) for p in old_particles if p.distance / (6371 * 1000) < 1.5],
     old_delta_t,
     color='magenta',
     s=2
@@ -159,18 +159,18 @@ plt.savefig("delta_T_iron_layer.png", format='png')
 
 new_delta_rho = iron_layer_density_delta(t_0_particles=new_particles_t0, t_particles=new_particles)
 old_delta_rho = iron_layer_density_delta(t_0_particles=old_particles_t0, t_particles=old_particles)
-fig, axs = plt.subplots(1, 2, figsize=(10, 16), sharex='all', sharey='all',
+fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.0, "wspace": 0.10})
 fig.patch.set_facecolor('xkcd:black')
 new_ax, old_ax = axs.flatten()[0], axs.flatten()[1]
 new_ax.scatter(
-    [p.distance / (6371 * 1000) for p in new_particles],
+    [p.distance / (6371 * 1000) for p in new_particles if p.distance / (6371 * 1000) < 1.5 and p.tag == 3],
     new_delta_rho,
     color='magenta',
     s=2
 )
 old_ax.scatter(
-    [p.distance / (6371 * 1000) for p in old_particles],
+    [p.distance / (6371 * 1000) for p in old_particles if p.distance / (6371 * 1000) < 1.5 and p.tag == 3],
     old_delta_rho,
     color='magenta',
     s=2
