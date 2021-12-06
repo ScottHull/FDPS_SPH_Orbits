@@ -41,7 +41,7 @@ ax.plot(
 ax.set_xlabel("Iteration"), ax.set_ylabel("Avg. Entropy")
 ax.grid(alpha=0.4)
 ax.legend()
-plt.show("avg_entropies_from_formatted.png", format='png')
+fig.save("avg_entropies_from_formatted.png", format='png')
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
@@ -54,5 +54,5 @@ ax.plot(
 ax.set_xlabel("Iteration"), ax.set_ylabel("Num. Disk Particles")
 ax.grid(alpha=0.4)
 ax.legend()
-plt.show("num_disk_particles.png", format='png')
+fig.save("num_disk_particles.png", format='png')
     
