@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import pandas as pd
 import numpy as np
 from statistics import mean
@@ -41,7 +42,7 @@ ax.plot(
 ax.set_xlabel("Iteration"), ax.set_ylabel("Avg. Entropy")
 ax.grid(alpha=0.4)
 ax.legend()
-fig.save("avg_entropies_from_formatted.png", format='png')
+plt.savefig("avg_entropies_from_formatted.png", format='png')
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
@@ -54,5 +55,5 @@ ax.plot(
 ax.set_xlabel("Iteration"), ax.set_ylabel("Num. Disk Particles")
 ax.grid(alpha=0.4)
 ax.legend()
-fig.save("num_disk_particles.png", format='png')
+plt.savefig("num_disk_particles.png", format='png')
     
