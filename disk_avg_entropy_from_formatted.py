@@ -16,10 +16,12 @@ for time in np.arange(start_time, end_time + increment, increment):
     times.append(time)
     new_file = pd.read_csv(new_path + "/{}.csv".format(time), skiprows=2).to_dict()
     old_file = pd.read_csv(old_path + "/{}.csv".format(time), skiprows=2).to_dict()
-    new_avg_entropies.append([s for index, s in enumerate(new_file['entropy']) if new_file['label'][index] == "DISK"])
-    old_avg_entropies.append([s for index, s in enumerate(old_file['entropy']) if old_file['label'][index] == "DISK"])
-    num_particles_disk_new.append(len(new_avg_entropies[-1]))
-    num_particles_disk_old.append(len(old_avg_entropies[-1]))
+    new_disk_entropies = [s for index, s in enumerate(new_file['entropy']) if new_file['label'][index] == "DISK"]
+    old_disk_entropies = [s for index, s in enumerate(old_file['entropy']) if old_file['label'][index] == "DISK"]
+    new_avg_entropies.append(mean(new_disk_entropies))
+    old_avg_entropies.append(mean(old_disk_entropies))
+    num_particles_disk_new.append(len(new_disk_entropies))
+    num_particles_disk_old.append(len(old_disk_entropies))
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
