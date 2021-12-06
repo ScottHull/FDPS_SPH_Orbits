@@ -28,7 +28,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     new_time, old_time = get_time(new_f), get_time(old_f)
     new_times.append(new_time), old_times.append(old_time)
     new_file = pd.read_csv(new_f, skiprows=2).to_dict()
-    old_file = pd.read_csv(old_f + "/{}.csv".format(time), skiprows=2).to_dict()
+    old_file = pd.read_csv(old_f, skiprows=2).to_dict()
     new_disk_entropies = [s for index, s in enumerate(new_file['entropy']) if new_file['label'][index] == "DISK"]
     old_disk_entropies = [s for index, s in enumerate(old_file['entropy']) if old_file['label'][index] == "DISK"]
     if len(new_disk_entropies) > 0:
