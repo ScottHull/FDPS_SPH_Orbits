@@ -13,6 +13,7 @@ times, new_avg_entropies, old_avg_entropies = [], [], []
 num_particles_disk_new, num_particles_disk_old = [], []
 for time in np.arange(start_time, end_time + increment, increment):
     print("At time : {}".format(time))
+    times.append(time)
     new_file = pd.read_csv(new_path + "/{}.csv".format(time), skiprows=2).to_dict()
     old_file = pd.read_csv(old_path + "/{}.csv".format(time), skiprows=2).to_dict()
     new_avg_entropies.append([s for index, s in enumerate(new_file['entropy']) if new_file['label'][index] == "DISK"])
