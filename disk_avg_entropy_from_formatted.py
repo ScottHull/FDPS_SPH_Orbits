@@ -18,8 +18,15 @@ for time in np.arange(start_time, end_time + increment, increment):
     old_file = pd.read_csv(old_path + "/{}.csv".format(time), skiprows=2).to_dict()
     new_disk_entropies = [s for index, s in enumerate(new_file['entropy']) if new_file['label'][index] == "DISK"]
     old_disk_entropies = [s for index, s in enumerate(old_file['entropy']) if old_file['label'][index] == "DISK"]
-    new_avg_entropies.append(mean(new_disk_entropies))
-    old_avg_entropies.append(mean(old_disk_entropies))
+    if len(new_disk_entropies) > 0:
+        new_avg_entropies.append(mean(new_disk_entropies))
+    else:
+        new_avg_entropies.append(0)
+    if len(old_disk_entropies) > 0:
+        old_avg_entropies.append(mean(old_disk_entropies))
+    else:
+        old_avg_entropies.append(0)
+
     num_particles_disk_new.append(len(new_disk_entropies))
     num_particles_disk_old.append(len(old_disk_entropies))
 
