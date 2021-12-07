@@ -19,6 +19,7 @@ class Particle:
         self.potential_energy = potential_energy
         self.entropy = entropy
         self.temperature = temperature
+        # self.soundsped = soundspeed
 
         self.label = None  # PLANET, DISK, or ESCAPE
         self.__G = 6.674 * 10 ** -11

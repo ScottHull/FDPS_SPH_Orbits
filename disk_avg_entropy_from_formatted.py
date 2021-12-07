@@ -97,7 +97,7 @@ for time in np.arange(start_time, end_time + increment, increment):
             s=1,
             label=label
         )
-    for ax in axs[:1]:
+    for ax in axs[:2]:
         ax.legend(loc='upper right')
         ax.set_xlim(-4e7, 4e7)
         ax.set_ylim(-4e7, 4e7)

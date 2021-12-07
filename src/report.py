@@ -59,7 +59,8 @@ class BuildReports:
             "density": [p.density for p in particles],
             "pressure": [p.pressure for p in particles],
             "internal_energy": [p.internal_energy for p in particles],
-            "potential_energy": [p.potential_energy for p in particles]
+            "potential_energy": [p.potential_energy for p in particles],
+            # "soundspeed": [p.soundspeed for p in particles]
         })
 
     def __get_end_state(self):
