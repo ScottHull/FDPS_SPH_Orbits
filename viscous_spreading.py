@@ -77,7 +77,7 @@ new_tau_silicate = [
             new_file['mass'][index],
             new_file['density'][index],
             new_file['internal_energy'][index],
-            new_silicate_eos
+            new_interp_silicate
         )
     ]
     for index, radius in enumerate(new_file['radius']) if new_file['tag'][index] % 2 == 0 
@@ -92,42 +92,12 @@ old_tau_silicate = [
             old_file['mass'][index],
             old_file['density'][index],
             old_file['internal_energy'][index],
-            old_silicate_eos
+            old_interp_silicate
         )
     ]
     for index, radius in enumerate(old_file['radius']) if old_file['tag'][index] % 2 == 0 
                                                           and old_file['label'][index] == "DISK"
 ]
-# new_tau_iron = [
-#     [
-#         radius,
-#         numerical_viscosity_time(
-#             radius,
-#             mean_artificial_viscosity,
-#             new_file['mass'][index],
-#             new_file['density'][index],
-#             new_file['internal_energy'][index],
-#             new_iron_eos
-#         )
-#     ]
-#     for index, radius in enumerate(new_file['radius']) if new_file['tag'][index] % 2 == 0
-#                                                           and new_file['label'][index] == "DISK"
-# ]
-# old_tau_iron = [
-#     [
-#         radius,
-#         numerical_viscosity_time(
-#             radius,
-#             mean_artificial_viscosity,
-#             old_file['mass'][index],
-#             old_file['density'][index],
-#             old_file['internal_energy'][index],
-#             old_iron_eos
-#         )
-#     ]
-#     for index, radius in enumerate(old_file['radius']) if old_file['tag'][index] % 2 == 0
-#                                                           and old_file['label'][index] == "DISK"
-# ]
 
 
 plt.style.use("dark_background")
