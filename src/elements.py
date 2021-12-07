@@ -80,7 +80,7 @@ class Particle:
         E_spec = self.__total_orbital_energy() / self.mass
         mu = self.__G * self.mass_grav_body
         a = - mu / (2.0 * E_spec)
-        a_check = -self.__G * self.mass_grav_body * self.mass / 2 / self.__total_orbital_energy()
+        # a_check = -self.__G * self.mass_grav_body * self.mass / 2 / self.__total_orbital_energy()
         return a
 
     def __inclination(self):
