@@ -17,7 +17,7 @@ start_time = 0
 end_time = 3000
 increment = 100
 
-if path in os.listdir(os.getcwd()):
+if os.path.exists(path):
     shutil.rmtree(path)
 os.mkdir(path)
 
@@ -98,7 +98,7 @@ for time in np.arange(start_time, end_time + increment, increment):
         new_times, new_avg_entropies, linewidth=2.0, label="New EoS"
     )
     ax3.plot(
-        old_times, old_avg_entropies, lioldidth=2.0, label="Old EoS"
+        old_times, old_avg_entropies, linewidth=2.0, label="Old EoS"
     )
     ax3.set_xlabel("Time (hrs)")
     ax3.set_ylabel("Avg. Disk Entropy")
@@ -107,7 +107,7 @@ for time in np.arange(start_time, end_time + increment, increment):
         new_times, num_particles_disk_new, linewidth=2.0, label="New EoS"
     )
     ax4.plot(
-        old_times, num_particles_disk_old, lioldidth=2.0, label="Old EoS"
+        old_times, num_particles_disk_old, linewidth=2.0, label="Old EoS"
     )
     ax4.set_xlabel("Time (hrs)")
     ax4.set_ylabel("Num. Disk Particles")
