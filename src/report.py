@@ -69,9 +69,12 @@ class BuildReports:
     def __get_end_state(self):
         particles = self.build_report_at_time(time=self.end_time, solve=True, save=False)
         self.labels = dict([(p.particle_id, p.label) for p in particles])
-        self.build_report_at_time(time=self.end_time, solve=False, save=True)
+        self.build_report_at_time(time=self.end_time, solve=False, save=True, end_state=True)
 
-    def build_report_at_time(self, time, pm=None, formatted_time=None, total_particles=None, solve=False, save=True):
+    def build_report_at_time(self, time, pm=None, formatted_time=None, total_particles=None, solve=False, save=True,
+                             end_state=False):
+        if self.force_solve_at_time and not end_state:
+            solve = True
         to_fname = "{}.csv".format(time)
         if not pm:
             fname = "merged_{}_{}_reportsproc.dat".format(time, randint(0, 1000000))
@@ -82,7 +85,7 @@ class BuildReports:
             f = os.getcwd() + "/{}".format(fname)
             pm = ParticleMap(path=f, center=True, relative_velocity=False)
             particles = pm.collect_particles(find_orbital_elements=solve)
-            if solve or self.force_solve_at_time:
+            if solve:
                 pm.solve(particles=particles, phase_path=self.eos_phase_path)
                 self.__output_disk_state(time=time, particles=particles, vmf=pm.vmf)
             os.remove(f)

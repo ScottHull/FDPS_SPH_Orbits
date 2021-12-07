@@ -23,7 +23,8 @@ r = BuildReports(
     number_processes=number_processes,
     eos_phase_path=eos_phase_path,
     interval=interval,
-    accessory_path=None
+    accessory_path=None,
+    force_solve_at_time=True
 )
 r.make_reports(
     mp_pool_size=5,
