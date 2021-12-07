@@ -11,7 +11,7 @@ from src.identify import ParticleMap
 class BuildReports:
 
     def __init__(self, to_dir, from_dir, start_time, end_time, number_processes, eos_phase_path, accessory_path,
-                 interval=1):
+                 interval=1, force_solve_at_time=False):
         self.to_dir = to_dir
         self.from_dir = from_dir
         self.start_time = start_time
@@ -21,6 +21,7 @@ class BuildReports:
         self.interval = interval
         self.labels = {}
         self.accessory_path = accessory_path
+        self.force_solve_at_time = force_solve_at_time
         try:
             os.mkdir(accessory_path)
         except:
@@ -81,7 +82,7 @@ class BuildReports:
             f = os.getcwd() + "/{}".format(fname)
             pm = ParticleMap(path=f, center=True, relative_velocity=False)
             particles = pm.collect_particles(find_orbital_elements=solve)
-            if solve:
+            if solve or self.force_solve_at_time:
                 pm.solve(particles=particles, phase_path=self.eos_phase_path)
                 self.__output_disk_state(time=time, particles=particles, vmf=pm.vmf)
             os.remove(f)
