@@ -27,5 +27,4 @@ r = BuildReports(
 )
 r.make_reports(
     mp_pool_size=5,
-    accessory_path=None
 )

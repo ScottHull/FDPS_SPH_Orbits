@@ -97,8 +97,7 @@ class BuildReports:
             infile.close()
         return particles
 
-    def make_reports(self, accessory_path, mp_pool_size=5):
-        os.mkdir(accessory_path)
+    def make_reports(self, mp_pool_size=5):
         pool = mp.Pool(mp_pool_size)
         for time in np.arange(self.start_time, self.end_time + self.interval, self.interval):
             pool.map(self.build_report_at_time, [time])
