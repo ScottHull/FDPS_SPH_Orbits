@@ -8,6 +8,8 @@ from statistics import mean
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
+from src.animate import animate
+
 new_path = "/home/theia/scotthull/1M/gi_new_eos_b_073_at_time"
 old_path = "/home/theia/scotthull/1M/gi_old_eos_b_073_at_time"
 path = "/home/theia/scotthull/FDPS_SPH_Orbits/disk_avgs"
