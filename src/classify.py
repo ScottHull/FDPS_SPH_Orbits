@@ -61,7 +61,7 @@ def collect_particles(output, com, mass_protoearth, relative_velocity=False, fin
     :param formatted:
     :return:
     """
-    output = output.to_dict()
+    output = output.to_dict('list')
     print("Collecting particles...")
     particles = []
     target_velocity = [0, 0, 0]

@@ -10,7 +10,8 @@ from src.identify import ParticleMap
 
 class BuildReports:
 
-    def __init__(self, to_dir, from_dir, start_time, end_time, number_processes, eos_phase_path, accessory_path, interval=1):
+    def __init__(self, to_dir, from_dir, start_time, end_time, number_processes, eos_phase_path, accessory_path,
+                 interval=1):
         self.to_dir = to_dir
         self.from_dir = from_dir
         self.start_time = start_time
@@ -27,14 +28,15 @@ class BuildReports:
         self.__get_end_state()
 
     def __output_disk_state(self, particles, time, vmf):
-        output = open("{}/{}.txt".format(self.accessory_path, time), 'w')
-        avg_disk_entropy = [p.entropy for p in particles if p.label == "DISK"]
-        avg_disk_entropy = sum(avg_disk_entropy) / len(avg_disk_entropy)
-        disk_mass = sum([p.mass for p in particles if p.label == "DISK"])
-        line = "time\t{}\ndisk vmf\t{}\navg disk entropy\t{}\ndisk mass\t{}\n".format(time, vmf, avg_disk_entropy, disk_mass)
-        output.write(line)
-        output.close()
-
+        if self.accessory_path is not None:
+            output = open("{}/{}.txt".format(self.accessory_path, time), 'w')
+            avg_disk_entropy = [p.entropy for p in particles if p.label == "DISK"]
+            avg_disk_entropy = sum(avg_disk_entropy) / len(avg_disk_entropy)
+            disk_mass = sum([p.mass for p in particles if p.label == "DISK"])
+            line = "time\t{}\ndisk vmf\t{}\navg disk entropy\t{}\ndisk mass\t{}\n".format(time, vmf, avg_disk_entropy,
+                                                                                          disk_mass)
+            output.write(line)
+            output.close()
 
     def __build_df_from_endstate(self, particles):
         try:
@@ -94,7 +96,6 @@ class BuildReports:
                 infile.write("{}\n{}\n".format(formatted_time, total_particles) + content)
             infile.close()
         return particles
-
 
     def make_reports(self, accessory_path, mp_pool_size=5):
         os.mkdir(accessory_path)
