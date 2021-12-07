@@ -21,6 +21,9 @@ if os.path.exists(path):
     shutil.rmtree(path)
 os.mkdir(path)
 
+plt.style.use("dark_background")
+
+
 def get_time(f):
     formatted_time = None
     with open(f, 'r') as infile:
@@ -32,14 +35,16 @@ def get_time(f):
 
 def get_particles_by_label(particles):
     return {
-        "PLANET": [zip(x, particles['y'][index], particles['z'][index]) for index, x in enumerate(particles['x']) if
-                   particles['label'] == "PLANET"],
-        "DISK": [zip(x, particles['y'][index], particles['z'][index]) for index, x in enumerate(particles['x']) if
-                 particles['label'] == "DISK"],
-        "ESCAPE": [zip(x, particles['y'][index], particles['z'][index]) for index, x in enumerate(particles['x']) if
-                   particles['label'] == "ESCAPE"]
+        "PLANET": [[x, particles['y'][index], particles['z'][index]] for index, x in enumerate(particles['x']) if
+                   particles['label'][index] == "PLANET"],
+        "DISK": [[x, particles['y'][index], particles['z'][index]] for index, x in enumerate(particles['x']) if
+                 particles['label'][index] == "DISK"],
+        "ESCAPE": [[x, particles['y'][index], particles['z'][index]] for index, x in enumerate(particles['x']) if
+                   particles['label'][index] == "ESCAPE"]
     }
 
+
+max_time = get_time(new_path + "/{}.csv".format(end_time))
 
 new_times, old_times, new_avg_entropies, old_avg_entropies = [], [], [], []
 num_particles_disk_new, num_particles_disk_old = [], []
@@ -54,7 +59,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     old_disk_entropies = [s for index, s in enumerate(old_file['entropy']) if old_file['label'][index] == "DISK"]
 
     labeled_particles_new = get_particles_by_label(new_file)
-    labeled_particles_old =  get_particles_by_label(old_file)
+    labeled_particles_old = get_particles_by_label(old_file)
 
     if len(new_disk_entropies) > 0:
         new_avg_entropies.append(mean(new_disk_entropies))
@@ -85,7 +90,6 @@ for time in np.arange(start_time, end_time + increment, increment):
             s=1,
             label=label
         )
-    ax1.legend(loc='upper right')
     for label in labeled_particles_old.keys():
         ax2.scatter(
             [i[0] for i in labeled_particles_old[label] if i[2] < 0],
@@ -93,7 +97,16 @@ for time in np.arange(start_time, end_time + increment, increment):
             s=1,
             label=label
         )
-    ax2.legend(loc='upper right')
+    for ax in axs[:1]:
+        ax.legend(loc='upper right')
+        ax.set_xlim(-4e7, 4e7)
+        ax.set_ylim(-4e7, 4e7)
+        ax.set_xticks([])
+        # for minor ticks
+        ax.set_xticks([], minor=True)
+        ax.set_yticks([])
+        # for minor ticks
+        ax.set_yticks([], minor=True)
     ax3.plot(
         new_times, new_avg_entropies, linewidth=2.0, label="New EoS"
     )
@@ -103,6 +116,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     ax3.set_xlabel("Time (hrs)")
     ax3.set_ylabel("Avg. Disk Entropy")
     ax3.legend(loc='upper right')
+    ax3.set_xlim(0, max_time)
     ax4.plot(
         new_times, num_particles_disk_new, linewidth=2.0, label="New EoS"
     )
@@ -112,6 +126,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     ax4.set_xlabel("Time (hrs)")
     ax4.set_ylabel("Num. Disk Particles")
     ax4.legend(loc='upper right')
+    ax4.set_xlim(0, max_time)
 
     plt.savefig(path + "/{}.png".format(time), format='png')
 
@@ -123,4 +138,3 @@ animate(
     fps=10,
     filename="disk_avg.mp4",
 )
-    
