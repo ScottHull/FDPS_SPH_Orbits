@@ -227,28 +227,28 @@ for time in np.arange(start_time, end_time + increment, increment):
         old_times,
         len([s for index, s in enumerate(old_file['entropy']) if
              old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0 and s < 8000]),
-        lioldidth=2.0,
+        linewidth=2.0,
         label="Silicate w/ S < 8000"
     )
     old_ax.plot(
         old_times,
         len([s for index, s in enumerate(old_file['entropy']) if
              old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0 and s >= 8000]),
-        lioldidth=2.0,
+        linewidth=2.0,
         label="Silicate w/ S >= 8000"
     )
     old_ax.plot(
         old_times,
         len([s for index, s in enumerate(old_file['entropy']) if
              old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0 and s < 8000]),
-        lioldidth=2.0,
+        linewidth=2.0,
         label="Iron w/ S < 8000"
     )
     old_ax.plot(
         old_times,
         len([s for index, s in enumerate(old_file['entropy']) if
              old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0 and s >= 8000]),
-        lioldidth=2.0,
+        linewidth=2.0,
         label="Iron w/ S >= 8000"
     )
     for ax in [new_ax, old_ax]:
