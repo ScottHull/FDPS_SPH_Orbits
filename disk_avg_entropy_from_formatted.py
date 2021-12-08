@@ -199,3 +199,12 @@ animate(
     fps=10,
     filename="disk_avg.mp4",
 )
+
+animate(
+    start_time=start_time,
+    end_time=end_time,
+    interval=increment,
+    path=pat2h,
+    fps=10,
+    filename="disk_avg_scatter.mp4",
+)
