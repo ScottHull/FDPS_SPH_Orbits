@@ -265,25 +265,25 @@ for time in np.arange(start_time, end_time + increment, increment):
     old_ax.plot(
         old_times,
         num_disk_particles_small_s_silicate_old,
-        lioldidth=2.0,
+        linewidth=2.0,
         label="Silicate w/ S < 8000"
     )
     old_ax.plot(
         old_times,
         num_disk_particles_large_s_silicate_old,
-        lioldidth=2.0,
+        linewidth=2.0,
         label="Silicate w/ S >= 8000"
     )
     old_ax.plot(
         old_times,
         num_disk_particles_small_s_iron_old,
-        lioldidth=2.0,
+        linewidth=2.0,
         label="Iron w/ S < 8000"
     )
     old_ax.plot(
         old_times,
         num_disk_particles_large_s_iron_old,
-        lioldidth=2.0,
+        linewidth=2.0,
         label="Iron w/ S >= 8000"
     )
     for ax in [new_ax, old_ax]:
