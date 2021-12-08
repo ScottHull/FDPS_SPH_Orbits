@@ -167,15 +167,15 @@ for time in np.arange(start_time, end_time + increment, increment):
         s=1,
         label="Iron"
     )
-    new_ax.axhiline(
-        mean(new_disk_entropies),
+    new_ax.axhline(
+        new_avg_entropies,
         linewidth=2.0,
         linestyle="--",
         color='white',
         label="Mean"
     )
-    old_ax.axhiline(
-        mean(old_disk_entropies),
+    old_ax.axhline(
+        old_avg_entropies,
         linewidth=2.0,
         linestyle="--",
         color='white',
