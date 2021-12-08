@@ -13,13 +13,15 @@ from src.animate import animate
 new_path = "/home/theia/scotthull/1M/gi_new_eos_b_073_at_time"
 old_path = "/home/theia/scotthull/1M/gi_old_eos_b_073_at_time"
 path = "/home/theia/scotthull/FDPS_SPH_Orbits/disk_avgs"
+path2 = path + "2"
 start_time = 0
 end_time = 3000
 increment = 100
 
-if os.path.exists(path):
-    shutil.rmtree(path)
-os.mkdir(path)
+for p in [path, path2]:
+    if os.path.exists(p):
+        shutil.rmtree(p)
+    os.mkdir(p)
 
 plt.style.use("dark_background")
 
@@ -129,6 +131,65 @@ for time in np.arange(start_time, end_time + increment, increment):
     ax4.set_xlim(0, max_time)
 
     plt.savefig(path + "/{}.png".format(time), format='png')
+
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
+                            gridspec_kw={"hspace": 0.0, "wspace": 0.10})
+    new_ax, old_ax = axs.flatten()[0], axs.flatten()[1]
+    new_ax.scatter(
+        [s for index, s in enumerate(new_file['radius']) if
+         new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 == 0],
+        [s for index, s in enumerate(new_file['entropy']) if
+        new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 == 0],
+        s=1,
+        label="Silicate"
+    )
+    old_ax.scatter(
+        [s for index, s in enumerate(old_file['radius']) if
+         old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0],
+        [s for index, s in enumerate(old_file['entropy']) if
+         old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0],
+        s=1,
+        label="Silicate"
+    )
+    new_ax.scatter(
+        [s for index, s in enumerate(new_file['radius']) if
+         new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 != 0],
+        [s for index, s in enumerate(new_file['entropy']) if
+         new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 != 0],
+        s=1,
+        label="Iron"
+    )
+    old_ax.scatter(
+        [s for index, s in enumerate(old_file['radius']) if
+         old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0],
+        [s for index, s in enumerate(old_file['entropy']) if
+         old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0],
+        s=1,
+        label="Iron"
+    )
+    new_ax.axhiline(
+        mean(new_disk_entropies),
+        linewidth=2.0,
+        linestyle="--",
+        color='white',
+        label="Mean"
+    )
+    old_ax.axhiline(
+        mean(old_disk_entropies),
+        linewidth=2.0,
+        linestyle="--",
+        color='white',
+        label="Mean"
+    )
+    for ax in [new_ax, old_ax]:
+        ax.grid(alpha=0.4)
+        ax.set_xlabel(r'Radius $R_{\bigoplus}$')
+    new_ax.set_ylabel("Entropy")
+    new_ax.legend()
+    new_ax.set_title("New EoS ({} hrs)".format(round(new_time, 2)))
+    old_ax.set_title("old EoS ({} hrs)".format(round(old_time, 2)))
+    plt.savefig("avg_disk_scatter.png", format='png')
+
 
 animate(
     start_time=start_time,
