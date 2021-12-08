@@ -51,6 +51,14 @@ max_time = get_time(new_path + "/{}.csv".format(end_time))
 
 new_times, old_times, new_avg_entropies, old_avg_entropies = [], [], [], []
 num_particles_disk_new, num_particles_disk_old = [], []
+num_disk_particles_small_s_silicate_new = []
+num_disk_particles_large_s_silicate_new = []
+num_disk_particles_small_s_iron_new = []
+num_disk_particles_large_s_iron_new = []
+num_disk_particles_small_s_silicate_old = []
+num_disk_particles_large_s_silicate_old = []
+num_disk_particles_small_s_iron_old = []
+num_disk_particles_large_s_iron_old = []
 for time in np.arange(start_time, end_time + increment, increment):
     print("At time : {}".format(time))
     new_f, old_f = new_path + "/{}.csv".format(time), old_path + "/{}.csv".format(time)
@@ -190,6 +198,41 @@ for time in np.arange(start_time, end_time + increment, increment):
     new_ax.set_title("New EoS ({} hrs)".format(round(new_time, 2)))
     old_ax.set_title("Old EoS ({} hrs)".format(round(old_time, 2)))
     plt.savefig(path2 + "/{}.png".format(time), format='png')
+    
+    
+    num_disk_particles_small_s_silicate_new.append(
+        len([s for index, s in enumerate(new_file['entropy']) if
+             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 == 0 and s < 8000])
+    )
+    num_disk_particles_large_s_silicate_new.append(
+        len([s for index, s in enumerate(new_file['entropy']) if
+             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 == 0 and s >= 8000])
+    )
+    num_disk_particles_small_s_iron_new.append(
+        len([s for index, s in enumerate(new_file['entropy']) if
+             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 != 0 and s < 8000])
+    )
+    num_disk_particles_large_s_iron_new.append(
+        len([s for index, s in enumerate(new_file['entropy']) if
+             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 != 0 and s >= 8000])
+    )
+    num_disk_particles_small_s_silicate_old.append(
+        len([s for index, s in enumerate(old_file['entropy']) if
+             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0 and s < 8000])
+    )
+    num_disk_particles_large_s_silicate_old.append(
+        len([s for index, s in enumerate(old_file['entropy']) if
+             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0 and s >= 8000])
+    )
+    num_disk_particles_small_s_iron_old.append(
+        len([s for index, s in enumerate(old_file['entropy']) if
+             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0 and s < 8000])
+    )
+    num_disk_particles_large_s_iron_old.append(
+        len([s for index, s in enumerate(old_file['entropy']) if
+             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0 and s >= 8000])
+    )
+    
 
     fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.0, "wspace": 0.10})
@@ -197,58 +240,50 @@ for time in np.arange(start_time, end_time + increment, increment):
     new_ax, old_ax = axs.flatten()[0], axs.flatten()[1]
     new_ax.plot(
         new_times,
-        len([s for index, s in enumerate(new_file['entropy']) if
-         new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 == 0 and s < 8000]),
+        num_disk_particles_small_s_silicate_new,
         linewidth=2.0,
         label="Silicate w/ S < 8000"
     )
     new_ax.plot(
         new_times,
-        len([s for index, s in enumerate(new_file['entropy']) if
-             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 == 0 and s >= 8000]),
+        num_disk_particles_large_s_silicate_new,
         linewidth=2.0,
         label="Silicate w/ S >= 8000"
     )
     new_ax.plot(
         new_times,
-        len([s for index, s in enumerate(new_file['entropy']) if
-             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 != 0 and s < 8000]),
+        num_disk_particles_small_s_iron_new,
         linewidth=2.0,
         label="Iron w/ S < 8000"
     )
     new_ax.plot(
         new_times,
-        len([s for index, s in enumerate(new_file['entropy']) if
-             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 != 0 and s >= 8000]),
+        num_disk_particles_large_s_iron_new,
         linewidth=2.0,
         label="Iron w/ S >= 8000"
     )
     old_ax.plot(
         old_times,
-        len([s for index, s in enumerate(old_file['entropy']) if
-             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0 and s < 8000]),
-        linewidth=2.0,
+        num_disk_particles_small_s_silicate_old,
+        lioldidth=2.0,
         label="Silicate w/ S < 8000"
     )
     old_ax.plot(
         old_times,
-        len([s for index, s in enumerate(old_file['entropy']) if
-             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0 and s >= 8000]),
-        linewidth=2.0,
+        num_disk_particles_large_s_silicate_old,
+        lioldidth=2.0,
         label="Silicate w/ S >= 8000"
     )
     old_ax.plot(
         old_times,
-        len([s for index, s in enumerate(old_file['entropy']) if
-             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0 and s < 8000]),
-        linewidth=2.0,
+        num_disk_particles_small_s_iron_old,
+        lioldidth=2.0,
         label="Iron w/ S < 8000"
     )
     old_ax.plot(
         old_times,
-        len([s for index, s in enumerate(old_file['entropy']) if
-             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0 and s >= 8000]),
-        linewidth=2.0,
+        num_disk_particles_large_s_iron_old,
+        lioldidth=2.0,
         label="Iron w/ S >= 8000"
     )
     for ax in [new_ax, old_ax]:
