@@ -168,14 +168,14 @@ for time in np.arange(start_time, end_time + increment, increment):
         label="Iron"
     )
     new_ax.axhline(
-        new_avg_entropies,
+        new_avg_entropies[-1],
         linewidth=2.0,
         linestyle="--",
         color='white',
         label="Mean"
     )
     old_ax.axhline(
-        old_avg_entropies,
+        old_avg_entropies[-1],
         linewidth=2.0,
         linestyle="--",
         color='white',
