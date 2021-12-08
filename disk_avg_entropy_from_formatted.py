@@ -188,7 +188,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     new_ax.legend()
     new_ax.set_title("New EoS ({} hrs)".format(round(new_time, 2)))
     old_ax.set_title("old EoS ({} hrs)".format(round(old_time, 2)))
-    plt.savefig("avg_disk_scatter.png", format='png')
+    plt.savefig(path2 + "/{}.png".format(time), format='png')
 
 
 animate(
