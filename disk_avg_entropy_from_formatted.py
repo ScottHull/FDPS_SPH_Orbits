@@ -14,11 +14,12 @@ new_path = "/home/theia/scotthull/1M/gi_new_eos_b_073_at_time"
 old_path = "/home/theia/scotthull/1M/gi_old_eos_b_073_at_time"
 path = "/home/theia/scotthull/FDPS_SPH_Orbits/disk_avgs"
 path2 = path + "2"
+path3 = path + "3"
 start_time = 0
 end_time = 3000
 increment = 100
 
-for p in [path, path2]:
+for p in [path, path2, path3]:
     if os.path.exists(p):
         shutil.rmtree(p)
     os.mkdir(p)
@@ -187,8 +188,78 @@ for time in np.arange(start_time, end_time + increment, increment):
     new_ax.set_ylabel("Entropy")
     new_ax.legend()
     new_ax.set_title("New EoS ({} hrs)".format(round(new_time, 2)))
-    old_ax.set_title("old EoS ({} hrs)".format(round(old_time, 2)))
+    old_ax.set_title("Old EoS ({} hrs)".format(round(old_time, 2)))
     plt.savefig(path2 + "/{}.png".format(time), format='png')
+
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
+                            gridspec_kw={"hspace": 0.0, "wspace": 0.10})
+
+    new_ax, old_ax = axs.flatten()[0], axs.flatten()[1]
+    new_ax.plot(
+        new_times,
+        len([s for index, s in enumerate(new_file['entropy']) if
+         new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 == 0 and s < 8000]),
+        linewidth=2.0,
+        label="Silicate w/ S < 8000"
+    )
+    new_ax.plot(
+        new_times,
+        len([s for index, s in enumerate(new_file['entropy']) if
+             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 == 0 and s >= 8000]),
+        linewidth=2.0,
+        label="Silicate w/ S >= 8000"
+    )
+    new_ax.plot(
+        new_times,
+        len([s for index, s in enumerate(new_file['entropy']) if
+             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 != 0 and s < 8000]),
+        linewidth=2.0,
+        label="Iron w/ S < 8000"
+    )
+    new_ax.plot(
+        new_times,
+        len([s for index, s in enumerate(new_file['entropy']) if
+             new_file['label'][index] == "DISK" and new_file['tag'][index] % 2 != 0 and s >= 8000]),
+        linewidth=2.0,
+        label="Iron w/ S >= 8000"
+    )
+    old_ax.plot(
+        old_times,
+        len([s for index, s in enumerate(old_file['entropy']) if
+             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0 and s < 8000]),
+        lioldidth=2.0,
+        label="Silicate w/ S < 8000"
+    )
+    old_ax.plot(
+        old_times,
+        len([s for index, s in enumerate(old_file['entropy']) if
+             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 == 0 and s >= 8000]),
+        lioldidth=2.0,
+        label="Silicate w/ S >= 8000"
+    )
+    old_ax.plot(
+        old_times,
+        len([s for index, s in enumerate(old_file['entropy']) if
+             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0 and s < 8000]),
+        lioldidth=2.0,
+        label="Iron w/ S < 8000"
+    )
+    old_ax.plot(
+        old_times,
+        len([s for index, s in enumerate(old_file['entropy']) if
+             old_file['label'][index] == "DISK" and old_file['tag'][index] % 2 != 0 and s >= 8000]),
+        lioldidth=2.0,
+        label="Iron w/ S >= 8000"
+    )
+    for ax in [new_ax, old_ax]:
+        ax.grid(alpha=0.4)
+        ax.set_xlabel("Time (hrs)")
+    new_ax.set_ylabel("Num. Disk Particles w/ Entropy Value")
+    new_ax.legend()
+    new_ax.set_title("New EoS")
+    old_ax.set_title("Old EoS")
+    plt.savefig(path3 + "/{}.png".format(time), format='png')
+    
 
 
 animate(
@@ -207,4 +278,13 @@ animate(
     path=path2,
     fps=10,
     filename="disk_avg_scatter.mp4",
+)
+
+animate(
+    start_time=start_time,
+    end_time=end_time,
+    interval=increment,
+    path=path3,
+    fps=10,
+    filename="num_disk_particles_w_entropy.mp4",
 )
