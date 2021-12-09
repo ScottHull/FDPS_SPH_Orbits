@@ -13,7 +13,7 @@ from src.animate import animate
 start_time = 0
 end_time = 3000
 increment = 100
-start_shock_sample = 200
+start_shock_sample = 400
 end_shock_sample = 2500
 f_path = "/home/theia/scotthull/1M/gi_new_eos_b_073_at_time"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_s_shocks"
@@ -62,7 +62,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     new_time = get_time(new_f)
     times.append(new_time)
     new_file = pd.read_csv(new_f, skiprows=2).to_dict('list')
-    d = [(i, new_file['entropy'][index], new_file['density'][index], new_file['internal_energy'][index]) for i, index in
+    d = [(i, new_file['entropy'][index], new_file['density'][index], new_file['internal_energy'][index]) for index, i in
          enumerate(new_file['id']) if i in ids]
     fig, axs = plt.subplots(1, 3, figsize=(16, 9), gridspec_kw={"hspace": 0.0, "wspace": 0.14})
     fig.patch.set_facecolor('xkcd:black')
