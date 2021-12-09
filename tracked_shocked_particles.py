@@ -55,15 +55,16 @@ def identify_shocked_particles(start_sample_time, end_sample_time, num=5, s_cuto
 ids = identify_shocked_particles(start_sample_time=start_shock_sample, end_sample_time=end_shock_sample)
 
 plt.style.use("dark_background")
-colors = ['r', 'g', 'b', 'majenta', 'w']
+colors = ['r', 'g', 'b', 'magenta', 'w']
 times = []
+color_pairs = dict(zip(ids, colors))
 data = dict(zip(ids, [{"s": [], "rho": [], "u": []} for i in ids]))
 for time in np.arange(start_time, end_time + increment, increment):
     new_f = f_path + "/{}.csv".format(time)
     new_time = get_time(new_f)
     times.append(new_time)
     new_file = pd.read_csv(new_f, skiprows=2).to_dict('list')
-    d = [(i, new_file['entropy'][index], new_file['density'][index], new_file['internal_energy'][index]) for index, i in
+    d = [[i, new_file['entropy'][index], new_file['density'][index], new_file['internal_energy'][index]] for index, i in
          enumerate(new_file['id']) if i in ids]
     for i in d:
         data[i[0]]['s'].append(i[1])
@@ -82,21 +83,21 @@ for time in np.arange(start_time, end_time + increment, increment):
             data[i[0]]['s'],
             linewidth=2.0,
             label=i[0],
-            c=colors[index]
+            c=color_pairs[i[0]]
         )
         ax2.plot(
             times,
             data[i[0]]['rho'],
             linewidth=2.0,
             label=i[0],
-            c=colors[index]
+            c=color_pairs[i[0]]
         )
         ax3.plot(
             times,
             data[i[0]]['u'],
             linewidth=2.0,
             label=i[0],
-            c=colors[index]
+            c=color_pairs[i[0]]
         )
     ax1.set_ylim(0, 10000)
     ax2.set_ylim(0, 20),
