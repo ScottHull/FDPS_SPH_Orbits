@@ -55,7 +55,7 @@ def identify_shocked_particles(start_sample_time, end_sample_time, num=5, s_cuto
 ids = identify_shocked_particles(start_sample_time=start_shock_sample, end_sample_time=end_shock_sample)
 
 plt.style.use("dark_background")
-colors = ['r', 'g', 'b', 'p', 'w']
+colors = ['r', 'g', 'b', 'majenta', 'w']
 times = []
 data = dict(zip(ids, [{"s": [], "rho": [], "u": []} for i in ids]))
 for time in np.arange(start_time, end_time + increment, increment):
