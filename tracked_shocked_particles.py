@@ -42,13 +42,13 @@ def identify_shocked_particles(start_sample_time, end_sample_time, num=5, s_cuto
     end_df = pd.read_csv(end_f, skiprows=2).to_dict('list')
     start_df = pd.read_csv(start_f, skiprows=2).to_dict('list')
     ids = []
-    high_s_ids = [i for index, i in enumerate(end_df['particle_id']) if
+    high_s_ids = [i for index, i in enumerate(end_df['id']) if
                   end_df['label'][index] == "DISK" and end_df['entropy'][index] >= s_cutoff]
-    for i, index in enumerate(start_df['particle_id']):
+    for i, index in enumerate(start_df['id']):
         if len(ids) < num:
             break
         if start_df['entropy'][index] < s_cutoff and start_df['label'][index] == "DISK" and \
-                start_df['particle_id'][index] in high_s_ids:
+                start_df['id'][index] in high_s_ids:
             ids.append(i)
     return ids
 
@@ -63,7 +63,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     times.append(new_time)
     new_file = pd.read_csv(new_f, skiprows=2).to_dict('list')
     d = [(i, new_file['entropy'][index], new_file['density'][index], new_file['internal_energy'][index]) for i, index in
-         enumerate(new_file['particle_id']) if i in ids]
+         enumerate(new_file['id']) if i in ids]
     fig, axs = plt.subplots(1, 3, figsize=(16, 9), gridspec_kw={"hspace": 0.0, "wspace": 0.14})
     fig.patch.set_facecolor('xkcd:black')
     ax1, ax2, ax3 = axs.flatten()
