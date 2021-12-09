@@ -59,18 +59,19 @@ for time in np.arange(start_time, end_time + increment, increment):
     ax1, ax2 = axs.flatten()
 
     ax1.scatter(
-        [i[3] for i in high_s],
-        [i[4] for i in high_s],
-        color='pink',
-        s=3,
-        label="S >= 8000"
-    )
-    ax1.scatter(
         [i[3] for i in low_s],
         [i[4] for i in low_s],
         color='aqua',
         s=3,
         label="S < 8000"
+    )
+
+    ax1.scatter(
+        [i[3] for i in high_s],
+        [i[4] for i in high_s],
+        color='pink',
+        s=3,
+        label="S >= 8000"
     )
 
     ax1.set_xticks([])
