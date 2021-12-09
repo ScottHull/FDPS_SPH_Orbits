@@ -72,6 +72,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     fig.patch.set_facecolor('xkcd:black')
     ax1, ax2, ax3 = axs.flatten()
     for ax in axs.flatten():
+        ax.set_xlim(0, max_time)
         ax.set_xlabel("Time (hrs)")
         ax.grid(alpha=0.4)
     for i in d:
@@ -93,6 +94,9 @@ for time in np.arange(start_time, end_time + increment, increment):
             linewidth=2.0,
             label=i[0]
         )
+    ax1.set_ylim(0, 10000)
+    ax2.set_ylim(0, 20),
+    ax3.set_ylim(0, 4e7)
     ax1.set_ylabel("Entropy")
     ax2.set_ylabel("Density")
     ax3.set_ylabel("Internal Energy")
