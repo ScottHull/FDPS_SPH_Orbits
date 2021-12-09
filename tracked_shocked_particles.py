@@ -56,6 +56,7 @@ ids = identify_shocked_particles(start_sample_time=start_shock_sample, end_sampl
 
 plt.style.use("dark_background")
 times = []
+data = dict(zip(ids, [{"s": [], "rho": [], "u": []} for i in ids]))
 for time in np.arange(start_time, end_time + increment, increment):
     new_f = f_path + "/{}.csv".format(time)
     new_time = get_time(new_f)
@@ -63,6 +64,10 @@ for time in np.arange(start_time, end_time + increment, increment):
     new_file = pd.read_csv(new_f, skiprows=2).to_dict('list')
     d = [(i, new_file['entropy'][index], new_file['density'][index], new_file['internal_energy'][index]) for index, i in
          enumerate(new_file['id']) if i in ids]
+    for i in d:
+        data[i[0]]['s'].append(i[1])
+        data[i[0]]['rho'].append(i[2])
+        data[i[0]]['u'].append(i[3])
     fig, axs = plt.subplots(1, 3, figsize=(16, 9), gridspec_kw={"hspace": 0.0, "wspace": 0.14})
     fig.patch.set_facecolor('xkcd:black')
     ax1, ax2, ax3 = axs.flatten()
@@ -72,19 +77,19 @@ for time in np.arange(start_time, end_time + increment, increment):
     for i in d:
         ax1.plot(
             times,
-            i[1],
+            data[i[0]]['s'],
             linewidth=2.0,
             label=i[0]
         )
         ax2.plot(
             times,
-            i[2],
+            data[i[0]]['rho'],
             linewidth=2.0,
             label=i[0]
         )
         ax3.plot(
             times,
-            i[3],
+            data[i[0]]['u'],
             linewidth=2.0,
             label=i[0]
         )
