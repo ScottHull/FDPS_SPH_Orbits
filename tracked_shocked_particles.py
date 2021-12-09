@@ -55,6 +55,7 @@ def identify_shocked_particles(start_sample_time, end_sample_time, num=5, s_cuto
 ids = identify_shocked_particles(start_sample_time=start_shock_sample, end_sample_time=end_shock_sample)
 
 plt.style.use("dark_background")
+colors = ['r', 'g', 'b', 'p', 'w']
 times = []
 data = dict(zip(ids, [{"s": [], "rho": [], "u": []} for i in ids]))
 for time in np.arange(start_time, end_time + increment, increment):
@@ -75,24 +76,27 @@ for time in np.arange(start_time, end_time + increment, increment):
         ax.set_xlim(0, max_time)
         ax.set_xlabel("Time (hrs)")
         ax.grid(alpha=0.4)
-    for i in d:
+    for index, i in enumerate(d):
         ax1.plot(
             times,
             data[i[0]]['s'],
             linewidth=2.0,
-            label=i[0]
+            label=i[0],
+            c=colors[index]
         )
         ax2.plot(
             times,
             data[i[0]]['rho'],
             linewidth=2.0,
-            label=i[0]
+            label=i[0],
+            c=colors[index]
         )
         ax3.plot(
             times,
             data[i[0]]['u'],
             linewidth=2.0,
-            label=i[0]
+            label=i[0],
+            c=colors[index]
         )
     ax1.set_ylim(0, 10000)
     ax2.set_ylim(0, 20),
