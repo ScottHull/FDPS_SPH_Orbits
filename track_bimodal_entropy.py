@@ -37,7 +37,7 @@ def get_particles(particles):
     return [
         (s, tag, label, x, y, z) for s, tag, label, x, y, z in
         zip(particles['entropy'], particles['tag'], particles['label'], particles['x'], particles['y'], particles['z'])
-        if tag == "DISK"
+        if label == "DISK"
     ]
 
 
@@ -54,10 +54,10 @@ for time in np.arange(start_time, end_time + increment, increment):
     low_s = [i for i in disk_particles if i[0] < 8000]
     num_low_s_particles.append(len(low_s))
     num_high_s_particles.append(len(high_s))
-    fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
-                            gridspec_kw={"hspace": 0.0, "wspace": 0.14})
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.0, "wspace": 0.14})
     fig.patch.set_facecolor('xkcd:black')
     ax1, ax2 = axs.flatten()
+
     ax1.scatter(
         [i[3] for i in high_s],
         [i[4] for i in high_s],
