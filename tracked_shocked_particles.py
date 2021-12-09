@@ -44,8 +44,8 @@ def identify_shocked_particles(start_sample_time, end_sample_time, num=5, s_cuto
     ids = []
     high_s_ids = [i for index, i in enumerate(end_df['id']) if
                   end_df['label'][index] == "DISK" and end_df['entropy'][index] >= s_cutoff]
-    for i, index in enumerate(start_df['id']):
-        if len(ids) < num:
+    for index, i in enumerate(start_df['id']):
+        if len(ids) >= num:
             break
         if start_df['entropy'][index] < s_cutoff and start_df['label'][index] == "DISK" and \
                 start_df['id'][index] in high_s_ids:
