@@ -12,10 +12,11 @@ from src.animate import animate
 
 start_time = 0
 end_time = 3000
-increment = 100
+increment = 10
 start_shock_sample = 400
 end_shock_sample = 2500
 f_path = "/home/theia/scotthull/1M/gi_new_eos_b_073_at_time"
+f_fine_path = "/home/theia/scotthull/1M/formatted_gi_new_eos_b_073_at"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_s_shocks"
 
 for p in [output]:
@@ -60,12 +61,12 @@ times = []
 color_pairs = dict(zip(ids, colors))
 data = dict(zip(ids, [{"s": [], "rho": [], "u": []} for i in ids]))
 for time in np.arange(start_time, end_time + increment, increment):
-    new_f = f_path + "/{}.csv".format(time)
+    print('At time {}'.format(time))
+    new_f = f_fine_path + "/{}.csv".format(time)
     new_time = get_time(new_f)
     times.append(new_time)
-    new_file = pd.read_csv(new_f, skiprows=2).to_dict('list')
-    d = [[i, new_file['entropy'][index], new_file['density'][index], new_file['internal_energy'][index]] for index, i in
-         enumerate(new_file['id']) if i in ids]
+    new_file = pd.read_csv(new_f, skiprows=2, index_col='id')
+    d = [[index, new_file['entropy'][index], new_file['density'][index], new_file['internal_energy'][index]] for index in ids]
     for i in d:
         data[i[0]]['s'].append(i[1])
         data[i[0]]['rho'].append(i[2])
