@@ -83,21 +83,24 @@ for time in np.arange(start_time, end_time + increment, increment):
             data[i[0]]['s'],
             linewidth=2.0,
             label=i[0],
-            c=color_pairs[i[0]]
+            c=color_pairs[i[0]],
+            alpha=0.6
         )
         ax2.plot(
             times,
             data[i[0]]['rho'],
             linewidth=2.0,
             label=i[0],
-            c=color_pairs[i[0]]
+            c=color_pairs[i[0]],
+            alpha=0.6
         )
         ax3.plot(
             times,
             data[i[0]]['u'],
             linewidth=2.0,
             label=i[0],
-            c=color_pairs[i[0]]
+            c=color_pairs[i[0]],
+            alpha=0.6
         )
     ax1.set_ylim(0, 10000)
     ax2.set_ylim(0, 20),
