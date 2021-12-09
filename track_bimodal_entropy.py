@@ -94,7 +94,7 @@ for time in np.arange(start_time, end_time + increment, increment):
         label="S < 8000"
     )
 
-    ax2.set_ylim(0, max_time)
+    ax2.set_xlim(0, max_time)
     ax2.set_xlabel("Time (hrs)")
     ax2.set_ylabel("Num. Disk Particles")
     for ax in axs.flatten():
