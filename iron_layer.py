@@ -47,8 +47,8 @@ def get_time(f):
 
 
 # Function to calculate the exponential with constants a and b
-def exponential(x, a, b):
-    return a * np.exp(b * x)
+def exponential(x, a, b, c, d):
+    return a * pow(x, 3) + b * pow(x, 2) + c * x + d
 
 
 f = path + "/{}.csv".format(time)
@@ -62,7 +62,9 @@ iron_layer_radius = [i / (6371 * 1000) for i in iron_layer['radius']]
 parameters, covariance = curve_fit(exponential, iron_layer_radius, iron_layer['density'])
 fit_A = parameters[0]
 fit_B = parameters[1]
-fit_y = exponential(np.array(iron_layer_radius), fit_A, fit_B)
+fit_C = parameters[2]
+fit_D = parameters[3]
+fit_y = exponential(np.array(iron_layer_radius), fit_A, fit_B, fit_C, fit_D)
 
 fig, axs = plt.subplots(1, 3, figsize=(16, 9), sharex='all', gridspec_kw={"wspace": 0.20})
 ax1, ax2, ax3 = axs.flatten()
@@ -76,10 +78,10 @@ ax1.plot(
     linewidth=2.0,
     color='magenta'
 )
-ax1.annotate(
-    (max(iron_layer_radius) - (.4 * max(iron_layer_radius)), max(fit_y) - (.2 * max(fit_y))),
-    "y = {} * x ** {}".format(fit_A, fit_B)
-)
+# ax1.annotate(
+#     r"y = %f * $x^{%f}$" % (round(fit_A, 2), round(fit_B, 2)),
+#     (max(iron_layer_radius) - (.4 * max(iron_layer_radius)), max(fit_y) - (.2 * max(fit_y))),
+# )
 ax2.scatter(
     iron_layer_radius,
     iron_layer['entropy']
