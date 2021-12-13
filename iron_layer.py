@@ -45,12 +45,6 @@ def get_time(f):
     infile.close()
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
-def cubicl(x, a, b, c, d):
-    return a * pow(x, 3) + b * pow(x, 2) + c * x + d
-
-def quadratic(x, a, b, c):
-    return a * pow(x, 2) + b * x + c
-
 
 f = path + "/{}.csv".format(time)
 time_hrs = get_time(f)
@@ -60,12 +54,8 @@ iron_layer = impactor_iron[impactor_iron['radius'] <= 1e7]
 iron_layer = iron_layer.sort_values(by=['radius'])
 iron_layer_radius = [i / (6371 * 1000) for i in iron_layer['radius']]
 
-parameters, covariance = curve_fit(quadratic, iron_layer_radius, iron_layer['density'])
-fit_A = parameters[0]
-fit_B = parameters[1]
-fit_C = parameters[2]
-# fit_D = parameters[3]
-fit_y = quadratic(np.array(iron_layer_radius), fit_A, fit_B, fit_C)
+fit = np.polyfit(iron_layer_radius, iron_layer['density'], 4)
+p = np.poly1d(fit)
 
 fig, axs = plt.subplots(1, 3, figsize=(16, 9), sharex='all', gridspec_kw={"wspace": 0.20})
 ax1, ax2, ax3 = axs.flatten()
@@ -75,7 +65,7 @@ ax1.scatter(
 )
 ax1.plot(
     iron_layer_radius,
-    fit_y,
+    p(iron_layer_radius),
     linewidth=2.0,
     color='magenta'
 )
