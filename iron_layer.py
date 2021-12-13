@@ -59,7 +59,8 @@ fig, axs = plt.subplots(1, 3, figsize=(16, 9), sharex='all', gridspec_kw={"wspac
 ax1, ax2, ax3 = axs.flatten()
 ax1.scatter(
     iron_layer_radius,
-    iron_layer['density']
+    iron_layer['density'],
+    s=2
 )
 for i in range(3, 10):
     fit = np.polyfit(iron_layer_radius, iron_layer['density'], i)
