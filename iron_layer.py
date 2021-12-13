@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from scipy.interpolate import UnivariateSpline
+import csv
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -24,7 +24,7 @@ RHO_0_iron = 7500
 """
 
 time = 1500
-path = "/home/theia/scotthull/1M/gi_new_eos_b_073_formatted"
+path = "/home/theia/scotthull/1M/formatted_gi_new_eos_b_073"
 
 plt.style.use("dark_background")
 
@@ -34,8 +34,38 @@ labels = {
     2: "Impactor Silicate",
     3: "Impactor Iron"
 }
+def get_time(f):
+    formatted_time = None
+    with open(f, 'r') as infile:
+        reader = csv.reader(infile, delimiter="\t")
+        formatted_time = float(next(reader)[0])
+    infile.close()
+    return round(formatted_time * 0.000277778, 2)  # seconds -> hours
+
 
 f = path + "/{}.csv".format(time)
-df = pd.read_csv(f, skiprows=2).tolist('index')
+time_hrs = get_time(f)
+df = pd.read_csv(f, skiprows=2)
 impactor_iron = df.loc[(df['tag'] == 3)]
-print(impactor_iron)
+iron_layer = impactor_iron[impactor_iron['radius'] <= 1e7]
+
+fig, axs = plt.subplots(1, 3, figsize=(16, 9), sharex='all', gridspec_kw={"wspace": 0.20})
+ax1, ax2, ax3 = axs.flatten()
+ax1.scatter(
+    [i / (6371 * 1000) for i in iron_layer['radius']],
+    iron_layer['density']
+)
+ax2.scatter(
+    [i / (6371 * 1000) for i in iron_layer['radius']],
+    iron_layer['entropy']
+)
+ax3.scatter(
+    [i / (6371 * 1000) for i in iron_layer['radius']],
+    iron_layer['temperature']
+)
+for ax in axs.flatten():
+    ax.set_title("{} hrs".format(time_hrs))
+    ax.set_xlabel(r'Radius $R_{\bigoplus}$')
+    ax.grid(alpha=0.4)
+ax1.set_ylabel("Density"), ax2.set_ylabel("Entropy"), ax3.set_ylabel("Temperature")
+
