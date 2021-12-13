@@ -37,5 +37,5 @@ labels = {
 
 f = path + "/{}.csv".format(time)
 df = pd.read_csv(f, skiprows=2).tolist('index')
-impactor_iron = df.loc[(df['tag'] == 3)
+impactor_iron = df.loc[(df['tag'] == 3)]
 print(impactor_iron)
