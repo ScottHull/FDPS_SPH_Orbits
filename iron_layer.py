@@ -79,7 +79,7 @@ ax1.legend()
 # )
 ax2.scatter(
     iron_layer_radius,
-    iron_layer['pressure']
+    [i / 1e9 for i in iron_layer['pressure']]
 )
 ax3.scatter(
     iron_layer_radius,
@@ -89,6 +89,6 @@ for ax in axs.flatten():
     ax.set_title("{} hrs".format(time_hrs))
     ax.set_xlabel(r'Radius $R_{\bigoplus}$')
     ax.grid(alpha=0.4)
-ax1.set_ylabel("Density"), ax2.set_ylabel("Pressure"), ax3.set_ylabel("Temperature")
+ax1.set_ylabel("Density (kg/m3)"), ax2.set_ylabel("Pressure (GPa)"), ax3.set_ylabel("Temperature (K)")
 
 plt.savefig("iron_layer_profile.png", format='png')
