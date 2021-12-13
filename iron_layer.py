@@ -62,7 +62,7 @@ ax1.scatter(
     iron_layer['density'],
     s=2
 )
-for i in range(3, 10):
+for i in range(1, 6):
     fit = np.polyfit(iron_layer_radius, iron_layer['density'], i)
     p = np.poly1d(fit)
     ax1.plot(
