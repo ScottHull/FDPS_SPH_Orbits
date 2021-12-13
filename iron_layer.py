@@ -77,8 +77,8 @@ ax1.plot(
     color='magenta'
 )
 ax1.annotate(
-    (max(iron_layer_radius) - (.4 * max(iron_layer_radius)), max(fit_y) - (.2 * max(fit_y)))
-    "y = {} * x^{}".format(fit_A, fit_B)
+    (max(iron_layer_radius) - (.4 * max(iron_layer_radius)), max(fit_y) - (.2 * max(fit_y))),
+    r"y = {} * $x^{{}}$".format(fit_A, fit_B)
 )
 ax2.scatter(
     iron_layer_radius,
