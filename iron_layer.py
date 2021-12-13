@@ -61,14 +61,14 @@ ax1.scatter(
     iron_layer_radius,
     iron_layer['density']
 )
-for i in range(6):
+for i in range(3, 10):
     fit = np.polyfit(iron_layer_radius, iron_layer['density'], i)
     p = np.poly1d(fit)
     ax1.plot(
         iron_layer_radius,
         p(iron_layer_radius),
         linewidth=2.0,
-        color='magenta',
+        # color='magenta',
         label=i
     )
 ax1.legend()
