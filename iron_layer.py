@@ -3,6 +3,7 @@ import csv
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
 
 from src.new_and_old_eos import get_particles
 
@@ -34,6 +35,8 @@ labels = {
     2: "Impactor Silicate",
     3: "Impactor Iron"
 }
+
+
 def get_time(f):
     formatted_time = None
     with open(f, 'r') as infile:
@@ -43,17 +46,34 @@ def get_time(f):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 
+# Function to calculate the exponential with constants a and b
+def exponential(x, a, b):
+    return a * np.exp(b * x)
+
+
 f = path + "/{}.csv".format(time)
 time_hrs = get_time(f)
 df = pd.read_csv(f, skiprows=2)
 impactor_iron = df.loc[(df['tag'] == 3)]
 iron_layer = impactor_iron[impactor_iron['radius'] <= 1e7]
+iron_layer = iron_layer.sort_values(by=['radius'])
+
+parameters, covariance = curve_fit(exponential, [i / (6371 * 1000) for i in iron_layer['radius']], impactor_iron['density'])
+fit_A = parameters[0]
+fit_B = parameters[1]
+fit_y = exponential([i / (6371 * 1000) for i in iron_layer['radius']], fit_A, fit_B)
 
 fig, axs = plt.subplots(1, 3, figsize=(16, 9), sharex='all', gridspec_kw={"wspace": 0.20})
 ax1, ax2, ax3 = axs.flatten()
 ax1.scatter(
     [i / (6371 * 1000) for i in iron_layer['radius']],
     iron_layer['density']
+)
+ax1.plot(
+    [i / (6371 * 1000) for i in iron_layer['radius']],
+    fit_y,
+    linewidth=2.0,
+    color='magenta'
 )
 ax2.scatter(
     [i / (6371 * 1000) for i in iron_layer['radius']],
@@ -69,3 +89,4 @@ for ax in axs.flatten():
     ax.grid(alpha=0.4)
 ax1.set_ylabel("Density"), ax2.set_ylabel("Entropy"), ax3.set_ylabel("Temperature")
 
+plt.savefig("iron_layer_profile.png", format='png')
