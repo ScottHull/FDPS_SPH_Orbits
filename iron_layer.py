@@ -57,30 +57,35 @@ df = pd.read_csv(f, skiprows=2)
 impactor_iron = df.loc[(df['tag'] == 3)]
 iron_layer = impactor_iron[impactor_iron['radius'] <= 1e7]
 iron_layer = iron_layer.sort_values(by=['radius'])
+iron_layer_radius = [i / (6371 * 1000) for i in iron_layer['radius']]
 
-parameters, covariance = curve_fit(exponential, [i / (6371 * 1000) for i in iron_layer['radius']], impactor_iron['density'])
+parameters, covariance = curve_fit(exponential, iron_layer_radius, iron_layer['density'])
 fit_A = parameters[0]
 fit_B = parameters[1]
-fit_y = exponential([i / (6371 * 1000) for i in iron_layer['radius']], fit_A, fit_B)
+fit_y = exponential(np.array(iron_layer_radius), fit_A, fit_B)
 
 fig, axs = plt.subplots(1, 3, figsize=(16, 9), sharex='all', gridspec_kw={"wspace": 0.20})
 ax1, ax2, ax3 = axs.flatten()
 ax1.scatter(
-    [i / (6371 * 1000) for i in iron_layer['radius']],
+    iron_layer_radius,
     iron_layer['density']
 )
 ax1.plot(
-    [i / (6371 * 1000) for i in iron_layer['radius']],
+    iron_layer_radius,
     fit_y,
     linewidth=2.0,
     color='magenta'
 )
+ax1.annotate(
+    (max(iron_layer_radius) - (.4 * max(iron_layer_radius)), max(fit_y) - (.2 * max(fit_y)))
+    "y = {} * x^{}".format(fit_A, fit_B)
+)
 ax2.scatter(
-    [i / (6371 * 1000) for i in iron_layer['radius']],
+    iron_layer_radius,
     iron_layer['entropy']
 )
 ax3.scatter(
-    [i / (6371 * 1000) for i in iron_layer['radius']],
+    iron_layer_radius,
     iron_layer['temperature']
 )
 for ax in axs.flatten():
