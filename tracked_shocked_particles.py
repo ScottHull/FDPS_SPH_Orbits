@@ -16,7 +16,7 @@ increment = 10
 start_shock_sample = 400
 end_shock_sample = 2500
 f_path = "/home/theia/scotthull/1M/gi_new_eos_b_073_at_time"
-f_fine_path = "/home/theia/scotthull/1M/formatted_gi_new_eos_b_073_at"
+f_fine_path = "/home/theia/scotthull/1M/formatted_gi_new_eos_b_073"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_s_shocks"
 
 for p in [output]:
