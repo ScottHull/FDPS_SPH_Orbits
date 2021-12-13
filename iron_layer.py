@@ -54,8 +54,6 @@ iron_layer = impactor_iron[impactor_iron['radius'] <= 1e7]
 iron_layer = iron_layer.sort_values(by=['radius'])
 iron_layer_radius = [i / (6371 * 1000) for i in iron_layer['radius']]
 
-fit = np.polyfit(iron_layer_radius, iron_layer['density'], 4)
-p = np.poly1d(fit)
 
 fig, axs = plt.subplots(1, 3, figsize=(16, 9), sharex='all', gridspec_kw={"wspace": 0.20})
 ax1, ax2, ax3 = axs.flatten()
@@ -63,12 +61,17 @@ ax1.scatter(
     iron_layer_radius,
     iron_layer['density']
 )
-ax1.plot(
-    iron_layer_radius,
-    p(iron_layer_radius),
-    linewidth=2.0,
-    color='magenta'
-)
+for i in range(6):
+    fit = np.polyfit(iron_layer_radius, iron_layer['density'], i)
+    p = np.poly1d(fit)
+    ax1.plot(
+        iron_layer_radius,
+        p(iron_layer_radius),
+        linewidth=2.0,
+        color='magenta',
+        label=i
+    )
+ax1.legend()
 # ax1.annotate(
 #     r"y = %f * $x^{%f}$" % (round(fit_A, 2), round(fit_B, 2)),
 #     (max(iron_layer_radius) - (.4 * max(iron_layer_radius)), max(fit_y) - (.2 * max(fit_y))),
