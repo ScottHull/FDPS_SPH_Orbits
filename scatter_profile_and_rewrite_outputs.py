@@ -36,7 +36,7 @@ reports = BuildReports(
 
 def __loop(time):
     print("At iteration {}".format(time))
-    if time % assess_at_interval and time != 0:
+    if time % assess_at_interval == 0 and time != 0:
         reports.build_report_at_time(time=time, solve=True)
     else:
         reports.build_report_at_time(time=time, solve=False)
