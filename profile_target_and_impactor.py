@@ -15,22 +15,22 @@ fig, axs = plt.subplots(2, 3, figsize=(16, 20), sharex='all', gridspec_kw={"hspa
 
 ax1, ax2, ax3, ax4, ax5, ax6 = axs.flatten()
 ax1.scatter(
-    target_radius, target_df['entropy'], s=1
+    target_radius, target_df[13], s=1
 )
 ax2.scatter(
-    target_radius, target_df['temperature'], s=1
+    target_radius, target_df[14], s=1
 )
 ax3.scatter(
-    target_radius, target_df['density'], s=1
+    target_radius, target_df[9], s=1
 )
 ax4.scatter(
-    impactor_radius, impactor_df['entropy'], s=1
+    impactor_radius, impactor_df[13], s=1
 )
 ax5.scatter(
-    impactor_radius, impactor_df['temperature'], s=1
+    impactor_radius, impactor_df[14], s=1
 )
 ax6.scatter(
-    impactor_radius, impactor_df['density'], s=1
+    impactor_radius, impactor_df[9], s=1
 )
 ax1.set_ylabel("Entropy (Target)"), ax2.set_ylabel("Temperature (Target)"), ax3.set_ylabel("Density (Target)")
 ax4.set_ylabel("Entropy (Impactor)"), ax5.set_ylabel("Temperature (Impactor)"), ax6.set_ylabel("Density (Impactor)")
