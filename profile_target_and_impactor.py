@@ -2,8 +2,8 @@ from math import sqrt
 import pandas as pd
 import matplotlib.pyplot as plt
 
-target_path = ""
-impactor_path = ""
+target_path = "/home/theia/scotthull/1M_high_rho_cutoff/tar.dat"
+impactor_path = "/home/theia/scotthull/1M_high_rho_cutoff/imp.dat"
 target_df = pd.read_csv(target_path, skiprows=2, header=None, delimiter="\t")
 impactor_df = pd.read_csv(impactor_path, skiprows=2, header=None, delimiter="\t")
 target_radius = [sqrt(i ** 2 + j ** 2 + k ** 2) / (6371 * 1000) for i, j, k in
