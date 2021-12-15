@@ -32,7 +32,10 @@ class BuildReports:
         if self.accessory_path is not None:
             output = open("{}/{}.txt".format(self.accessory_path, time), 'w')
             avg_disk_entropy = [p.entropy for p in particles if p.label == "DISK"]
-            avg_disk_entropy = sum(avg_disk_entropy) / len(avg_disk_entropy)
+            try:
+                avg_disk_entropy = sum(avg_disk_entropy) / len(avg_disk_entropy)
+            except:
+                avg_disk_entropy = 0
             disk_mass = sum([p.mass for p in particles if p.label == "DISK"])
             line = "time\t{}\ndisk vmf\t{}\navg disk entropy\t{}\ndisk mass\t{}\n".format(time, vmf, avg_disk_entropy,
                                                                                           disk_mass)
