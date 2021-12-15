@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import shutil
 import csv
@@ -13,7 +14,7 @@ from src.animate import animate
 plt.style.use("dark_background")
 
 start_time = 1
-end_time = 100
+end_time = 180
 increment = 1
 path = "/home/theia/scotthull/1M_high_rho_cutoff/formatted_gi_new_eos_b_073_high_rho_cutoff_1M"
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/animated_shots"
@@ -39,13 +40,17 @@ def get_time(f):
 
 
 for time in np.arange(start_time, end_time + increment, increment):
+    print("At time {}".format(time))
     f = path + "/{}.csv".format(time)
     formatted_time = get_time(f)
     df = pd.read_csv(f, skiprows=2).to_dict('list')
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
     ax.scatter(
-        df['x'], df['y'], c=[cmap(i) for i in df['entropy']], s=1
+        [df['x'][index] for index, z in enumerate(df['z']) if z < 0],
+        [df['y'][index] for index, z in enumerate(df['z']) if z < 0],
+        c=[cmap(normalizer(df['entropy'][index])) for index, z in enumerate(df['z']) if z < 0],
+        s=1
     )
     ax.set_xticks([])
     # for minor ticks
