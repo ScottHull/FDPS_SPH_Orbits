@@ -14,22 +14,13 @@ start_time = 100
 end_time = 600
 increment = 100
 
-def get_time(f):
-    formatted_time = None
-    with open(f, 'r') as infile:
-        reader = csv.reader(infile, delimiter="\t")
-        formatted_time = float(next(reader)[0])
-    infile.close()
-    return round(formatted_time * 0.000277778, 2)  # seconds -> hours
-
 times, vmfs = [], []
 for time in np.arange(start_time, end_time + increment, increment):
     f = path + "/{}.csv".format(time)
-    formatted_time = get_time(f)
-    times.append(formatted_time)
 
-    particles = get_particles(path=path, formatted=True, time=time, number_processes=200)
+    particles, formatted_time = get_particles(path=path, formatted=True, time=time, number_processes=200)
     vmf = calc_vapor_mass_fraction(particles=particles, phase_path=phase_path, only_disk=True) * 100.0
+    times.append(formatted_time)
     vmfs.append(vmf)
 
 fig = plt.figure(figsize=(16, 9))
