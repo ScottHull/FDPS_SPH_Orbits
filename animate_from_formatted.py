@@ -2,6 +2,7 @@
 import os
 import shutil
 import csv
+import multiprocessing as mp
 import numpy as np
 import pandas as pd
 from matplotlib.colors import Normalize
@@ -14,7 +15,7 @@ from src.animate import animate
 plt.style.use("dark_background")
 
 start_time = 1
-end_time = 180
+end_time = 684
 increment = 1
 path = "/home/theia/scotthull/1M_high_rho_cutoff/formatted_gi_new_eos_b_073_high_rho_cutoff_1M"
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/animated_shots"
@@ -38,8 +39,7 @@ def get_time(f):
     infile.close()
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
-
-for time in np.arange(start_time, end_time + increment, increment):
+def __build_plot(time):
     print("At time {}".format(time))
     f = path + "/{}.csv".format(time)
     formatted_time = get_time(f)
@@ -71,6 +71,12 @@ for time in np.arange(start_time, end_time + increment, increment):
     cbar.ax.tick_params(labelsize=6)
     cbar.ax.set_title("Entropy", fontsize=6)
     plt.savefig(to_path + "/{}.png".format(time), format='png')
+
+
+
+pool = mp.Pool(processes=5)
+pool.map(__build_plot, np.arange(start_time, end_time + increment, increment))
+
 
 animate(
     start_time=start_time,
