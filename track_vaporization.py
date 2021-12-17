@@ -14,7 +14,7 @@ path = "/home/theia/scotthull/1M_high_rho_cutoff/formatted_gi_new_eos_b_073_high
 to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/track_vmf"
 phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 start_time = 100
-end_time = 600
+end_time = 800
 increment = 100
 
 def seconds_to_hours(seconds):
@@ -35,7 +35,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     mean_entropy.append(mean_disk_entropy)
     num_disk_particles.append(number_disk_particles)
 
-fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', gridspec_kw={"hspace": 0.10, "wspace": 0.14})
+fig, axs = plt.subplots(1, 3, figsize=(16, 9), sharex='all', gridspec_kw={"hspace": 0.10, "wspace": 0.14})
 ax1, ax2, ax3 = axs.flatten()
 ax1.plot(
     times,
