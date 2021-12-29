@@ -43,8 +43,8 @@ report_to_dir_new_eos = "/home/theia/scotthull/1M/{}_at_time".format(new_name)
 report_to_dir_old_eos = "/home/theia/scotthull/1M/{}_at_time".format(old_name)
 
 for i in [to_path, particle_count_path]:
-    if os.path.exists(i):
-        shutil.rmtree(i)
+    # if os.path.exists(i):
+    #     shutil.rmtree(i)
     os.mkdir(i)
 
 for i in [report_to_dir_new_eos, report_to_dir_old_eos]:
@@ -181,10 +181,7 @@ def __loop(time):
     plt.savefig(particle_count_path + "/{}.png".format(time), format='png')
 
 pool = mp.Pool(5)
-for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
-    pool.map(__loop, [time])
-pool.close()
-pool.join()
+pool.map(__loop, np.arange(min_iteration, max_iteration + sample_interval, sample_interval))
 
 animate(
     start_time=min_iteration,

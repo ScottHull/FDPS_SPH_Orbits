@@ -20,6 +20,7 @@ num_processes = 200
 assess_at_interval = 100
 start_iteration = 0
 end_iteration = 2900
+increment = 1
 end_disk_state_iteration = 1000
 
 os.mkdir(to_path)
@@ -42,9 +43,4 @@ def __loop(time):
         reports.build_report_at_time(time=time, solve=False)
 
 pool = mp.Pool(5)
-for time in np.arange(0, end_iteration + 1, 1):
-    pool.map(__loop, [time])
-pool.close()
-pool.join()
-
-
+pool.map(__loop, np.arange(start_iteration, end_iteration + increment, increment))
