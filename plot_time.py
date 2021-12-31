@@ -9,8 +9,8 @@ plt.style.use("dark_background")
 
 phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 eos_path = "src/phase_data/forst_STS.rho_u.txt"
-output = "/Users/scotthull/Desktop/1000.csv"
-square_scale = 4e7
+output = "/Users/scotthull/Desktop/2900.csv"
+square_scale = 8e7
 
 min_normalize_parameter = 1000
 max_normalize_parameter = 6000
