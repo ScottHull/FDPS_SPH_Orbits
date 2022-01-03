@@ -20,6 +20,8 @@ run_names = [
     ["{}_new".format(i), "{}_old".format(i)] for i in densities
 ]
 
+earth_radius = 6371 * 1000
+
 types = ['tar', 'imp']
 types_formal = ["Target", "Impactor"]
 
@@ -52,14 +54,14 @@ for index, t in enumerate(types):
             old_df['radius'] = old_radius
 
             axs[at_index].scatter(
-                [i / 1000.0 for i in new_df[new_df['tag'] % 2 != 0]['radius']],
+                [i / 1000.0 / earth_radius for i in new_df[new_df['tag'] % 2 != 0]['radius']],
                 new_df[new_df['tag'] % 2 != 0]['density'],
                 s=2,
                 label="Iron",
                 color="#8dd3c7"
             )
             axs[at_index].scatter(
-                [i / 1000.0 for i in new_df[new_df['tag'] % 2 == 0]['radius']],
+                [i / 1000.0 / earth_radius for i in new_df[new_df['tag'] % 2 == 0]['radius']],
                 new_df[new_df['tag'] % 2 == 0]['density'],
                 s=2,
                 label="Silicate",
@@ -76,14 +78,14 @@ for index, t in enumerate(types):
             at_index += 1
 
             axs[at_index].scatter(
-                [i / 1000.0 for i in old_df[old_df['tag'] % 2 != 0]['radius']],
+                [i / 1000.0 / earth_radius for i in old_df[old_df['tag'] % 2 != 0]['radius']],
                 old_df[old_df['tag'] % 2 != 0]['density'],
                 s=2,
                 # label="Iron",
                 # color="#8dd3c7"
             )
             axs[at_index].scatter(
-                [i / 1000.0 for i in old_df[old_df['tag'] % 2 == 0]['radius']],
+                [i / 1000.0 / earth_radius for i in old_df[old_df['tag'] % 2 == 0]['radius']],
                 old_df[old_df['tag'] % 2 == 0]['density'],
                 s=2,
                 # label="Silicate",
