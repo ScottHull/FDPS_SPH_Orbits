@@ -42,13 +42,15 @@ for t in types:
                 [i / 1000.0 for i in new_df[new_df['tag'] % 2 != 0]['radius']],
                 new_df[new_df['tag'] % 2 != 0]['density'],
                 s=2,
-                label="Iron"
+                label="Iron",
+                color="#8dd3c7"
             )
             axs[at_index].scatter(
                 [i / 1000.0 for i in new_df[new_df['tag'] % 2 == 0]['radius']],
                 new_df[new_df['tag'] % 2 == 0]['density'],
                 s=2,
-                label="Silicate"
+                label="Silicate",
+                color="#feffb3"
             )
             at_index += 1
 
@@ -56,13 +58,15 @@ for t in types:
                 [i / 1000.0 for i in old_df[old_df['tag'] % 2 != 0]['radius']],
                 old_df[old_df['tag'] % 2 != 0]['density'],
                 s=2,
-                label="Iron"
+                label="Iron",
+                color="#8dd3c7"
             )
             axs[at_index].scatter(
                 [i / 1000.0 for i in old_df[old_df['tag'] % 2 == 0]['radius']],
                 old_df[old_df['tag'] % 2 == 0]['density'],
                 s=2,
-                label="Silicate"
+                label="Silicate",
+                color="#feffb3"
             )
             at_index += 1
         except Exception as e:
