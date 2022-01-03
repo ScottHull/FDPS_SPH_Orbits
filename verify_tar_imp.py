@@ -26,6 +26,13 @@ fig, axs = plt.subplots(len(run_names), len(run_names[0]), figsize=(16, 32), sha
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
 axs = axs.flatten()
 
+def add_annotation(ax, text):
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
+    coord = (xmax - (0.25 * xmax), ymax - (0.25 * ymax))
+    ax.annotate(text, coord)
+
+
 for t in types:
     at_index = 0
     has_legend = False
@@ -58,6 +65,7 @@ for t in types:
                 has_legend = True
                 for handle in legend.legendHandles:
                     handle.set_sizes([3.0])
+            add_annotation(axs[at_index], new)
             at_index += 1
 
             axs[at_index].scatter(
@@ -74,6 +82,7 @@ for t in types:
                 # label="Silicate",
                 # color="#feffb3"
             )
+            add_annotation(axs[at_index], old)
             at_index += 1
         except Exception as e:
             at_index += 2
