@@ -41,6 +41,8 @@ while rt.distance < 3 * rt.radius_target:
 
 print(
     "INITIAL SETUP:\n"
+    "TARGET PATH: {}\n"
+    "IMPACTOR PATH: {}\n"
     "IMPACTOR-TARGET DISTANCE: {} Rad Tar ({} m)\n"
     "IMPACTOR-TARGET X DISTANCE: {} Rad Tar ({} m)\n"
     "IMPACTOR-TARGET Y DISTANCE: {} Rad Tar ({} m)\n"
@@ -58,6 +60,7 @@ print(
     "INITIAL_IMPACTOR_X_VELOCITY: {} v_esc\n"
     "INITIAL_IMPACTOR_Y_VELOCITY: {} v_esc\n"
     "INITIAL_IMPACTOR_Z_VELOCITY: {} v_esc\n".format(
+        target_path, impactor_path,
         rt.distance / rt.radius_target,
         rt.x_distance / rt.radius_target, rt.y_distance / rt.radius_target, rt.z_distance / rt.radius_target,
         rt.distance, rt.x_distance, rt.y_distance, rt.z_distance,
