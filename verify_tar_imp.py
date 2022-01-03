@@ -30,7 +30,9 @@ def add_annotation(ax, text):
     xmin, xmax = ax.get_xlim()
     ymin, ymax = ax.get_ylim()
     coord = (xmax - (0.25 * xmax), ymax - (0.25 * ymax))
-    ax.annotate(text, coord)
+    density, new_or_old = text.split("_")
+    t = "{} kg/m3 ({})".format(density, new_or_old.capitalize())
+    ax.annotate(t, coord, fontsize=22)
 
 
 for t in types:
