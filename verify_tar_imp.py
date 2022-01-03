@@ -54,8 +54,10 @@ for t in types:
                 color="#feffb3"
             )
             if not has_legend:
-                axs[at_index].legend()
+                legend = axs[at_index].legend()
                 has_legend = True
+                for handle in legend.legendHandles:
+                    handle.set_sizes([3.0])
             at_index += 1
 
             axs[at_index].scatter(
