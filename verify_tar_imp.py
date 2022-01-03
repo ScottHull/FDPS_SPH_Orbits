@@ -6,7 +6,11 @@ import matplotlib.pyplot as plt
 
 plt.style.use("dark_background")
 
-base_path = "/home/theia/scotthull/Paper1/tar-imp/"
+base_path = "/home/theia/scotthull/Paper1_SPH/tar-imp/"
+output_headers = [
+    "id", "tag", "x", "y", "z", "vx", "vy", "vz", "density", "internal_energy", "pressure", "potential_energy",
+    "entropy", "temperature"
+]
 
 densities = [
     5, 500, 1000, 2000
@@ -27,8 +31,8 @@ for t in types:
     for new, old in run_names:
         try:
             new_path, old_path = base_path + "{}".format(new), base_path + "{}".format(old)
-            new_df, old_df = pd.read_csv(new_path + "/{}.dat".format(t), skiprows=2), \
-                             pd.read_csv(old_path + "/{}.dat".format(t), skiprows=2)
+            new_df, old_df = pd.read_csv(new_path + "/{}.dat".format(t), skiprows=2, names=output_headers), \
+                             pd.read_csv(old_path + "/{}.dat".format(t), skiprows=2, names=output_headers)
 
             axs[at_index].scatter(
                 [i / 1000.0 for i in new_df[new_df['tag'] % 2 != 0]['radius']],
