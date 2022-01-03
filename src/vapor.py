@@ -43,9 +43,10 @@ def get_all_particle_vapor_fractions_from_formatted(df, phase_path, end_label=Fa
     else:
         disk_particles = df[df['label'] == "DISK"]
     sil_disk_particles = disk_particles[disk_particles['tag'] % 2 == 0]
-    s_t = zip(sil_disk_particles['entropy'], sil_disk_particles['temperature'], sil_disk_particles['density'])
+    s_t = zip(sil_disk_particles['entropy'], sil_disk_particles['temperature'], sil_disk_particles['density'],
+              sil_disk_particles['x'], sil_disk_particles['y'], sil_disk_particles['z'])
     supercritical = max(phase_df['entropy_sol_liq'] + phase_df['entropy_vap'])
-    for s, t, rho in s_t:
+    for s, t, rho, x, y, z in s_t:
         nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=t,
                                                                     array=list(phase_df['temperature']))
         entropy_liq = phase_df['entropy_sol_liq'][nearest_temperature_index]
@@ -58,7 +59,7 @@ def get_all_particle_vapor_fractions_from_formatted(df, phase_path, end_label=Fa
             f = (s - entropy_liq) / (entropy_vap - entropy_liq)
         elif s > entropy_vap:
             f = 1.0
-        particles.append([s, t, f, rho])
+        particles.append([s, t, f, rho, x, y, z])
     return particles
 
 
