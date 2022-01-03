@@ -1,3 +1,4 @@
+from math import sqrt
 import pandas as pd
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
@@ -33,6 +34,10 @@ for t in types:
             new_path, old_path = base_path + "{}".format(new), base_path + "{}".format(old)
             new_df, old_df = pd.read_csv(new_path + "/{}.dat".format(t), skiprows=2, names=output_headers), \
                              pd.read_csv(old_path + "/{}.dat".format(t), skiprows=2, names=output_headers)
+            new_radius = [i ** 2 + j ** 2 + k ** 2 for i, j, k in zip(new_df['x'], new_df['y'], new_df['z'])]
+            old_radius = [i ** 2 + j ** 2 + k ** 2 for i, j, k in zip(old_df['x'], old_df['y'], old_df['z'])]
+            new_df['radius'] = new_radius
+            old_df['radius'] = old_radius
 
             axs[at_index].scatter(
                 [i / 1000.0 for i in new_df[new_df['tag'] % 2 != 0]['radius']],
