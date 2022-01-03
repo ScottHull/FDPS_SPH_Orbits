@@ -26,12 +26,13 @@ fig, axs = plt.subplots(len(run_names), len(run_names[0]), figsize=(16, 32), sha
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
 axs = axs.flatten()
 
-def add_annotation(ax, text):
+def add_annotation(ax, text, min_rho, max_rho):
     xmin, xmax = ax.get_xlim()
     ymin, ymax = ax.get_ylim()
     coord = (xmax - (0.25 * xmax), ymax - (0.25 * ymax))
     density, new_or_old = text.split("_")
-    t = "{} kg/m3 ({})".format(density, new_or_old.capitalize())
+    t = "{} kg/m3 ({})\nMin. Density: {}\nMax. Density: {}".format(density, new_or_old.capitalize(),
+                                                                   round(min_rho, 2), round(max_rho, 2))
     ax.annotate(t, coord, fontsize=22)
 
 
@@ -67,7 +68,7 @@ for t in types:
                 has_legend = True
                 for handle in legend.legendHandles:
                     handle.set_sizes([3.0])
-            add_annotation(axs[at_index], new)
+            add_annotation(ax=axs[at_index], text=new, min_rho=min(new_df['density']), max_rho=max(new_df['density']))
             at_index += 1
 
             axs[at_index].scatter(
@@ -84,7 +85,7 @@ for t in types:
                 # label="Silicate",
                 # color="#feffb3"
             )
-            add_annotation(axs[at_index], old)
+            add_annotation(ax=axs[at_index], text=old, min_rho=min(old_df['density']), max_rho=max(old_df['density']))
             at_index += 1
         except Exception as e:
             at_index += 2

@@ -9,9 +9,10 @@ from src.reverse_time import ReverseTime
 
 # target_path = "/Users/scotthull/Desktop/input/tar.dat"
 # impactor_path = "/Users/scotthull/Desktop/input/imp.dat"
+name = "5_new"
 target_path = "/home/shull4/drift_test/FDPS_SPH/input/tar.dat"
 impactor_path = "/home/shull4/drift_test/FDPS_SPH/input/imp.dat"
-output_path = "/scratch/shull4/reversed_outputs"
+output_path = "/scratch/shull4/{}_reversed_outputs".format(name)
 
 if os.path.exists(output_path):
     shutil.rmtree(output_path)
@@ -76,7 +77,7 @@ animate(
     interval=1,
     path=output_path,
     fps=10,
-    filename="reverse_time.mp4",
+    filename="{}_reverse_time.mp4".format(name),
     reverse=True
 )
 
