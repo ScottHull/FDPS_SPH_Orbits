@@ -52,21 +52,23 @@ for t in types:
                 label="Silicate",
                 color="#feffb3"
             )
+            if at_index == 0:
+                axs[at_index].legend()
             at_index += 1
 
             axs[at_index].scatter(
                 [i / 1000.0 for i in old_df[old_df['tag'] % 2 != 0]['radius']],
                 old_df[old_df['tag'] % 2 != 0]['density'],
                 s=2,
-                label="Iron",
-                color="#8dd3c7"
+                # label="Iron",
+                # color="#8dd3c7"
             )
             axs[at_index].scatter(
                 [i / 1000.0 for i in old_df[old_df['tag'] % 2 == 0]['radius']],
                 old_df[old_df['tag'] % 2 == 0]['density'],
                 s=2,
-                label="Silicate",
-                color="#feffb3"
+                # label="Silicate",
+                # color="#feffb3"
             )
             at_index += 1
         except Exception as e:
@@ -76,7 +78,6 @@ for t in types:
 
     for ax in axs:
         ax.grid(alpha=0.4)
-    axs[0].legend()
 
     plt.savefig("{}_verify.png".format(t), format='png')
 
