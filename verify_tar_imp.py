@@ -8,7 +8,7 @@ plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/tar-imp/"
 output_headers = [
-    "id", "tag", "x", "y", "z", "vx", "vy", "vz", "density", "internal_energy", "pressure", "potential_energy",
+    "", "id", "tag", "x", "y", "z", "vx", "vy", "vz", "density", "internal_energy", "pressure", "potential_energy",
     "entropy", "temperature"
 ]
 
