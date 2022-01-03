@@ -21,6 +21,7 @@ run_names = [
 ]
 
 types = ['tar', 'imp']
+types_formal = ["Target", "Impactor"]
 
 def add_annotation(ax, text, min_rho, max_rho):
     xmin, xmax = ax.get_xlim()
@@ -28,12 +29,13 @@ def add_annotation(ax, text, min_rho, max_rho):
     coord = (xmax - (0.48
                      * xmax), ymax - (0.25 * ymax))
     density, new_or_old = text.split("_")
-    t = "{} kg/m3 ({})\nMin. Density: {}\nMax. Density: {}".format(density, new_or_old.capitalize(),
+    t = "{} kg/m3\nMin. Density: {}\nMax. Density: {}".format(density, new_or_old.capitalize(),
                                                                    int(min_rho), int(max_rho))
     ax.annotate(t, coord, fontsize=18)
 
 
-for t in types:
+for index, t in enumerate(types):
+    format_label = types_formal[index]
     fig, axs = plt.subplots(len(run_names), len(run_names[0]), figsize=(16, 32), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
     axs = axs.flatten()
@@ -69,6 +71,8 @@ for t in types:
                 for handle in legend.legendHandles:
                     handle.set_sizes([3.0])
             add_annotation(ax=axs[at_index], text=new, min_rho=min(new_df['density']), max_rho=max(new_df['density']))
+            if at_index % 2 == 0:
+                axs[at_index].set_ylabel("Density (kg/m3)")
             at_index += 1
 
             axs[at_index].scatter(
@@ -94,6 +98,11 @@ for t in types:
 
     for ax in axs:
         ax.grid(alpha=0.4)
+
+    axs[-2].set_xlabel(r'Radius $R_{\bigoplus}$')
+    axs[-1].set_xlabel(r'Radius $R_{\bigoplus}$')
+    axs[0].set_title("{} (New EoS)".format(format_label))
+    axs[1].set_title("{} (Old EoS)".format(format_label))
 
     plt.savefig("{}_verify.png".format(t), format='png')
 
