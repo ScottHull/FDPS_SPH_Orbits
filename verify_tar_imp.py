@@ -28,6 +28,7 @@ axs = axs.flatten()
 
 for t in types:
     at_index = 0
+    has_legend = False
     for new, old in run_names:
         try:
             new_path, old_path = base_path + "{}".format(new), base_path + "{}".format(old)
@@ -52,8 +53,9 @@ for t in types:
                 label="Silicate",
                 color="#feffb3"
             )
-            if at_index == 0:
+            if not has_legend:
                 axs[at_index].legend()
+                has_legend = True
             at_index += 1
 
             axs[at_index].scatter(
