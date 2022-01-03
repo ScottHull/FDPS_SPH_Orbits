@@ -22,21 +22,21 @@ run_names = [
 
 types = ['tar', 'imp']
 
-fig, axs = plt.subplots(len(run_names), len(run_names[0]), figsize=(16, 32), sharex='all', sharey='all',
-                            gridspec_kw={"hspace": 0.10, "wspace": 0.10})
-axs = axs.flatten()
-
 def add_annotation(ax, text, min_rho, max_rho):
     xmin, xmax = ax.get_xlim()
     ymin, ymax = ax.get_ylim()
-    coord = (xmax - (0.25 * xmax), ymax - (0.25 * ymax))
+    coord = (xmax - (0.48
+                     * xmax), ymax - (0.25 * ymax))
     density, new_or_old = text.split("_")
     t = "{} kg/m3 ({})\nMin. Density: {}\nMax. Density: {}".format(density, new_or_old.capitalize(),
-                                                                   round(min_rho, 2), round(max_rho, 2))
-    ax.annotate(t, coord, fontsize=22)
+                                                                   int(min_rho), int(max_rho))
+    ax.annotate(t, coord, fontsize=18)
 
 
 for t in types:
+    fig, axs = plt.subplots(len(run_names), len(run_names[0]), figsize=(16, 32), sharex='all', sharey='all',
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.10})
+    axs = axs.flatten()
     at_index = 0
     has_legend = False
     for new, old in run_names:
