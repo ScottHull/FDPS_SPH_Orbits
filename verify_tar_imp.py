@@ -40,7 +40,7 @@ for t in types:
 
             axs[at_index].scatter(
                 [i / 1000.0 for i in new_df[new_df['tag'] % 2 != 0]['radius']],
-                new_df[new_df['tag'] % 2 == 0]['density'],
+                new_df[new_df['tag'] % 2 != 0]['density'],
                 s=2,
                 label="Iron"
             )
