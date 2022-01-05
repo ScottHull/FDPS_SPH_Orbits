@@ -9,12 +9,14 @@ from src.reverse_time import ReverseTime
 
 # target_path = "/Users/scotthull/Desktop/input/tar.dat"
 # impactor_path = "/Users/scotthull/Desktop/input/imp.dat"
+# target_path = "/home/shull4/drift_test/FDPS_SPH/input/tar.dat"
+# impactor_path = "/home/shull4/drift_test/FDPS_SPH/input/imp.dat"
 name = "5_new"
-target_path = "/home/shull4/drift_test/FDPS_SPH/input/tar.dat"
-impactor_path = "/home/shull4/drift_test/FDPS_SPH/input/imp.dat"
-output_path = "/scratch/shull4/{}_reversed_outputs".format(name)
+target_path = "/home/shull4/Paper1/{}/FDPS_SPH/input/tar.dat".format(name)
+impactor_path = "/home/shull4/Paper1/{}/FDPS_SPH/input/imp.dat".format(name)
 b = 0.73
 dt = 5
+output_path = "/scratch/shull4/{}_{}_reversed_outputs".format(name, b)
 
 if os.path.exists(output_path):
     shutil.rmtree(output_path)
