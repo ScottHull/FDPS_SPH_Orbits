@@ -1,6 +1,6 @@
 import os
 import shutil
-from math import sqrt
+from math import sqrt, asin, pi
 import matplotlib.pyplot as plt
 
 from src.animate import animate
@@ -13,6 +13,8 @@ name = "5_new"
 target_path = "/home/shull4/drift_test/FDPS_SPH/input/tar.dat"
 impactor_path = "/home/shull4/drift_test/FDPS_SPH/input/imp.dat"
 output_path = "/scratch/shull4/{}_reversed_outputs".format(name)
+b = 0.73
+dt = 5
 
 if os.path.exists(output_path):
     shutil.rmtree(output_path)
@@ -21,8 +23,8 @@ os.mkdir(output_path)
 rt = ReverseTime(
     target_file_path=target_path,
     impactor_file_path=impactor_path,
-    impact_parameter=0.73,
-    dt=-5,
+    impact_parameter=b,
+    dt=-dt,
     center_target=True
 )
 
@@ -44,6 +46,8 @@ print(
     "INITIAL SETUP:\n"
     "TARGET PATH: {}\n"
     "IMPACTOR PATH: {}\n"
+    "b: {} ({} degrees)\n"
+    "dt: -{} s\n"
     "IMPACTOR-TARGET DISTANCE: {} Rad Tar ({} m)\n"
     "IMPACTOR-TARGET X DISTANCE: {} Rad Tar ({} m)\n"
     "IMPACTOR-TARGET Y DISTANCE: {} Rad Tar ({} m)\n"
@@ -62,6 +66,8 @@ print(
     "INITIAL_IMPACTOR_Y_VELOCITY: {} v_esc\n"
     "INITIAL_IMPACTOR_Z_VELOCITY: {} v_esc\n".format(
         target_path, impactor_path,
+        b, asin(b) * (180 / pi),
+        dt,
         rt.distance / rt.radius_target,
         rt.x_distance / rt.radius_target, rt.y_distance / rt.radius_target, rt.z_distance / rt.radius_target,
         rt.distance, rt.x_distance, rt.y_distance, rt.z_distance,
