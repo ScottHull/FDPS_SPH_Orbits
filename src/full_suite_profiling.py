@@ -145,7 +145,8 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
     plt.savefig("impact_angle_profile.png", format='png', dpi=200)
 
 def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment=1):
-    imp_vel_fig, imp_vel_axs = plt.subplots(3, int(len(meta.keys()) / 3), figsize=(16, 32), sharex='all', sharey='all',
+    plt.style.use("dark_background")
+    imp_vel_fig, imp_vel_axs = plt.subplots(len(meta.keys()), 1, figsize=(16, 32), sharex='all', sharey='all',
                                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
     imp_vel_axs = imp_vel_axs.flatten()
 
