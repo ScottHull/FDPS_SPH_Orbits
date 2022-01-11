@@ -58,8 +58,8 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
         ax.grid(alpha=0.4)
     for i in meta.keys():
         try:
-            n = i['name']
-            p = i['path']
+            n = meta[i]['name']
+            p = meta[i]['path']
             if "new" in p:
                 phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
             else:
@@ -101,8 +101,8 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
         ax.grid(alpha=0.4)
 
     for i in meta.keys():
-        n = i['name']
-        p = i['path']
+        n = meta[i]['name']
+        p = meta[i]['path']
         times, imp_angles = [], []
         times.append(get_time(p))
         for time in np.arange(start_iteration, end_iteration + increment, increment):
@@ -130,8 +130,8 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
         ax.grid(alpha=0.4)
 
     for i in meta.keys():
-        n = i['name']
-        p = i['path']
+        n = meta[i]['name']
+        p = meta[i]['path']
         times, imp_vels = [], []
         times.append(get_time(p))
         for time in np.arange(start_iteration, end_iteration + increment, increment):
