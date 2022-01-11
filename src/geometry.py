@@ -125,7 +125,7 @@ def get_velocity_profile(particles, target_radius, impactor_radius):
 
 def get_impact_geometry_from_formatted(df, name, iteration, time):
     target = df[df['tag'] <= 1]
-    impactor = df[df['tag'] >= 1]
+    impactor = df[df['tag'] > 1]
 
     target_com_x, target_com_y, target_com_z = center_of_mass_from_formatted(target)
     impactor_com_x, impactor_com_y, impactor_com_z = center_of_mass_from_formatted(impactor)
