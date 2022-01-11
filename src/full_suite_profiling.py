@@ -74,8 +74,8 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
                 axs[1].plot(times, vmfs, linewidth=2.0, label=n)
                 axs[3].plot(times, avg_disk_entropy, linewidth=2.0, label=n)
                 axs[5].plot(times, disk_particle_count, linewidth=2.0, label=n)
-        except Exception as e:
-            print(e)
+        except FileNotFoundError:
+            print(i)
     plt.savefig("vmf_timeseries.png", format='png', dpi=200)
 
 
@@ -101,21 +101,24 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
         ax.grid(alpha=0.4)
 
     for i in meta.keys():
-        n = meta[i]['name']
-        p = meta[i]['path']
-        times, imp_angles = [], []
-        times.append(get_time(p))
-        for time in np.arange(start_iteration, end_iteration + increment, increment):
-            df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
-            imp_angles[n].append(get_impact_geometry_from_formatted(df))
-        if "new" in n.lower():
-            imp_ang_axs[0].plot(
-                times, imp_angles, linewidth=2.0, label=n
-            )
-        else:
-            imp_ang_axs[1].plot(
-                times, imp_angles, linewidth=2.0, label=n
-            )
+        try:
+            n = meta[i]['name']
+            p = meta[i]['path']
+            times, imp_angles = [], []
+            times.append(get_time(p))
+            for time in np.arange(start_iteration, end_iteration + increment, increment):
+                df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
+                imp_angles[n].append(get_impact_geometry_from_formatted(df))
+            if "new" in n.lower():
+                imp_ang_axs[0].plot(
+                    times, imp_angles, linewidth=2.0, label=n
+                )
+            else:
+                imp_ang_axs[1].plot(
+                    times, imp_angles, linewidth=2.0, label=n
+                )
+        except FileNotFoundError:
+            print(i)
     plt.savefig("impact_angle_profile.png", format='png', dpi=200)
 
 def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment=1):
@@ -130,18 +133,21 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
         ax.grid(alpha=0.4)
 
     for i in meta.keys():
-        n = meta[i]['name']
-        p = meta[i]['path']
-        times, imp_vels = [], []
-        times.append(get_time(p))
-        for time in np.arange(start_iteration, end_iteration + increment, increment):
-            df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
-            imp_vels[n].append(get_velocity_profile_from_formatted(df) / 1000)
-        imp_vel_axs[fig_index].plot(
-            times, imp_vels, linewidth=2.0, label=n
-        )
-        if fig_index % 2 == 0:
-            imp_vel_axs[fig_index].set_ylabel("Impact Velocity (km/s)")
-        fig_index += 1
+        try:
+            n = meta[i]['name']
+            p = meta[i]['path']
+            times, imp_vels = [], []
+            times.append(get_time(p))
+            for time in np.arange(start_iteration, end_iteration + increment, increment):
+                df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
+                imp_vels[n].append(get_velocity_profile_from_formatted(df) / 1000)
+            imp_vel_axs[fig_index].plot(
+                times, imp_vels, linewidth=2.0, label=n
+            )
+            if fig_index % 2 == 0:
+                imp_vel_axs[fig_index].set_ylabel("Impact Velocity (km/s)")
+            fig_index += 1
+        except FileNotFoundError:
+            print(i)
     plt.savefig("impact_velocity_profile.png", format='png', dpi=200)
 
