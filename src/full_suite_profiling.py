@@ -58,6 +58,7 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
         ax.grid(alpha=0.4)
     for i in meta.keys():
         try:
+            print("working on {}".format(i))
             n = meta[i]['name']
             p = meta[i]['path']
             if "new" in p:
@@ -104,6 +105,7 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
 
     for i in meta.keys():
         try:
+            print("working on {}".format(i))
             n = meta[i]['name']
             p = meta[i]['path']
             times, imp_angles = [], []
@@ -138,6 +140,7 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
 
     for i in meta.keys():
         try:
+            print("working on {}".format(i))
             n = meta[i]['name']
             p = meta[i]['path']
             times, imp_vels = [], []
