@@ -1,5 +1,6 @@
 import os
 import csv
+from math import pi, asin
 import numpy as np
 import pandas as pd
 from statistics import mean
@@ -99,7 +100,7 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
     imp_ang_axs[0].set_ylabel("b")
 
     for ax in imp_ang_axs:
-        ax.axhline(specified_imp_angle, linewidth=2.0, linestyle="--", c='red', label="b = {}".format(specified_imp_angle))
+        ax.axhline(asin(specified_imp_angle) * (180 / pi), linewidth=2.0, linestyle="--", c='red', label="{} deg.".format(round(asin(specified_imp_angle) * (180 / pi), 2)))
         ax.set_xlabel("Time (hrs)")
         ax.grid(alpha=0.4)
 
