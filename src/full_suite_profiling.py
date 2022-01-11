@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 from src.vapor import calc_vapor_mass_fraction_from_formatted
 from src.geometry import get_impact_geometry_from_formatted, get_velocity_profile_from_formatted
+from src.animate import animate
 
 
 def get_time(f):
@@ -97,7 +98,7 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
     imp_ang_axs = imp_ang_axs.flatten()
     imp_ang_axs[0].set_title("Impact Parameter (New EoS)"), imp_ang_axs[1].set_title("Impact Parameter (Old EoS)")
-    imp_ang_axs[0].set_ylabel("b")
+    imp_ang_axs[0].set_ylabel("Impact Angle (deg)")
 
     for ax in imp_ang_axs:
         ax.axhline(asin(specified_imp_angle) * (180 / pi), linewidth=2.0, linestyle="--", c='red', label="{} deg.".format(round(asin(specified_imp_angle) * (180 / pi), 2)))
@@ -111,9 +112,10 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
             p = meta[i]['path']
             times, imp_angles = [], []
             for time in np.arange(start_iteration, end_iteration + increment, increment):
-                times.append(get_time(p + "/{}.csv".format(time)))
+                t = get_time(p + "/{}.csv".format(time))
+                times.append(t)
                 df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
-                imp_angles.append(get_impact_geometry_from_formatted(df))
+                imp_angles.append(get_impact_geometry_from_formatted(df=df, name=i, time=t, iteration=time))
             if "new" in n.lower():
                 imp_ang_axs[0].plot(
                     times, imp_angles, linewidth=2.0, label=n
@@ -124,6 +126,12 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
                 )
         except FileNotFoundError:
             print(i)
+        animate(
+            start_time=start_iteration,
+            end_time=end_iteration,
+            interval=increment,
+            path=i + "_tmp_geometry"
+        )
     for ax in imp_ang_axs:
         ax.legend(loc='upper left')
     plt.savefig("impact_angle_profile.png", format='png', dpi=200)

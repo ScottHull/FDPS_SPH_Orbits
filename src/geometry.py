@@ -1,5 +1,7 @@
+import os
 from math import atan, pi, sqrt
 from statistics import mean
+import matplotlib.pyplot as plt
 
 from src.centering import center_of_mass, center_of_mass_from_formatted
 
@@ -45,6 +47,58 @@ def get_impact_geometry(particles):
            imp_angle, min_x_tar, max_x_tar, min_y_tar, max_y_tar, min_x_imp, max_x_imp, min_y_imp, max_y_imp
 
 
+def impact_geometry_image(path, time, iteration, tar_df, imp_df, impactor_com_x, impactor_com_y, target_com_x,
+                          target_com_y, imp_angle):
+    to_path = path + "_tmp_geometry"
+    if not os.path.exists(to_path):
+        os.mkdir(to_path)
+    plt.style.use("dark_background")
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111)
+    ax.scatter(
+        tar_df['x'],
+        tar_df['y'],
+        color='blue',
+        s=2,
+        label="target"
+    )
+    ax.scatter(
+        imp_df['x'],
+        imp_df['y'],
+        color='blue',
+        s=2,
+        label="impactor"
+    )
+    ax.plot(
+        [target_com_x, impactor_com_x],
+        [target_com_y, target_com_y],
+        linewidth=2.0,
+        color='black'
+    )
+    ax.plot(
+        [impactor_com_x, impactor_com_x],
+        [target_com_y, impactor_com_y],
+        linewidth=2.0,
+        color='black'
+    )
+    ax.plot(
+        [target_com_x, impactor_com_x],
+        [target_com_y, impactor_com_y],
+        linewidth=2.0,
+        color='black',
+        label="IMP ANGLE: {}".format(imp_angle)
+    )
+    ax.set_xlabel("x")
+    ax.set_ylabel("y"),
+    ax.set_xlim(-2.1e7, 2.1e7)
+    ax.set_ylim(-2.1e7, 2.1e7)
+    ax.set_title("Time (hrs): {} // Impact Angle: {}".format(time, imp_angle))
+    ax.grid()
+    ax.legend(loc='upper left')
+    plt.savefig(to_path + "/{}.png".format(iteration), format='png')
+
+
+
 def get_velocity_profile(particles, target_radius, impactor_radius):
     G = 6.67 * 10 ** -11
     target = [p for p in particles if p.tag <= 1]
@@ -69,7 +123,7 @@ def get_velocity_profile(particles, target_radius, impactor_radius):
     return target_avg_velocity, impactor_avg_velocity, v_esc
 
 
-def get_impact_geometry_from_formatted(df):
+def get_impact_geometry_from_formatted(df, name, iteration, time):
     target = df[df['tag'] <= 1]
     impactor = df[df['tag'] >= 1]
 
@@ -91,6 +145,9 @@ def get_impact_geometry_from_formatted(df):
     #
     # min_y_imp = min(impactor['y'])
     # max_y_imp = max(impactor['y'])
+
+    impact_geometry_image(name, time, iteration, target, impactor, impactor_com_x, impactor_com_y, target_com_x,
+                          target_com_y, imp_angle)
 
     return imp_angle
 
