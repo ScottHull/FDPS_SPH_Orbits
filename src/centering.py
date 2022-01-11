@@ -22,9 +22,9 @@ def center_of_mass(x_coords, y_coords, z_coords, masses, particle_tags=None, tar
 
 def center_of_mass_from_formatted(df):
     total_mass = sum(df['mass'])
-    x_center = df['x'] * df['mass']
-    y_center = df['y'] * df['mass']
-    z_center = df['z'] * df['mass']
+    x_center = sum(df['x'] * df['mass']) / total_mass
+    y_center = sum(df['y'] * df['mass']) / total_mass
+    z_center = sum(df['z'] * df['mass']) / total_mass
     return x_center, y_center, z_center
 
 
