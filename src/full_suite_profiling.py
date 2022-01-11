@@ -130,7 +130,8 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
             start_time=start_iteration,
             end_time=end_iteration,
             interval=increment,
-            path=i + "_tmp_geometry"
+            path=i + "_tmp_geometry",
+            filename="{}_imp_geometry.mp4".format(i)
         )
     for ax in imp_ang_axs:
         ax.legend(loc='upper left')
