@@ -124,15 +124,15 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
                 imp_ang_axs[1].plot(
                     times, imp_angles, linewidth=2.0, label=n
                 )
+            animate(
+                start_time=start_iteration,
+                end_time=end_iteration,
+                interval=increment,
+                path=i + "_tmp_geometry",
+                filename="{}_imp_geometry.mp4".format(i)
+            )
         except FileNotFoundError:
             print(i)
-        animate(
-            start_time=start_iteration,
-            end_time=end_iteration,
-            interval=increment,
-            path=i + "_tmp_geometry",
-            filename="{}_imp_geometry.mp4".format(i)
-        )
     for ax in imp_ang_axs:
         ax.legend(loc='upper left')
     plt.savefig("impact_angle_profile.png", format='png', dpi=200)
