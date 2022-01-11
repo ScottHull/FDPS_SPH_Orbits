@@ -1,7 +1,7 @@
 from math import atan, pi, sqrt
 from statistics import mean
 
-from src.centering import center_of_mass
+from src.centering import center_of_mass, center_of_mass_from_formatted
 
 
 def get_radius(x: list):
@@ -73,18 +73,8 @@ def get_impact_geometry_from_formatted(df):
     target = df[df['tag'] <= 1]
     impactor = df[df['tag'] >= 1]
 
-    target_com_x, target_com_y, target_com_z = center_of_mass(
-        x_coords=target['x'],
-        y_coords=target['y'],
-        z_coords=target['z'],
-        masses=target['mass']
-    )
-    impactor_com_x, impactor_com_y, impactor_com_z = center_of_mass(
-        x_coords=impactor['x'],
-        y_coords=impactor['y'],
-        z_coords=impactor['z'],
-        masses=impactor['mass']
-    )
+    target_com_x, target_com_y, target_com_z = center_of_mass_from_formatted(target)
+    impactor_com_x, impactor_com_y, impactor_com_z = center_of_mass_from_formatted(impactor)
 
     x_offset = impactor_com_x - target_com_x
     y_offset = impactor_com_y - target_com_y

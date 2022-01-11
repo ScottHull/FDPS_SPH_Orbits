@@ -20,6 +20,14 @@ def center_of_mass(x_coords, y_coords, z_coords, masses, particle_tags=None, tar
     return x_center, y_center, z_center
 
 
+def center_of_mass_from_formatted(df):
+    total_mass = sum(df['mass'])
+    x_center = df['x'] * df['mass']
+    y_center = df['y'] * df['mass']
+    z_center = df['z'] * df['mass']
+    return x_center, y_center, z_center
+
+
 def __assign_particle_to_profile(profile_list, density_list, particle_position):
     max_index = len(profile_list) - 1
     for index, i in enumerate(profile_list):
