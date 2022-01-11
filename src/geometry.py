@@ -4,6 +4,10 @@ from statistics import mean
 from src.centering import center_of_mass
 
 
+def get_radius(x: list):
+    return (max(x) - min(x)) / 2.0
+
+
 def get_impact_geometry(particles):
     target = [p for p in particles if p.tag <= 1]
     impactor = [p for p in particles if p.tag > 1]
@@ -63,3 +67,65 @@ def get_velocity_profile(particles, target_radius, impactor_radius):
     ]
 
     return target_avg_velocity, impactor_avg_velocity, v_esc
+
+
+def get_impact_geometry_from_formatted(df):
+    target = df[df['tag'] <= 1]
+    impactor = df[df['tag'] >= 1]
+
+    target_com_x, target_com_y, target_com_z = center_of_mass(
+        x_coords=target['x'],
+        y_coords=target['y'],
+        z_coords=target['z'],
+        masses=target['mass']
+    )
+    impactor_com_x, impactor_com_y, impactor_com_z = center_of_mass(
+        x_coords=impactor['x'],
+        y_coords=impactor['y'],
+        z_coords=impactor['z'],
+        masses=impactor['mass']
+    )
+
+    x_offset = impactor_com_x - target_com_x
+    y_offset = impactor_com_y - target_com_y
+    imp_angle = atan(y_offset / x_offset) * (180.0 / pi)
+
+    # min_x_tar = min(target['x'])
+    # max_x_tar = max(target['x'])
+    #
+    # min_y_tar = min(target['y'])
+    # max_y_tar = max(target['y'])
+    #
+    # min_x_imp = min(impactor['x'])
+    # max_x_imp = max(impactor['x'])
+    #
+    # min_y_imp = min(impactor['y'])
+    # max_y_imp = max(impactor['y'])
+
+    return imp_angle
+
+
+def get_velocity_profile_from_formatted(df):
+    G = 6.67 * 10 ** -11
+    target = df[df['tag'] <= 1]
+    impactor = df[df['tag'] >= 1]
+    target_mass = sum(target['mass'])
+    impactor_mass = sum(impactor['mass'])
+    total_mass = target_mass + impactor_mass
+    target_radius = get_radius(target['x'])
+    impactor_radius = get_radius(impactor['x'])
+
+    v_esc = sqrt((2 * G * total_mass) / (target_radius + impactor_radius))
+
+    # target_avg_velocity = [
+    #     mean(target['vx']) / v_esc,
+    #     mean(target['vy']) / v_esc,
+    #     mean(target['vz']) / v_esc,
+    # ]
+    # impactor_avg_velocity = [
+    #     mean(impactor['vx']) / v_esc,
+    #     mean(impactor['vy']) / v_esc,
+    #     mean(impactor['vz']) / v_esc,
+    # ]
+
+    return v_esc
