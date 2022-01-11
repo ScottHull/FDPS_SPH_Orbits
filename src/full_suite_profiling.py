@@ -101,24 +101,21 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
         ax.grid(alpha=0.4)
 
     for i in meta.keys():
-        try:
-            n = i['name']
-            p = i['path']
-            times, imp_angles = [], []
-            times.append(get_time(p))
-            for time in np.arange(start_iteration, end_iteration + increment, increment):
-                df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
-                imp_angles[n].append(get_impact_geometry_from_formatted(df))
-            if "new" in n.lower():
-                imp_ang_axs[0].plot(
-                    times, imp_angles, linewidth=2.0, label=n
-                )
-            else:
-                imp_ang_axs[1].plot(
-                    times, imp_angles, linewidth=2.0, label=n
-                )
-        except Exception as e:
-            print(e)
+        n = i['name']
+        p = i['path']
+        times, imp_angles = [], []
+        times.append(get_time(p))
+        for time in np.arange(start_iteration, end_iteration + increment, increment):
+            df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
+            imp_angles[n].append(get_impact_geometry_from_formatted(df))
+        if "new" in n.lower():
+            imp_ang_axs[0].plot(
+                times, imp_angles, linewidth=2.0, label=n
+            )
+        else:
+            imp_ang_axs[1].plot(
+                times, imp_angles, linewidth=2.0, label=n
+            )
     plt.savefig("impact_angle_profile.png", format='png', dpi=200)
 
 def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment=1):
