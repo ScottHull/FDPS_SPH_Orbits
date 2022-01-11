@@ -76,6 +76,8 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
                 axs[5].plot(times, disk_particle_count, linewidth=2.0, label=n)
         except FileNotFoundError:
             print(i)
+    for ax in axs:
+        ax.legend(loc='upper left')
     plt.savefig("vmf_timeseries.png", format='png', dpi=200)
 
 
@@ -89,7 +91,7 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
     :param increment:
     :return:
     """
-    imp_ang_fig, imp_ang_axs = plt.subplots(1, 2, figsize=(16, 32), sharex='all', sharey='all',
+    imp_ang_fig, imp_ang_axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
     imp_ang_axs = imp_ang_axs.flatten()
     imp_ang_axs[0].set_title("Impact Parameter (New EoS)"), imp_ang_axs[1].set_title("Impact Parameter (Old EoS)")
@@ -119,6 +121,8 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
                 )
         except FileNotFoundError:
             print(i)
+    for ax in imp_ang_axs:
+        ax.legend(loc='upper left')
     plt.savefig("impact_angle_profile.png", format='png', dpi=200)
 
 def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment=1):
@@ -149,5 +153,7 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
             fig_index += 1
         except FileNotFoundError:
             print(i)
+    for ax in imp_vel_axs:
+        ax.legend(loc='upper left')
     plt.savefig("impact_velocity_profile.png", format='png', dpi=200)
 
