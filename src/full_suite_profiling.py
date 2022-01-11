@@ -94,16 +94,8 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
     :param increment:
     :return:
     """
-    imp_ang_fig, imp_ang_axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
-                            gridspec_kw={"hspace": 0.10, "wspace": 0.10})
-    imp_ang_axs = imp_ang_axs.flatten()
-    imp_ang_axs[0].set_title("Impact Parameter (New EoS)"), imp_ang_axs[1].set_title("Impact Parameter (Old EoS)")
-    imp_ang_axs[0].set_ylabel("Impact Angle (deg)")
 
-    for ax in imp_ang_axs:
-        ax.axhline(asin(specified_imp_angle) * (180 / pi), linewidth=2.0, linestyle="--", c='red', label="{} deg.".format(round(asin(specified_imp_angle) * (180 / pi), 2)))
-        ax.set_xlabel("Time (hrs)")
-        ax.grid(alpha=0.4)
+    d = {}
 
     for i in meta.keys():
         try:
@@ -116,14 +108,7 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
                 times.append(t)
                 df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
                 imp_angles.append(get_impact_geometry_from_formatted(df=df, name=i, time=t, iteration=time))
-            if "new" in n.lower():
-                imp_ang_axs[0].plot(
-                    times, imp_angles, linewidth=2.0, label=n
-                )
-            else:
-                imp_ang_axs[1].plot(
-                    times, imp_angles, linewidth=2.0, label=n
-                )
+            d.update({n: {"imp_angles": imp_angles, "times": times}})
             animate(
                 start_time=start_iteration,
                 end_time=end_iteration,
@@ -133,6 +118,28 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
             )
         except FileNotFoundError:
             print(i)
+
+    imp_ang_fig, imp_ang_axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
+                                            gridspec_kw={"hspace": 0.10, "wspace": 0.10})
+    imp_ang_axs = imp_ang_axs.flatten()
+    imp_ang_axs[0].set_title("Impact Parameter (New EoS)"), imp_ang_axs[1].set_title("Impact Parameter (Old EoS)")
+    imp_ang_axs[0].set_ylabel("Impact Angle (deg)")
+
+    for ax in imp_ang_axs:
+        ax.axhline(asin(specified_imp_angle) * (180 / pi), linewidth=2.0, linestyle="--", c='red',
+                   label="{} deg.".format(round(asin(specified_imp_angle) * (180 / pi), 2)))
+        ax.set_xlabel("Time (hrs)")
+        ax.grid(alpha=0.4)
+
+    for n in d.keys():
+        if "new" in n.lower():
+            imp_ang_axs[0].plot(
+                d[n]["times"], d[n]["imp_angles"], linewidth=2.0, label=n
+            )
+        else:
+            imp_ang_axs[1].plot(
+                d[n]["times"], d[n]["imp_angles"], linewidth=2.0, label=n
+            )
     for ax in imp_ang_axs:
         ax.legend(loc='upper left')
     plt.savefig("impact_angle_profile.png", format='png', dpi=200)
