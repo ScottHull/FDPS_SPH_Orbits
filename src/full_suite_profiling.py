@@ -133,21 +133,18 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
         ax.grid(alpha=0.4)
 
     for i in meta.keys():
-        try:
-            n = i['name']
-            p = i['path']
-            times, imp_vels = [], []
-            times.append(get_time(p))
-            for time in np.arange(start_iteration, end_iteration + increment, increment):
-                df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
-                imp_vels[n].append(get_velocity_profile_from_formatted(df) / 1000)
-            imp_vel_axs[fig_index].plot(
-                times, imp_vels, linewidth=2.0, label=n
-            )
-            if fig_index % 2 == 0:
-                imp_vel_axs[fig_index].set_ylabel("Impact Velocity (km/s)")
-            fig_index += 1
-        except Exception as e:
-            print(e)
+        n = i['name']
+        p = i['path']
+        times, imp_vels = [], []
+        times.append(get_time(p))
+        for time in np.arange(start_iteration, end_iteration + increment, increment):
+            df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
+            imp_vels[n].append(get_velocity_profile_from_formatted(df) / 1000)
+        imp_vel_axs[fig_index].plot(
+            times, imp_vels, linewidth=2.0, label=n
+        )
+        if fig_index % 2 == 0:
+            imp_vel_axs[fig_index].set_ylabel("Impact Velocity (km/s)")
+        fig_index += 1
     plt.savefig("impact_velocity_profile.png", format='png', dpi=200)
 
