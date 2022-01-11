@@ -65,7 +65,7 @@ def impact_geometry_image(path, time, iteration, tar_df, imp_df, impactor_com_x,
     ax.scatter(
         imp_df['x'],
         imp_df['y'],
-        color='blue',
+        color='red',
         s=2,
         label="impactor"
     )
@@ -73,19 +73,19 @@ def impact_geometry_image(path, time, iteration, tar_df, imp_df, impactor_com_x,
         [target_com_x, impactor_com_x],
         [target_com_y, target_com_y],
         linewidth=2.0,
-        color='black'
+        color='white'
     )
     ax.plot(
         [impactor_com_x, impactor_com_x],
         [target_com_y, impactor_com_y],
         linewidth=2.0,
-        color='black'
+        color='white'
     )
     ax.plot(
         [target_com_x, impactor_com_x],
         [target_com_y, impactor_com_y],
         linewidth=2.0,
-        color='black',
+        color='white',
         label="IMP ANGLE: {}".format(imp_angle)
     )
     ax.set_xlabel("x")
