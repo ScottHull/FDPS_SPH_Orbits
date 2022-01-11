@@ -108,7 +108,7 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
             for time in np.arange(start_iteration, end_iteration + increment, increment):
                 times.append(get_time(p + "/{}.csv".format(time)))
                 df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
-                imp_angles[n].append(get_impact_geometry_from_formatted(df))
+                imp_angles.append(get_impact_geometry_from_formatted(df))
             if "new" in n.lower():
                 imp_ang_axs[0].plot(
                     times, imp_angles, linewidth=2.0, label=n
@@ -140,7 +140,7 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
             for time in np.arange(start_iteration, end_iteration + increment, increment):
                 times.append(get_time(p + "/{}.csv".format(time)))
                 df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
-                imp_vels[n].append(get_velocity_profile_from_formatted(df) / 1000)
+                imp_vels.append(get_velocity_profile_from_formatted(df) / 1000)
             imp_vel_axs[fig_index].plot(
                 times, imp_vels, linewidth=2.0, label=n
             )
