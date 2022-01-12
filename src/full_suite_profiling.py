@@ -186,7 +186,8 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
             imp_vel_axs[fig_index].plot(
                 times, imp_vels, linewidth=2.0, label=n
             )
-            imp_vel_axs[fig_index].axhline(specified_imp_vel, color='red', linewidth=2.0, linestyle="--", label="Specified")
+            imp_vel_axs[fig_index].axhline(specified_imp_vel / 1000, color='red', linewidth=2.0, linestyle="--",
+                                           label="Specified ({} km/s)".format(specified_imp_vel / 1000))
             imp_vel_axs[fig_index].set_ylabel("Impact Velocity (km/s)")
             fig_index += 1
         except FileNotFoundError:
