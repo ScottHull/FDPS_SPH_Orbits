@@ -184,7 +184,7 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
                 df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
                 imp_vels.append(get_velocity_profile_from_formatted(df) / 1000)
             imp_vel_axs[fig_index].plot(
-                times, imp_vels, linewidth=2.0, label=n
+                times, imp_vels, linewidth=2.0, label="{} (Max: {})".format(n, round(max(imp_vels), 3))
             )
             imp_vel_axs[fig_index].axhline(specified_imp_vel / 1000, color='red', linewidth=2.0, linestyle="--",
                                            label="Specified ({} km/s)".format(round(specified_imp_vel / 1000, 3)))
