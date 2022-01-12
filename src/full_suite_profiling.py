@@ -67,7 +67,7 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
     :return:
     """
     plt.style.use("dark_background")
-    fig, axs = plt.subplots(2, 3, figsize=(16, 9), sharex='all', sharey='all',
+    fig, axs = plt.subplots(3, 2, figsize=(16, 9), sharex='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
     axs = axs.flatten()
     axs[0].set_title("New EoS")
@@ -87,12 +87,18 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
                 p, phase_path, start_iteration, end_iteration, increment)
             if "new" in n:
                 axs[0].plot(times, vmfs, linewidth=2.0, label=n)
+                axs[0].set_ylabel("VMF (%)")
                 axs[2].plot(times, avg_disk_entropy, linewidth=2.0, label=n)
+                axs[2].set_ylabel("Avg. Disk Entropy")
                 axs[4].plot(times, disk_particle_count, linewidth=2.0, label=n)
+                axs[4].set_ylabel("# Disk Particles")
             else:
                 axs[1].plot(times, vmfs, linewidth=2.0, label=n)
+                axs[1].set_ylabel("VMF (%)")
                 axs[3].plot(times, avg_disk_entropy, linewidth=2.0, label=n)
+                axs[3].set_ylabel("Avg. Disk Entropy")
                 axs[5].plot(times, disk_particle_count, linewidth=2.0, label=n)
+                axs[5].set_ylabel("# Disk Particles")
         except FileNotFoundError:
             print(i)
     for ax in axs:
