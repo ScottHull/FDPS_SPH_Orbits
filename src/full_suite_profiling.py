@@ -33,10 +33,7 @@ def get_setup_file_data(path):
                 else:
                     header, data = line.split(":")
                     data = data.split(" ")
-                    try:
-                        d.update({header: float(data[1].replace("\n", ""))})
-                    except:
-                        d.update({header: data[1].replace("\n", "")})
+                    d.update({header: data[1].replace("\n", "")})
     return d
 
 def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, increment):
@@ -181,6 +178,7 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
             print("working on {}".format(i))
             n = meta[i]['name']
             p = meta[i]['path']
+            specified_imp_vel = float(meta[i]['setup']["ESCAPE VELOCITY"])
             times, imp_vels = [], []
             for time in np.arange(start_iteration, end_iteration + increment, increment):
                 times.append(get_time(p + "/{}.csv".format(time)))
@@ -189,6 +187,7 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
             imp_vel_axs[fig_index].plot(
                 times, imp_vels, linewidth=2.0, label=n
             )
+            imp_vel_axs[fig_index].axhline(specified_imp_vel, color='red', linewidth=2.0, linestyle="--", label="Specified")
             if fig_index % 2 == 0:
                 imp_vel_axs[fig_index].set_ylabel("Impact Velocity (km/s)")
             fig_index += 1
