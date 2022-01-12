@@ -33,7 +33,10 @@ def get_setup_file_data(path):
                 else:
                     header, data = line.split(":")
                     data = data.split(" ")
-                    d.update({header: data[1].replace("\n", "")})
+                    try:
+                        d.update({header: float(data[1].replace("\n", ""))})
+                    except:
+                        d.update({header: data[1].replace("\n", "")})
     return d
 
 def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, increment):
