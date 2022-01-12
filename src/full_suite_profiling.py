@@ -105,6 +105,12 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
             print(i)
     for ax in axs:
         ax.legend(loc='upper left')
+    axs[0].set_ylim(0, 45)
+    axs[1].set_ylim(0, 45)
+    axs[2].set_ylim(0, 7000)
+    axs[3].set_ylim(0, 7000)
+    axs[4].set_ylim(0, 35000)
+    axs[5].set_ylim(0, 35000)
     plt.savefig("vmf_timeseries.png", format='png', dpi=200)
 
 
