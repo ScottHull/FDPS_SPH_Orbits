@@ -19,6 +19,23 @@ def get_time(f):
     infile.close()
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
+def get_setup_file_data(path):
+    d = {}
+    with open(path, 'r') as infile:
+        found_initial_setup = False
+        for line in infile:
+            if not found_initial_setup:
+                if "INITIAL SETUP" in line:
+                    found_initial_setup = True
+            else:
+                if len(line) == 0:
+                    break
+                else:
+                    header, data = line.split(":")
+                    data = data.split(" ")
+                    d.update({header: data[0]})
+    return d
+
 def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, increment):
     max_time = get_time(path + "/{}.csv".format(end_iteration))
     times = []
