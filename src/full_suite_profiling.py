@@ -28,12 +28,12 @@ def get_setup_file_data(path):
                 if "INITIAL SETUP" in line:
                     found_initial_setup = True
             else:
-                if len(line) == 0:
+                if len(line) == 1:
                     break
                 else:
                     header, data = line.split(":")
                     data = data.split(" ")
-                    d.update({header: data[0]})
+                    d.update({header: float(data[1].replace("\n", ""))})
     return d
 
 def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, increment):
