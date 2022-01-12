@@ -43,8 +43,8 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
     avg_disk_entropy = []
     for time in np.arange(start_iteration, end_iteration + increment, increment):
         f = path + "/{}.csv".format(time)
-        times.append(get_time(f))
         try:
+            times.append(get_time(f))
             df = pd.read_csv(f, skiprows=2)
             vmf = calc_vapor_mass_fraction_from_formatted(df=df, phase_path=phase_path) * 100.0
             vmfs.append(vmf)
@@ -58,6 +58,7 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
             num_disk_particles = len(disk_particles['entropy'])
             disk_particle_count.append(num_disk_particles)
         except:
+            times.append(np.nan)
             vmfs.append(np.nan)
             disk_particle_count.append(np.nan)
             avg_disk_entropy.append(np.nan)
