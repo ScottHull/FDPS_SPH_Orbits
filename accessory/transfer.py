@@ -22,8 +22,8 @@ ssh = createSSHClient(server, user, password)
 scp = SCPClient(ssh.get_transport())
 
 def transfer_file(scp, full_from_path, full_to_path):
-    scp.put(from_path + i, to_path + i)
-    os.remove(from_path + i)
+    scp.put(full_from_path, full_to_path)
+    os.remove(full_from_path)
 
 # define worker function before a Pool is instantiated
 def worker(args):
@@ -35,7 +35,6 @@ def worker(args):
 
 while True:
     pool = mp.Pool(pool_size)
-    for i in os.listdir(from_path):
-        pool.map(worker, [[scp, from_path + i, to_path + i]])
+    pool.map(worker, [[scp, from_path + i, to_path + i] for i in os.listdir(from_path)])
     pool.close()
     pool.join()

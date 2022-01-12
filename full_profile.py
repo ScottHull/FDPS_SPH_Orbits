@@ -107,3 +107,4 @@ gi_b75_runs = {
 
 profile.build_impact_angle_geometries(gi_b73_runs, start_iteration=0, end_iteration=30, specified_imp_angle=0.73)
 profile.build_impact_velocity_charts(gi_b73_runs, start_iteration=0, end_iteration=30)
+profile.build_vmf_timeplots(gi_b73_runs, start_iteration=0, end_iteration=3000, increment=100)
