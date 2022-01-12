@@ -44,18 +44,23 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
     for time in np.arange(start_iteration, end_iteration + increment, increment):
         f = path + "/{}.csv".format(time)
         times.append(get_time(f))
-        df = pd.read_csv(f, skiprows=2)
-        vmf = calc_vapor_mass_fraction_from_formatted(df=df, phase_path=phase_path) * 100.0
-        vmfs.append(vmf)
-
-        disk_particles = df[df['label'] == "DISK"]
         try:
-            avg_disk_entropy_at_time = mean(disk_particles['entropy'])
+            df = pd.read_csv(f, skiprows=2)
+            vmf = calc_vapor_mass_fraction_from_formatted(df=df, phase_path=phase_path) * 100.0
+            vmfs.append(vmf)
+
+            disk_particles = df[df['label'] == "DISK"]
+            try:
+                avg_disk_entropy_at_time = mean(disk_particles['entropy'])
+            except:
+                avg_disk_entropy_at_time = 0
+            avg_disk_entropy.append(avg_disk_entropy_at_time)
+            num_disk_particles = len(disk_particles['entropy'])
+            disk_particle_count.append(num_disk_particles)
         except:
-            avg_disk_entropy_at_time = 0
-        avg_disk_entropy.append(avg_disk_entropy_at_time)
-        num_disk_particles = len(disk_particles['entropy'])
-        disk_particle_count.append(num_disk_particles)
+            vmfs.append(np.nan)
+            disk_particle_count.append(np.nan)
+            avg_disk_entropy.append(np.nan)
     return times, vmfs, disk_particle_count, avg_disk_entropy, max_time
 
 def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_header='label',
@@ -94,11 +99,8 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
                 axs[4].set_ylabel("# Disk Particles")
             else:
                 axs[1].plot(times, vmfs, linewidth=2.0, label=n)
-                axs[1].set_ylabel("VMF (%)")
                 axs[3].plot(times, avg_disk_entropy, linewidth=2.0, label=n)
-                axs[3].set_ylabel("Avg. Disk Entropy")
                 axs[5].plot(times, disk_particle_count, linewidth=2.0, label=n)
-                axs[5].set_ylabel("# Disk Particles")
         except FileNotFoundError:
             print(i)
     for ax in axs:
