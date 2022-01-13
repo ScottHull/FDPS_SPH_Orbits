@@ -19,6 +19,7 @@ def get_time(f):
     infile.close()
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
+
 def get_setup_file_data(path):
     d = {}
     with open(path, 'r') as infile:
@@ -34,6 +35,7 @@ def get_setup_file_data(path):
                     header, data = line.split(":")
                     d.update({header: data.replace("\n", "")})
     return d
+
 
 def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, increment):
     max_time = get_time(path + "/{}.csv".format(end_iteration))
@@ -63,6 +65,7 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
             disk_particle_count.append(np.nan)
             avg_disk_entropy.append(np.nan)
     return times, vmfs, disk_particle_count, avg_disk_entropy, max_time
+
 
 def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_header='label',
                         output_fname="vmf_profile_output.txt"):
@@ -177,6 +180,7 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
         ax.legend(loc='upper left')
     plt.savefig("impact_angle_profile.png", format='png', dpi=200)
 
+
 def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment=1):
     plt.style.use("dark_background")
     imp_vel_fig, imp_vel_axs = plt.subplots(len(meta.keys()), 1, figsize=(16, 32), sharex='all', sharey='all',
@@ -201,7 +205,8 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
                 df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
                 imp_vels.append(get_velocity_profile_from_formatted(df) / 1000)
             imp_vel_axs[fig_index].plot(
-                times, imp_vels, linewidth=2.0, label="{} (Max: {})".format(n, round(max([x for x in imp_vels if isnan(x) == False]), 3))
+                times, imp_vels, linewidth=2.0,
+                label="{} (Max: {})".format(n, round(max([x for x in imp_vels if isnan(x) == False]), 3))
             )
             imp_vel_axs[fig_index].axhline(specified_imp_vel / 1000, color='red', linewidth=2.0, linestyle="--",
                                            label="Specified ({} km/s)".format(round(specified_imp_vel / 1000, 3)))
@@ -213,3 +218,66 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
         ax.legend(loc='upper left')
     plt.savefig("impact_velocity_profile.png", format='png', dpi=200)
 
+
+def map_disk_to_phase_profile(meta, end_iteration):
+    new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
+    old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
+    new_phase_df = pd.read_fwf(new_phase_path, skiprows=1,
+                               names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                      "entropy_sol_liq", "entropy_vap"])
+    old_phase_df = pd.read_fwf(old_phase_path, skiprows=1,
+                               names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                      "entropy_sol_liq", "entropy_vap"])
+    fig, axs = plt.subplots(len(meta.keys()), 1, figsize=(16, 32), sharey='all',
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.10})
+    axs = axs.flatten()
+    fig_index = 0
+    for ax in axs:
+        ax.grid(alpha=0.4)
+
+    for i in meta.keys():
+        try:
+            n = meta[i]['name']
+            p = meta[i]['path']
+            df = pd.read_csv(p + "/{}.csv".format(end_iteration), skiprows=2)
+            disk = df[df['tag'] % 2 == 0]
+            disk = disk[disk['label'] == "DISK"]
+            if "new" in n.lower():
+                axs[fig_index].plot(
+                    new_phase_df['entropy_vap'],
+                    new_phase_df['temperature'],
+                    linewidth=2.0,
+                    label="Vapor"
+                )
+                axs[fig_index].plot(
+                    new_phase_df['entropy_sol_liq'],
+                    new_phase_df['temperature'],
+                    linewidth=2.0,
+                    label="Liquid",
+                )
+            else:
+                axs[fig_index].plot(
+                    old_phase_df['entropy_vap'],
+                    old_phase_df['temperature'],
+                    linewidth=2.0,
+                    label="Vapor"
+                )
+                axs[fig_index].plot(
+                    old_phase_df['entropy_sol_liq'],
+                    old_phase_df['temperature'],
+                    linewidth=2.0,
+                    label="Liquid",
+                )
+            axs[fig_index].scatter(
+                disk['entropy'],
+                disk['temperature'],
+                s=2,
+                label="{} disk particles".format(n)
+            )
+            axs[fig_index].set_ylabel("Temperature")
+        except Exception as e:
+            print("Problem!", e)
+    axs[-1].set_xlabel("Entropy")
+    axs[0].set_title("Disk Particles on Phase Curve")
+    axs[0].legend()
+    plt.savefig("disk_on_phase_curve.png", format='png', dpi=200)
