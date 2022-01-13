@@ -56,7 +56,7 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
             positions = list(zip(disk_particles['x'], disk_particles['y'], disk_particles['z']))
             velocities = list(zip(disk_particles['vx'], disk_particles['vy'], disk_particles['vz']))
             masses = list(disk_particles['mass'])
-            spec_disk_ams.append(sum([masses[index] * sum(np.cross(p, velocities[index])) for index, p in enumerate(positions)]) / L_EM)  # specific angular momentum of the disk
+            spec_disk_ams.append(sum([masses[index] * np.linalg.norm(np.cross(p, velocities[index])) for index, p in enumerate(positions)]) / L_EM)  # specific angular momentum of the disk
             try:
                 avg_disk_entropy_at_time = mean(disk_particles['entropy'])
             except:
