@@ -235,6 +235,7 @@ def map_disk_to_phase_profile(meta, end_iteration):
     fig_index = 0
     for ax in axs:
         ax.set_xlim(0, 15000)
+        # ax.set_ylim(0, 15000)
         ax.grid(alpha=0.4)
 
     for i in meta.keys():
@@ -300,6 +301,8 @@ def map_disk_to_phase_profile_eos_charts(meta, end_iteration):
     fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharey='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
     axs = axs.flatten()
+    axs[0].set_xlabel("New EoS")
+    axs[1].set_xlabel("Old EoS")
     axs[0].plot(
         new_phase_df['entropy_vap'],
         new_phase_df['temperature'],
@@ -327,6 +330,7 @@ def map_disk_to_phase_profile_eos_charts(meta, end_iteration):
     axs[0].set_ylabel("Temperature")
     for ax in axs:
         ax.set_xlim(0, 15000)
+        # ax.set_ylim(0, 15000)
         ax.grid(alpha=0.4)
         ax.set_xlabel("Entropy")
 
@@ -346,7 +350,6 @@ def map_disk_to_phase_profile_eos_charts(meta, end_iteration):
                 disk['entropy'],
                 disk['temperature'],
                 s=2,
-                c='#fa8174',
                 label="{} disk particles".format(n)
             )
         except Exception as e:
