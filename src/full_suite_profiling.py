@@ -384,7 +384,7 @@ def __profile_time(a):
             phase_path = old_phase_path
         fig_index = None
         n = meta[i]['name']
-        p = meta[i]['path']
+        p = meta[i]['path'].replace("formatted_", "")
         to_fname = "merged_{}_{}.dat".format(end_iteration, randint(0, 100000))
         cf = CombineFile(num_processes=number_processes, time=end_iteration, output_path=p, to_fname=to_fname)
         combined_file = cf.combine()
