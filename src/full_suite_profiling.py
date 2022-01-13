@@ -301,8 +301,8 @@ def map_disk_to_phase_profile_eos_charts(meta, end_iteration):
     fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharey='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
     axs = axs.flatten()
-    axs[0].set_xlabel("New EoS")
-    axs[1].set_xlabel("Old EoS")
+    axs[0].set_title("New EoS")
+    axs[1].set_title("Old EoS")
     axs[0].plot(
         new_phase_df['entropy_vap'],
         new_phase_df['temperature'],
