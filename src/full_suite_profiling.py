@@ -220,6 +220,7 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
 
 
 def map_disk_to_phase_profile(meta, end_iteration):
+    plt.style.use("dark_background")
     new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
     old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
     new_phase_df = pd.read_fwf(new_phase_path, skiprows=1,
@@ -275,6 +276,7 @@ def map_disk_to_phase_profile(meta, end_iteration):
                 label="{} disk particles".format(n)
             )
             axs[fig_index].set_ylabel("Temperature")
+            fig_index += 1
         except Exception as e:
             print("Problem!", e)
     axs[-1].set_xlabel("Entropy")
