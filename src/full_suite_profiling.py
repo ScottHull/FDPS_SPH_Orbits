@@ -80,7 +80,7 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
     :return:
     """
     plt.style.use("dark_background")
-    fig, axs = plt.subplots(3, 3, figsize=(16, 9), sharex='all',
+    fig, axs = plt.subplots(4, 2, figsize=(16, 9), sharex='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
     axs = axs.flatten()
     axs[0].set_title("New EoS")
