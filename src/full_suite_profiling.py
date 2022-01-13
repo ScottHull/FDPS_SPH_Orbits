@@ -274,6 +274,7 @@ def map_disk_to_phase_profile(meta, end_iteration):
                 disk['entropy'],
                 disk['temperature'],
                 s=2,
+                c='#fa8174',
                 label="{} disk particles".format(n)
             )
             axs[fig_index].set_ylabel("Temperature")
