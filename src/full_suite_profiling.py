@@ -55,7 +55,8 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
             disk_particles = df[df['label'] == "DISK"]
             positions = list(zip(disk_particles['x'], disk_particles['y'], disk_particles['z']))
             velocities = list(zip(disk_particles['vx'], disk_particles['vy'], disk_particles['vz']))
-            spec_disk_ams.append(sum([sum(np.cross(p, velocities[index])) for index, p in enumerate(positions)]) / L_EM)  # specific angular momentum of the disk
+            masses = list(disk_particles['mass'])
+            spec_disk_ams.append(sum([masses[index] * sum(np.cross(p, velocities[index])) for index, p in enumerate(positions)]) / L_EM)  # specific angular momentum of the disk
             try:
                 avg_disk_entropy_at_time = mean(disk_particles['entropy'])
             except:
@@ -80,7 +81,7 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
     :return:
     """
     plt.style.use("dark_background")
-    fig, axs = plt.subplots(4, 2, figsize=(16, 9), sharex='all',
+    fig, axs = plt.subplots(4, 2, figsize=(16, 32), sharex='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
     axs = axs.flatten()
     axs[0].set_title("New EoS")
