@@ -234,6 +234,7 @@ def map_disk_to_phase_profile(meta, end_iteration):
     axs = axs.flatten()
     fig_index = 0
     for ax in axs:
+        ax.set_xlim(0, 15000)
         ax.grid(alpha=0.4)
 
     for i in meta.keys():
