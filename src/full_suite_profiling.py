@@ -3,12 +3,16 @@ import csv
 from math import pi, asin, isnan
 import numpy as np
 import pandas as pd
+from random import randint
 from statistics import mean
 import matplotlib.pyplot as plt
+import multiprocessing as mp
 
 from src.vapor import calc_vapor_mass_fraction_from_formatted
 from src.geometry import get_impact_geometry_from_formatted, get_velocity_profile_from_formatted
 from src.animate import animate
+from src.identify import ParticleMap
+from src.combine import CombineFile
 
 
 def get_time(f):
@@ -82,7 +86,7 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
     """
     plt.style.use("dark_background")
     fig, axs = plt.subplots(4, 2, figsize=(16, 32), sharex='all',
-                            gridspec_kw={"hspace": 0.10, "wspace": 0.10})
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.12})
     axs = axs.flatten()
     axs[0].set_title("New EoS")
     axs[1].set_title("Old EoS")
@@ -113,7 +117,6 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
                 axs[3].plot(times, avg_disk_entropy, linewidth=2.0, label=n)
                 axs[5].plot(times, disk_particle_count, linewidth=2.0, label=n)
                 axs[7].plot(times, spec_ang_mom, linewidth=2.0, label=n)
-                axs[7].set_ylabel("Specific Disk Ang. Mom. (L_EM)")
         except FileNotFoundError:
             print(i)
     for ax in axs:
@@ -124,6 +127,8 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
     axs[3].set_ylim(0, 7000)
     axs[4].set_ylim(0, 35000)
     axs[5].set_ylim(0, 35000)
+    axs[6].set_ylim(0, 0.5)
+    axs[7].set_ylim(0, 0.5)
     axs[4].set_xlabel("Time (hrs)")
     axs[5].set_xlabel("Time (hrs)")
     plt.savefig("vmf_timeseries.png", format='png', dpi=200)
@@ -366,3 +371,34 @@ def map_disk_to_phase_profile_eos_charts(meta, end_iteration):
     for ax in axs:
         ax.legend(loc='upper left')
     plt.savefig("disk_on_phase_curve_same_eos_plots.png", format='png', dpi=200)
+
+
+def __profile_time(meta, i, end_iteration, number_processes=200):
+    new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
+    old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
+    try:
+        if "new" in i:
+            phase_path = new_phase_path
+        else:
+            phase_path = old_phase_path
+        fig_index = None
+        n = meta[i]['name']
+        p = meta[i]['path']
+        to_fname = "merged_{}_{}.dat".format(end_iteration, randint(0, 100000))
+        cf = CombineFile(num_processes=number_processes, time=end_iteration, output_path=p, to_fname=to_fname)
+        combined_file = cf.combine()
+        formatted_time = cf.sim_time
+        f = os.getcwd() + "/{}".format(to_fname)
+        pm = ParticleMap(path=f, center=True, relative_velocity=False)
+        particles = pm.collect_particles(find_orbital_elements=True)
+        pm.solve(particles=particles, phase_path=phase_path, report_name="{}.txt".format(i),
+                 iteration=end_iteration, simulation_time=formatted_time)
+        os.remove(to_fname)
+    except Exception as e:
+        print("problem!", e)
+    return None
+
+def get_end_profile_reports(meta, end_iteration, number_processes=200):
+    pool = mp.Pool(5)
+    pool.map(__profile_time, [[meta, i, end_iteration, number_processes] for i in meta.keys()])
+
