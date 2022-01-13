@@ -278,10 +278,79 @@ def map_disk_to_phase_profile(meta, end_iteration):
                 label="{} disk particles".format(n)
             )
             axs[fig_index].set_ylabel("Temperature")
+            axs[fig_index].legend(loc='upper left')
             fig_index += 1
         except Exception as e:
             print("Problem!", e)
     axs[-1].set_xlabel("Entropy")
     axs[0].set_title("Disk Particles on Phase Curve")
-    axs[0].legend()
     plt.savefig("disk_on_phase_curve.png", format='png', dpi=200)
+
+
+def map_disk_to_phase_profile_eos_charts(meta, end_iteration):
+    plt.style.use("dark_background")
+    new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
+    old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
+    new_phase_df = pd.read_fwf(new_phase_path, skiprows=1,
+                               names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                      "entropy_sol_liq", "entropy_vap"])
+    old_phase_df = pd.read_fwf(old_phase_path, skiprows=1,
+                               names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                      "entropy_sol_liq", "entropy_vap"])
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharey='all',
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.10})
+    axs = axs.flatten()
+    axs[0].plot(
+        new_phase_df['entropy_vap'],
+        new_phase_df['temperature'],
+        linewidth=2.0,
+        label="Vapor"
+    )
+    axs[0].plot(
+        new_phase_df['entropy_sol_liq'],
+        new_phase_df['temperature'],
+        linewidth=2.0,
+        label="Liquid",
+    )
+    axs[1].plot(
+        old_phase_df['entropy_vap'],
+        old_phase_df['temperature'],
+        linewidth=2.0,
+        label="Vapor"
+    )
+    axs[1].plot(
+        old_phase_df['entropy_sol_liq'],
+        old_phase_df['temperature'],
+        linewidth=2.0,
+        label="Liquid",
+    )
+    axs[0].set_ylabel("Temperature")
+    for ax in axs:
+        ax.set_xlim(0, 15000)
+        ax.grid(alpha=0.4)
+        ax.set_xlabel("Entropy")
+
+    for i in meta.keys():
+        try:
+            fig_index = None
+            n = meta[i]['name']
+            p = meta[i]['path']
+            df = pd.read_csv(p + "/{}.csv".format(end_iteration), skiprows=2)
+            disk = df[df['tag'] % 2 == 0]
+            disk = disk[disk['label'] == "DISK"]
+            if "new" in n.lower():
+                fig_index = 0
+            else:
+                fig_index = 1
+            axs[fig_index].scatter(
+                disk['entropy'],
+                disk['temperature'],
+                s=2,
+                c='#fa8174',
+                label="{} disk particles".format(n)
+            )
+        except Exception as e:
+            print("Problem!", e)
+    for ax in axs:
+        ax.legend(loc='upper left')
+    plt.savefig("disk_on_phase_curve_same_eos_plots.png", format='png', dpi=200)
