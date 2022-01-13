@@ -373,7 +373,8 @@ def map_disk_to_phase_profile_eos_charts(meta, end_iteration):
     plt.savefig("disk_on_phase_curve_same_eos_plots.png", format='png', dpi=200)
 
 
-def __profile_time(meta, i, end_iteration, number_processes=200):
+def __profile_time(a):
+    meta, i, end_iteration, number_processes = a
     new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
     old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
     try:
