@@ -37,7 +37,7 @@ def get_setup_file_data(path):
     return d
 
 
-def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, increment):
+def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, increment, L_EM=3.5 * 10 ** 34):
     max_time = get_time(path + "/{}.csv".format(end_iteration))
     times = []
     vmfs = []
@@ -55,7 +55,7 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
             disk_particles = df[df['label'] == "DISK"]
             positions = list(zip(disk_particles['x'], disk_particles['y'], disk_particles['z']))
             velocities = list(zip(disk_particles['vx'], disk_particles['vy'], disk_particles['vz']))
-            spec_disk_ams.append(sum([sum(np.cross(p, velocities[index])) for index, p in enumerate(positions)]))  # specific angular momentum of the disk
+            spec_disk_ams.append(sum([sum(np.cross(p, velocities[index])) for index, p in enumerate(positions)]) / L_EM)  # specific angular momentum of the disk
             try:
                 avg_disk_entropy_at_time = mean(disk_particles['entropy'])
             except:
@@ -72,7 +72,7 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
 
 
 def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_header='label',
-                        output_fname="vmf_profile_output.txt"):
+                        output_fname="vmf_profile_output.txt", L_EM=3.5 * 10 ** 34):
     """
     Builds VMF timeseries plots from formatted outputs.
     :param names:
@@ -97,7 +97,7 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
             else:
                 phase_path = "src/phase_data/duniteN__vapour_curve.txt"
             times, vmfs, disk_particle_count, avg_disk_entropy, max_time, spec_ang_mom = __get_vmf_timeplot_data(
-                p, phase_path, start_iteration, end_iteration, increment)
+                p, phase_path, start_iteration, end_iteration, increment, L_EM=L_EM)
             if "new" in n:
                 axs[0].plot(times, vmfs, linewidth=2.0, label=n)
                 axs[0].set_ylabel("VMF (%)")
@@ -106,13 +106,13 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
                 axs[4].plot(times, disk_particle_count, linewidth=2.0, label=n)
                 axs[4].set_ylabel("# Disk Particles")
                 axs[6].plot(times, spec_ang_mom, linewidth=2.0, label=n)
-                axs[6].set_ylabel("Specific Disk Angular Momentum")
+                axs[6].set_ylabel("Specific Disk Ang. Mom. (L_EM)")
             else:
                 axs[1].plot(times, vmfs, linewidth=2.0, label=n)
                 axs[3].plot(times, avg_disk_entropy, linewidth=2.0, label=n)
                 axs[5].plot(times, disk_particle_count, linewidth=2.0, label=n)
                 axs[7].plot(times, spec_ang_mom, linewidth=2.0, label=n)
-                axs[7].set_ylabel("Specific Disk Angular Momentum")
+                axs[7].set_ylabel("Specific Disk Ang. Mom. (L_EM)")
         except FileNotFoundError:
             print(i)
     for ax in axs:
