@@ -111,7 +111,7 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
                 axs[4].plot(times, disk_particle_count, linewidth=2.0, label=n)
                 axs[4].set_ylabel("# Disk Particles")
                 axs[6].plot(times, spec_ang_mom, linewidth=2.0, label=n)
-                axs[6].set_ylabel("Specific Disk Ang. Mom. (L_EM)")
+                axs[6].set_ylabel("Disk Angular Momentum (L_EM)")
             else:
                 axs[1].plot(times, vmfs, linewidth=2.0, label=n)
                 axs[3].plot(times, avg_disk_entropy, linewidth=2.0, label=n)
