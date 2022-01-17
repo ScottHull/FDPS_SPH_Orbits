@@ -12,11 +12,11 @@ from src.animate import animate
 
 start_time = 0
 end_time = 3000
-increment = 10
-start_shock_sample = 400
-end_shock_sample = 2500
-f_path = "/home/theia/scotthull/1M/gi_new_eos_b_073_at_time"
-f_fine_path = "/home/theia/scotthull/1M/formatted_gi_new_eos_b_073"
+increment = 2
+start_shock_sample = 200
+end_shock_sample = 3000
+f_path = "/home/theia/scotthull/Paper1_SPH/gi/5_b073_new/formatted_5_b073_new"
+f_fine_path = "/home/theia/scotthull/Paper1_SPH/gi/5_b073_new/formatted_5_b073_new"
 output = "/home/theia/scotthull/FDPS_SPH_Orbits/track_high_s_shocks"
 
 for p in [output]:
@@ -71,12 +71,12 @@ for time in np.arange(start_time, end_time + increment, increment):
         data[i[0]]['s'].append(i[1])
         data[i[0]]['rho'].append(i[2])
         data[i[0]]['u'].append(i[3])
-    fig, axs = plt.subplots(1, 3, figsize=(16, 9), gridspec_kw={"hspace": 0.0, "wspace": 0.14})
+    fig, axs = plt.subplots(3, 1, figsize=(9, 16), gridspec_kw={"hspace": 0.12, "wspace": 0})
     fig.patch.set_facecolor('xkcd:black')
     ax1, ax2, ax3 = axs.flatten()
     for ax in axs.flatten():
         ax.set_xlim(0, max_time)
-        ax.set_xlabel("Time (hrs)")
+        # ax.set_xlabel("Time (hrs)")
         ax.grid(alpha=0.4)
     for index, i in enumerate(d):
         ax1.plot(
@@ -106,6 +106,7 @@ for time in np.arange(start_time, end_time + increment, increment):
     ax1.set_ylim(0, 10000)
     ax2.set_ylim(0, 20),
     ax3.set_ylim(0, 4e7)
+    ax3.set_xlabel("Time (hrs)")
     ax1.set_ylabel("Entropy")
     ax2.set_ylabel("Density")
     ax3.set_ylabel("Internal Energy")
