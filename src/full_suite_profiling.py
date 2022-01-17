@@ -129,8 +129,8 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
     axs[5].set_ylim(0, 35000)
     axs[6].set_ylim(0, 0.5)
     axs[7].set_ylim(0, 0.5)
-    axs[4].set_xlabel("Time (hrs)")
-    axs[5].set_xlabel("Time (hrs)")
+    axs[-2].set_xlabel("Time (hrs)")
+    axs[-1].set_xlabel("Time (hrs)")
     plt.savefig("vmf_timeseries.png", format='png', dpi=200)
 
 

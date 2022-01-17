@@ -15,13 +15,16 @@ plt.style.use("dark_background")
 
 path = "/home/theia/scotthull/1M_high_rho_cutoff/gi_new_eos_b_073_high_rho_cutoff_1M"
 to_path = "/home/theia/scotthull/1M_high_rho_cutoff/formatted_gi_new_eos_b_073_high_rho_cutoff_1M"
-phase_curve = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/forstSTS__vapour_curve.txt"
+if "new" in path:
+    phase_curve = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/forstSTS__vapour_curve.txt"
+else:
+    phase_curve = "/home/theia/scotthull/FDPS_SPH_Orbits/src/phase_data/duniteN__vapour_curve.txt"
 num_processes = 200
 assess_at_interval = 100
 start_iteration = 0
-end_iteration = 2900
+end_iteration = 3000
 increment = 1
-end_disk_state_iteration = 1000
+end_disk_state_iteration = 3000
 
 os.mkdir(to_path)
 
