@@ -76,7 +76,7 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
     return times, vmfs, disk_particle_count, avg_disk_entropy, max_time, spec_disk_ams
 
 
-def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_header='label',
+def build_vmf_timeplots(name, meta, start_iteration, end_iteration, increment, label_header='label',
                         output_fname="vmf_profile_output.txt", L_EM=3.5 * 10 ** 34):
     """
     Builds VMF timeseries plots from formatted outputs.
@@ -131,10 +131,10 @@ def build_vmf_timeplots(meta, start_iteration, end_iteration, increment, label_h
     axs[7].set_ylim(0, 0.5)
     axs[-2].set_xlabel("Time (hrs)")
     axs[-1].set_xlabel("Time (hrs)")
-    plt.savefig("vmf_timeseries.png", format='png', dpi=200)
+    plt.savefig("vmf_timeseries_{}.png".format(name), format='png', dpi=200)
 
 
-def build_impact_angle_geometries(meta, start_iteration, end_iteration, specified_imp_angle, increment=1):
+def build_impact_angle_geometries(name, meta, start_iteration, end_iteration, specified_imp_angle, increment=1):
     plt.style.use("dark_background")
     """
     :param names:
@@ -192,10 +192,10 @@ def build_impact_angle_geometries(meta, start_iteration, end_iteration, specifie
             )
     for ax in imp_ang_axs:
         ax.legend(loc='upper left')
-    plt.savefig("impact_angle_profile.png", format='png', dpi=200)
+    plt.savefig("impact_angle_profile_{}.png".format(name), format='png', dpi=200)
 
 
-def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment=1):
+def build_impact_velocity_charts(name, meta, start_iteration, end_iteration, increment=1):
     plt.style.use("dark_background")
     imp_vel_fig, imp_vel_axs = plt.subplots(len(meta.keys()), 1, figsize=(16, 32), sharex='all', sharey='all',
                                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
@@ -230,10 +230,10 @@ def build_impact_velocity_charts(meta, start_iteration, end_iteration, increment
             print(i)
     for ax in imp_vel_axs:
         ax.legend(loc='upper left')
-    plt.savefig("impact_velocity_profile.png", format='png', dpi=200)
+    plt.savefig("impact_velocity_profile_{}.png".format(name), format='png', dpi=200)
 
 
-def map_disk_to_phase_profile(meta, end_iteration):
+def map_disk_to_phase_profile(name, meta, end_iteration):
     plt.style.use("dark_background")
     new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
     old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
@@ -299,10 +299,10 @@ def map_disk_to_phase_profile(meta, end_iteration):
             print("Problem!", e)
     axs[-1].set_xlabel("Entropy")
     axs[0].set_title("Disk Particles on Phase Curve")
-    plt.savefig("disk_on_phase_curve.png", format='png', dpi=200)
+    plt.savefig("disk_on_phase_curve_{}.png".format(name), format='png', dpi=200)
 
 
-def map_disk_to_phase_profile_eos_charts(meta, end_iteration):
+def map_disk_to_phase_profile_eos_charts(name, meta, end_iteration):
     plt.style.use("dark_background")
     new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
     old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
@@ -370,7 +370,7 @@ def map_disk_to_phase_profile_eos_charts(meta, end_iteration):
             print("Problem!", e)
     for ax in axs:
         ax.legend(loc='upper left')
-    plt.savefig("disk_on_phase_curve_same_eos_plots.png", format='png', dpi=200)
+    plt.savefig("disk_on_phase_curve_same_eos_plots_{}.png".format(name), format='png', dpi=200)
 
 
 def __profile_time(a):

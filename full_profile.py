@@ -106,9 +106,9 @@ gi_b75_runs = {
     },
 }
 
-profile.build_impact_angle_geometries(gi_b73_runs, start_iteration=0, end_iteration=30, specified_imp_angle=0.73)
-profile.build_impact_velocity_charts(gi_b73_runs, start_iteration=0, end_iteration=30)
-profile.build_vmf_timeplots(gi_b73_runs, start_iteration=0, end_iteration=3000, increment=100)
-profile.map_disk_to_phase_profile(gi_b73_runs, end_iteration=3000)
-profile.map_disk_to_phase_profile_eos_charts(gi_b73_runs, end_iteration=3000)
+profile.build_impact_angle_geometries("gi_b73_runs", gi_b73_runs, start_iteration=0, end_iteration=30, specified_imp_angle=0.73)
+profile.build_impact_velocity_charts("gi_b73_runs", gi_b73_runs, start_iteration=0, end_iteration=30)
+profile.build_vmf_timeplots("gi_b73_runs", gi_b73_runs, start_iteration=0, end_iteration=3000, increment=100)
+profile.map_disk_to_phase_profile("gi_b73_runs", gi_b73_runs, end_iteration=3000)
+profile.map_disk_to_phase_profile_eos_charts("gi_b73_runs", gi_b73_runs, end_iteration=3000)
 profile.get_end_profile_reports(gi_b73_runs, end_iteration=3000, number_processes=200)
