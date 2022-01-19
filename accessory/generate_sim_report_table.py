@@ -1,8 +1,10 @@
 import os
 import pandas as pd
 
-runs = ["5_b073_new", "5_b073_old", "500_b073_new", "500_b073_old", "1000_b073_new", "1000_b073_old",
-        "2000_b073_new", "2000_b073_old"]
+# runs = ["5_b073_new", "5_b073_old", "500_b073_new", "500_b073_old", "1000_b073_new", "1000_b073_old",
+#         "2000_b073_new", "2000_b073_old"]
+runs = ["5_b075_new", "5_b075_old", "500_b075_new", "500_b075_old", "1000_b075_new", "1000_b075_old",
+        "2000_b075_new", "2000_b075_old"]
 table_rows = [
     "mass_protoplanet (M_E)", "mass_disk (M_L)", "mass_escaped (M_L)", "disk_mass_beyond_roche (M_L)",
     "disk_angular_momentum (L_EM)", "total_angular_momentum (L_EM)", "disk vmf", "iron_disk_mass_fraction", "iron_disk_mass_fraction_beyond_roche",
@@ -18,7 +20,7 @@ percentages = ["disk vmf", "iron_disk_mass_fraction", "iron_disk_mass_fraction_b
 km = ["a", "b"]
 whole_nums = ["num_particles_planet", "num_particles_disk", "num_particles_escaping", "num_particles_error"]
 
-to_path = "/Users/scotthull/Desktop/sim_endstate_reports"
+to_path = "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/Paper1/sim_endstate_reports"
 
 fname = "table_formatted_endstates.txt"
 if fname in os.listdir(os.getcwd()):

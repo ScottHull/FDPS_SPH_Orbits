@@ -408,6 +408,7 @@ def get_end_profile_reports(meta, end_iteration, number_processes=200):
     pool.map(__profile_time, [[meta, i, end_iteration, number_processes] for i in meta.keys()])
 
 def __build_scene(d):
+    plt.style.use("dark_background")
     meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale = d
     normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
     cmap = cm.get_cmap('jet')
@@ -432,13 +433,13 @@ def __build_scene(d):
         df = df[df['z'] < 0]
         if "new" in n:
             axs[index_new].scatter(
-                df['x'], df['y'], s=0.2, color=[cmap(normalizer(i)) for i in df['entropy']]
+                df['x'], df['y'], s=1, color=[cmap(normalizer(i)) for i in df['entropy']]
             )
             axs[index_new].set_title(n + " {} hrs".format(formatted_time))
             index_new += 2
         else:
             axs[index_old].scatter(
-                df['x'], df['y'], s=0.2, color=[cmap(normalizer(i)) for i in df['entropy']]
+                df['x'], df['y'], s=1, color=[cmap(normalizer(i)) for i in df['entropy']]
             )
             axs[index_old].set_title(n + " ({} hrs)".format(formatted_time))
             index_old += 2
@@ -452,7 +453,6 @@ def __build_scene(d):
 
 
 def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment):
-    plt.style.use("dark_background")
     if os.path.exists(to_path):
         shutil.rmtree(to_path)
     os.mkdir(to_path)
