@@ -1,11 +1,15 @@
 import os
 import csv
+import shutil
 from math import pi, asin, isnan
 import numpy as np
 import pandas as pd
 from random import randint
 from statistics import mean
 import matplotlib.pyplot as plt
+from matplotlib.colors import Normalize
+import matplotlib.cm as cm
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import multiprocessing as mp
 
 from src.vapor import calc_vapor_mass_fraction_from_formatted
@@ -402,4 +406,64 @@ def __profile_time(a):
 def get_end_profile_reports(meta, end_iteration, number_processes=200):
     pool = mp.Pool(5)
     pool.map(__profile_time, [[meta, i, end_iteration, number_processes] for i in meta.keys()])
+
+def __build_scene(d):
+    meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale = d
+    normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
+    cmap = cm.get_cmap('jet')
+    
+    num_new = len([i for i in meta.keys() if "new" in i])
+    num_old = len([i for i in meta.keys() if "old" in i])
+    num_rows = max([num_new, num_old])
+    fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all',
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.12})
+    axs = axs.flatten()
+    for ax in axs:
+        ax.set_xlim(-square_scale, square_scale)
+        ax.set_ylim(-square_scale, square_scale)
+        ax.set_xticks([], minor=False)
+        ax.set_yticks([], minor=False)
+    index_new, index_old = 0, 1
+    for i in meta.keys():
+        n = meta[i]['name']
+        p = meta[i]['path']
+        formatted_time = get_time(p + "/{}.csv".format(iteration))
+        df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
+        df = df[df['z'] < 0]
+        if "new" in n:
+            axs[index_new].scatter(
+                df['x'], df['y'], s=0.2, color=[cmap(normalizer(i)) for i in df['entropy']]
+            )
+            axs[index_new].set_title(n + " {} hrs".format(formatted_time))
+            index_new += 2
+        else:
+            axs[index_old].scatter(
+                df['x'], df['y'], s=0.2, color=[cmap(normalizer(i)) for i in df['entropy']]
+            )
+            axs[index_old].set_title(n + " {} hrs".format(formatted_time))
+            index_old += 2
+    sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+    sm.set_array([])
+    cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
+    cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+    cbar.ax.tick_params(labelsize=6)
+    cbar.ax.set_title("Entropy", fontsize=6)
+    plt.savefig(to_path + "/{}.png".format(iteration), format='png')
+
+
+def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment):
+    if os.path.exists(to_path):
+        shutil.rmtree(to_path)
+    os.mkdir(to_path)
+    pool = mp.Pool(5)
+    pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7] for iteration in
+                             np.arange(start_iteration, end_iteration + increment, increment)])
+    animate(
+        start_time=start_iteration,
+        end_time=end_iteration,
+        interval=increment,
+        path=to_path,
+        fps=30,
+        filename="{}_animated_from_formatted.mp4".format(name),
+    )
 
