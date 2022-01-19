@@ -408,7 +408,6 @@ def get_end_profile_reports(meta, end_iteration, number_processes=200):
     pool.map(__profile_time, [[meta, i, end_iteration, number_processes] for i in meta.keys()])
 
 def __build_scene(d):
-    plt.style.use("dark_background")
     meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale = d
     normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
     cmap = cm.get_cmap('jet')
@@ -416,8 +415,10 @@ def __build_scene(d):
     num_new = len([i for i in meta.keys() if "new" in i])
     num_old = len([i for i in meta.keys() if "old" in i])
     num_rows = max([num_new, num_old])
+    plt.style.use("dark_background")
     fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.12})
+    fig.patch.set_facecolor('xkcd:black')
     axs = axs.flatten()
     for ax in axs:
         ax.set_xlim(-square_scale, square_scale)

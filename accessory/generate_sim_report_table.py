@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # runs = ["5_b073_new", "5_b073_old", "500_b073_new", "500_b073_old", "1000_b073_new", "1000_b073_old",
 #         "2000_b073_new", "2000_b073_old"]
@@ -22,6 +23,7 @@ whole_nums = ["num_particles_planet", "num_particles_disk", "num_particles_escap
 
 to_path = "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/Paper1/sim_endstate_reports"
 
+dat = {}
 fname = "table_formatted_endstates.txt"
 if fname in os.listdir(os.getcwd()):
     os.remove(fname)
@@ -35,6 +37,9 @@ with open(fname, 'w') as outfile:
         # line = "{" + tr + "}"
         line = row_names[index]
         for r in runs:
+            r_name = r.replace("_", "").replace("new", "n").replace("old", "o")
+            if r_name not in dat.keys():
+                dat.update({r_name: {}})
             try:
                 df = pd.read_csv(to_path + "/{}.txt".format(r), header=None, index_col=0, delimiter="\t")
                 d = float(df[1][tr])
@@ -46,9 +51,15 @@ with open(fname, 'w') as outfile:
                     d = round(d, 2)
                 else:
                     d = int(d)
+                dat[r_name].update({tr: d})
                 line += " & {" + str(d) + "}"
             except Exception as e:
                 print(e)
                 line += " & {}"
         outfile.write(line + " \\\ \midrule\n")
+
+
+def grouped_bc(dat):
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.10, "wspace": 0.10})
+
 
