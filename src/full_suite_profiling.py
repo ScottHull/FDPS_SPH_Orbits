@@ -440,7 +440,7 @@ def __build_scene(d):
             axs[index_old].scatter(
                 df['x'], df['y'], s=0.2, color=[cmap(normalizer(i)) for i in df['entropy']]
             )
-            axs[index_old].set_title(n + " {} hrs".format(formatted_time))
+            axs[index_old].set_title(n + " ({} hrs)".format(formatted_time))
             index_old += 2
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
@@ -452,10 +452,11 @@ def __build_scene(d):
 
 
 def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment):
+    plt.style.use("dark_background")
     if os.path.exists(to_path):
         shutil.rmtree(to_path)
     os.mkdir(to_path)
-    pool = mp.Pool(5)
+    pool = mp.Pool(10)
     pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7] for iteration in
                              np.arange(start_iteration, end_iteration + increment, increment)])
     animate(
