@@ -498,14 +498,14 @@ def disk_temperature_vs_radius(name, meta, iteration):
             disk = disk[disk['label'] == "DISK"]
             if "new" in i:
                 axs[0].scatter(
-                    disk['distance'] / 1000,
+                    disk['radius'] / 1000,
                     disk['temperature'],
                     s=2,
                     label=n
                 )
             else:
                 axs[1].scatter(
-                    disk['distance'] / 1000,
+                    disk['radius'] / 1000,
                     disk['temperature'],
                     s=2,
                     label=n
@@ -513,5 +513,8 @@ def disk_temperature_vs_radius(name, meta, iteration):
         except Exception as e:
             print(e)
             pass
+    for ax in axs:
+        ax.legend(loc='upper right')
+    fig.suptitle(name)
 
     plt.savefig("{}_disk_temperatures.png".format(name), format='png', dpi=200)
