@@ -484,8 +484,8 @@ def disk_temperature_vs_radius(name, meta, iteration):
     axs = axs.flatten()
     for ax in axs:
         ax.grid(alpha=0.4)
-        ax.set_xlabel("Distance from Earth Center (km)")
-    axs[1].set_ylabel("Temperature (K)")
+        ax.set_xlabel(r"Distance from Earth Center (Radius $R_{\bigoplus}$")
+    axs[0].set_ylabel("Temperature (K)")
     fig.patch.set_facecolor('xkcd:black')
     for i in meta.keys():
         try:
@@ -498,14 +498,14 @@ def disk_temperature_vs_radius(name, meta, iteration):
             disk = disk[disk['label'] == "DISK"]
             if "new" in i:
                 axs[0].scatter(
-                    disk['radius'] / 1000,
+                    disk['radius'] / (6371 * 1000),
                     disk['temperature'],
                     s=2,
                     label=n
                 )
             else:
                 axs[1].scatter(
-                    disk['radius'] / 1000,
+                    disk['radius'] / (6371 * 1000),
                     disk['temperature'],
                     s=2,
                     label=n
