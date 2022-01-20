@@ -64,7 +64,8 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
             positions = list(zip(disk_particles['x'], disk_particles['y'], disk_particles['z']))
             velocities = list(zip(disk_particles['vx'], disk_particles['vy'], disk_particles['vz']))
             masses = list(disk_particles['mass'])
-            spec_disk_ams.append(sum([masses[index] * np.linalg.norm(np.cross(p, velocities[index])) for index, p in enumerate(positions)]) / L_EM)  # specific angular momentum of the disk
+            spec_disk_ams.append(sum([masses[index] * np.linalg.norm(np.cross(p, velocities[index])) for index, p in
+                                      enumerate(positions)]) / L_EM)  # specific angular momentum of the disk
             try:
                 avg_disk_entropy_at_time = mean(disk_particles['entropy'])
             except:
@@ -107,7 +108,7 @@ def build_vmf_timeplots(name, meta, start_iteration, end_iteration, increment, l
                 phase_path = "src/phase_data/duniteN__vapour_curve.txt"
             times, vmfs, disk_particle_count, avg_disk_entropy, max_time, spec_ang_mom = __get_vmf_timeplot_data(
                 p, phase_path, start_iteration, end_iteration, increment, L_EM=L_EM)
-            if "new" in n:
+            if "new" in i:
                 axs[0].plot(times, vmfs, linewidth=2.0, label=n)
                 axs[0].set_ylabel("VMF (%)")
                 axs[2].plot(times, avg_disk_entropy, linewidth=2.0, label=n)
@@ -186,7 +187,7 @@ def build_impact_angle_geometries(name, meta, start_iteration, end_iteration, sp
         ax.grid(alpha=0.4)
 
     for n in d.keys():
-        if "new" in n.lower():
+        if "new" in i.lower():
             imp_ang_axs[0].plot(
                 d[n]["times"], d[n]["imp_angles"], linewidth=2.0, label=n
             )
@@ -263,7 +264,7 @@ def map_disk_to_phase_profile(name, meta, end_iteration):
             df = pd.read_csv(p + "/{}.csv".format(end_iteration), skiprows=2)
             disk = df[df['tag'] % 2 == 0]
             disk = disk[disk['label'] == "DISK"]
-            if "new" in n.lower():
+            if "new" in i.lower():
                 axs[fig_index].plot(
                     new_phase_df['entropy_vap'],
                     new_phase_df['temperature'],
@@ -360,7 +361,7 @@ def map_disk_to_phase_profile_eos_charts(name, meta, end_iteration):
             df = pd.read_csv(p + "/{}.csv".format(end_iteration), skiprows=2)
             disk = df[df['tag'] % 2 == 0]
             disk = disk[disk['label'] == "DISK"]
-            if "new" in n.lower():
+            if "new" in i.lower():
                 fig_index = 0
             else:
                 fig_index = 1
@@ -403,17 +404,19 @@ def __profile_time(a):
         print("problem!", e)
     return None
 
+
 def get_end_profile_reports(meta, end_iteration, number_processes=200):
     pool = mp.Pool(5)
     pool.map(__profile_time, [[meta, i, end_iteration, number_processes] for i in meta.keys()])
     pool.close()
     pool.join()
 
+
 def __build_scene(d):
     meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale = d
     normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
     cmap = cm.get_cmap('jet')
-    
+
     num_new = len([i for i in meta.keys() if "new" in i])
     num_old = len([i for i in meta.keys() if "old" in i])
     num_rows = max([num_new, num_old])
@@ -473,3 +476,42 @@ def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment)
         filename="{}_animated_from_formatted.mp4".format(name),
     )
 
+
+def disk_temperature_vs_radius(name, meta, iteration):
+    plt.style.use("dark_background")
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.12})
+    axs = axs.flatten()
+    for ax in axs:
+        ax.grid(alpha=0.4)
+        ax.set_xlabel("Distance from Earth Center (km)")
+    axs[1].set_ylabel("Temperature (K)")
+    fig.patch.set_facecolor('xkcd:black')
+    for i in meta.keys():
+        try:
+            n = meta[i]['name']
+            p = meta[i]['path']
+            axs[0].set_title("New EoS ({} hrs)".format(get_time(p + "/{}.csv")))
+            axs[1].set_title("Old EoS ({} hrs)".format(get_time(p + "/{}.csv")))
+            df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
+            disk = df[df['tag'] % 2 == 0]
+            disk = disk[disk['label'] == "DISK"]
+            if "new" in i:
+                axs[0].scatter(
+                    disk['distance'] / 1000,
+                    disk['temperature'],
+                    s=2,
+                    label=n
+                )
+            else:
+                axs[1].scatter(
+                    disk['distance'] / 1000,
+                    disk['temperature'],
+                    s=2,
+                    label=n
+                )
+        except Exception as e:
+            print(e)
+            pass
+
+    plt.savefig("{}_disk_temperatures.png".format(name), format='png', dpi=200)
