@@ -491,8 +491,8 @@ def disk_temperature_vs_radius(name, meta, iteration):
         try:
             n = meta[i]['name']
             p = meta[i]['path']
-            axs[0].set_title("New EoS ({} hrs)".format(get_time(p + "/{}.csv")))
-            axs[1].set_title("Old EoS ({} hrs)".format(get_time(p + "/{}.csv")))
+            axs[0].set_title("New EoS ({} hrs)".format(get_time(p + "/{}.csv".format(iteration))))
+            axs[1].set_title("Old EoS ({} hrs)".format(get_time(p + "/{}.csv".format(iteration))))
             df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
             disk = df[df['tag'] % 2 == 0]
             disk = disk[disk['label'] == "DISK"]
