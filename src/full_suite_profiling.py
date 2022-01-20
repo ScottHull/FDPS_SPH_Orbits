@@ -406,6 +406,8 @@ def __profile_time(a):
 def get_end_profile_reports(meta, end_iteration, number_processes=200):
     pool = mp.Pool(5)
     pool.map(__profile_time, [[meta, i, end_iteration, number_processes] for i in meta.keys()])
+    pool.close()
+    pool.join()
 
 def __build_scene(d):
     meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale = d
@@ -432,7 +434,7 @@ def __build_scene(d):
         formatted_time = get_time(p + "/{}.csv".format(iteration))
         df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
         df = df[df['z'] < 0]
-        if "new" in n:
+        if "new" in i:
             axs[index_new].scatter(
                 df['x'], df['y'], s=1, color=[cmap(normalizer(i)) for i in df['entropy']]
             )
@@ -460,6 +462,8 @@ def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment)
     pool = mp.Pool(10)
     pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7] for iteration in
                              np.arange(start_iteration, end_iteration + increment, increment)])
+    pool.close()
+    pool.join()
     animate(
         start_time=start_iteration,
         end_time=end_iteration,

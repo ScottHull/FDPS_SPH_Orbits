@@ -15,10 +15,20 @@ table_rows = [
     "num_particles_error"
 ]
 row_names = [
-    "{Planet Mass ($M_\oplus$)}", "{Disk Mass ($M_L$)}", "{Escaping Mass ($M_L$)}", "{$\%$ Disk Mass $\geq R_{Roche}$}",
+    "{Planet Mass ($M_\oplus$)}", "{Disk Mass ($M_L$)}", "{Escaping Mass ($M_L$)}", "{$%$ Disk Mass $\geq$ $R_{Roche}$}",
     "{Disk AM ($L_{EM}$)}", "{Total AM ($L_{EM}$)}", "{Disk VMF  ($\%$)}", "{Disk Iron $\%$}",
     "{Disk Iron Mass $\geq R_{Roche}$ ($\%$)}", "{Planet $a$ (km)}", "{Planet $b$ (km)}", "{Planet Avg. Density}",
     "{$N_{planet}$}", "{$N_{disk}$}", "{$N_{escape}$}", "{$N_{error}$}"
+]
+titles = [
+    "Planet Mass", "Disk Mass", "Escaping Mass", "$\%$ Disk Mass $\geq$ Roche Limit",
+    "Disk Angular Momentum", "Total Angular Momentum", "Disk VMF", "Disk Iron $\%$",
+    "Disk Iron Mass $\geq$ Roche Limit", "Planet $a$", "Planet $b$", "Planet Avg. Density",
+    "# Particles in Planet", "# Particles in Disk", "# Particles Escaping", "# Particles Error"
+]
+units = [
+    "$M_\oplus$", "$M_L$", "$M_L$", "$\%$", "$L_{EM}$", "$L_{EM}$", "$\%$", "$\%$", "$\%$", "km", "km", "$kg/m^3$",
+    "Particles", "Particles", "Particles", "Particles",
 ]
 percentages = ["disk vmf", "iron_disk_mass_fraction", "iron_disk_mass_fraction_beyond_roche"]
 km = ["a", "b"]
@@ -52,9 +62,9 @@ with open(fname, 'w') as outfile:
                     d = round(d, 2)
                 else:
                     d = int(d)
-                if row_names[index] not in dat.keys():
-                    dat.update({row_names[index]: {}})
-                dat[row_names[index]].update({r_name: d})
+                if titles[index] not in dat.keys():
+                    dat.update({titles[index]: {}})
+                dat[titles[index]].update({r_name: d})
                 line += " & {" + str(d) + "}"
             except Exception as e:
                 print(e)
@@ -63,12 +73,12 @@ with open(fname, 'w') as outfile:
 
 
 def grouped_bc(dat):
-    fig, axs = plt.subplots(4, 4, figsize=(20, 20), gridspec_kw={"hspace": 0.16, "wspace": 0.16})
+    fig, axs = plt.subplots(4, 4, figsize=(22, 22), gridspec_kw={"hspace": 0.16, "wspace": 0.22})
     axs = axs.flatten()
     for ax in axs:
         ax.grid(alpha=0.4)
     index = 0
-    for r in row_names:
+    for index, r in enumerate(titles):
         labels = ["5", "500", "1000", "2000"]
         new_dat = [dat[r][i] for i in dat[r].keys() if "n" in i]
         old_dat = [dat[r][i] for i in dat[r].keys() if "o" in i]
@@ -77,12 +87,12 @@ def grouped_bc(dat):
         rects1 = axs[index].bar(x - width / 2, new_dat, width, label='New EoS')
         rects2 = axs[index].bar(x + width / 2, old_dat, width, label='Old EoS')
         if index >= 16 - 4:
-            axs[index].set_xlabel("Cutoff Density (kg/m3)")
-        # axs[index].set_ylabel()
+            axs[index].set_xlabel("Cutoff Density ($kg/m^3$)")
+        axs[index].set_ylabel(units[index])
         axs[index].set_title(r.replace("{", "").replace("}", ""))
         axs[index].set_xticks(x)
         axs[index].set_xticklabels(labels)
-        axs[index].legend()
+        axs[index].legend(loc='lower left')
 
         # axs[index].bar_label(rects1, padding=3)
         # axs[index].bar_label(rects2, padding=3)

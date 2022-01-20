@@ -12,7 +12,7 @@ gi_b73_runs = {
                                              "{}/setups/{}".format("setups_b073", "5_new_gi_setup_b_073.txt"))
     },
     "5_b073_old": {
-        "name": "5b0730",
+        "name": "5b073o",
         "path": base_path + "5_b073_old/formatted_5_b073_old",
         "setup": profile.get_setup_file_data(base_path_setups +
                                              "{}/setups/{}".format("setups_b073", "5_old_gi_setup_b_073.txt"))
@@ -63,7 +63,7 @@ gi_b75_runs = {
                                              "{}/setups/{}".format("setups_b075", "5_new_gi_setup_b_075.txt"))
     },
     "5_b075_old": {
-        "name": "5b0750",
+        "name": "5b075o",
         "path": base_path + "5_b075_old/formatted_5_b075_old",
         "setup": profile.get_setup_file_data(base_path_setups +
                                              "{}/setups/{}".format("setups_b075", "5_old_gi_setup_b_075.txt"))
