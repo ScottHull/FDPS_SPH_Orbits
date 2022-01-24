@@ -125,7 +125,7 @@ def build_vmf_timeplots(name, meta, start_iteration, end_iteration, increment, l
         except FileNotFoundError:
             print(i)
     for ax in axs:
-        ax.legend(loc='upper left')
+        ax.legend(loc='lower right')
     axs[0].set_ylim(0, 45)
     axs[1].set_ylim(0, 45)
     axs[2].set_ylim(0, 7000)
