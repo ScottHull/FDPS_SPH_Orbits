@@ -91,7 +91,7 @@ def get_time(f):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 seleted = gi_b073_runs
-start_iteration = 0
+start_iteration = 20
 end_iteration = 200
 want = "new"
 num_cols = 4
@@ -123,7 +123,7 @@ for i in seleted.keys():
         times = []
         for time in np.arange(start_iteration, end_iteration + 1, 1):
             if time % increment == 0:
-                print("at iteration {}".format(time))
+                print("at iteration {} (ax index {})".format(time, ax_index))
                 t = get_time(p + "/{}.csv".format(time))
                 times.append(t)
                 df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
