@@ -120,8 +120,9 @@ for i in seleted.keys():
         cbar.ax.set_title("Ang. Momentum ($L_{EM}$", fontsize=6)
     if want in i:
         n, p = seleted[i]['name'], seleted[i]['path']
+        print("at {}".format(n))
         times = []
-        for time in np.arange(start_iteration, end_iteration + increment, increment):
+        for time in np.arange(start_iteration, end_iteration, int(increment)):
             if time % increment == 0:
                 print("at iteration {} (ax index {})".format(time, ax_index))
                 t = get_time(p + "/{}.csv".format(time))
