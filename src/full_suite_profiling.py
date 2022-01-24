@@ -458,13 +458,17 @@ def __build_scene(d):
     plt.savefig(to_path + "/{}.png".format(iteration), format='png')
 
 
-def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment):
-    if os.path.exists(to_path):
-        shutil.rmtree(to_path)
-    os.mkdir(to_path)
+def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment, fill=False):
+    # if os.path.exists(to_path):
+    #     shutil.rmtree(to_path)
+    if not fill:
+        os.mkdir(to_path)
     pool = mp.Pool(10)
+    to_make = np.arange(start_iteration, end_iteration + increment, increment)
+    if fill:
+        to_make = [i for i in to_make if "{}.png".format(i) not in os.listdir(to_path)]
     pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7] for iteration in
-                             np.arange(start_iteration, end_iteration + increment, increment)])
+                             to_make])
     pool.close()
     pool.join()
     animate(
@@ -484,7 +488,7 @@ def disk_temperature_vs_radius(name, meta, iteration):
     axs = axs.flatten()
     for ax in axs:
         ax.grid(alpha=0.4)
-        ax.set_xlabel(r"Distance from Earth Center (Radius $R_{\bigoplus}$")
+        ax.set_xlabel(r"Distance from Earth Center (Radius $R_{\bigoplus}$)")
     axs[0].set_ylabel("Temperature (K)")
     fig.patch.set_facecolor('xkcd:black')
     for i in meta.keys():

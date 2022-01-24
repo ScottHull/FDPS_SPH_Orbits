@@ -4,7 +4,7 @@ import src.full_suite_profiling as profile
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 base_path_setups = "/home/theia/scotthull/Paper1_SPH/setups/"
 
-gi_b73_runs = {
+gi_b073_runs = {
     "5_b073_new": {
         "name": "5b073n",
         "path": base_path + "5_b073_new/formatted_5_b073_new",
@@ -55,7 +55,7 @@ gi_b73_runs = {
     },
 }
 
-gi_b75_runs = {
+gi_b075_runs = {
     "5_b075_new": {
         "name": "5b075n",
         "path": base_path + "5_b075_new/formatted_5_b075_new",
@@ -106,20 +106,20 @@ gi_b75_runs = {
     },
 }
 
-profile.build_impact_angle_geometries("gi_b73_runs", gi_b73_runs, start_iteration=0, end_iteration=30, specified_imp_angle=0.73)
-profile.build_impact_velocity_charts("gi_b73_runs", gi_b73_runs, start_iteration=0, end_iteration=30)
-profile.build_vmf_timeplots("gi_b73_runs", gi_b73_runs, start_iteration=0, end_iteration=3000, increment=100)
-profile.map_disk_to_phase_profile("gi_b73_runs", gi_b73_runs, end_iteration=3000)
-profile.map_disk_to_phase_profile_eos_charts("gi_b73_runs", gi_b73_runs, end_iteration=3000)
-profile.get_end_profile_reports(gi_b73_runs, end_iteration=3000, number_processes=200)
-profile.disk_temperature_vs_radius("gi_b73_runs", gi_b73_runs, iteration=3000)
-profile.build_scenes("gi_b73_runs", gi_b73_runs, start_iteration=0, end_iteration=3000, increment=1, to_path="gi_b73_runs_scenes")
+profile.build_impact_angle_geometries("gi_b073_runs", gi_b073_runs, start_iteration=0, end_iteration=30, specified_imp_angle=0.73)
+profile.build_impact_velocity_charts("gi_b073_runs", gi_b073_runs, start_iteration=0, end_iteration=30)
+profile.build_vmf_timeplots("gi_b073_runs", gi_b073_runs, start_iteration=0, end_iteration=3000, increment=100)
+profile.map_disk_to_phase_profile("gi_b073_runs", gi_b073_runs, end_iteration=3000)
+profile.map_disk_to_phase_profile_eos_charts("gi_b073_runs", gi_b073_runs, end_iteration=3000)
+profile.get_end_profile_reports(gi_b073_runs, end_iteration=3000, number_processes=200)
+profile.disk_temperature_vs_radius("gi_b073_runs", gi_b073_runs, iteration=3000)
+profile.build_scenes("gi_b073_runs", gi_b073_runs, start_iteration=0, end_iteration=3000, increment=1, to_path="gi_b073_runs_scenes", fill=False)
 
-profile.build_impact_angle_geometries("gi_b75_runs", gi_b75_runs, start_iteration=0, end_iteration=30, specified_imp_angle=0.75)
-profile.build_impact_velocity_charts("gi_b75_runs", gi_b75_runs, start_iteration=0, end_iteration=30)
-profile.build_vmf_timeplots("gi_b75_runs", gi_b75_runs, start_iteration=0, end_iteration=3000, increment=100)
-profile.map_disk_to_phase_profile("gi_b75_runs", gi_b75_runs, end_iteration=3000)
-profile.map_disk_to_phase_profile_eos_charts("gi_b75_runs", gi_b75_runs, end_iteration=3000)
-profile.get_end_profile_reports(gi_b75_runs, end_iteration=3000, number_processes=200)
-profile.disk_temperature_vs_radius("gi_b75_runs", gi_b75_runs, iteration=3000)
-profile.build_scenes("gi_b75_runs", gi_b75_runs, start_iteration=0, end_iteration=3000, increment=1, to_path="gi_b75_runs_scenes")
+profile.build_impact_angle_geometries("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=30, specified_imp_angle=0.75)
+profile.build_impact_velocity_charts("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=30)
+profile.build_vmf_timeplots("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=3000, increment=100)
+profile.map_disk_to_phase_profile("gi_b075_runs", gi_b075_runs, end_iteration=3000)
+profile.map_disk_to_phase_profile_eos_charts("gi_b075_runs", gi_b075_runs, end_iteration=3000)
+profile.get_end_profile_reports(gi_b075_runs, end_iteration=3000, number_processes=200)
+profile.disk_temperature_vs_radius("gi_b075_runs", gi_b075_runs, iteration=3000)
+profile.build_scenes("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=3000, increment=1, to_path="gi_b075_runs_scenes", fill=False)
