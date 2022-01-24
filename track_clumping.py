@@ -91,7 +91,7 @@ def get_time(f):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 seleted = gi_b073_runs
-start_iteration = 10
+start_iteration = 20
 end_iteration = 200
 want = "new"
 num_cols = 4
@@ -109,8 +109,9 @@ for ax in axs:
     ax.set_ylim(-square_scale, square_scale)
     ax.set_xticks([], minor=False)
     ax.set_yticks([], minor=False)
+
+ax_index = 0
 for i in seleted.keys():
-    ax_index = 0
     if ax_index == 0:
         sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
         sm.set_array([])
@@ -123,24 +124,23 @@ for i in seleted.keys():
         print("at {}".format(n))
         times = []
         for time in np.arange(start_iteration, end_iteration, int(increment)):
-            if time % increment == 0:
-                print("at iteration {} (ax index {})".format(time, ax_index))
-                t = get_time(p + "/{}.csv".format(time))
-                times.append(t)
-                df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
-                df = df[df['z'] < 0]
-                masses = list(df['mass'])
-                positions = zip(df['x'], df['y'], df['z'])
-                velocities = list(zip(df['vx'], df['vy'], df['vz']))
-                angular_momenta = [masses[index] * np.linalg.norm(np.cross(p, velocities[index])) / L_EM for index, p in
-                                          enumerate(positions)]
-                axs[ax_index].scatter(
-                    df['x'], df['y'], s=2,
-                    color=[cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])) / L_EM)) for index, p in
-                                          enumerate(positions)]
-                )
-                axs[ax_index].annotate(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.15), square_scale - (square_scale * 0.15)), fontsize=8)
-                ax_index += 1
+            print("at iteration {} (ax index {})".format(time, ax_index))
+            t = get_time(p + "/{}.csv".format(time))
+            times.append(t)
+            df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
+            df = df[df['z'] < 0]
+            masses = list(df['mass'])
+            positions = zip(df['x'], df['y'], df['z'])
+            velocities = list(zip(df['vx'], df['vy'], df['vz']))
+            angular_momenta = [masses[index] * np.linalg.norm(np.cross(p, velocities[index])) / L_EM for index, p in
+                                      enumerate(positions)]
+            axs[ax_index].scatter(
+                df['x'], df['y'], s=2,
+                color=[cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])) / L_EM)) for index, p in
+                                      enumerate(positions)]
+            )
+            axs[ax_index].annotate(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.15), square_scale - (square_scale * 0.15)), fontsize=8)
+            ax_index += 1
 
 plt.savefig("{}_track_clumping.png".format(want), format='png', dpi=200)
 
