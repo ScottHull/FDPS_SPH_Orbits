@@ -101,7 +101,7 @@ L_EM = 3.5 * 10 ** 34
 normalizer = Normalize(0, 2)
 cmap = cm.get_cmap('jet')
 
-fig, axs = plt.subplots(4, num_cols, figsize=(16, 32), sharex='all',
+fig, axs = plt.subplots(4, num_cols, figsize=(32, 32), sharex='all',
                             gridspec_kw={"hspace": 0.0, "wspace": 0.00})
 axs = axs.flatten()
 for ax in axs:
@@ -121,14 +121,15 @@ for i in seleted.keys():
     if want in i:
         n, p = seleted[i]['name'], seleted[i]['path']
         times = []
-        for time in np.arange(start_iteration, end_iteration + increment, increment):
-            if i % increment == 0:
+        for time in np.arange(start_iteration, end_iteration + 1, 1):
+            if time % increment == 0:
+                print("at iteration {}".format(time))
                 t = get_time(p + "/{}.csv".format(time))
                 times.append(t)
                 df = pd.read_csv(p + "/{}.csv".format(time), skiprows=2)
                 df = df[df['z'] < 0]
-                masses = df['mass']
-                positions = zip(df['x'], df['y'], df['zz'])
+                masses = list(df['mass'])
+                positions = zip(df['x'], df['y'], df['z'])
                 velocities = list(zip(df['vx'], df['vy'], df['vz']))
                 angular_momenta = [masses[index] * np.linalg.norm(np.cross(p, velocities[index])) / L_EM for index, p in
                                           enumerate(positions)]
@@ -137,10 +138,10 @@ for i in seleted.keys():
                     color=[cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])) / L_EM)) for index, p in
                                           enumerate(positions)]
                 )
-                axs[ax_index].text(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.15), square_scale - (square_scale * 0.15)))
+                axs[ax_index].annotate(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.15), square_scale - (square_scale * 0.15)), fontsize=8)
                 ax_index += 1
 
-plt.savefig("{}.png".format(want), format='png', dpi=200)
+plt.savefig("{}_track_clumping.png".format(want), format='png', dpi=200)
 
             
 
