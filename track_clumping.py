@@ -97,7 +97,7 @@ want = "new"
 num_cols = 4
 square_scale = 4e7
 increment = (end_iteration - start_iteration) / num_cols
-normalizer = Normalize(14, 30)
+normalizer = Normalize(2000, 9000)
 cmap = cm.get_cmap('jet')
 
 fig, axs = plt.subplots(4, num_cols, figsize=(32, 32),
@@ -117,7 +117,7 @@ for i in seleted.keys():
         cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
         cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
         cbar.ax.tick_params(labelsize=10)
-        cbar.ax.set_title("Ang. Momentum (log10)$", fontsize=6)
+        cbar.ax.set_title("Spec. Ang. Momentum", fontsize=6)
     if want in i:
         n, p = seleted[i]['name'], seleted[i]['path']
         print("at {}".format(n))
@@ -131,7 +131,7 @@ for i in seleted.keys():
             masses = list(df['mass'])
             positions = zip(df['x'], df['y'], df['z'])
             velocities = list(zip(df['vx'], df['vy'], df['vz']))
-            angular_momenta_cmap = [cmap(normalizer(log10(masses[index] * np.linalg.norm(np.cross(p, velocities[index]))))) for index, p in
+            angular_momenta_cmap = [cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
                                       enumerate(positions)]
 
             axs[ax_index].scatter(
