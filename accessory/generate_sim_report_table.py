@@ -3,10 +3,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# runs = ["5_b073_new", "5_b073_old", "500_b073_new", "500_b073_old", "1000_b073_new", "1000_b073_old",
-#         "2000_b073_new", "2000_b073_old"]
-runs = ["5_b075_new", "5_b075_old", "500_b075_new", "500_b075_old", "1000_b075_new", "1000_b075_old",
-        "2000_b075_new", "2000_b075_old"]
+runs = ["5_b073_new", "5_b073_old", "500_b073_new", "500_b073_old", "1000_b073_new", "1000_b073_old",
+         "2000_b073_new", "2000_b073_old"]
+# runs = ["5_b075_new", "5_b075_old", "500_b075_new", "500_b075_old", "1000_b075_new", "1000_b075_old",
+#         "2000_b075_new", "2000_b075_old"]
 table_rows = [
     "mass_protoplanet (M_E)", "mass_disk (M_L)", "mass_escaped (M_L)", "disk_mass_beyond_roche (M_L)",
     "disk_angular_momentum (L_EM)", "total_angular_momentum (L_EM)", "disk vmf", "iron_disk_mass_fraction",
@@ -101,4 +101,4 @@ def grouped_bc(dat):
     plt.savefig("gi_bars.png", format='png')
 
 
-grouped_bc(dat)
+# grouped_bc(dat)
