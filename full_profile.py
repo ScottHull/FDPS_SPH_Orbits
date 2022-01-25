@@ -111,7 +111,7 @@ profile.build_impact_velocity_charts("gi_b073_runs", gi_b073_runs, start_iterati
 profile.build_vmf_timeplots("gi_b073_runs", gi_b073_runs, start_iteration=0, end_iteration=3000, increment=100)
 profile.map_disk_to_phase_profile("gi_b073_runs", gi_b073_runs, end_iteration=3000)
 profile.map_disk_to_phase_profile_eos_charts("gi_b073_runs", gi_b073_runs, end_iteration=3000)
-profile.get_end_profile_reports(gi_b073_runs, end_iteration=3000, number_processes=200)
+profile.get_end_profile_reports(gi_b073_runs, end_iteration=1800, number_processes=200)
 profile.disk_temperature_vs_radius("gi_b073_runs", gi_b073_runs, iteration=3000)
 profile.build_scenes("gi_b073_runs", gi_b073_runs, start_iteration=0, end_iteration=3000, increment=1, to_path="gi_b073_runs_scenes", fill=False)
 
@@ -120,6 +120,6 @@ profile.build_impact_velocity_charts("gi_b075_runs", gi_b075_runs, start_iterati
 profile.build_vmf_timeplots("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=3000, increment=100)
 profile.map_disk_to_phase_profile("gi_b075_runs", gi_b075_runs, end_iteration=3000)
 profile.map_disk_to_phase_profile_eos_charts("gi_b075_runs", gi_b075_runs, end_iteration=3000)
-profile.get_end_profile_reports(gi_b075_runs, end_iteration=3000, number_processes=200)
+profile.get_end_profile_reports(gi_b075_runs, end_iteration=1800, number_processes=200)
 profile.disk_temperature_vs_radius("gi_b075_runs", gi_b075_runs, iteration=3000)
 profile.build_scenes("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=3000, increment=1, to_path="gi_b075_runs_scenes", fill=False)

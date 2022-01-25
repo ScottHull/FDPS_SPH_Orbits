@@ -97,7 +97,8 @@ want = "new"
 num_cols = 4
 square_scale = 6e7
 increment = (end_iteration - start_iteration) / num_cols
-normalizer = Normalize(1e10, 2e11)
+# normalizer = Normalize(1e10, 2e11)
+normalizer = Normalize(0, 4)
 cmap = cm.get_cmap('jet')
 
 fig, axs = plt.subplots(4, num_cols, figsize=(32, 32),
@@ -117,7 +118,8 @@ for i in seleted.keys():
         cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
         cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
         cbar.ax.tick_params(labelsize=10)
-        cbar.ax.set_title("Spec. Ang. Momentum", fontsize=6)
+        # cbar.ax.set_title("Spec. Ang. Momentum", fontsize=8)
+        cbar.ax.set_title("Pressure (GPa)", fontsize=8)
     if want in i:
         n, p = seleted[i]['name'], seleted[i]['path']
         print("at {}".format(n))
@@ -133,12 +135,13 @@ for i in seleted.keys():
             velocities = list(zip(df['vx'], df['vy'], df['vz']))
             angular_momenta_cmap = [cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
                                       enumerate(positions)]
+            pressure = [cmap(normalizer(p / 10 ** 9) )for p in df['pressure']]
 
             axs[ax_index].scatter(
                 df['x'], df['y'], s=2,
                 color=angular_momenta_cmap
             )
-            axs[ax_index].annotate(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.38), square_scale - (square_scale * 0.15)), fontsize=12)
+            axs[ax_index].annotate(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.38), square_scale - (square_scale * 0.15)), fontsize=14)
             ax_index += 1
 
 plt.savefig("{}_track_clumping.png".format(want), format='png', dpi=200)
