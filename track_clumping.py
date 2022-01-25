@@ -136,7 +136,7 @@ for i in seleted.keys():
                                       enumerate(positions)]
             axs[ax_index].scatter(
                 df['x'], df['y'], s=2,
-                color=[cmap(nor)]
+                color=angular_momenta_cmap
             )
             axs[ax_index].annotate(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.25), square_scale - (square_scale * 0.15)), fontsize=12)
             ax_index += 1
