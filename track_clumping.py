@@ -91,13 +91,13 @@ def get_time(f):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 seleted = gi_b073_runs
-start_iteration = 20
-end_iteration = 200
+start_iteration = 60
+end_iteration = 260
 want = "new"
 num_cols = 4
-square_scale = 4e7
+square_scale = 6e7
 increment = (end_iteration - start_iteration) / num_cols
-normalizer = Normalize(0, 2e11)
+normalizer = Normalize(1e10, 2e11)
 cmap = cm.get_cmap('jet')
 
 fig, axs = plt.subplots(4, num_cols, figsize=(32, 32),
@@ -138,7 +138,7 @@ for i in seleted.keys():
                 df['x'], df['y'], s=2,
                 color=angular_momenta_cmap
             )
-            axs[ax_index].annotate(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.25), square_scale - (square_scale * 0.15)), fontsize=12)
+            axs[ax_index].annotate(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.38), square_scale - (square_scale * 0.15)), fontsize=12)
             ax_index += 1
 
 plt.savefig("{}_track_clumping.png".format(want), format='png', dpi=200)
