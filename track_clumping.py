@@ -97,7 +97,6 @@ want = "new"
 num_cols = 4
 square_scale = 4e7
 increment = (end_iteration - start_iteration) / num_cols
-L_EM = 3.5 * 10 ** 34
 normalizer = Normalize(0, 2)
 cmap = cm.get_cmap('jet')
 
@@ -132,8 +131,9 @@ for i in seleted.keys():
             masses = list(df['mass'])
             positions = zip(df['x'], df['y'], df['z'])
             velocities = list(zip(df['vx'], df['vy'], df['vz']))
-            angular_momenta_cmap = [cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])) / L_EM)) for index, p in
+            angular_momenta_cmap = [cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
                                       enumerate(positions)]
+
             axs[ax_index].scatter(
                 df['x'], df['y'], s=2,
                 color=angular_momenta_cmap
