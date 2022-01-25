@@ -97,8 +97,8 @@ want = "new"
 num_cols = 4
 square_scale = 4e7
 increment = (end_iteration - start_iteration) / num_cols
-normalizer = Normalize(0, 30)
-cmap = cm.get_cmap('jet')
+# normalizer = Normalize(0, 30)
+# cmap = cm.get_cmap('jet')
 
 fig, axs = plt.subplots(4, num_cols, figsize=(32, 32),
                             gridspec_kw={"hspace": 0.0, "wspace": 0.00})
@@ -111,13 +111,13 @@ for ax in axs:
 
 ax_index = 0
 for i in seleted.keys():
-    if ax_index == 0:
-        sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
-        sm.set_array([])
-        cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
-        cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-        cbar.ax.tick_params(labelsize=10)
-        cbar.ax.set_title("Spec. Ang. Momentum", fontsize=6)
+    # if ax_index == 0:
+    #     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+    #     sm.set_array([])
+    #     cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
+    #     cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+    #     cbar.ax.tick_params(labelsize=10)
+    #     cbar.ax.set_title("Spec. Ang. Momentum", fontsize=6)
     if want in i:
         n, p = seleted[i]['name'], seleted[i]['path']
         print("at {}".format(n))
@@ -131,14 +131,23 @@ for i in seleted.keys():
             masses = list(df['mass'])
             positions = zip(df['x'], df['y'], df['z'])
             velocities = list(zip(df['vx'], df['vy'], df['vz']))
-            angular_momenta_cmap = [cmap(normalizer(log10(np.linalg.norm(np.cross(p, velocities[index]))))) for index, p in
+            am = [np.linalg.norm(np.cross(p, velocities[index])) for index, p in
                                       enumerate(positions)]
+            normalizer = Normalize(min(am), max(am))
+            cmap = cm.get_cmap('jet')
+            angular_momenta_cmap = [cmap(normalizer(am))]
 
             axs[ax_index].scatter(
                 df['x'], df['y'], s=2,
                 color=angular_momenta_cmap
             )
             axs[ax_index].annotate(n + "\n{} hrs".format(t), (square_scale - (square_scale * 0.25), square_scale - (square_scale * 0.15)), fontsize=12)
+            sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+            sm.set_array([])
+            cbaxes = inset_axes(axs[ax_index], width="30%", height="3%", loc=2, borderpad=1.8)
+            cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+            cbar.ax.tick_params(labelsize=10)
+            cbar.ax.set_title("Spec. Ang. Momentum", fontsize=6)
             ax_index += 1
 
 plt.savefig("{}_track_clumping.png".format(want), format='png', dpi=200)
