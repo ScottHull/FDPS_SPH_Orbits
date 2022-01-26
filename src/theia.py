@@ -6,8 +6,8 @@ from scp import SCPClient
 class LunaToTheia:
 
     def __init__(self):
-        self.theia_server = "epsl.earth.rochester.edu"
-        self.theia_user = "scotthull"
+        self.theia_server = "SERVER"
+        self.theia_user = "USERNAME"
         self.theia_pw = "PASSWORD"
         # self.theia_client = self.createSSHClient(self.theia_server, self.theia_user, self.theia_pw).open_sftp()
 
