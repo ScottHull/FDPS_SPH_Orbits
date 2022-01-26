@@ -444,7 +444,7 @@ def __build_scene(d):
         p = meta[i]['path']
         if s is not None:
             f = client.get_file(client.theia_client, p, "{}.csv".format(iteration))
-            formatted_time = get_time(f)
+            formatted_time = get_time(f, local=False)
             df = client.get_df_from_theia(p, "{}.csv".format(iteration), skiprows=2)
         else:
             formatted_time = get_time(p + "/{}.csv".format(iteration))
