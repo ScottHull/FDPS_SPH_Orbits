@@ -43,10 +43,10 @@ class LunaToTheia:
 
     def get_file(self, client, path, fname):
         f = path + "/" + fname
-        return client.open(f)
+        return client.open_sftp().open(f)
 
     def get_df_from_theia(self, path, fname, skiprows=2):
-        return pd.read_csv(self.get_file(self.theia_client.open_sftp(), path, fname), skiprows=skiprows)
+        return pd.read_csv(self.get_file(self.theia_client, path, fname), skiprows=skiprows)
 
     def send_file_to_theia(self, from_path, to_path, filename):
         self.create_sftp_dir(self.theia_client, to_path)
