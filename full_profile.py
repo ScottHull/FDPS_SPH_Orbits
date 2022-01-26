@@ -107,7 +107,7 @@ gi_b075_runs = {
     },
 }
 
-s = "epsl.earth.rochester.edu "
+s = "epsl.earth.rochester.edu"
 u = "scotthull"
 p = "PW"
 client = LunaToTheia(s, u, p)

@@ -7,7 +7,7 @@ import pandas as pd
 class LunaToTheia:
 
     def __init__(self, server, u, p):
-        self.theia_server = "SERVER"
+        self.theia_server = server
         self.theia_user = u
         self.theia_pw = p
         self.theia_client = self.createSSHClient(self.theia_server, self.theia_user, self.theia_pw).open_sftp()
