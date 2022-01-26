@@ -2,14 +2,15 @@
 import os
 import paramiko
 from scp import SCPClient
+import pandas as pd
 
 class LunaToTheia:
 
-    def __init__(self):
+    def __init__(self, server, u, p):
         self.theia_server = "SERVER"
-        self.theia_user = "USERNAME"
-        self.theia_pw = "PASSWORD"
-        # self.theia_client = self.createSSHClient(self.theia_server, self.theia_user, self.theia_pw).open_sftp()
+        self.theia_user = u
+        self.theia_pw = p
+        self.theia_client = self.createSSHClient(self.theia_server, self.theia_user, self.theia_pw).open_sftp()
 
     def createSSHClient(self, server, user, password):
         client = paramiko.SSHClient()
@@ -21,6 +22,9 @@ class LunaToTheia:
     def get_file(self, client, path, fname):
         f = path + "/" + fname
         return client.open(f)
+
+    def get_df_from_theia(self, path, fname, skiprows=2):
+        return pd.read_csv(self.get_file(self.theia_client, path, fname), skiprows=skiprows)
 
 
 

@@ -17,6 +17,7 @@ from src.geometry import get_impact_geometry_from_formatted, get_velocity_profil
 from src.animate import animate
 from src.identify import ParticleMap
 from src.combine import CombineFile
+from src.theia import LunaToTheia
 
 
 def get_time(f):
@@ -413,7 +414,7 @@ def get_end_profile_reports(meta, end_iteration, number_processes=200):
 
 
 def __build_scene(d):
-    meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale = d
+    meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale, client = d
     normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
     cmap = cm.get_cmap('jet')
 
@@ -435,7 +436,10 @@ def __build_scene(d):
         n = meta[i]['name']
         p = meta[i]['path']
         formatted_time = get_time(p + "/{}.csv".format(iteration))
-        df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
+        if client is not None:
+            df = client.get_df_from_theia(p, "{}.csv".format(iteration), skiprows=2)
+        else:
+            df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
         df = df[df['z'] < 0]
         if "new" in i:
             axs[index_new].scatter(
@@ -458,16 +462,16 @@ def __build_scene(d):
     plt.savefig(to_path + "/{}.png".format(iteration), format='png')
 
 
-def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment, fill=False):
+def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment, client=False, fill=False, proc=10):
     # if os.path.exists(to_path):
     #     shutil.rmtree(to_path)
     if not fill:
         os.mkdir(to_path)
-    pool = mp.Pool(10)
+    pool = mp.Pool(proc)
     to_make = np.arange(start_iteration, end_iteration + increment, increment)
     if fill:
         to_make = [i for i in to_make if "{}.png".format(i) not in os.listdir(to_path)]
-    pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7] for iteration in
+    pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7, client] for iteration in
                              to_make])
     pool.close()
     pool.join()
