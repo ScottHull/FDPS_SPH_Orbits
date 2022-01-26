@@ -31,18 +31,21 @@ def get_time(f):
 
 def get_setup_file_data(path):
     d = {}
-    with open(path, 'r') as infile:
-        found_initial_setup = False
-        for line in infile:
-            if not found_initial_setup:
-                if "INITIAL SETUP" in line:
-                    found_initial_setup = True
-            else:
-                if len(line) == 1:
-                    break
+    try:
+        with open(path, 'r') as infile:
+            found_initial_setup = False
+            for line in infile:
+                if not found_initial_setup:
+                    if "INITIAL SETUP" in line:
+                        found_initial_setup = True
                 else:
-                    header, data = line.split(":")
-                    d.update({header: data.replace("\n", "")})
+                    if len(line) == 1:
+                        break
+                    else:
+                        header, data = line.split(":")
+                        d.update({header: data.replace("\n", "")})
+    except:
+        pass
     return d
 
 
