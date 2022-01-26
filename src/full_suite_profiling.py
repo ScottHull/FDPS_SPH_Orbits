@@ -414,7 +414,7 @@ def get_end_profile_reports(meta, end_iteration, number_processes=200):
 
 
 def __build_scene(d):
-    meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale, client = d
+    meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale, client, to_client_path = d
     normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
     cmap = cm.get_cmap('jet')
 
@@ -460,9 +460,12 @@ def __build_scene(d):
     cbar.ax.tick_params(labelsize=6)
     cbar.ax.set_title("Entropy", fontsize=6)
     plt.savefig(to_path + "/{}.png".format(iteration), format='png')
+    if client is not None:
+        client.send_file_to_theia(to_path, to_client_path, "/{}.png".format(iteration))
+        os.remove(to_path + "/{}.png")
 
 
-def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment, client=False, fill=False, proc=10):
+def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment, client=False, to_client_path="", fill=False, proc=10):
     # if os.path.exists(to_path):
     #     shutil.rmtree(to_path)
     if not fill:
@@ -471,7 +474,7 @@ def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment,
     to_make = np.arange(start_iteration, end_iteration + increment, increment)
     if fill:
         to_make = [i for i in to_make if "{}.png".format(i) not in os.listdir(to_path)]
-    pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7, client] for iteration in
+    pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7, client, to_client_path] for iteration in
                              to_make])
     pool.close()
     pool.join()
