@@ -20,12 +20,15 @@ from src.combine import CombineFile
 from src.theia import LunaToTheia
 
 
-def get_time(f):
+def get_time(f, local=True):
     formatted_time = None
-    with open(f, 'r') as infile:
-        reader = csv.reader(infile, delimiter="\t")
-        formatted_time = float(next(reader)[0])
-    infile.close()
+    if local:  # if not reading from remote server
+        with open(f, 'r') as infile:
+            reader = csv.reader(infile, delimiter="\t")
+            formatted_time = float(next(reader)[0])
+        infile.close()
+    else:
+        formatted_time = float(next(f)[0])
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 
