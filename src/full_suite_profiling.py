@@ -187,7 +187,7 @@ def build_impact_angle_geometries(name, meta, start_iteration, end_iteration, sp
         ax.grid(alpha=0.4)
 
     for n in d.keys():
-        if "new" in i.lower():
+        if "n" in n.lower():
             imp_ang_axs[0].plot(
                 d[n]["times"], d[n]["imp_angles"], linewidth=2.0, label=n
             )
