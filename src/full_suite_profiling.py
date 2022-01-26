@@ -439,10 +439,12 @@ def __build_scene(d):
     for i in meta.keys():
         n = meta[i]['name']
         p = meta[i]['path']
-        formatted_time = get_time(p + "/{}.csv".format(iteration))
         if s is not None:
+            f = client.get_file(client.theia_client, p, "{}.csv".format(iteration))
+            formatted_time = get_time(f)
             df = client.get_df_from_theia(p, "{}.csv".format(iteration), skiprows=2)
         else:
+            formatted_time = get_time(p + "/{}.csv".format(iteration))
             df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
         df = df[df['z'] < 0]
         if "new" in i:
@@ -473,7 +475,10 @@ def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment,
     # if os.path.exists(to_path):
     #     shutil.rmtree(to_path)
     if not fill:
-        os.mkdir(to_path)
+        try:
+            os.mkdir(to_path)
+        except:
+            pass
     pool = mp.Pool(proc)
     to_make = np.arange(start_iteration, end_iteration + increment, increment)
     if fill:
