@@ -471,7 +471,8 @@ def __build_scene(d):
     plt.savefig(to_path + "/{}.png".format(iteration), format='png')
     if s is not None:
         client.send_file_to_theia(to_path, to_client_path, "/{}.png".format(iteration))
-        os.remove(to_path + "/{}.png")
+        os.remove(to_path + "/{}.png".format(iteration))
+    client.theia_client.close()
 
 
 def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment, s=None, u=None, p=None, to_client_path="", fill=False, proc=10):
@@ -487,7 +488,7 @@ def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment,
     if fill:
         if s is not None:
             client = LunaToTheia(s, u, p)
-            ldir = client.listdir(client.theia_client, to_path)
+            ldir = client.listdir(client.theia_client, to_client_path)
             to_make = [i for i in to_make if "{}.png".format(i) not in ldir]
         else:
             to_make = [i for i in to_make if "{}.png".format(i) not in os.listdir(to_path)]
