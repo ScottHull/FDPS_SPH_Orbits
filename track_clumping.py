@@ -135,7 +135,8 @@ for i in seleted.keys():
             velocities = list(zip(df['vx'], df['vy'], df['vz']))
             angular_momenta_cmap = [cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
                                       enumerate(positions)]
-            pressure_cmap = [cmap(normalizer(p / 10 ** 9) )for p in df['pressure']]
+            # pressure_cmap = [cmap(normalizer(p / 10 ** 9)) for p in df['pressure']]
+            # density_cmap = [cmap(normalizer(p)) for p in df['density']]
 
             axs[ax_index].scatter(
                 df['x'], df['y'], s=2,

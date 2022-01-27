@@ -362,7 +362,6 @@ def map_disk_to_phase_profile_eos_charts(name, meta, end_iteration):
 
     for i in meta.keys():
         try:
-            fig_index = None
             n = meta[i]['name']
             p = meta[i]['path']
             df = pd.read_csv(p + "/{}.csv".format(end_iteration), skiprows=2)
@@ -454,6 +453,12 @@ def __build_scene(d):
             axs[index_new].scatter(
                 df['x'], df['y'], s=1, color=[cmap(normalizer(i)) for i in df['entropy']]
             )
+            # positions = zip(df['x'], df['y'], df['z'])
+            # velocities = list(zip(df['vx'], df['vy'], df['vz']))
+            # axs[index_new].scatter(
+            #     df['x'], df['y'], s=1, color=[cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
+            #                           enumerate(positions)]
+            # )
             axs[index_new].set_title(n + " {} hrs".format(formatted_time))
             index_new += 2
         else:
@@ -475,7 +480,8 @@ def __build_scene(d):
     client.theia_client.close()
 
 
-def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment, s=None, u=None, p=None, to_client_path="", fill=False, proc=10):
+def build_scenes(name, meta, to_path, start_iteration, end_iteration, min_normalization_param, max_normalization_param,
+                 increment, s=None, u=None, p=None, to_client_path="", fill=False, proc=10, square_scale=4e7):
     # if os.path.exists(to_path):
     #     shutil.rmtree(to_path)
     if not fill:
@@ -493,8 +499,8 @@ def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment,
         else:
             to_make = [i for i in to_make if "{}.png".format(i) not in os.listdir(to_path)]
         to_make = [i for i in to_make if "{}.png".format(i) not in os.listdir(to_path)]
-    pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7, s, u, p, to_client_path] for iteration in
-                             to_make])
+    pool.map(__build_scene, [[meta, iteration, to_path, min_normalization_param, max_normalization_param, square_scale,
+                              s, u, p, to_client_path] for iteration in to_make])
     pool.close()
     pool.join()
     animate(
