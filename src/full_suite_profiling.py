@@ -485,6 +485,12 @@ def build_scenes(name, meta, to_path, start_iteration, end_iteration, increment,
     pool = mp.Pool(proc)
     to_make = np.arange(start_iteration, end_iteration + increment, increment)
     if fill:
+        if s is not None:
+            client = LunaToTheia(s, u, p)
+            ldir = client.listdir(client.theia_client, to_path)
+            to_make = [i for i in to_make if "{}.png".format(i) not in ldir]
+        else:
+            to_make = [i for i in to_make if "{}.png".format(i) not in os.listdir(to_path)]
         to_make = [i for i in to_make if "{}.png".format(i) not in os.listdir(to_path)]
     pool.map(__build_scene, [[meta, iteration, to_path, 2000, 8000, 4e7, s, u, p, to_client_path] for iteration in
                              to_make])

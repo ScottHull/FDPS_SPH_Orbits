@@ -40,6 +40,23 @@ class LunaToTheia:
         except IOError as exc:
             if not self.is_sftp_dir_exists(client, path):
                 raise exc
+        sftp.close()
+
+    def is_file_in_theia_path(self, path, fname):
+        # can also do client.listdir()
+        sftp = self.theia_client.open_sftp()
+        if sftp.stat(path + "/" + fname):
+            sftp.close()
+            return True
+        else:
+            sftp.close()
+            return False
+
+    def listdir(self, client, path):
+        sftp = client.open_sftp()
+        l = sftp.listdir(path)
+        sftp.close()
+        return l
 
     def get_file(self, client, path, fname):
         f = path + "/" + fname
