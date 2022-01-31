@@ -588,7 +588,7 @@ def track_secondary_impact_material(meta, start_iteration, end_iteration, increm
             df = df[df['radius'] > 6371 * 1000]
             positions = list(zip(df['x'], df['y'], df['z']))
             velocities = list(zip(df['vx'], df['vy'], df['vz']))
-            masses = list(df['maxx'])
+            masses = list(df['mass'])
             am = sum([masses[index] * np.linalg.norm(np.cross(p, velocities[index])) for index, p in
                                       enumerate(positions)])
             ams.append(am)
@@ -600,5 +600,7 @@ def track_secondary_impact_material(meta, start_iteration, end_iteration, increm
             axs[1].plot(
                 times, ams, linewidth=2.0, label=n
             )
+    for ax in axs:
+        ax.legend(loc='upper right')
     plt.savefig("impactor_silicate_secondary.png", format='png', dpi=200)
     
