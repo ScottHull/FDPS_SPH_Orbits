@@ -28,7 +28,7 @@ def get_time(f, local=True):
             formatted_time = float(next(reader)[0])
         infile.close()
     else:
-        formatted_time = float(next(f)[0])
+        formatted_time = float(next(f))
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 
@@ -465,6 +465,12 @@ def __build_scene(d):
             axs[index_old].scatter(
                 df['x'], df['y'], s=1, color=[cmap(normalizer(i)) for i in df['entropy']]
             )
+            # positions = zip(df['x'], df['y'], df['z'])
+            # velocities = list(zip(df['vx'], df['vy'], df['vz']))
+            # axs[index_new].scatter(
+            #     df['x'], df['y'], s=1, color=[cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
+            #                           enumerate(positions)]
+            # )
             axs[index_old].set_title(n + " ({} hrs)".format(formatted_time))
             index_old += 2
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
@@ -554,3 +560,45 @@ def disk_temperature_vs_radius(name, meta, iteration):
     fig.suptitle(name)
 
     plt.savefig("{}_disk_temperatures.png".format(name), format='png', dpi=200)
+    
+def track_secondary_impact_material(meta, start_iteration, end_iteration, increment=5):
+    """
+    Tracks silicate impactor material > 1 R_E, which likely composes most of the secondary impact structure.
+    """
+    plt.style.use("dark_background")
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all',
+                            gridspec_kw={"wspace": 0.12})
+    axs = axs.flatten()
+    axs[0].set_title("New EoS - Impactor Silicate Material > 1 $R_\oplus$")
+    axs[1].set_title("Old EoS - Impactor Silicate Material > 1 $R_\oplus$")
+    for ax in axs:
+        ax.grid(alpha=0.4)
+        ax.set_xlabel("Time (hrs)")
+        ax.set_ylabel("Angular Momentum")
+    for i in meta.keys():
+        n = meta[i]['name']
+        p = meta[i]['path']
+        times = []
+        ams = []
+        for iteration in np.arange(start_iteration, end_iteration + increment, increment):
+            f = p + "/{}.csv".format(iteration)
+            times.append(get_time(f))
+            df = pd.read_csv(f, skiprows=2)
+            df = df[df['tag'] == 2]
+            df = df[df['radius'] > 6371 * 1000]
+            positions = list(zip(df['x'], df['y'], df['z']))
+            velocities = list(zip(df['vx'], df['vy'], df['vz']))
+            masses = list(df['maxx'])
+            am = sum([masses[index] * np.linalg.norm(np.cross(p, velocities[index])) for index, p in
+                                      enumerate(positions)])
+            ams.append(am)
+        if "new" in i:
+            axs[0].plot(
+                times, ams, linewidth=2.0, label=n
+            )
+        else:
+            axs[1].plot(
+                times, ams, linewidth=2.0, label=n
+            )
+    plt.savefig("impactor_silicate_secondary.png", format='png', dpi=200)
+    

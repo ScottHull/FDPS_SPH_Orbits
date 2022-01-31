@@ -120,8 +120,9 @@ profile.get_end_profile_reports(gi_b073_runs, end_iteration=1800, number_process
 profile.disk_temperature_vs_radius("gi_b073_runs", gi_b073_runs, iteration=3000)
 profile.build_scenes("gi_b073_runs", gi_b073_runs, s=s, u=u, p=p, proc=30,
                      to_client_path="/home/theia/scotthull/FDPS_SPH_Orbits/pres_gi_b073_runs_scenes",
-                     start_iteration=0, end_iteration=280, increment=5, to_path="pres_gi_b073_runs_scenes", fill=False,
+                     start_iteration=0, end_iteration=350, increment=5, to_path="pres_gi_b073_runs_scenes", fill=False,
                      min_normalization_param=0, max_normalization_param=50)
+profile.track_secondary_impact_material(gi_b073_runs, start_iteration=0, end_iteration=350, increment=5)
 
 profile.build_impact_angle_geometries("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=30, specified_imp_angle=0.75)
 profile.build_impact_velocity_charts("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=30)

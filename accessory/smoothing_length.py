@@ -25,6 +25,7 @@ def wendland_c6(r, h):
         W *= 0
     return W
 
+
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 ax.set_xlabel("Density (kg/$m^3$)")
