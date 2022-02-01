@@ -123,6 +123,7 @@ profile.build_scenes("gi_b073_runs", gi_b073_runs, s=s, u=u, p=p, proc=30,
                      start_iteration=0, end_iteration=350, increment=5, to_path="pres_gi_b073_runs_scenes", fill=False,
                      min_normalization_param=0, max_normalization_param=50)
 profile.track_secondary_impact_material(gi_b073_runs, start_iteration=0, end_iteration=350, increment=5)
+profile.secondary_impact_materia_timeseries("gi_b073_runs", gi_b073_runs, start_iteration=0, end_iteration=350, increment=5, to_path="gi_b073_runs_secondary_impactor_animation")
 
 profile.build_impact_angle_geometries("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=30, specified_imp_angle=0.75)
 profile.build_impact_velocity_charts("gi_b075_runs", gi_b075_runs, start_iteration=0, end_iteration=30)
