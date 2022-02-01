@@ -121,7 +121,7 @@ profile.disk_temperature_vs_radius("gi_b073_runs", gi_b073_runs, iteration=3000)
 profile.build_scenes("gi_b073_runs", gi_b073_runs, s=s, u=u, p=p, proc=30,
                      to_client_path="/home/theia/scotthull/FDPS_SPH_Orbits/pres_gi_b073_runs_scenes",
                      start_iteration=0, end_iteration=350, increment=5, to_path="pres_gi_b073_runs_scenes", fill=False,
-                     min_normalization_param=0, max_normalization_param=50)
+                     min_normalization_param=1e34, max_normalization_param=2.5e34)
 profile.track_secondary_impact_material(gi_b073_runs, start_iteration=0, end_iteration=350, increment=5)
 profile.secondary_impact_materia_timeseries("gi_b073_runs", gi_b073_runs, start_iteration=0, end_iteration=350, increment=5, to_path="gi_b073_runs_secondary_impactor_animation")
 

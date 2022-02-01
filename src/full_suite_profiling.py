@@ -450,35 +450,39 @@ def __build_scene(d):
             df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
         df = df[df['z'] < 0]
         if "new" in i:
-            axs[index_new].scatter(
-                df['x'], df['y'], s=1, color=[cmap(normalizer(i)) for i in df['entropy']]
-            )
-            # positions = zip(df['x'], df['y'], df['z'])
-            # velocities = list(zip(df['vx'], df['vy'], df['vz']))
             # axs[index_new].scatter(
-            #     df['x'], df['y'], s=1, color=[cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
-            #                           enumerate(positions)]
+            #     df['x'], df['y'], s=1, color=[cmap(normalizer(i)) for i in df['entropy']]
             # )
+            positions = zip(df['x'], df['y'], df['z'])
+            velocities = list(zip(df['vx'], df['vy'], df['vz']))
+            masses = list(df['mass'])
+            axs[index_new].scatter(
+                df['x'], df['y'], s=1, color=[cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
+                                      enumerate(positions)]
+            )
             axs[index_new].set_title(n + " {} hrs".format(formatted_time))
             index_new += 2
         else:
-            axs[index_old].scatter(
-                df['x'], df['y'], s=1, color=[cmap(normalizer(i)) for i in df['entropy']]
-            )
-            # positions = zip(df['x'], df['y'], df['z'])
-            # velocities = list(zip(df['vx'], df['vy'], df['vz']))
-            # axs[index_new].scatter(
-            #     df['x'], df['y'], s=1, color=[cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
-            #                           enumerate(positions)]
+            # axs[index_old].scatter(
+            #     df['x'], df['y'], s=1, color=[cmap(normalizer(i)) for i in df['entropy']]
             # )
-            axs[index_old].set_title(n + " ({} hrs)".format(formatted_time))
+            positions = zip(df['x'], df['y'], df['z'])
+            velocities = list(zip(df['vx'], df['vy'], df['vz']))
+            masses = list(df['mass'])
+            axs[index_old].scatter(
+                df['x'], df['y'], s=1,
+                color=[cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
+                       enumerate(positions)]
+            )
+            axs[index_old].set_title(n + " {} hrs".format(formatted_time))
             index_old += 2
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
     cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
     cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
     cbar.ax.tick_params(labelsize=6)
-    cbar.ax.set_title("Entropy", fontsize=6)
+    # cbar.ax.set_title("Entropy", fontsize=6)
+    cbar.ax.set_title("Angular Momentum (kg $\cdot m^2$/s )", fontsize=6)
     plt.savefig(to_path + "/{}.png".format(iteration), format='png')
     if s is not None:
         client.send_file_to_theia(to_path, to_client_path, "/{}.png".format(iteration))
@@ -573,9 +577,9 @@ def secondary_impact_materia_timeseries(name, meta, start_iteration, end_iterati
     num_old = len([i for i in meta.keys() if "old" in i])
     num_rows = max([num_new, num_old])
     plt.style.use("dark_background")
-    new_index = 0
-    old_index = 1
     for iteration in np.arange(start_iteration, end_iteration + increment, increment):
+        new_index = 0
+        old_index = 1
         fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32),
                                 gridspec_kw={"hspace": 0.10, "wspace": 0.12})
         fig.patch.set_facecolor('xkcd:black')
@@ -610,7 +614,7 @@ def secondary_impact_materia_timeseries(name, meta, start_iteration, end_iterati
                 )
                 axs[old_index].set_title("{} ({} hrs)".format(n, formatted_time))
                 old_index += 2
-        plt.savefig(to_path + "/{}.csv".format(iteration), format='png', dpi=200)
+        plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
     animate(
         start_time=start_iteration,
         end_time=end_iteration,
@@ -630,10 +634,10 @@ def track_secondary_impact_material(meta, start_iteration, end_iteration, increm
     axs = axs.flatten()
     axs[0].set_title("New EoS - Impactor Silicate Material > 1 $R_\oplus$")
     axs[1].set_title("Old EoS - Impactor Silicate Material > 1 $R_\oplus$")
+    axs[0].set_ylabel("Angular Momentum")
     for ax in axs:
         ax.grid(alpha=0.4)
         ax.set_xlabel("Time (hrs)")
-        ax.set_ylabel("Angular Momentum")
     for i in meta.keys():
         n = meta[i]['name']
         p = meta[i]['path']
@@ -662,4 +666,57 @@ def track_secondary_impact_material(meta, start_iteration, end_iteration, increm
     for ax in axs:
         ax.legend(loc='upper right')
     plt.savefig("impactor_silicate_secondary.png", format='png', dpi=200)
-    
+
+
+# def track_pressure_density_secondary_impactor_material(meta, start_iteration, end_iteration, to_path, increment=5):
+#     if not os.path.exists(to_path):
+#         os.mkdir(to_path)
+#     normalizer = Normalize(1.25e34, 3.25e34)
+#     cmap = cm.get_cmap('jet')
+#     num_new = len([i for i in meta.keys() if "new" in i])
+#     num_old = len([i for i in meta.keys() if "old" in i])
+#     num_rows = max([num_new, num_old])
+#     plt.style.use("dark_background")
+#     for iteration in np.arange(start_iteration, end_iteration + increment, increment):
+#         new_index = 0
+#         old_index = 1
+#         fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all', sharey='all',
+#                                 gridspec_kw={"hspace": 0.10, "wspace": 0.12})
+#         fig.patch.set_facecolor('xkcd:black')
+#         axs = axs.flatten()
+#         for ax in axs:
+#             ax.set_xticks([], minor=False)
+#             ax.set_yticks([], minor=False)
+#         for i in meta.keys():
+#             n = meta[i]['name']
+#             p = meta[i]['path']
+#             f = p + "/{}.csv".format(iteration)
+#             formatted_time = get_time(f)
+#             df = pd.read_csv(f, skiprows=2)
+#             df = df[df['tag'] == 2]
+#             df = df[df['radius'] > 6371 * 1000]
+#             positions = list(zip(df['x'], df['y'], df['z']))
+#             velocities = list(zip(df['vx'], df['vy'], df['vz']))
+#             masses = list(df['mass'])
+#             am = [cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
+#                                       enumerate(positions)]
+#             if "new" in i:
+#                 axs[new_index].scatter(
+#                     df['x'], df['y'], c=am, s=2, label=n
+#                 )
+#                 axs[new_index].set_title("{} ({} hrs)".format(n, formatted_time))
+#                 new_index += 2
+#             else:
+#                 axs[old_index].scatter(
+#                     df['x'], df['y'], c=am, s=2, label=n
+#                 )
+#                 axs[old_index].set_title("{} ({} hrs)".format(n, formatted_time))
+#                 old_index += 2
+#         plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
+#     animate(
+#         start_time=start_iteration,
+#         end_time=end_iteration,
+#         interval=increment,
+#         path=to_path,
+#         filename="{}_silicate_impactor_material_secondary.mp4".format(name)
+#     )
