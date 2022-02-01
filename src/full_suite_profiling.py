@@ -487,7 +487,7 @@ def __build_scene(d):
 
 
 def build_scenes(name, meta, to_path, start_iteration, end_iteration, min_normalization_param, max_normalization_param,
-                 increment, s=None, u=None, p=None, to_client_path="", fill=False, proc=10, square_scale=4e7):
+                 increment, s=None, u=None, p=None, to_client_path="", fill=False, proc=10, square_scale=6e7):
     # if os.path.exists(to_path):
     #     shutil.rmtree(to_path)
     if not fill:
@@ -561,7 +561,7 @@ def disk_temperature_vs_radius(name, meta, iteration):
 
     plt.savefig("{}_disk_temperatures.png".format(name), format='png', dpi=200)
 
-def secondary_impact_materia_timeseries(name, meta, start_iteration, end_iteration, to_path, increment=5):
+def secondary_impact_materia_timeseries(name, meta, start_iteration, end_iteration, to_path, increment=5, square_scale=6e7):
     """
     Tracks silicate impactor material > 1 R_E, which likely composes most of the secondary impact structure.
     """
@@ -576,10 +576,15 @@ def secondary_impact_materia_timeseries(name, meta, start_iteration, end_iterati
     new_index = 0
     old_index = 1
     for iteration in np.arange(start_iteration, end_iteration + increment, increment):
-        fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all',
+        fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32),
                                 gridspec_kw={"hspace": 0.10, "wspace": 0.12})
         fig.patch.set_facecolor('xkcd:black')
         axs = axs.flatten()
+        for ax in axs:
+            ax.set_xlim(-square_scale, square_scale)
+            ax.set_ylim(-square_scale, square_scale)
+            ax.set_xticks([], minor=False)
+            ax.set_yticks([], minor=False)
         for i in meta.keys():
             n = meta[i]['name']
             p = meta[i]['path']
@@ -600,7 +605,7 @@ def secondary_impact_materia_timeseries(name, meta, start_iteration, end_iterati
                 axs[new_index].set_title("{} ({} hrs)".format(n, formatted_time))
                 new_index += 2
             else:
-                axs[old_index].plot(
+                axs[old_index].scatter(
                     df['x'], df['y'], c=am, s=2, label=n
                 )
                 axs[old_index].set_title("{} ({} hrs)".format(n, formatted_time))
