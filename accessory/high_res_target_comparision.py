@@ -22,21 +22,21 @@ high_silicate = high_df[high_df[1] == 0]
 high_iron = high_df[high_df[1] == 1]
 
 ax.scatter(
-    low_silicate['radius'], low_silicate[y_param_index], color='blue', s=2, label="Low Res Silicate)"
+    low_silicate['radius'], low_silicate[y_param_index], color='blue', s=2, label="Low Res Silicate"
 )
 ax.scatter(
-    low_iron['radius'], low_iron[y_param_index], color='blue', s=2, label="Low Res Iron)"
+    low_iron['radius'], low_iron[y_param_index], color='red', s=2, label="Low Res Iron"
 )
 ax.scatter(
-    high_silicate['radius'], high_silicate[y_param_index], color='magenta', s=2, label="High Res Silicate)"
+    high_silicate['radius'], high_silicate[y_param_index], color='magenta', s=2, label="High Res Silicate"
 )
 ax.scatter(
-    high_iron['radius'], high_iron[y_param_index], color='green', s=2, label="High Res Iron)"
+    high_iron['radius'], high_iron[y_param_index], color='green', s=2, label="High Res Iron"
 )
 
 ax.set_xlabel(r"Radius ($R_{\bigoplus}$)")
 ax.set_ylabel(y_param.capitalize())
 ax.grid(alpha=0.4)
-ax.legend(loc='upper left')
-ax.title("Low vs. High Res Target (5 kg/m3 Cutoff Denisty)")
+ax.legend(loc='upper right')
+ax.set_title("Low vs. High Res Target (5 kg/m3 Cutoff Denisty)")
 plt.savefig("low_vs_high_comparision.png", format='png', dpi=200)
