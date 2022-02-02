@@ -1,7 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from src.combine import CombineFile
 plt.style.use("dark_background")
 
 low_res_path = "/home/theia/scotthull/Paper1_SPH/tar-imp/tar.dat"
