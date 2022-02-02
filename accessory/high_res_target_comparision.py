@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 plt.style.use("dark_background")
 
 low_res_path = "/home/theia/scotthull/Paper1_SPH/tar-imp/5_new/tar.dat"
-high_res_path = "/home/theia/scotthull/Paper1_SPH/tar-imp/5_new_high/target_5_new_high"
+high_res_path = "/home/theia/scotthull/Paper1_SPH/tar-imp/5_new_high/tar.dat"
 y_param = "density"
+y_param_index = 9
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
@@ -21,16 +22,16 @@ high_silicate = high_df[high_df[1] == 0]
 high_iron = high_df[high_df[1] == 1]
 
 ax.scatter(
-    low_silicate['radius'], low_silicate[y_param], color='blue', s=2, label="Low Res Silicate)"
+    low_silicate['radius'], low_silicate[y_param_index], color='blue', s=2, label="Low Res Silicate)"
 )
 ax.scatter(
-    low_iron['radius'], low_iron[y_param], color='blue', s=2, label="Low Res Iron)"
+    low_iron['radius'], low_iron[y_param_index], color='blue', s=2, label="Low Res Iron)"
 )
 ax.scatter(
-    high_silicate['radius'], high_silicate[y_param], color='magenta', s=2, label="High Res Silicate)"
+    high_silicate['radius'], high_silicate[y_param_index], color='magenta', s=2, label="High Res Silicate)"
 )
 ax.scatter(
-    high_iron['radius'], high_iron[y_param], color='green', s=2, label="High Res Iron)"
+    high_iron['radius'], high_iron[y_param_index], color='green', s=2, label="High Res Iron)"
 )
 
 ax.set_xlabel(r"Radius ($R_{\bigoplus}$)")
