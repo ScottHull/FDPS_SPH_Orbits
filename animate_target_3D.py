@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import csv
 import numpy as np
@@ -14,7 +15,7 @@ to_path = "animate_target"
 start_iteration = 0
 end_iteration = 60
 num_proc = 400
-square_scale = 5.5
+square_scale = 1e5 * 1000
 
 def get_time(f, local=True):
     formatted_time = None
@@ -35,7 +36,7 @@ for iteration in np.arange(start_iteration, end_iteration + 1, 1):
     c = CombineFile(num_processes=num_proc, time=iteration, output_path=from_path, to_fname=to_fname).combine()
     df = pd.read_csv(to_fname, skiprows=2, header=None, delimiter="\t")
     fig = plt.figure(figsize=(16, 9))
-    ax = fig.add_subplot(111)
+    ax = fig.add_subplot(111, projection='3d')
     ax.scatter(
         df[3], df[4], df[5], s=2
     )
