@@ -185,7 +185,7 @@ s = "epsl.earth.rochester.edu"
 u = "scotthull"
 p = "PW"
 
-profile.build_scenes("gi_b073_runs", gi_b073_runs, s=s, u=u, p=p, proc=30,
+build_scenes("gi_b073_runs", gi_b073_runs, s=s, u=u, p=p, proc=30,
                      to_client_path="/home/theia/scotthull/FDPS_SPH_Orbits/ang_mom_gi_b073_runs_scenes",
                      start_iteration=0, end_iteration=350, increment=5, to_path="pres_dens_gi_b073_runs_scenes", fill=False,
                      min_normalization_param=1e34, max_normalization_param=2.5e34, square_scale=6e7)
