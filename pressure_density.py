@@ -35,8 +35,8 @@ def get_time(f, local=True):
 def __build_scene(d):
     meta, iteration, to_path, min_normalize_parameter, max_normalize_parameter, square_scale, s, u, p, to_client_path = d
     client = LunaToTheia(s, u, p)
-    # normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
-    # cmap = cm.get_cmap('jet')
+    normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
+    cmap = cm.get_cmap('jet')
 
     num_new = len([i for i in meta.keys() if "new" in i])
     num_old = len([i for i in meta.keys() if "old" in i])
@@ -68,11 +68,16 @@ def __build_scene(d):
             df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
         df = df[df['z'] < 0]
         df = df[df['distance'] > (2 * 6371 * 1000)]  # only secondary impactor material
+        positions = zip(df['x'], df['y'], df['z'])
+        velocities = list(zip(df['vx'], df['vy'], df['vz']))
+        spec_am = [cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
+                                      enumerate(positions)]
         if "new" in i:
             axs[index_new].scatter(
                 df['radius'] / (6371 * 1000),
                 [df['pressure'] / df['density']],
                 s=2,
+                c=spec_am
             )
             axs[index_new].set_title(n + " {} hrs".format(formatted_time))
             axs[index_new].set_ylabel(r"P / $\rho$")
@@ -82,16 +87,16 @@ def __build_scene(d):
                 df['radius'] / (6371 * 1000),
                 [df['pressure'] / df['density']],
                 s=2,
+                c=spec_am
             )
             axs[index_old].set_title(n + " {} hrs".format(formatted_time))
             index_old += 2
-    # sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
-    # sm.set_array([])
-    # cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
-    # cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-    # cbar.ax.tick_params(labelsize=6)
-    # # cbar.ax.set_title("Entropy", fontsize=6)
-    # cbar.ax.set_title("Angular Momentum (kg $\cdot m^2$/s )", fontsize=6)
+    sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+    sm.set_array([])
+    cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
+    cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+    cbar.ax.tick_params(labelsize=6)
+    cbar.ax.set_title("Specific Angular Momentum ($m^2$/s )", fontsize=6)
     plt.savefig(to_path + "/{}.png".format(iteration), format='png')
     if s is not None:
         client.send_file_to_theia(to_path, to_client_path, "/{}.png".format(iteration))
@@ -193,5 +198,5 @@ p = "PW"
 build_scenes("gi_b073_runs", gi_b073_runs, s=s, u=u, p=p, proc=30,
                      to_client_path="/home/theia/scotthull/FDPS_SPH_Orbits/ang_mom_gi_b073_runs_scenes",
                      start_iteration=0, end_iteration=350, increment=5, to_path="pres_dens_gi_b073_runs_scenes", fill=False,
-                     min_normalization_param=1e34, max_normalization_param=2.5e34, square_scale=6e7)
+                     min_normalization_param=0, max_normalization_param=2e11, square_scale=6e7)
     
