@@ -47,10 +47,14 @@ def __build_scene(d):
     fig.patch.set_facecolor('xkcd:black')
     axs = axs.flatten()
     for ax in axs:
+        ax.grid(alpha=0.4)
         # ax.set_xlim(-square_scale, square_scale)
         # ax.set_ylim(-square_scale, square_scale)
-        ax.set_xticks([], minor=False)
-        ax.set_yticks([], minor=False)
+        # ax.set_xticks([], minor=False)
+        # ax.set_yticks([], minor=False)
+        ax.set_ylim(0, 1e7)
+    axs[-2].set_xlabel(r"Radius from Target Center ($R_\oplus$)")
+    axs[-1].set_xlabel(r"Radius from Target Center ($R_\oplus$)")
     index_new, index_old = 0, 1
     for i in meta.keys():
         n = meta[i]['name']
@@ -66,15 +70,16 @@ def __build_scene(d):
         df = df[df['distance'] > (2 * 6371 * 1000)]  # only secondary impactor material
         if "new" in i:
             axs[index_new].scatter(
-                df['distance'],
+                df['radius'] / (6371 * 1000),
                 [df['pressure'] / df['density']],
                 s=2,
             )
             axs[index_new].set_title(n + " {} hrs".format(formatted_time))
+            axs[index_new].set_ylabel(r"P / $\rho$")
             index_new += 2
         else:
             axs[index_old].scatter(
-                df['distance'],
+                df['radius'] / (6371 * 1000),
                 [df['pressure'] / df['density']],
                 s=2,
             )
