@@ -67,7 +67,7 @@ def __build_scene(d):
             formatted_time = get_time(p + "/{}.csv".format(iteration))
             df = pd.read_csv(p + "/{}.csv".format(iteration), skiprows=2)
         df = df[df['z'] < 0]
-        df = df[df['distance'] > (2 * 6371 * 1000)]  # only secondary impactor material
+        df = df[df['radius'] > (2 * 6371 * 1000)]  # only secondary impactor material
         positions = zip(df['x'], df['y'], df['z'])
         velocities = list(zip(df['vx'], df['vy'], df['vz']))
         spec_am = [cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
@@ -196,7 +196,7 @@ u = "scotthull"
 p = "PW"
 
 build_scenes("gi_b073_runs", gi_b073_runs, s=s, u=u, p=p, proc=30,
-                     to_client_path="/home/theia/scotthull/FDPS_SPH_Orbits/ang_mom_gi_b073_runs_scenes",
+                     to_client_path="/home/theia/scotthull/FDPS_SPH_Orbits/pres_dens_gi_b073_runs_scenes",
                      start_iteration=0, end_iteration=350, increment=5, to_path="pres_dens_gi_b073_runs_scenes", fill=False,
                      min_normalization_param=0, max_normalization_param=2e11, square_scale=6e7)
     
