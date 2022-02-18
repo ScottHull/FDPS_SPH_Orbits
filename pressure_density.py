@@ -53,6 +53,7 @@ def __build_scene(d):
         # ax.set_xticks([], minor=False)
         # ax.set_yticks([], minor=False)
         ax.set_ylim(0, 1e7)
+        ax.set_xlim(0, 10)
     axs[-2].set_xlabel(r"Radius from Target Center ($R_\oplus$)")
     axs[-1].set_xlabel(r"Radius from Target Center ($R_\oplus$)")
     index_new, index_old = 0, 1
