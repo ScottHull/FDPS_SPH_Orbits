@@ -23,7 +23,7 @@ def calc_center_of_mass(mass, x, y, z):
 fname = "merged_{}.dat".format(randint(0, 100000))
 c = CombineFile(num_processes=num_proc, time=iteration, output_path=from_path, to_fname=fname).combine()
 df = pd.read_csv(fname, skiprows=2, header=None, delimiter="\t")
-mass, x, y, z = df[2], df[3], df[4], df[5]
+mass, x, y, z, density = df[2], df[3], df[4], df[5], df[9]
 com_x, com_y, com_z = calc_center_of_mass(mass, x, y, z)
 x = x - com_x
 y = y - com_y
@@ -33,7 +33,7 @@ distance_re = (((x ** 2 + y ** 2 + z ** 2) ** (1/2)) / (6371 * 1000))
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 ax.scatter(
-    distance_re, df['density'], s=2
+    distance_re, density, s=2
 )
 ax.set_xlabel(r"Radius ($R_{\bigoplus}$)")
 ax.set_ylabel("Density")
