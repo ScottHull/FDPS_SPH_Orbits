@@ -44,7 +44,7 @@ for iteration in np.arange(start_iteration, end_iteration + inc, inc):
     df = pd.read_csv(fname, skiprows=2, header=None, delimiter="\t")
     mass, x, y, z = df[2], df[3], df[4], df[5]
     com_x, com_y, com_z = calc_center_of_mass(mass, x, y, z)
-    coms.append(np.linalg.norm(com_x, com_y, com_y))
+    coms.append(np.linalg.norm([com_x, com_y, com_z]))
     os.remove(fname)
 
 fig = plt.figure(figsize=(16, 9))
