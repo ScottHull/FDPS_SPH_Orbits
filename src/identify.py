@@ -4,6 +4,7 @@ from math import pi, sqrt
 import numpy as np
 from copy import copy
 import csv
+from statistics import mean
 
 from src import elements, centering, classify, vapor
 
@@ -210,6 +211,7 @@ class ParticleMap:
         # K = 0.335 for Earth, K = 2/5 for homogenous body
         self.__convergence_loop(particles=particles, K=K, G=G)
         self.__convergence_loop(particles=particles, K=K, G=G)  # run twice to recalc avg density after initial solution
+        avg_disk_temp = mean([p.temperature for p in particles if p.label == "DISK"])
         if phase_path is None:
             self.vmf = None
         else:

@@ -8,6 +8,36 @@ from src.combine import CombineFile
 from src.identify import ParticleMap
 
 
+def write_report_at_time(particles, fname):
+    df = pd.DataFrame({
+        "id": [p.particle_id for p in particles],
+        "x": [p.position[0] for p in particles],
+        "y": [p.position[1] for p in particles],
+        "z": [p.position[2] for p in particles],
+        "vx": [p.velocity[0] for p in particles],
+        "vy": [p.velocity[1] for p in particles],
+        "vz": [p.velocity[2] for p in particles],
+        "mass": [p.mass for p in particles],
+        "radius": [p.distance for p in particles],
+        "tag": [p.tag for p in particles],
+        "label": [p.label for p in particles],
+        "entropy": [p.entropy for p in particles],
+        "temperature": [p.temperature for p in particles],
+        "density": [p.density for p in particles],
+        "pressure": [p.pressure for p in particles],
+        "internal_energy": [p.internal_energy for p in particles],
+        "potential_energy": [p.potential_energy for p in particles],
+        "eccentricity": [p.eccentricity for p in particles],
+        "inclination": [p.inclination for p in particles],
+        "orbital_energy": [p.orbital_energy for p in particles],
+        "semi_major_axis": [p.semi_major_axis for p in particles],
+        "mass_grav_body": [p.mass_grav_body for p in particles],
+        "circ_energy_delta": [p.circ_energy_delta for p in particles],
+        "circ_entropy_delta": [p.circ_entropy_delta for p in particles],
+    })
+    pd.to_csv(fname)
+    return df
+
 class BuildReports:
 
     def __init__(self, to_dir, from_dir, start_time, end_time, number_processes, eos_phase_path, accessory_path,
@@ -66,7 +96,11 @@ class BuildReports:
             "pressure": [p.pressure for p in particles],
             "internal_energy": [p.internal_energy for p in particles],
             "potential_energy": [p.potential_energy for p in particles],
-            # "soundspeed": [p.soundspeed for p in particles]
+            "eccentricity": [p.eccentricity for p in particles],
+            "inclination": [p.inclination for p in particles],
+            "orbital_energy": [p.orbital_energy for p in particles],
+            "semi_major_axis": [p.semi_major_axis for p in particles],
+            "mass_grav_body": [int(p.mass_grav_body) for p in particles]
         })
 
     def __get_end_state(self):

@@ -113,6 +113,27 @@ class Particle:
     def __periapsis(self):
         return self.semi_major_axis * (1.0 - self.eccentricity)
 
+    def __additional_heating_from_orbital_circularization(self):
+        """
+        From Nakajima & Stevenson 2014.  The additional heating delta E_i for each particle due to the circularization
+        of the particle's orbit.  This lowers the total energy of the orbit and therefore must heat the particle.
+        The resulting semi-major axis would be a_final = a_i (1 - e_i^2) cos^2 (i).
+        The delta E_i is the difference between the energy of the circularized vs. eccentric orbit.
+        :return:
+        """
+        grav_coeff = (self.__G * self.mass_grav_body * self.mass) / (2 * self.semi_major_axis)
+        eccentric = 1 / ((1 - self.eccentricity ** 2) * (cos(self.inclination) ** 2))
+        return grav_coeff * (1 - eccentric)
+
+    def __entropy_gain_from_circularization(self):
+        """
+        The entropy gain from circularization is given by delta S_circ = delta E_circ / delta T.
+        Assume that delta U = delta E.  The entropy gain can be written as: delta S = delta U / T
+        :return:
+        """
+        return self.circularization_energy_delta / self.temperature
+
+
     def recalculate_elements(self, mass_grav_body):
         try:
             self.mass_grav_body = mass_grav_body
@@ -130,5 +151,7 @@ class Particle:
             self.argument_of_periapsis = self.__argument_of_periapsis()
             # self.true_anomaly = self.__true_anomaly()
             self.periapsis = self.__periapsis()
+            self.circularization_energy_delta = self.__additional_heating_from_orbital_circularization()
+            self.circularization_energy_delta = self.__entropy_gain_from_circularization()
         except Exception as e:
             self.label = "ERROR"
