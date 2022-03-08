@@ -32,8 +32,8 @@ def write_report_at_time(particles, fname):
         "orbital_energy": [p.orbital_energy for p in particles],
         "semi_major_axis": [p.semi_major_axis for p in particles],
         "mass_grav_body": [p.mass_grav_body for p in particles],
-        "circ_energy_delta": [p.circ_energy_delta for p in particles],
-        "circ_entropy_delta": [p.circ_entropy_delta for p in particles],
+        "circ_energy_delta": [p.circularization_energy_delta for p in particles],
+        "circ_entropy_delta": [p.circularization_entropy_delta for p in particles],
     })
     pd.to_csv(fname)
     return df

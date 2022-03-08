@@ -152,6 +152,6 @@ class Particle:
             # self.true_anomaly = self.__true_anomaly()
             self.periapsis = self.__periapsis()
             self.circularization_energy_delta = self.__additional_heating_from_orbital_circularization()
-            self.circularization_energy_delta = self.__entropy_gain_from_circularization()
+            self.circularization_entropy_delta = self.__entropy_gain_from_circularization()
         except Exception as e:
             self.label = "ERROR"
