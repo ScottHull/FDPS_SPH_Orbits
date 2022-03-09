@@ -122,7 +122,7 @@ class Particle:
         :return:
         """
         grav_coeff = (self.__G * self.mass_grav_body * self.mass) / (2 * self.semi_major_axis)
-        eccentric = 1 / ((1 - self.eccentricity ** 2) * (cos(self.inclination) ** 2))
+        eccentric = 1 / ((1 - self.eccentricity ** 2) * (cos(self.inclination * (pi / 180)) ** 2))
         return grav_coeff * (1 - eccentric)
 
     def __entropy_gain_from_circularization(self):
