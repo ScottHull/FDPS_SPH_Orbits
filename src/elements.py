@@ -121,7 +121,7 @@ class Particle:
         The delta E_i is the difference between the energy of the circularized vs. eccentric orbit.
         :return:
         """
-        grav_coeff = (self.__G * self.mass_grav_body * self.mass) / (2 * self.semi_major_axis)
+        grav_coeff = (self.__G * self.mass_grav_body) / (2 * self.semi_major_axis)
         eccentric = 1 / ((1 - self.eccentricity ** 2) * (cos(self.inclination * (pi / 180)) ** 2))
         return grav_coeff * (1 - eccentric)
 
