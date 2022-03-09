@@ -35,7 +35,7 @@ def write_report_at_time(particles, fname):
         "circ_energy_delta": [p.circularization_energy_delta for p in particles],
         "circ_entropy_delta": [p.circularization_entropy_delta for p in particles],
     })
-    pd.to_csv(fname)
+    df.to_csv(fname)
     return df
 
 class BuildReports:
