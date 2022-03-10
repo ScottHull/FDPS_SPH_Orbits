@@ -41,7 +41,7 @@ paths = [base_path + "{}/formatted_{}".format(i, i) for i in run_set]
 
 normalizer = Normalize(min_normalize, max_normalize)
 cmap = cm.get_cmap('jet')
-fig, axs = plt.subplots(len(paths), len(iterations), figsize=(32, 64), sharex='all', sharey='all',
+fig, axs = plt.subplots(len(paths), len(iterations), figsize=(64, 64), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
 axs = axs.flatten()
 for ax in axs:
@@ -65,18 +65,18 @@ def get_time(f, local=True):
 current_index = 0
 for iteration in iterations:
     for p in paths:
-        f = p + "/{}.dat".format(iteration)
+        f = p + "/{}.csv".format(iteration)
         formatted_time = get_time(f)
         df = pd.read_csv(f, skiprows=2)
         positions = list(zip(df['x'], df['y'], df['z']))
         velocities = list(zip(df['vx'], df['vy'], df['vz']))
-        spec_am = [np.linalg.norm(np.cross(i, j)) for i, j in zip(positions, velocities)]
+        spec_am = [cmap(normalizer(np.linalg.norm(np.cross(i, j)))) for i, j in zip(positions, velocities)]
         axs[current_index].scatter(
             df['x'], df['y'], s=1,
-            color=[cmap(normalizer(am)) for am in spec_am]
+            color=spec_am
         )
-        axs[current_index].text((0.1 * -square_scale, square_scale - (0.2 * square_scale)), formatted_time)
-
+        axs[current_index].text(- square_scale + (0.1 * -square_scale), square_scale - (0.2 * square_scale),
+                                "{} hrs".format(formatted_time), fontsize=8)
         current_index += 1
 
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
