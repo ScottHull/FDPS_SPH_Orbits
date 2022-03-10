@@ -62,6 +62,12 @@ def get_time(f, local=True):
         formatted_time = float(next(f))
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
+def get_name(cd):
+    eos = "n"
+    if runs == "old":
+        eos = "o"
+    return "{}{}{}".format(cd, angle, eos)
+
 current_index = 0
 for iteration in iterations:
     for p in paths:
@@ -75,15 +81,15 @@ for iteration in iterations:
             df['x'], df['y'], s=1,
             color=spec_am
         )
-        axs[current_index].text(- square_scale + (0.1 * -square_scale), square_scale - (0.2 * square_scale),
-                                "{} hrs".format(formatted_time), fontsize=8)
+        axs[current_index].text(-square_scale + (0.15 * square_scale), square_scale - (0.3 * square_scale),
+                                "{}\n{} hrs".format(get_name(p.split("/")[-1].split("_")[1]), formatted_time), fontsize=14)
         current_index += 1
 
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
-cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
+cbaxes = inset_axes(axs[0], width="40%", height="10%", loc=2, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
 cbar.ax.tick_params(labelsize=6)
 # cbar.ax.set_title("Entropy", fontsize=6)
-cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=6)
+cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=14)
 plt.savefig("am_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
