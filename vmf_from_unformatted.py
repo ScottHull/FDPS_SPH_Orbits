@@ -53,7 +53,10 @@ def get_time(f, local=True):
 
 
 def mp_task(arg):
-    iteration, cd, output_name, path, to_path, outfile = arg
+    iteration, cd, output_name, path, to_path = arg
+    outfile = open(to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration), 'w')
+    header = "run,iteration,entropy_no_circ_disk,delta_s_circ_disk,total_new_entropy_disk,vmf_no_circ,vmf_circ\n"
+    outfile.write(header)
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
     cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
     combined_file = cf.combine()
@@ -74,22 +77,21 @@ def mp_task(arg):
         output_name, iteration, mean_s_no_circ, mean_delta_s_circ, mean_total_s, vmf_no_circ, vmf_circ
     )
     outfile.write(line)
+    outfile.close()
     return 0
 
-
-outfile = open("vmf_with_circ_{}_{}.csv".format(angle, runs), 'w')
-header = "run,iteration,entropy_no_circ_disk,delta_s_circ_disk,total_new_entropy_disk,vmf_no_circ,vmf_circ\n"
-outfile.write(header)
 for cd in cutoff_densities:
     output_name = "{}_{}_{}".format(cd, angle, runs)
     path = base_path + "{}_{}_{}/{}_{}_{}".format(cd, angle, runs, cd, angle, runs)
     to_path = base_path + output_name + "/circularized_{}".format(output_name)
+    to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
     if not os.path.exists(to_path):
         os.mkdir(to_path)
+    if not os.path.exists(to_path2):
+        os.mkdir(to_path2)
     pool = mp.Pool(5)
-    pool.map(mp_task, [[iteration, cd, output_name, path, to_path, outfile] for iteration in
+    pool.map(mp_task, [[iteration, cd, output_name, path, to_path, to_path2] for iteration in
                        list(np.arange(min_iteration, max_iteration + increment, increment))])
     pool.close()
     pool.join()
 
-outfile.close()
