@@ -24,7 +24,7 @@ plt.style.use("dark_background")
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 runs = "new"
 angle = "b073"
-iterations = [50, 100, 200, 300]
+iterations = [50, 100, 200, 300, 500]
 square_scale = 6e7
 min_normalize = 0
 max_normalize = 2e11
