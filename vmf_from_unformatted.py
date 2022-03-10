@@ -67,7 +67,7 @@ def mp_task(arg):
     os.remove(to_fname)
     pm.solve(particles=particles, phase_path=phase_path, report_name="{}-report.txt".format(output_name),
              iteration=iteration, simulation_time=formatted_time)
-    write_report_at_time(particles=particles, fname=to_path + "/{}.csv".format(output_name))
+    write_report_at_time(particles=particles, fname=to_path + "/{}.csv".format(iteration))
     mean_s_no_circ = mean([p.entropy for p in particles if p.label == "DISK"])
     mean_delta_s_circ = mean([p.circularization_entropy_delta for p in particles if p.label == "DISK"])
     mean_total_s = mean([p.entropy + p.circularization_entropy_delta for p in particles if p.label == "DISK"])

@@ -9,6 +9,7 @@ from src.identify import ParticleMap
 
 
 def write_report_at_time(particles, fname):
+    print("writing report " + fname)
     df = pd.DataFrame({
         "id": [p.particle_id for p in particles],
         "x": [p.position[0] for p in particles],
