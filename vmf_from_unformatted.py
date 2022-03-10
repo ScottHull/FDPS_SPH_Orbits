@@ -83,7 +83,7 @@ outfile.write(header)
 for cd in cutoff_densities:
     output_name = "{}_{}_{}".format(cd, angle, runs)
     path = base_path + "{}_{}_{}/{}_{}_{}".format(cd, angle, runs, cd, angle, runs)
-    to_path = base_path + output_name + "/circularized_{}".format(base_path)
+    to_path = base_path + output_name + "/circularized_{}".format(output_name)
     if not os.path.exists(to_path):
         os.mkdir(to_path)
     pool = mp.Pool(5)
