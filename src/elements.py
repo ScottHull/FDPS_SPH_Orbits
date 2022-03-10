@@ -119,6 +119,7 @@ class Particle:
         of the particle's orbit.  This lowers the total energy of the orbit and therefore must heat the particle.
         The resulting semi-major axis would be a_final = a_i (1 - e_i^2) cos^2 (i).
         The delta E_i is the difference between the energy of the circularized vs. eccentric orbit.
+        Note that this is a specific energy because particle mass drops.
         :return:
         """
         grav_coeff = (self.__G * self.mass_grav_body) / (2 * self.semi_major_axis)
@@ -128,10 +129,11 @@ class Particle:
     def __entropy_gain_from_circularization(self):
         """
         The entropy gain from circularization is given by delta S_circ = delta E_circ / delta T.
-        Assume that delta U = delta E.  The entropy gain can be written as: delta S = delta U / T
+        Assume that delta U = delta E.  The entropy gain can be written as: delta S = delta U / T.
+        Added a minus sign to flip the sign an get an entropy gain for heating.
         :return:
         """
-        return self.circularization_energy_delta / self.temperature
+        return - self.circularization_energy_delta / self.temperature
 
 
     def recalculate_elements(self, mass_grav_body):
