@@ -37,7 +37,7 @@ if runs == "old":
     phase_path = old_phase_path
 
 run_set = ["{}_{}_{}".format(i, angle, runs) for i in [5, 500, 1000, 2000]]
-paths = ["formatted_{}/{}".format(i, i) for i in run_set]
+paths = [base_path + "{}/formatted_{}".format(i, i) for i in run_set]
 
 normalizer = Normalize(min_normalize, max_normalize)
 cmap = cm.get_cmap('jet')
@@ -65,8 +65,9 @@ def get_time(f, local=True):
 current_index = 0
 for iteration in iterations:
     for p in paths:
-        formatted_time = get_time(p)
-        df = pd.read_csv(p + "/{}.dat".format(iteration), skiprows=2)
+        f = p + "/{}.dat".format(iteration)
+        formatted_time = get_time(f)
+        df = pd.read_csv(f, skiprows=2)
         positions = list(zip(df['x'], df['y'], df['z']))
         velocities = list(zip(df['vx'], df['vy'], df['vz']))
         spec_am = [np.linalg.norm(np.cross(i, j)) for i, j in zip(positions, velocities)]
