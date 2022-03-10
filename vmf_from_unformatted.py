@@ -54,7 +54,11 @@ def get_time(f, local=True):
 
 def mp_task(arg):
     iteration, cd, output_name, path, to_path, to_path2 = arg
-    outfile = open(to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration), 'w')
+    f1 = to_path + "/{}.csv".format(iteration)
+    f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
+    if os.path.exists(f2):
+        os.remove(f2)
+    outfile = open(f2, 'w')
     header = "run,iteration,entropy_no_circ_disk,delta_s_circ_disk,total_new_entropy_disk,vmf_no_circ,vmf_circ\n"
     outfile.write(header)
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -67,7 +71,7 @@ def mp_task(arg):
     os.remove(to_fname)
     pm.solve(particles=particles, phase_path=phase_path, report_name="{}-report.txt".format(output_name),
              iteration=iteration, simulation_time=formatted_time)
-    write_report_at_time(particles=particles, fname=to_path + "/{}.csv".format(iteration))
+    write_report_at_time(particles=particles, fname=f1)
     mean_s_no_circ = mean([p.entropy for p in particles if p.label == "DISK"])
     mean_delta_s_circ = mean([p.circularization_entropy_delta for p in particles if p.label == "DISK"])
     mean_total_s = mean([p.entropy + p.circularization_entropy_delta for p in particles if p.label == "DISK"])
