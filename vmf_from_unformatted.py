@@ -53,7 +53,7 @@ def get_time(f, local=True):
 
 
 def mp_task(arg):
-    iteration, cd, output_name, path, max_time, to_path, outfile = arg
+    iteration, cd, output_name, path, to_path, outfile = arg
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
     cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
     combined_file = cf.combine()
@@ -82,13 +82,12 @@ header = "run,iteration,entropy_no_circ_disk,delta_s_circ_disk,total_new_entropy
 outfile.write(header)
 for cd in cutoff_densities:
     output_name = "{}_{}_{}".format(cd, angle, runs)
-    path = base_path + "{}_{}_{}/{}_{}_{}/".format(cd, angle, runs, cd, angle, runs)
-    max_time = seconds_to_hours(get_max_time(max_iteration=max_iteration, path=path))
+    path = base_path + "{}_{}_{}/{}_{}_{}".format(cd, angle, runs, cd, angle, runs)
     to_path = base_path + output_name + "/circularized_{}".format(base_path)
     if not os.path.exists(to_path):
         os.mkdir(to_path)
     pool = mp.Pool(5)
-    pool.map(mp_task, [[iteration, cd, output_name, path, max_time, to_path, outfile] for iteration in
+    pool.map(mp_task, [[iteration, cd, output_name, path, to_path, outfile] for iteration in
                        list(np.arange(min_iteration, max_iteration + increment, increment))])
     pool.close()
     pool.join()
