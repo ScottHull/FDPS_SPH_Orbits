@@ -53,7 +53,7 @@ def get_time(f, local=True):
 
 
 def mp_task(arg):
-    iteration, cd, output_name, path, to_path = arg
+    iteration, cd, output_name, path, to_path, to_path2 = arg
     outfile = open(to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration), 'w')
     header = "run,iteration,entropy_no_circ_disk,delta_s_circ_disk,total_new_entropy_disk,vmf_no_circ,vmf_circ\n"
     outfile.write(header)
