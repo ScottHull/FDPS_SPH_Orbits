@@ -13,7 +13,7 @@ import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import multiprocessing as mp
 
-from src.vapor import calc_vapor_mass_fraction_with_circularization
+from src.vapor import calc_vapor_mass_fraction_with_circularization, calc_vapor_mass_fraction
 from src.geometry import get_impact_geometry_from_formatted, get_velocity_profile_from_formatted
 from src.animate import animate
 from src.identify import ParticleMap
@@ -75,7 +75,7 @@ def mp_task(arg):
     mean_s_no_circ = mean([p.entropy if p.label == "DISK" else 0 for p in particles])
     mean_delta_s_circ = mean([p.circularization_entropy_delta if p.label == "DISK" else 0 for p in particles])
     mean_total_s = mean([p.entropy + p.circularization_entropy_delta if p.label == "DISK" else 0 for p in particles])
-    vmf_no_circ = calc_vapor_mass_fraction_with_circularization(particles=particles, phase_path=phase_path)
+    vmf_no_circ = calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
     vmf_circ = calc_vapor_mass_fraction_with_circularization(particles=particles, phase_path=phase_path)
     line = "{},{},{},{},{}.{},{}\n".format(
         output_name, iteration, mean_s_no_circ, mean_delta_s_circ, mean_total_s, vmf_no_circ, vmf_circ
