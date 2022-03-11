@@ -24,7 +24,7 @@ plt.style.use("dark_background")
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 runs = "new"
 angle = "b073"
-iterations = [50, 100, 200, 300, 500]
+iterations = [50, 100, 200, 250, 300]
 square_scale = 6e7
 min_normalize = 0
 max_normalize = 2e11
@@ -49,6 +49,7 @@ for ax in axs:
     ax.set_ylim(-square_scale, square_scale)
     ax.set_xticks([], minor=False)
     ax.set_yticks([], minor=False)
+    ax.axes.set_aspect('equal')
 
 
 def get_time(f, local=True):
@@ -78,11 +79,11 @@ for iteration in iterations:
         velocities = list(zip(df['vx'], df['vy'], df['vz']))
         spec_am = [cmap(normalizer(np.linalg.norm(np.cross(i, j)))) for i, j in zip(positions, velocities)]
         axs[current_index].scatter(
-            df['x'], df['y'], s=0.5,
+            df['x'], df['y'], s=0.2,
             color=spec_am
         )
-        axs[current_index].text(square_scale - (0.4 * square_scale), -square_scale + (0.3 * square_scale),
-                                "{}\n{} hrs".format(get_name(p.split("/")[-1].split("_")[1]), formatted_time), fontsize=10)
+        axs[current_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
+                                "{}\n{} hrs".format(get_name(p.split("/")[-1].split("_")[1]), formatted_time), fontsize=12)
         current_index += 1
 
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
@@ -92,5 +93,6 @@ cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
 cbar.ax.tick_params(labelsize=6)
 # cbar.ax.set_title("Entropy", fontsize=6)
 cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=6)
-cbar.ax.yaxis.get_offset_text().set(size=8)  # change exponent font size
+cbar.ax.yaxis.get_offset_text().set(size=6)  # change exponent font size
+cbar.ax.xaxis.get_offset_text().set(size=6)  # change exponent font size
 plt.savefig("am_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
