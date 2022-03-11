@@ -79,7 +79,7 @@ for iteration in iterations:
         velocities = list(zip(df['vx'], df['vy'], df['vz']))
         spec_am = [cmap(normalizer(np.linalg.norm(np.cross(i, j)))) for i, j in zip(positions, velocities)]
         axs[current_index].scatter(
-            df['x'], df['y'], s=0.2,
+            df['x'], df['y'], s=0.1,
             color=spec_am
         )
         axs[current_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
