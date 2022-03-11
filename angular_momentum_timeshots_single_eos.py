@@ -41,7 +41,7 @@ paths = [base_path + "{}/formatted_{}".format(i, i) for i in run_set]
 
 normalizer = Normalize(min_normalize, max_normalize)
 cmap = cm.get_cmap('jet')
-fig, axs = plt.subplots(len(paths), len(iterations), figsize=(16, 16), sharex='all', sharey='all',
+fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 20), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
 axs = axs.flatten()
 for ax in axs:
@@ -78,10 +78,10 @@ for iteration in iterations:
         velocities = list(zip(df['vx'], df['vy'], df['vz']))
         spec_am = [cmap(normalizer(np.linalg.norm(np.cross(i, j)))) for i, j in zip(positions, velocities)]
         axs[current_index].scatter(
-            df['x'], df['y'], s=1,
+            df['x'], df['y'], s=0.5,
             color=spec_am
         )
-        axs[current_index].text(-square_scale + (0.15 * square_scale), square_scale - (0.3 * square_scale),
+        axs[current_index].text(square_scale - (0.4 * square_scale), -square_scale + (0.3 * square_scale),
                                 "{}\n{} hrs".format(get_name(p.split("/")[-1].split("_")[1]), formatted_time), fontsize=10)
         current_index += 1
 
@@ -91,5 +91,6 @@ cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
 cbar.ax.tick_params(labelsize=6)
 # cbar.ax.set_title("Entropy", fontsize=6)
-cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=8)
+cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=6)
+cbar.ax.yaxis.get_offset_text().set(size=8)  # change exponent font size
 plt.savefig("am_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
