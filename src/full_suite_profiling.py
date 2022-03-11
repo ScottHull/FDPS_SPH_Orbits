@@ -72,8 +72,8 @@ def __get_vmf_timeplot_data(path, phase_path, start_iteration, end_iteration, in
             positions = list(zip(disk_particles['x'], disk_particles['y'], disk_particles['z']))
             velocities = list(zip(disk_particles['vx'], disk_particles['vy'], disk_particles['vz']))
             masses = list(disk_particles['mass'])
-            spec_disk_ams.append(sum([masses[index] * np.linalg.norm(np.cross(p, velocities[index])) for index, p in
-                                      enumerate(positions)]) / L_EM)  # specific angular momentum of the disk
+            spec_disk_ams.append([np.linalg.norm(np.cross(p, velocities[index])) for index, p in
+                                      enumerate(positions)])  # specific angular momentum of the disk
             try:
                 avg_disk_entropy_at_time = mean(disk_particles['entropy'])
             except:
@@ -475,7 +475,7 @@ def __build_scene(d):
                 color=[cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
                        enumerate(positions)]
             )
-            axs[index_old].set_title(n + " {} hrs".format(formatted_time))
+            axs[index_old].set_title(n + " {} - {} hrs".format(iteration, formatted_time))
             index_old += 2
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
@@ -483,7 +483,7 @@ def __build_scene(d):
     cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
     cbar.ax.tick_params(labelsize=6)
     # cbar.ax.set_title("Entropy", fontsize=6)
-    cbar.ax.set_title("Angular Momentum (kg $\cdot m^2$/s )", fontsize=6)
+    cbar.ax.set_title("Specific Angular Momentum ($m^2$/s )", fontsize=6)
     plt.savefig(to_path + "/{}.png".format(iteration), format='png')
     if s is not None:
         client.send_file_to_theia(to_path, to_client_path, "/{}.png".format(iteration))

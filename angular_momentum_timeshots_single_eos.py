@@ -24,7 +24,7 @@ plt.style.use("dark_background")
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 runs = "new"
 angle = "b073"
-iterations = [50, 100, 200, 250, 300]
+iterations = [80, 100, 150, 200, 250, 300]
 square_scale = 6e7
 min_normalize = 0
 max_normalize = 2e11
@@ -41,7 +41,7 @@ paths = [base_path + "{}/formatted_{}".format(i, i) for i in run_set]
 
 normalizer = Normalize(min_normalize, max_normalize)
 cmap = cm.get_cmap('jet')
-fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 20), sharex='all', sharey='all',
+fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 30), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
 axs = axs.flatten()
 for ax in axs:
@@ -83,7 +83,7 @@ for iteration in iterations:
             color=spec_am
         )
         axs[current_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
-                                "{}\n{} hrs".format(get_name(p.split("/")[-1].split("_")[1]), formatted_time), fontsize=12)
+                                "{}\n{} hrs".format(get_name(p.split("/")[-1].split("_")[1]), formatted_time), fontsize=10)
         current_index += 1
 
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
@@ -92,7 +92,7 @@ cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
 cbar.ax.tick_params(labelsize=6)
 # cbar.ax.set_title("Entropy", fontsize=6)
-cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=6)
+cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=4)
 cbar.ax.yaxis.get_offset_text().set(size=6)  # change exponent font size
 cbar.ax.xaxis.get_offset_text().set(size=6)  # change exponent font size
 plt.savefig("am_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)

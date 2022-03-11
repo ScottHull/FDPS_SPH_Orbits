@@ -35,6 +35,7 @@ def write_report_at_time(particles, fname):
         "mass_grav_body": [p.mass_grav_body for p in particles],
         "circ_energy_delta": [p.circularization_energy_delta for p in particles],
         "circ_entropy_delta": [p.circularization_entropy_delta for p in particles],
+        "angular_momentum": [p.angular_momentum for p in particles],
     })
     df.to_csv(fname)
     return df
