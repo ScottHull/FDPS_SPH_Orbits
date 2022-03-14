@@ -461,7 +461,7 @@ def __build_scene(d):
                 df['x'], df['y'], s=1, color=[cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
                                       enumerate(positions)]
             )
-            axs[index_new].set_title(n + " {} hrs".format(formatted_time))
+            axs[index_new].set_title(n + " {} - {} hrs".format(iteration, formatted_time))
             index_new += 2
         else:
             # axs[index_old].scatter(
