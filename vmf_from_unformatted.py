@@ -109,7 +109,8 @@ def add_times():
                 to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
                 cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
                 combined_file = cf.combine()
-                formatted_time = cf.sim_time
+                formatted_time = round(cf.sim_time * 0.000277778, 2)
+                os.remove(to_fname)
                 output_name = "{}_{}_{}".format(cd, angle, runs)
                 to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
                 f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
