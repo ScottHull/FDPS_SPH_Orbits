@@ -64,7 +64,7 @@ def mp_task(arg):
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
     cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
     combined_file = cf.combine()
-    formatted_time = cf.sim_time
+    formatted_time = round(cf.sim_time * 0.000277778, 2)
     f = os.getcwd() + "/{}".format(to_fname)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
     particles = pm.collect_particles(find_orbital_elements=True)
