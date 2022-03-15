@@ -126,8 +126,8 @@ def plot_vmfs():
         ax.grid(alpha=0.4)
     axs[0].set_title("VMF (with orbital circularization)")
     axs[1].set_title("VMF (without orbital circularization)")
-    axs[0].set_xlabel("VMF (%)")
-    axs[2].set_xlabel("VMF (%)")
+    axs[0].set_ylabel("VMF (%)")
+    axs[2].set_ylabel("VMF (%)")
     axs[2].set_xlabel("Time (hrs)")
     axs[3].set_xlabel("Time (hrs)")
     for runs in ["new", "old"]:
