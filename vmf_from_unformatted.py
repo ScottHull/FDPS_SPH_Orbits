@@ -59,7 +59,7 @@ def mp_task(arg):
     if os.path.exists(f2):
         os.remove(f2)
     outfile = open(f2, 'w')
-    header = "run,iteration,entropy_no_circ_disk,delta_s_circ_disk,total_new_entropy_disk,vmf_no_circ,vmf_circ\n"
+    header = "run,iteration,time,entropy_no_circ_disk,delta_s_circ_disk,total_new_entropy_disk,vmf_no_circ,vmf_circ\n"
     outfile.write(header)
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
     cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
@@ -77,8 +77,8 @@ def mp_task(arg):
     mean_total_s = mean([p.entropy + p.circularization_entropy_delta if p.label == "DISK" else 0 for p in particles])
     vmf_no_circ = calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
     vmf_circ = calc_vapor_mass_fraction_with_circularization(particles=particles, phase_path=phase_path)
-    line = "{},{},{},{},{}.{},{}\n".format(
-        output_name, iteration, mean_s_no_circ, mean_delta_s_circ, mean_total_s, vmf_no_circ, vmf_circ
+    line = "{},{},{},{},{},{}.{},{}\n".format(
+        output_name, iteration, formatted_time, mean_s_no_circ, mean_delta_s_circ, mean_total_s, vmf_no_circ, vmf_circ
     )
     outfile.write(line)
     outfile.close()
@@ -137,7 +137,7 @@ def plot_vmfs():
                 df = pd.read_csv(f2)
                 vmf_no_circ = df['vmf_no_circ']
                 vmf_total = df['vmf_circ']
-                total_s = df['total_new_entropy']
+                total_s = df['total_new_entropy_disk']
                 delta_s_due_to_circ = df['delta_s_circ_disk']
                 s_no_circ = df['entropy_no_circ_disk']
 
