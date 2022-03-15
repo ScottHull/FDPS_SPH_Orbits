@@ -100,6 +100,24 @@ def build_reports():
         pool.close()
         pool.join()
 
+def add_times():
+    for runs in ["new", "old"]:
+        for cd in cutoff_densities:
+            for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+                print("at {} // {} // {}".format(runs, cd, iteration))
+                path = base_path + "{}_{}_{}/{}_{}_{}".format(cd, angle, runs, cd, angle, runs)
+                to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+                cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+                combined_file = cf.combine()
+                formatted_time = cf.sim_time
+                output_name = "{}_{}_{}".format(cd, angle, runs)
+                to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
+                df = pd.read_csv(f2)
+                df['time'] = [formatted_time]
+                df.to_csv(f2)
+
+
 def plot_vmfs():
     fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
     axs = axs.flatten()
