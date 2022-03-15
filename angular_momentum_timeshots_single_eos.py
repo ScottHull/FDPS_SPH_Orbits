@@ -41,7 +41,7 @@ paths = [base_path + "{}/formatted_{}".format(i, i) for i in run_set]
 
 normalizer = Normalize(min_normalize, max_normalize)
 cmap = cm.get_cmap('jet')
-fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 30), sharex='all', sharey='all',
+fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 25), sharex='all', sharey='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.10})
 axs = axs.flatten()
 for ax in axs:
@@ -92,7 +92,7 @@ cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
 cbar.ax.tick_params(labelsize=6)
 # cbar.ax.set_title("Entropy", fontsize=6)
-cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=4)
+cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=6)
 cbar.ax.yaxis.get_offset_text().set(size=6)  # change exponent font size
 cbar.ax.xaxis.get_offset_text().set(size=6)  # change exponent font size
 plt.savefig("am_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)

@@ -84,18 +84,74 @@ def mp_task(arg):
     outfile.close()
     return 0
 
-for cd in cutoff_densities:
-    output_name = "{}_{}_{}".format(cd, angle, runs)
-    path = base_path + "{}_{}_{}/{}_{}_{}".format(cd, angle, runs, cd, angle, runs)
-    to_path = base_path + output_name + "/circularized_{}".format(output_name)
-    to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
-    if not os.path.exists(to_path):
-        os.mkdir(to_path)
-    if not os.path.exists(to_path2):
-        os.mkdir(to_path2)
-    pool = mp.Pool(5)
-    pool.map(mp_task, [[iteration, cd, output_name, path, to_path, to_path2] for iteration in
-                       list(np.arange(min_iteration, max_iteration + increment, increment))])
-    pool.close()
-    pool.join()
+def build_reports():
+    for cd in cutoff_densities:
+        output_name = "{}_{}_{}".format(cd, angle, runs)
+        path = base_path + "{}_{}_{}/{}_{}_{}".format(cd, angle, runs, cd, angle, runs)
+        to_path = base_path + output_name + "/circularized_{}".format(output_name)
+        to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+        if not os.path.exists(to_path):
+            os.mkdir(to_path)
+        if not os.path.exists(to_path2):
+            os.mkdir(to_path2)
+        pool = mp.Pool(5)
+        pool.map(mp_task, [[iteration, cd, output_name, path, to_path, to_path2] for iteration in
+                           list(np.arange(min_iteration, max_iteration + increment, increment))])
+        pool.close()
+        pool.join()
+
+def plot_vmfs():
+    fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
+    axs = axs.flatten()
+    for ax in axs:
+        ax.grid(alpha=0.4)
+    axs[0].set_title("VMF (with orbital circularization)")
+    axs[1].set_title("VMF (without orbital circularization)")
+    axs[0].set_xlabel("VMF (%)")
+    axs[2].set_xlabel("VMF (%)")
+    axs[2].set_xlabel("Time (hrs)")
+    axs[3].set_xlabel("Time (hrs)")
+    for runs in ["new", "old"]:
+        r = "n"
+        vmf_total_index = 0
+        vmf_no_circ_index = 1
+        if runs == "old":
+            r = "o"
+            vmf_total_index += 2
+            vmf_no_circ_index += 2
+        for cd in cutoff_densities:
+            times = []
+            vmfs_total = []
+            vmfs_without_circ = []
+            for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+                path = base_path + "{}_{}_{}/{}_{}_{}".format(cd, angle, runs, cd, angle, runs)
+                to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+                cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+                combined_file = cf.combine()
+                formatted_time = cf.sim_time
+                output_name = "{}_{}_{}".format(cd, angle, runs)
+                to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
+                df = pd.read_csv(f2)
+                vmf_no_circ = df['vmf_no_circ']
+                vmf_total = df['vmf_circ']
+                total_s = df['total_new_entropy']
+                delta_s_due_to_circ = df['delta_s_circ_disk']
+                s_no_circ = df['entropy_no_circ_disk']
+
+                times.append(formatted_time)
+                vmfs_total.append(vmf_total * 100)
+                vmfs_without_circ.append(vmf_no_circ * 100)
+            axs[vmf_total_index].plot(
+                times, vmfs_total, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
+            )
+            axs[vmf_no_circ_index].plot(
+                times, vmfs_without_circ, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
+            )
+    axs[0].legend()
+    plt.savefig("vmf_w_wo_circ.png", format='png', dpi=200)
+
+# build_reports()
+plot_vmfs()
+
 
