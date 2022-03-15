@@ -41,7 +41,8 @@ paths = [base_path + "{}/formatted_{}".format(i, i) for i in run_set]
 
 normalizer = Normalize(min_normalize, max_normalize)
 cmap = cm.get_cmap('jet')
-fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 25), sharex='all', sharey='all')
+fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 25), sharex='all', sharey='all',
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 axs = axs.flatten()
 for ax in axs:
     ax.set_xlim(-square_scale, square_scale)
