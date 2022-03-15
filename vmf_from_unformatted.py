@@ -77,7 +77,7 @@ def mp_task(arg):
     mean_total_s = mean([p.entropy + p.circularization_entropy_delta if p.label == "DISK" else 0 for p in particles])
     vmf_no_circ = calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
     vmf_circ = calc_vapor_mass_fraction_with_circularization(particles=particles, phase_path=phase_path)
-    line = "{},{},{},{},{},{}.{},{}\n".format(
+    line = "{},{},{},{},{},{},{},{}\n".format(
         output_name, iteration, formatted_time, mean_s_no_circ, mean_delta_s_circ, mean_total_s, vmf_no_circ, vmf_circ
     )
     outfile.write(line)

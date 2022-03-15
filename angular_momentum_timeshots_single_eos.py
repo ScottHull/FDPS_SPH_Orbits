@@ -41,8 +41,7 @@ paths = [base_path + "{}/formatted_{}".format(i, i) for i in run_set]
 
 normalizer = Normalize(min_normalize, max_normalize)
 cmap = cm.get_cmap('jet')
-fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 25), sharex='all', sharey='all',
-                            gridspec_kw={"hspace": 0.10, "wspace": 0.10})
+fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 25), sharex='all', sharey='all')
 axs = axs.flatten()
 for ax in axs:
     ax.set_xlim(-square_scale, square_scale)
@@ -80,7 +79,7 @@ for iteration in iterations:
         spec_am = [cmap(normalizer(np.linalg.norm(np.cross(i, j)))) for i, j in zip(positions, velocities)]
         axs[current_index].scatter(
             df['x'], df['y'], s=0.1,
-            color=spec_am
+            color=spec_am, marker="."
         )
         axs[current_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
                                 "{}\n{} hrs".format(get_name(p.split("/")[-1].split("_")[1]), formatted_time), fontsize=10)
