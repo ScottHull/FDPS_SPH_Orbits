@@ -133,11 +133,11 @@ def plot_vmfs():
     for runs in ["new", "old"]:
         r = "n"
         vmf_total_index = 0
-        vmf_no_circ_index = 1
+        vmf_no_circ_index = 2
         if runs == "old":
             r = "o"
-            vmf_total_index += 2
-            vmf_no_circ_index += 2
+            vmf_total_index += 1
+            vmf_no_circ_index += 1
         for cd in cutoff_densities:
             times = []
             vmfs_total = []
