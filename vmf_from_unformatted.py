@@ -164,8 +164,8 @@ def plot_vmfs():
             axs[vmf_no_circ_index].plot(
                 times, vmfs_without_circ, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
             )
-    axs[0].legend(loc='upper right')
-    axs[2].legend(loc='upper right')
+    for ax in axs:
+        ax.legend(loc='upper right')
     plt.savefig("vmf_w_wo_circ.png", format='png', dpi=200)
 
 
