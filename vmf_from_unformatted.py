@@ -164,8 +164,40 @@ def plot_vmfs():
             axs[vmf_no_circ_index].plot(
                 times, vmfs_without_circ, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
             )
-    axs[0].legend()
+    axs[0].legend(loc='upper right')
+    axs[2].legend(loc='upper right')
     plt.savefig("vmf_w_wo_circ.png", format='png', dpi=200)
+
+
+def fix_delimiting():
+    def replace_str_index(text, index=0, replacement=''):
+        return '%s%s%s' % (text[:index], replacement, text[index + 1:])
+
+    find_all = lambda c, s: [x for x in range(c.find(s), len(c)) if c[x] == s]
+    for runs in ["new", "old"]:
+        for cd in cutoff_densities:
+            for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+                print("at {} // {} // {}".format(runs, cd, iteration))
+                path = base_path + "{}_{}_{}/{}_{}_{}".format(cd, angle, runs, cd, angle, runs)
+                output_name = "{}_{}_{}".format(cd, angle, runs)
+                to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
+                tmp_p = to_path2 + "/tmp.csv"
+                if os.path.exists(tmp_p):
+                    os.remove(tmp_p)
+                with open(tmp_p, 'w') as outfile:
+                    with open(f2, 'r') as infile:
+                        header = next(infile)
+                        outfile.write(header)
+                        for row in infile:
+                            periods = find_all(str(row), ".")
+                            row = replace_str_index(str(row), periods[-3], ',')
+                            outfile.write(row)
+                    infile.close()
+                outfile.close()
+                os.remove(f2)
+                os.rename(tmp_p, f2)
+
 
 # build_reports()
 plot_vmfs()
