@@ -68,3 +68,7 @@ class LunaToTheia:
     def send_file_to_theia(self, from_path, to_path, filename):
         self.create_sftp_dir(self.theia_client, to_path)
         self.theia_scp.put("{}/{}".format(from_path, filename), "{}/{}".format(to_path, filename))
+
+    # def get_and_combine_files_from_iteration(self, processes, iteration, to_base_dir="/scratch/shull4"):
+    #
+    #     fname = ""
