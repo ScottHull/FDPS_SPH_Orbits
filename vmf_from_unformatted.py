@@ -214,8 +214,8 @@ def plot_vmfs():
     for ax in axs:
         ax.grid(alpha=0.4)
         ax.legend(loc='upper right')
-    axs[0].set_title("Total Entropy (with orbital circularization)")
-    axs[1].set_title(r"$\Delta$S Due to Orbital Circularization")
+    axs[0].set_title("Avg. Entropy (with orbital circularization)")
+    axs[1].set_title(r"Avg. $\Delta$S Due to Orbital Circularization")
     axs[0].set_ylabel("S")
     axs[2].set_ylabel("S")
     axs[2].set_xlabel("Time (hrs)")
