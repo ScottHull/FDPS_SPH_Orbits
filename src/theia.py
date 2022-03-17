@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 import os
+import shutil
+from random import randint
 import paramiko
 from scp import SCPClient
 import pandas as pd
+import multiprocessing as mp
+
+from src.combine import CombineFile
 
 
 class LunaToTheia:
@@ -69,6 +74,34 @@ class LunaToTheia:
         self.create_sftp_dir(self.theia_client, to_path)
         self.theia_scp.put("{}/{}".format(from_path, filename), "{}/{}".format(to_path, filename))
 
-    # def get_and_combine_files_from_iteration(self, processes, iteration, to_base_dir="/scratch/shull4"):
-    #
-    #     fname = ""
+    def __get_single_output_filename(self, iteration, num_processes, current_process):
+        file_format = "results.{}_{}_{}.dat"
+        return file_format.format(str(iteration).zfill(5),
+                                  str(num_processes).zfill(5),
+                                  str(current_process).zfill(5))
+
+    def get_file_from_theia(self, args):
+        from_remote_path, to_local_path, fname, client = args
+        ff = from_remote_path + "/{}".format(fname)
+        ft = to_local_path + "/{}".format(fname)
+        client.get(ff, ft)
+
+    def get_and_combine_files_from_iteration(self, remote_path, num_processes, iteration,
+                                             to_base_dir="/scratch/shull4"):
+        server = "epsl.earth.rochester.edu"
+        user = "scotthull"
+        password = "PASSWORD"
+        ssh = self.createSSHClient(server, user, password)
+        pool = mp.Pool(5)
+        client = SCPClient(ssh.get_transport())
+        to_path = to_base_dir + "/{}".format(randint(0, 100000))
+        pool.map(self.get_file_from_theia, [[remote_path, to_path,
+                                             self.__get_single_output_filename(iteration, num_processes, i),
+                                             client] for i in range(0, num_processes)])
+        pool.close()
+        pool.join()
+
+        to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+        cf = CombineFile(num_processes=num_processes, time=iteration, output_path=to_path, to_fname=to_fname)
+        shutil.rmtree(to_path)
+        return to_fname

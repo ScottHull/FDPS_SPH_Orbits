@@ -120,16 +120,6 @@ def add_times():
 
 
 def plot_vmfs():
-    fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
-    axs = axs.flatten()
-    for ax in axs:
-        ax.grid(alpha=0.4)
-    axs[0].set_title("VMF (with orbital circularization)")
-    axs[1].set_title("VMF (without orbital circularization)")
-    axs[0].set_ylabel("VMF (%)")
-    axs[2].set_ylabel("VMF (%)")
-    axs[2].set_xlabel("Time (hrs)")
-    axs[3].set_xlabel("Time (hrs)")
     for runs in ["new", "old"]:
         r = "n"
         vmf_total_index = 0
@@ -142,6 +132,8 @@ def plot_vmfs():
             times = []
             vmfs_total = []
             vmfs_without_circ = []
+            delta_s_circ = []
+            total_ss = []
             for iteration in np.arange(min_iteration, max_iteration + increment, increment):
                 print("at {} // {} // {}".format(runs, cd, iteration))
                 output_name = "{}_{}_{}".format(cd, angle, runs)
@@ -154,6 +146,8 @@ def plot_vmfs():
                 total_s = df['total_new_entropy_disk']
                 delta_s_due_to_circ = df['delta_s_circ_disk']
                 s_no_circ = df['entropy_no_circ_disk']
+                total_ss.append(total_s)
+                delta_s_circ.append(delta_s_due_to_circ)
 
                 times.append(formatted_time)
                 vmfs_total.append(vmf_total * 100)
@@ -164,9 +158,31 @@ def plot_vmfs():
             axs[vmf_no_circ_index].plot(
                 times, vmfs_without_circ, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
             )
+    fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
+    axs = axs.flatten()
     for ax in axs:
+        ax.grid(alpha=0.4)
         ax.legend(loc='upper right')
+    axs[0].set_title("VMF (with orbital circularization)")
+    axs[1].set_title("VMF (without orbital circularization)")
+    axs[0].set_ylabel("VMF (%)")
+    axs[2].set_ylabel("VMF (%)")
+    axs[2].set_xlabel("Time (hrs)")
+    axs[3].set_xlabel("Time (hrs)")
     plt.savefig("vmf_w_wo_circ.png", format='png', dpi=200)
+
+    fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
+    axs = axs.flatten()
+    for ax in axs:
+        ax.grid(alpha=0.4)
+        ax.legend(loc='upper right')
+    axs[0].set_title("Total Entropy (with orbital circularization)")
+    axs[1].set_title(r"$\Delta$S Due to Orbital Circularization")
+    axs[0].set_ylabel("S")
+    axs[2].set_ylabel("S")
+    axs[2].set_xlabel("Time (hrs)")
+    axs[3].set_xlabel("Time (hrs)")
+    plt.savefig("s_w_wo_circ.png", format='png', dpi=200)
 
 
 def fix_delimiting():

@@ -70,4 +70,4 @@ for iteration in np.arange(start_iteration, end_iteration + increment, increment
     cbar.ax.set_title("Specific Angular Momentum ($m^2$/s)", fontsize=6)
     cbar.ax.yaxis.get_offset_text().set(size=6)  # change exponent font size
     cbar.ax.xaxis.get_offset_text().set(size=6)  # change exponent font size
-    plt.savefig(to_path + "/{}.png".format(iteration))
+    plt.savefig(to_path + "/{}.png".format(iteration), dpi=200)

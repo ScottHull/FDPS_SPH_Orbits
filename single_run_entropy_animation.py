@@ -22,7 +22,7 @@ from src.combine import CombineFile
 plt.style.use("dark_background")
 
 path = base_path = "/home/theia/scotthull/Paper1_SPH/gi/5_b073_new_high/5_b073_new_high"
-to_path = "{}_spec_angular_momentum".format(path.split("/")[-1])
+to_path = "{}_entropy".format(path.split("/")[-1])
 if not os.path.exists(to_path):
     os.mkdir(to_path)
 start_iteration = 0
@@ -67,4 +67,4 @@ for iteration in np.arange(start_iteration, end_iteration + increment, increment
     cbar.ax.set_title("Entropy", fontsize=8)
     cbar.ax.yaxis.get_offset_text().set(size=6)  # change exponent font size
     cbar.ax.xaxis.get_offset_text().set(size=6)  # change exponent font size
-    plt.savefig(to_path + "/{}.png".format(iteration))
+    plt.savefig(to_path + "/{}.png".format(iteration), dpi=200)
