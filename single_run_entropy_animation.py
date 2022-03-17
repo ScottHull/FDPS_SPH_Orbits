@@ -23,6 +23,7 @@ from src.theia import LunaToTheia
 plt.style.use("dark_background")
 
 path = "/home/theia/scotthull/Paper1_SPH/gi/5_b073_new_high/5_b073_new_high"
+remote_path = "/home/theia/scotthull/FDPS_SPH_Orbits/5_b073_new_high_entropy_remote"
 to_path = "{}_entropy".format(path.split("/")[-1])
 if not os.path.exists(to_path):
     os.mkdir(to_path)
@@ -41,9 +42,23 @@ u = "scotthull"
 p = ""
 theia = LunaToTheia(s, u, p)
 
-for iteration in np.arange(start_iteration, end_iteration + increment, increment):
+def get_time(f, local=True):
+    formatted_time = None
+    if local:  # if not reading from remote server
+        with open(f, 'r') as infile:
+            reader = csv.reader(infile, delimiter="\t")
+            formatted_time = float(next(reader)[0])
+        infile.close()
+    else:
+        formatted_time = float(next(f))
+    return round(formatted_time * 0.000277778, 2)  # seconds -> hours
+
+
+def plot_iteration(args):
+    iteration = args
     f = theia.get_and_combine_files_from_iteration(remote_path=path, num_processes=number_processes,
                                                    iteration=iteration, to_base_dir="/scratch/shull4")
+    formatted_time = get_time(f)
     df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t")
     os.remove(f)
     x, y, z = df[3], df[4], df[5]
@@ -70,4 +85,13 @@ for iteration in np.arange(start_iteration, end_iteration + increment, increment
     cbar.ax.set_title("Entropy", fontsize=8)
     cbar.ax.yaxis.get_offset_text().set(size=6)  # change exponent font size
     cbar.ax.xaxis.get_offset_text().set(size=6)  # change exponent font size
-    plt.savefig(to_path + "/{}.png".format(iteration), dpi=200)
+    f = to_path + "/{}.png".format(iteration)
+    plt.savefig(f, dpi=200)
+    theia.send_file_to_theia(to_path, remote_path, "/{}.png".format(iteration))
+    os.remove(to_path + "/{}.png".format(iteration))
+    os.remove(f)
+
+pool = mp.Pool(5)
+pool.map(plot_iteration, [[iteration] for iteration in np.arange(start_iteration, end_iteration + increment, increment)])
+pool.close()
+pool.join()

@@ -72,9 +72,19 @@ def mp_task(arg):
     pm.solve(particles=particles, phase_path=phase_path, report_name="{}-report.txt".format(output_name),
              iteration=iteration, simulation_time=formatted_time)
     write_report_at_time(particles=particles, fname=f1)
-    mean_s_no_circ = mean([p.entropy for p in particles if p.label == "DISK"])
-    mean_delta_s_circ = mean([p.circularization_entropy_delta for p in particles if p.label == "DISK"])
-    mean_total_s = mean([p.entropy + p.circularization_entropy_delta for p in particles if p.label == "DISK"])
+
+    try:
+        mean_s_no_circ = mean([p.entropy for p in particles if p.label == "DISK"])
+    except:
+        mean_s_no_circ = 0.0
+    try:
+        mean_delta_s_circ = mean([p.circularization_entropy_delta for p in particles if p.label == "DISK"])
+    except:
+        mean_delta_s_circ = 0.0
+    try:
+        mean_total_s = mean([p.entropy + p.circularization_entropy_delta for p in particles if p.label == "DISK"])
+    except:
+        mean_total_s = 0.0
     vmf_no_circ = calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
     vmf_circ = calc_vapor_mass_fraction_with_circularization(particles=particles, phase_path=phase_path)
     line = "{},{},{},{},{},{},{},{}\n".format(
