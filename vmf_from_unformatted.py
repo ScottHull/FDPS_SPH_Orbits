@@ -244,11 +244,16 @@ def fix_entropies():
                 f1 = to_path + "/{}.csv".format(iteration)
                 f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
                 df = pd.read_csv(f1)
-                disk = df[df['label'] == "DISK"]
                 df2 = pd.read_csv(f2)
-                mean_delta_s = mean(disk['circ_entropy_delta'])
-                mean_total_s_no_circ = mean(disk['entropy'])
-                mean_total_s_w_circ = mean(disk['circ_entropy_delta'] + disk['entropy'])
+                disk = df[df['label'] == "DISK"]
+                if len(disk.index) == 0:
+                    mean_delta_s = 0.0
+                    mean_total_s_no_circ = 0.0
+                    mean_total_s_w_circ = 0.0
+                else:
+                    mean_delta_s = mean(disk['circ_entropy_delta'])
+                    mean_total_s_no_circ = mean(disk['entropy'])
+                    mean_total_s_w_circ = mean(disk['circ_entropy_delta'] + disk['entropy'])
 
                 df2['total_new_entropy_disk'] = mean_total_s_w_circ
                 df2['delta_s_circ_disk'] = mean_delta_s
