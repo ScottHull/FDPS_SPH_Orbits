@@ -120,6 +120,8 @@ def add_times():
 
 
 def plot_vmfs():
+    fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
+    axs = axs.flatten()
     for runs in ["new", "old"]:
         r = "n"
         vmf_total_index = 0
@@ -158,8 +160,6 @@ def plot_vmfs():
             axs[vmf_no_circ_index].plot(
                 times, vmfs_without_circ, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
             )
-    fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
-    axs = axs.flatten()
     for ax in axs:
         ax.grid(alpha=0.4)
         ax.legend(loc='upper right')
@@ -173,6 +173,44 @@ def plot_vmfs():
 
     fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
     axs = axs.flatten()
+    for runs in ["new", "old"]:
+        r = "n"
+        vmf_total_index = 0
+        vmf_no_circ_index = 1
+        if runs == "old":
+            r = "o"
+            vmf_total_index += 2
+            vmf_no_circ_index += 2
+        for cd in cutoff_densities:
+            times = []
+            vmfs_total = []
+            vmfs_without_circ = []
+            delta_s_circ = []
+            total_ss = []
+            for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+                print("at {} // {} // {}".format(runs, cd, iteration))
+                output_name = "{}_{}_{}".format(cd, angle, runs)
+                to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
+                df = pd.read_csv(f2)
+                formatted_time = df['time']
+                vmf_no_circ = df['vmf_no_circ']
+                vmf_total = df['vmf_circ']
+                total_s = df['total_new_entropy_disk']
+                delta_s_due_to_circ = df['delta_s_circ_disk']
+                s_no_circ = df['entropy_no_circ_disk']
+                total_ss.append(total_s)
+                delta_s_circ.append(delta_s_due_to_circ)
+
+                times.append(formatted_time)
+                vmfs_total.append(vmf_total * 100)
+                vmfs_without_circ.append(vmf_no_circ * 100)
+            axs[vmf_total_index].plot(
+                times, total_ss, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
+            )
+            axs[vmf_no_circ_index].plot(
+                times, delta_s_circ, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
+            )
     for ax in axs:
         ax.grid(alpha=0.4)
         ax.legend(loc='upper right')
