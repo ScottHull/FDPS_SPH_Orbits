@@ -171,7 +171,7 @@ def plot_vmfs():
     axs[3].set_xlabel("Time (hrs)")
     plt.savefig("vmf_w_wo_circ.png", format='png', dpi=200)
 
-    fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
+    fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all')
     axs = axs.flatten()
     for runs in ["new", "old"]:
         r = "n"
@@ -231,7 +231,7 @@ def fix_entropies():
                 output_name = "{}_{}_{}".format(cd, angle, runs)
                 to_path = base_path + output_name + "/circularized_{}".format(output_name)
                 to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
-                f1 = to_path2 + "/{}.csv".format(angle, runs, iteration)
+                f1 = to_path + "/{}.csv".format(iteration)
                 f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
                 df = pd.read_csv(f1)
                 df2 = pd.read_csv(f2)
@@ -239,10 +239,10 @@ def fix_entropies():
                 mean_total_s_no_circ = mean(df['entropy'])
                 mean_total_s_w_circ = mean(df['circ_entropy_delta'] + df['entropy'])
 
-                df['total_new_entropy_disk'] = mean_total_s_w_circ
-                df['delta_s_circ_disk'] = mean_delta_s
-                df['entropy_no_circ_disk'] = mean_total_s_no_circ
-                df.to_csv(f2)
+                df2['total_new_entropy_disk'] = mean_total_s_w_circ
+                df2['delta_s_circ_disk'] = mean_delta_s
+                df2['entropy_no_circ_disk'] = mean_total_s_no_circ
+                df2.to_csv(f2)
 
 
 
