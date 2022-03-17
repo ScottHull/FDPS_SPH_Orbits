@@ -456,9 +456,8 @@ def __build_scene(d):
             # )
             positions = zip(df['x'], df['y'], df['z'])
             velocities = list(zip(df['vx'], df['vy'], df['vz']))
-            masses = list(df['mass'])
             axs[index_new].scatter(
-                df['x'], df['y'], s=1, color=[cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
+                df['x'], df['y'], s=1, color=[cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
                                       enumerate(positions)]
             )
             axs[index_new].set_title(n + " {} - {} hrs".format(iteration, formatted_time))
@@ -469,10 +468,9 @@ def __build_scene(d):
             # )
             positions = zip(df['x'], df['y'], df['z'])
             velocities = list(zip(df['vx'], df['vy'], df['vz']))
-            masses = list(df['mass'])
             axs[index_old].scatter(
                 df['x'], df['y'], s=1,
-                color=[cmap(normalizer(masses[index] * np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
+                color=[cmap(normalizer(np.linalg.norm(np.cross(p, velocities[index])))) for index, p in
                        enumerate(positions)]
             )
             axs[index_old].set_title(n + " {} - {} hrs".format(iteration, formatted_time))

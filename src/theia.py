@@ -88,10 +88,7 @@ class LunaToTheia:
 
     def get_and_combine_files_from_iteration(self, remote_path, num_processes, iteration,
                                              to_base_dir="/scratch/shull4"):
-        server = "epsl.earth.rochester.edu"
-        user = "scotthull"
-        password = "PASSWORD"
-        ssh = self.createSSHClient(server, user, password)
+        ssh = self.createSSHClient(self.theia_server, self.theia_user, self.theia_pw)
         pool = mp.Pool(5)
         client = SCPClient(ssh.get_transport())
         to_path = to_base_dir + "/{}".format(randint(0, 100000))

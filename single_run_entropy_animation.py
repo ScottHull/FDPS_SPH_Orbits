@@ -18,10 +18,11 @@ from src.geometry import get_impact_geometry_from_formatted, get_velocity_profil
 from src.animate import animate
 from src.identify import ParticleMap
 from src.combine import CombineFile
+from src.theia import LunaToTheia
 
 plt.style.use("dark_background")
 
-path = base_path = "/home/theia/scotthull/Paper1_SPH/gi/5_b073_new_high/5_b073_new_high"
+path = "/home/theia/scotthull/Paper1_SPH/gi/5_b073_new_high/5_b073_new_high"
 to_path = "{}_entropy".format(path.split("/")[-1])
 if not os.path.exists(to_path):
     os.mkdir(to_path)
@@ -35,12 +36,14 @@ max_normalize = 8000
 normalizer = Normalize(min_normalize, max_normalize)
 cmap = cm.get_cmap('jet')
 
+s = "epsl.earth.rochester.edu"
+u = "scotthull"
+p = ""
+theia = LunaToTheia(s, u, p)
+
 for iteration in np.arange(start_iteration, end_iteration + increment, increment):
-    to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
-    cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
-    combined_file = cf.combine()
-    formatted_time = round(cf.sim_time * 0.000277778, 2)
-    f = os.getcwd() + "/{}".format(to_fname)
+    f = theia.get_and_combine_files_from_iteration(remote_path=path, num_processes=number_processes,
+                                                   iteration=iteration, to_base_dir="/scratch/shull4")
     df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t")
     os.remove(f)
     x, y, z = df[3], df[4], df[5]
