@@ -72,9 +72,9 @@ def mp_task(arg):
     pm.solve(particles=particles, phase_path=phase_path, report_name="{}-report.txt".format(output_name),
              iteration=iteration, simulation_time=formatted_time)
     write_report_at_time(particles=particles, fname=f1)
-    mean_s_no_circ = mean([p.entropy if p.label == "DISK" else 0 for p in particles])
-    mean_delta_s_circ = mean([p.circularization_entropy_delta if p.label == "DISK" else 0 for p in particles])
-    mean_total_s = mean([p.entropy + p.circularization_entropy_delta if p.label == "DISK" else 0 for p in particles])
+    mean_s_no_circ = mean([p.entropy if p.label == "DISK" for p in particles])
+    mean_delta_s_circ = mean([p.circularization_entropy_delta if p.label == "DISK" for p in particles])
+    mean_total_s = mean([p.entropy + p.circularization_entropy_delta if p.label == "DISK" for p in particles])
     vmf_no_circ = calc_vapor_mass_fraction(particles=particles, phase_path=phase_path)
     vmf_circ = calc_vapor_mass_fraction_with_circularization(particles=particles, phase_path=phase_path)
     line = "{},{},{},{},{},{},{},{}\n".format(
@@ -221,6 +221,29 @@ def plot_vmfs():
     axs[2].set_xlabel("Time (hrs)")
     axs[3].set_xlabel("Time (hrs)")
     plt.savefig("s_w_wo_circ.png", format='png', dpi=200)
+
+
+def fix_entropies():
+    for runs in ["new", "old"]:
+        for cd in cutoff_densities:
+            for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+                print("at {} // {} // {}".format(runs, cd, iteration))
+                output_name = "{}_{}_{}".format(cd, angle, runs)
+                to_path = base_path + output_name + "/circularized_{}".format(output_name)
+                to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+                f1 = to_path2 + "/{}.csv".format(angle, runs, iteration)
+                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
+                df = pd.read_csv(f1)
+                df2 = pd.read_csv(f2)
+                mean_delta_s = mean(df['circ_entropy_delta'])
+                mean_total_s_no_circ = mean(df['entropy'])
+                mean_total_s_w_circ = mean(df['circ_entropy_delta'] + df['entropy'])
+
+                df['total_new_entropy_disk'] = mean_total_s_w_circ
+                df['delta_s_circ_disk'] = mean_delta_s
+                df['entropy_no_circ_disk'] = mean_total_s_no_circ
+                df.to_csv(f2)
+
 
 
 def fix_delimiting():
