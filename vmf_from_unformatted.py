@@ -148,7 +148,7 @@ def get_all_sims(high=True):
                 names.append(output_name)
                 title_name = tformat.format(cd, angle, n) + "-high"
                 titles.append(title_name)
-    return names
+    return names, titles
 
 
 
