@@ -172,6 +172,8 @@ def plot_vmfs():
             print("at {}, {}".format(output_name, iteration))
             to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
             f2 = to_path2 + "/vmf_with_circ_{}.csv".format(output_name, iteration)
+            if "high" in output_name:
+                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}_high.csv".format(angle, runs, iteration)
             df = pd.read_csv(f2)
             formatted_time = df['time']
             vmf_no_circ = df['vmf_no_circ']
@@ -220,6 +222,8 @@ def plot_vmfs():
             print("at {}, {}".format(output_name, iteration))
             to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
             f2 = to_path2 + "/vmf_with_circ_{}.csv".format(output_name, iteration)
+            if "high" in output_name:
+                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}_high.csv".format(angle, runs, iteration)
             df = pd.read_csv(f2)
             formatted_time = df['time']
             vmf_no_circ = df['vmf_no_circ']
@@ -260,6 +264,8 @@ def fix_entropies():
             to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
             f1 = to_path + "/{}.csv".format(iteration)
             f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
+            if "high" in output_name:
+                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}_high.csv".format(angle, runs, iteration)
             df = pd.read_csv(f1)
             df2 = pd.read_csv(f2)
             disk = df[df['label'] == "DISK"]
