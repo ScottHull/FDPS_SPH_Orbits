@@ -129,47 +129,68 @@ def add_times():
                 df.to_csv(f2)
 
 
+def get_all_sims(high=True):
+    fformat = "{}_{}_{}"
+    tformat = "{}{}{}"
+    names = []
+    titles = []
+    for runs in ["new", "old"]:
+        n = "n"
+        if runs == "old":
+            n = "o"
+        for cd in cutoff_densities:
+            output_name = fformat.format(cd, angle, runs)
+            title_name = tformat.format(cd, angle, n)
+            titles.append(title_name)
+            names.append(output_name)
+            if cd == 5 and high and runs == "new":
+                output_name = fformat.format(cd, angle, runs) + "_high"
+                names.append(output_name)
+                title_name = tformat.format(cd, angle, n) + "-high"
+                titles.append(title_name)
+    return names
+
+
+
 def plot_vmfs():
     fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
     axs = axs.flatten()
-    for runs in ["new", "old"]:
-        r = "n"
+    sims, titles = get_all_sims(high=True)
+    for index, output_name in enumerate(sims):
+        print("at {}".format(output_name))
         vmf_total_index = 0
         vmf_no_circ_index = 1
-        if runs == "old":
-            r = "o"
+        if "old" in output_name:
             vmf_total_index += 2
             vmf_no_circ_index += 2
-        for cd in cutoff_densities:
-            times = []
-            vmfs_total = []
-            vmfs_without_circ = []
-            delta_s_circ = []
-            total_ss = []
-            for iteration in np.arange(min_iteration, max_iteration + increment, increment):
-                print("at {} // {} // {}".format(runs, cd, iteration))
-                output_name = "{}_{}_{}".format(cd, angle, runs)
-                to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
-                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
-                df = pd.read_csv(f2)
-                formatted_time = df['time']
-                vmf_no_circ = df['vmf_no_circ']
-                vmf_total = df['vmf_circ']
-                total_s = df['total_new_entropy_disk']
-                delta_s_due_to_circ = df['delta_s_circ_disk']
-                s_no_circ = df['entropy_no_circ_disk']
-                total_ss.append(total_s)
-                delta_s_circ.append(delta_s_due_to_circ)
+        times = []
+        vmfs_total = []
+        vmfs_without_circ = []
+        delta_s_circ = []
+        total_ss = []
+        for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+            print("at {}, {}".format(output_name, iteration))
+            to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+            f2 = to_path2 + "/vmf_with_circ_{}.csv".format(output_name, iteration)
+            df = pd.read_csv(f2)
+            formatted_time = df['time']
+            vmf_no_circ = df['vmf_no_circ']
+            vmf_total = df['vmf_circ']
+            total_s = df['total_new_entropy_disk']
+            delta_s_due_to_circ = df['delta_s_circ_disk']
+            s_no_circ = df['entropy_no_circ_disk']
+            total_ss.append(total_s)
+            delta_s_circ.append(delta_s_due_to_circ)
 
-                times.append(formatted_time)
-                vmfs_total.append(vmf_total * 100)
-                vmfs_without_circ.append(vmf_no_circ * 100)
-            axs[vmf_total_index].plot(
-                times, vmfs_total, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
-            )
-            axs[vmf_no_circ_index].plot(
-                times, vmfs_without_circ, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
-            )
+            times.append(formatted_time)
+            vmfs_total.append(vmf_total * 100)
+            vmfs_without_circ.append(vmf_no_circ * 100)
+        axs[vmf_total_index].plot(
+            times, vmfs_total, linewidth=2.0, label=titles[index]
+        )
+        axs[vmf_no_circ_index].plot(
+            times, vmfs_without_circ, linewidth=2.0, label=titles[index]
+        )
     for ax in axs:
         ax.grid(alpha=0.4)
         ax.legend(loc='upper right')
@@ -183,44 +204,41 @@ def plot_vmfs():
 
     fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all')
     axs = axs.flatten()
-    for runs in ["new", "old"]:
-        r = "n"
+    for index, output_name in enumerate(sims):
+        print("at {}".format(output_name))
         vmf_total_index = 0
         vmf_no_circ_index = 1
-        if runs == "old":
-            r = "o"
+        if "old" in output_name:
             vmf_total_index += 2
             vmf_no_circ_index += 2
-        for cd in cutoff_densities:
-            times = []
-            vmfs_total = []
-            vmfs_without_circ = []
-            delta_s_circ = []
-            total_ss = []
-            for iteration in np.arange(min_iteration, max_iteration + increment, increment):
-                print("at {} // {} // {}".format(runs, cd, iteration))
-                output_name = "{}_{}_{}".format(cd, angle, runs)
-                to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
-                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
-                df = pd.read_csv(f2)
-                formatted_time = df['time']
-                vmf_no_circ = df['vmf_no_circ']
-                vmf_total = df['vmf_circ']
-                total_s = df['total_new_entropy_disk']
-                delta_s_due_to_circ = df['delta_s_circ_disk']
-                s_no_circ = df['entropy_no_circ_disk']
-                total_ss.append(total_s)
-                delta_s_circ.append(delta_s_due_to_circ)
+        times = []
+        vmfs_total = []
+        vmfs_without_circ = []
+        delta_s_circ = []
+        total_ss = []
+        for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+            print("at {}, {}".format(output_name, iteration))
+            to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+            f2 = to_path2 + "/vmf_with_circ_{}.csv".format(output_name, iteration)
+            df = pd.read_csv(f2)
+            formatted_time = df['time']
+            vmf_no_circ = df['vmf_no_circ']
+            vmf_total = df['vmf_circ']
+            total_s = df['total_new_entropy_disk']
+            delta_s_due_to_circ = df['delta_s_circ_disk']
+            s_no_circ = df['entropy_no_circ_disk']
+            total_ss.append(total_s)
+            delta_s_circ.append(delta_s_due_to_circ)
 
-                times.append(formatted_time)
-                vmfs_total.append(vmf_total * 100)
-                vmfs_without_circ.append(vmf_no_circ * 100)
-            axs[vmf_total_index].plot(
-                times, total_ss, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
-            )
-            axs[vmf_no_circ_index].plot(
-                times, delta_s_circ, linewidth=2.0, label="{}{}{}".format(cd, angle, runs)
-            )
+            times.append(formatted_time)
+            vmfs_total.append(vmf_total * 100)
+            vmfs_without_circ.append(vmf_no_circ * 100)
+        axs[vmf_total_index].plot(
+            times, total_ss, linewidth=2.0, label=titles[index]
+        )
+        axs[vmf_no_circ_index].plot(
+            times, delta_s_circ, linewidth=2.0, label=titles[index]
+        )
     for ax in axs:
         ax.grid(alpha=0.4)
         ax.legend(loc='upper right')
@@ -234,31 +252,30 @@ def plot_vmfs():
 
 
 def fix_entropies():
-    for runs in ["new", "old"]:
-        for cd in cutoff_densities:
-            for iteration in np.arange(min_iteration, max_iteration + increment, increment):
-                print("at {} // {} // {}".format(runs, cd, iteration))
-                output_name = "{}_{}_{}".format(cd, angle, runs)
-                to_path = base_path + output_name + "/circularized_{}".format(output_name)
-                to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
-                f1 = to_path + "/{}.csv".format(iteration)
-                f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
-                df = pd.read_csv(f1)
-                df2 = pd.read_csv(f2)
-                disk = df[df['label'] == "DISK"]
-                if len(disk.index) == 0:
-                    mean_delta_s = 0.0
-                    mean_total_s_no_circ = 0.0
-                    mean_total_s_w_circ = 0.0
-                else:
-                    mean_delta_s = mean(disk['circ_entropy_delta'])
-                    mean_total_s_no_circ = mean(disk['entropy'])
-                    mean_total_s_w_circ = mean(disk['circ_entropy_delta'] + disk['entropy'])
+    sims, titles = get_all_sims(high=True)
+    for output_name in sims:
+        for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+            print("at {}".format(output_name))
+            to_path = base_path + output_name + "/circularized_{}".format(output_name)
+            to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+            f1 = to_path + "/{}.csv".format(iteration)
+            f2 = to_path2 + "/vmf_with_circ_{}_{}_{}.csv".format(angle, runs, iteration)
+            df = pd.read_csv(f1)
+            df2 = pd.read_csv(f2)
+            disk = df[df['label'] == "DISK"]
+            if len(disk.index) == 0:
+                mean_delta_s = 0.0
+                mean_total_s_no_circ = 0.0
+                mean_total_s_w_circ = 0.0
+            else:
+                mean_delta_s = mean(disk['circ_entropy_delta'])
+                mean_total_s_no_circ = mean(disk['entropy'])
+                mean_total_s_w_circ = mean(disk['circ_entropy_delta'] + disk['entropy'])
 
-                df2['total_new_entropy_disk'] = mean_total_s_w_circ
-                df2['delta_s_circ_disk'] = mean_delta_s
-                df2['entropy_no_circ_disk'] = mean_total_s_no_circ
-                df2.to_csv(f2)
+            df2['total_new_entropy_disk'] = mean_total_s_w_circ
+            df2['delta_s_circ_disk'] = mean_delta_s
+            df2['entropy_no_circ_disk'] = mean_total_s_no_circ
+            df2.to_csv(f2)
 
 
 
