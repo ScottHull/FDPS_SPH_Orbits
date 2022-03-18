@@ -255,7 +255,7 @@ def fix_entropies():
     sims, titles = get_all_sims(high=True)
     for output_name in sims:
         for iteration in np.arange(min_iteration, max_iteration + increment, increment):
-            print("at {}".format(output_name))
+            print("at {} // {}".format(output_name, iteration))
             to_path = base_path + output_name + "/circularized_{}".format(output_name)
             to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
             f1 = to_path + "/{}.csv".format(iteration)
