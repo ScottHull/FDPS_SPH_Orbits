@@ -290,6 +290,46 @@ def fix_entropies():
             df2.to_csv(f2)
 
 
+def plot_entropies():
+    fig, axs = plt.subplots(2, 1, figsize=(16, 9), sharex='all', sharey='all')
+    axs = axs.flatten()
+    sims, titles = get_all_sims(high=True)
+    for index, output_name in enumerate(sims):
+        print("at {}".format(output_name))
+        plot_index = 0
+        if "old" in output_name:
+            plot_index = 1
+        times = []
+        s_no_circs = []
+        for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+            try:
+                to_path2 = base_path + output_name + "/circularized_{}_disk_descriptions".format(output_name)
+                o = output_name.split("_")
+                s = "{}_{}".format(o[1], o[2])
+                f2 = to_path2 + "/vmf_with_circ_{}_{}.csv".format(s, iteration)
+                if "high" in output_name:
+                    f2 = to_path2 + "/vmf_with_circ_{}_{}_high.csv".format(s, iteration)
+                df2 = pd.read_csv(f2)
+                formatted_time = df2['time'][0]
+                s_no_circ = df2['entropy_no_circ_disk'][0]
+                times.append(formatted_time)
+                s_no_circs.append(s_no_circ)
+            except:
+                pass
+        axs[plot_index].plot(
+            times, s_no_circs, linewidth=2.0, label=titles[index]
+        )
+    for ax in axs:
+        ax.legend(loc='upper left')
+        ax.grid(alpha=0.4)
+        ax.set_ylabel("Entropy")
+        ax.set_xlabel("Time (hrs)")
+    axs[0].set_title("Stewart M-ANEOS")
+    axs[1].set_title("GADGET M-ANEOS")
+    plt.savefig("s_no_circ.png", format='png', dpi=200)
+
+
+
 
 def fix_delimiting():
     def replace_str_index(text, index=0, replacement=''):
