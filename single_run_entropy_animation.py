@@ -54,7 +54,7 @@ def get_time(f, local=True):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 
-def plot_iteration(args):
+def plot_iteration_mp(args):
     iteration = args
     f = theia.get_and_combine_files_from_iteration(remote_path=path, num_processes=number_processes,
                                                    iteration=iteration, to_base_dir="/scratch/shull4")
@@ -91,7 +91,44 @@ def plot_iteration(args):
     os.remove(to_path + "/{}.png".format(iteration))
     os.remove(f)
 
+def plot_iteration_sp(args):
+    iteration = args
+    to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+    cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+    combined_file = cf.combine()
+    formatted_time = round(cf.sim_time * 0.000277778, 2)
+    f = os.getcwd() + "/{}".format(to_fname)
+    df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t")
+    os.remove(f)
+    x, y, z = df[3], df[4], df[5]
+    entropy = df[13]
+
+    fig = plt.figure(figsize=(10, 10))
+    ax = fig.add_subplot(111)
+    ax.set_xlim(-square_scale, square_scale)
+    ax.set_ylim(-square_scale, square_scale)
+    ax.set_xticks([], minor=False)
+    ax.set_yticks([], minor=False)
+    ax.axes.set_aspect('equal')
+    ax.scatter(
+        x, y, s=0.1,
+        color=[cmap(normalizer(i)) for i in entropy], marker="."
+    )
+    ax.set_title("5b073n-high ({} - {} hrs)".format(iteration, formatted_time))
+    sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+    sm.set_array([])
+    cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
+    cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+    cbar.ax.tick_params(labelsize=6)
+    # cbar.ax.set_title("Entropy", fontsize=6)
+    cbar.ax.set_title("Entropy", fontsize=8)
+    cbar.ax.yaxis.get_offset_text().set(size=6)  # change exponent font size
+    cbar.ax.xaxis.get_offset_text().set(size=6)  # change exponent font size
+    plt.savefig(to_path + "/{}.png".format(iteration))
+
 pool = mp.Pool(5)
-pool.map(plot_iteration, [[iteration] for iteration in np.arange(start_iteration, end_iteration + increment, increment)])
+# pool.map(plot_iteration_mp, [[iteration] for iteration in np.arange(start_iteration, end_iteration + increment, increment)])
+pool.map(plot_iteration_sp, [[iteration] for iteration in np.arange(start_iteration, end_iteration + increment, increment)])
+
 pool.close()
 pool.join()
