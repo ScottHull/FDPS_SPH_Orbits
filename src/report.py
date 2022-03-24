@@ -2,10 +2,63 @@ import os
 import pandas as pd
 import numpy as np
 from random import randint
+from statistics import mean
 import multiprocessing.dummy as mp
 
 from src.combine import CombineFile
 from src.identify import ParticleMap
+from src.vapor import calc_vapor_mass_fraction_from_formatted
+
+MASS_EARTH = 5.972 * 10 ** 24
+MASS_MOON = 7.34767309 * 10 ** 22
+L_EM = 3.5 * 10 ** 34
+ROCHE_LIM = 2.9 * (6371 * 1000)
+G = 6.67408 * 10 ** -11
+
+def predicted_moon_mass(disk):
+    term1 = 1.9 * (sum(disk['angular_momentum']) / ((G * MASS_EARTH * ROCHE_LIM) ** (1 / 2)))
+    term2 = 1.1 * sum(disk['mass'])
+    term3 = 1.9 * (0.05 * sum(disk['mass']))  # assumption made by Canup & Asphaug 2001, escpaing mass = 0.05 M_D
+    return (term1 - term2 - term3) / MASS_MOON
+
+
+def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, sim_name):
+    planet = particle_df[particle_df['label'] == "PLANET"]
+    disk = particle_df[particle_df['label'] == "DISK"]
+    filtered_disk = disk[disk['delta_s_circ_disk'] <= 5000]  # have some highly inclined orbits sometimes
+    escaping = particle_df[particle_df['label'] == "ESCAPE"]
+    disk_iron = disk[disk['tag'] % 2 != 0]
+    vmf = calc_vapor_mass_fraction_from_formatted(df=particle_df, phase_path=phase_path)
+    data = {
+        "NAME": sim_name,
+        "ITERATION": iteration,
+        "TIME_HRS": formatted_time,
+        "PLANET_MASS": "{} M_E".format(sum(planet['mass']) / MASS_EARTH),
+        "DISK_MASS": "{} M_L".format(sum(disk['mass']) / MASS_MOON),
+        "ESCAPING_MASS": "{} M_L".format(sum(escaping['mass']) / MASS_MOON),
+        "NUM_PARTICLES_PLANET": len(planet),
+        "NUM_PARTICLES_DISK": len(disk),
+        "NUM_PARTICLES_ESCAPING": len(escaping),
+        "TOTAL_PARTICLES": len(particle_df),
+        "DISK_MASS_BEYOND_ROCHE": "{} M_L".format(sum(disk[disk['radius'] > ROCHE_LIM]['mass']) / MASS_MOON),
+        "NUM_PARTICLES_BEYOND_ROCHE": len(disk[disk['radius'] > ROCHE_LIM]),
+        "DISK_IRON_MASS_FRACTION": "{} %".format(sum(disk_iron['mass']) / sum(disk['mass']) * 100),
+        "DISK_MASS_FRACTION_BEYOND_ROCHE": "{} %".format(sum(disk_iron[disk_iron['radius'] > ROCHE_LIM]['mass']) /
+                                                         sum(disk['mass']) * 100),
+        "AVERAGE_PLANET_DENSITY": "{} kg/m3".format(mean(planet['planet_avg_density'])),
+        "PLANET_EQUATORIAL_RADIUS": "{} km".format(mean(planet['planet_radius_equatorial']) / 1000),
+        "PLANET_POLAR_RADIUS": "{} km".format(mean(planet['planet_radius_polar']) / 1000),
+        "DISK_ANGULAR_MOMENTUM": "{} L_EM".format(sum(disk['angular_momentum']) / L_EM),
+        "DISK_ANGULAR_MOMENTUM_BEYOND_ROCHE": "{} L_EM".format(sum(disk[disk['radius'] > ROCHE_LIM]['angular_momentum'])),
+        "DISK VMF": "{} %".format(vmf * 100),
+        "TOTAL_ANGULAR_MOMENTUM": "{} L_EM".format(sum(particle_df['angular_momentum'])),
+        "MEAN_DISK_ENTROPY": mean(disk['entropy']),
+        "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": mean(filtered_disk['delta_s_circ_disk']),
+        "PREDICTED_MOON_MASS": "{} M_L".format(predicted_moon_mass(disk)),
+    }
+    if not os.path.exists(to_path):
+        os.mkdir(to_path)
+    pd.DataFrame(data).to_csv(to_path + "/{}.csv".format(iteration))
 
 
 def write_report_at_time(particles, fname):
@@ -36,6 +89,9 @@ def write_report_at_time(particles, fname):
         "circ_energy_delta": [p.circularization_energy_delta for p in particles],
         "circ_entropy_delta": [p.circularization_entropy_delta for p in particles],
         "angular_momentum": [p.angular_momentum for p in particles],
+        "planet_radius_equatorial": [p.a for p in particles],
+        "planet_radius_polar": [p.b for p in particles],
+        "planet_avg_density": [p.avg_planet_density for p in particles],
     })
     df.to_csv(fname)
     return df
@@ -102,7 +158,7 @@ class BuildReports:
             "inclination": [p.inclination for p in particles],
             "orbital_energy": [p.orbital_energy for p in particles],
             "semi_major_axis": [p.semi_major_axis for p in particles],
-            "mass_grav_body": [int(p.mass_grav_body) for p in particles]
+            "mass_grav_body": [int(p.mass_grav_body) for p in particles],
         })
 
     def __get_end_state(self):

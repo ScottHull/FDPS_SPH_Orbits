@@ -275,14 +275,15 @@ def fix_entropies():
             df = pd.read_csv(f1)
             df2 = pd.read_csv(f2)
             disk = df[df['label'] == "DISK"]
+            filtered_disk = df[df['circ_entropy_delta'] <= 5000]
             if len(disk.index) == 0:
                 mean_delta_s = 0.0
                 mean_total_s_no_circ = 0.0
                 mean_total_s_w_circ = 0.0
             else:
-                mean_delta_s = mean(disk['circ_entropy_delta'])
-                mean_total_s_no_circ = mean(disk['entropy'])
-                mean_total_s_w_circ = mean(disk['circ_entropy_delta'] + disk['entropy'])
+                mean_delta_s = mean(filtered_disk['circ_entropy_delta'])
+                mean_total_s_no_circ = mean(filtered_disk['entropy'])
+                mean_total_s_w_circ = mean(filtered_disk['circ_entropy_delta'] + filtered_disk['entropy'])
 
             df2['total_new_entropy_disk'] = mean_total_s_w_circ
             df2['delta_s_circ_disk'] = mean_delta_s

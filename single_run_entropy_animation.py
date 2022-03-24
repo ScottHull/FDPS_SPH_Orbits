@@ -92,7 +92,7 @@ def plot_iteration_mp(args):
     os.remove(f)
 
 def plot_iteration_sp(args):
-    iteration = args
+    iteration = args[0]
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
     cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
     combined_file = cf.combine()
@@ -124,7 +124,7 @@ def plot_iteration_sp(args):
     cbar.ax.set_title("Entropy", fontsize=8)
     cbar.ax.yaxis.get_offset_text().set(size=6)  # change exponent font size
     cbar.ax.xaxis.get_offset_text().set(size=6)  # change exponent font size
-    plt.savefig(to_path + "/{}.png".format(iteration))
+    plt.savefig(to_path + "/{}.png".format(iteration), dpi=200)
 
 pool = mp.Pool(5)
 # pool.map(plot_iteration_mp, [[iteration] for iteration in np.arange(start_iteration, end_iteration + increment, increment)])

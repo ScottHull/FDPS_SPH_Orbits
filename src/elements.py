@@ -21,6 +21,10 @@ class Particle:
         self.temperature = temperature
         # self.soundsped = soundspeed
 
+        self.a = None
+        self.b = None
+        self.avg_planet_density = None
+
         self.label = None  # PLANET, DISK, or ESCAPE
         self.__G = 6.674 * 10 ** -11
         self.mass_grav_body = mass_grav_body

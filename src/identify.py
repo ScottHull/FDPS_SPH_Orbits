@@ -164,6 +164,9 @@ class ParticleMap:
                         ]
             for p in particles:
                 try:
+                    p.a = self.a
+                    p.b = self.b
+                    p.avg_planet_density = self.avg_density
                     p.recalculate_elements(mass_grav_body=self.mass_protoearth)
                 except:
                     pass
