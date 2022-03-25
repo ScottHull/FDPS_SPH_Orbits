@@ -56,7 +56,9 @@ def get_all_sims(high=True):
 
 def build_report(args):
     try:
-        index, output_name = args
+        index, output_name, iteration = args
+        to_path = base_path + output_name + "/circularized_{}".format(output_name)
+        f1 = to_path + "/{}.csv".format(iteration)
         phase_path = new_phase_path
         if "old" in output_name:
             phase_path = old_phase_path
@@ -82,6 +84,6 @@ def build_report(args):
 
 sims, titles = get_all_sims(high=True)
 pool = mp.Pool(5)
-pool.map(build_report, [[index, output_name] for index, output_name in enumerate(sims)])
+pool.map(build_report, [[index, output_name, max_iteration] for index, output_name in enumerate(sims)])
 pool.close()
 pool.join()
