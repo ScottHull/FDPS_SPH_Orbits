@@ -7,7 +7,7 @@ import multiprocessing as mp
 
 from src.combine import CombineFile
 from src.identify import ParticleMap
-from src.report import get_sim_report
+from src.report import get_sim_report, write_report_at_time
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 runs = "new"
@@ -55,26 +55,30 @@ def get_all_sims(high=True):
 
 
 def build_report(args):
-    index, output_name = args
-    phase_path = new_phase_path
-    if "old" in output_name:
-        phase_path = old_phase_path
-    title = titles[index]
-    path = base_path + "{}/{}".format(output_name, output_name)
-    to_fname = "merged_{}_{}.dat".format(max_iteration, randint(0, 100000))
-    cf = CombineFile(num_processes=number_processes, time=max_iteration, output_path=path, to_fname=to_fname)
-    combined_file = cf.combine()
-    formatted_time = round(cf.sim_time * 0.000277778, 2)
-    os.remove(to_fname)
-    f = os.getcwd() + "/{}".format(to_fname)
-    pm = ParticleMap(path=f, center=True, relative_velocity=False)
-    particles = pm.collect_particles(find_orbital_elements=True)
-    os.remove(to_fname)
-    pm.solve(particles=particles, phase_path=phase_path, report_name="{}-report.txt".format(output_name),
-             iteration=max_iteration, simulation_time=formatted_time)
-    to_report_path = base_path + "{}/{}_reports".format(output_name, output_name)
-    get_sim_report(particle_df=particles, phase_path=phase_path, formatted_time=formatted_time,
-                   iteration=max_iteration, sim_name=title, to_path=to_report_path)
+    try:
+        index, output_name = args
+        phase_path = new_phase_path
+        if "old" in output_name:
+            phase_path = old_phase_path
+        title = titles[index]
+        path = base_path + "{}/{}".format(output_name, output_name)
+        to_fname = "merged_{}_{}.dat".format(max_iteration, randint(0, 100000))
+        cf = CombineFile(num_processes=number_processes, time=max_iteration, output_path=path, to_fname=to_fname)
+        combined_file = cf.combine()
+        formatted_time = round(cf.sim_time * 0.000277778, 2)
+        os.remove(to_fname)
+        f = os.getcwd() + "/{}".format(to_fname)
+        pm = ParticleMap(path=f, center=True, relative_velocity=False)
+        particles = pm.collect_particles(find_orbital_elements=True)
+        os.remove(to_fname)
+        pm.solve(particles=particles, phase_path=phase_path, report_name="{}-report.txt".format(output_name),
+                 iteration=max_iteration, simulation_time=formatted_time)
+        to_report_path = base_path + "{}/{}_reports".format(output_name, output_name)
+        write_report_at_time(particles=particles, fname=f1)
+        get_sim_report(particle_df=particles, phase_path=phase_path, formatted_time=formatted_time,
+                       iteration=max_iteration, sim_name=title, to_path=to_report_path)
+    except Exception as e:
+        pass
 
 sims, titles = get_all_sims(high=True)
 pool = mp.Pool(5)
