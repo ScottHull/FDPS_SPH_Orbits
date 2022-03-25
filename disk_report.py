@@ -67,7 +67,6 @@ def build_report(args):
     cf = CombineFile(num_processes=number_processes, time=max_iteration, output_path=path, to_fname=to_fname)
     combined_file = cf.combine()
     formatted_time = round(cf.sim_time * 0.000277778, 2)
-    os.remove(to_fname)
     f = os.getcwd() + "/{}".format(to_fname)
     pm = ParticleMap(path=f, center=True, relative_velocity=False)
     particles = pm.collect_particles(find_orbital_elements=True)
