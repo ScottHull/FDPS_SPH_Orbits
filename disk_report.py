@@ -55,34 +55,31 @@ def get_all_sims(high=True):
 
 
 def build_report(args):
-    try:
-        index, output_name, iteration = args
-        to_path = base_path + output_name + "/circularized_{}".format(output_name)
-        f1 = to_path + "/{}.csv".format(iteration)
-        phase_path = new_phase_path
-        if "old" in output_name:
-            phase_path = old_phase_path
-        title = titles[index]
-        path = base_path + "{}/{}".format(output_name, output_name)
-        to_fname = "merged_{}_{}.dat".format(max_iteration, randint(0, 100000))
-        cf = CombineFile(num_processes=number_processes, time=max_iteration, output_path=path, to_fname=to_fname)
-        combined_file = cf.combine()
-        formatted_time = round(cf.sim_time * 0.000277778, 2)
-        os.remove(to_fname)
-        f = os.getcwd() + "/{}".format(to_fname)
-        pm = ParticleMap(path=f, center=True, relative_velocity=False)
-        particles = pm.collect_particles(find_orbital_elements=True)
-        os.remove(to_fname)
-        pm.solve(particles=particles, phase_path=phase_path, report_name="{}-report.txt".format(output_name),
-                 iteration=max_iteration, simulation_time=formatted_time)
-        to_report_path = base_path + "{}/{}_reports".format(output_name, output_name)
-        write_report_at_time(particles=particles, fname=f1)
-        get_sim_report(particle_df=particles, phase_path=phase_path, formatted_time=formatted_time,
-                       iteration=max_iteration, sim_name=title, to_path=to_report_path)
-    except Exception as e:
-        pass
+    index, output_name = args
+    to_path = base_path + output_name + "/circularized_{}".format(output_name)
+    f1 = to_path + "/{}.csv".format(iteration)
+    phase_path = new_phase_path
+    if "old" in output_name:
+        phase_path = old_phase_path
+    title = titles[index]
+    path = base_path + "{}/{}".format(output_name, output_name)
+    to_fname = "merged_{}_{}.dat".format(max_iteration, randint(0, 100000))
+    cf = CombineFile(num_processes=number_processes, time=max_iteration, output_path=path, to_fname=to_fname)
+    combined_file = cf.combine()
+    formatted_time = round(cf.sim_time * 0.000277778, 2)
+    os.remove(to_fname)
+    f = os.getcwd() + "/{}".format(to_fname)
+    pm = ParticleMap(path=f, center=True, relative_velocity=False)
+    particles = pm.collect_particles(find_orbital_elements=True)
+    os.remove(to_fname)
+    pm.solve(particles=particles, phase_path=phase_path, report_name="{}-report.txt".format(output_name),
+             iteration=max_iteration, simulation_time=formatted_time)
+    to_report_path = base_path + "{}/{}_reports".format(output_name, output_name)
+    write_report_at_time(particles=particles, fname=f1)
+    get_sim_report(particle_df=particles, phase_path=phase_path, formatted_time=formatted_time,
+                   iteration=max_iteration, sim_name=title, to_path=to_report_path)
 
-sims, titles = get_all_sims(high=True)
+sims, titles = get_all_sims(high=False)
 pool = mp.Pool(5)
 pool.map(build_report, [[index, output_name, max_iteration] for index, output_name in enumerate(sims)])
 pool.close()
