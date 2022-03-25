@@ -55,7 +55,7 @@ def get_all_sims(high=True):
 
 
 def build_report(args):
-    index, output_name = args
+    index, output_name, iteration = args
     to_path = base_path + output_name + "/circularized_{}".format(output_name)
     f1 = to_path + "/{}.csv".format(iteration)
     phase_path = new_phase_path
