@@ -25,7 +25,7 @@ def predicted_moon_mass(disk):
 def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, sim_name):
     planet = particle_df[particle_df['label'] == "PLANET"]
     disk = particle_df[particle_df['label'] == "DISK"]
-    filtered_disk = disk[disk['delta_s_circ_disk'] <= 5000]  # have some highly inclined orbits sometimes
+    filtered_disk = disk[disk['circ_entropy_delta'] <= 5000]  # have some highly inclined orbits sometimes
     escaping = particle_df[particle_df['label'] == "ESCAPE"]
     disk_iron = disk[disk['tag'] % 2 != 0]
     vmf = calc_vapor_mass_fraction_from_formatted(df=particle_df, phase_path=phase_path)
