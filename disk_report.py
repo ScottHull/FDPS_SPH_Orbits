@@ -75,7 +75,7 @@ def build_report(args):
              iteration=max_iteration, simulation_time=formatted_time)
     to_report_path = base_path + "{}/{}_reports".format(output_name, output_name)
     write_report_at_time(particles=particles, fname=f1)
-    get_sim_report(particle_df=particles, phase_path=phase_path, formatted_time=formatted_time,
+    get_sim_report(particle_df=pd.read_csv(f1), phase_path=phase_path, formatted_time=formatted_time,
                    iteration=max_iteration, sim_name=title, to_path=to_report_path)
 
 sims, titles = get_all_sims(high=False)
