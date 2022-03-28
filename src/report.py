@@ -58,7 +58,7 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
     }
     if not os.path.exists(to_path):
         os.mkdir(to_path)
-    pd.DataFrame(data).to_csv(to_path + "/{}.csv".format(iteration))
+    pd.DataFrame(data, index=list(range(len(data)))).to_csv(to_path + "/{}.csv".format(iteration))
 
 
 def write_report_at_time(particles, fname):
