@@ -53,7 +53,7 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
         "DISK VMF": "{} %".format(vmf * 100),
         "TOTAL_ANGULAR_MOMENTUM": "{} L_EM".format(sum(particle_df['angular_momentum'])),
         "MEAN_DISK_ENTROPY": mean(disk['entropy']),
-        "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": mean(filtered_disk['delta_s_circ_disk']),
+        "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": mean(filtered_disk['circ_entropy_delta']),
         "PREDICTED_MOON_MASS": "{} M_L".format(predicted_moon_mass(disk)),
     }
     if not os.path.exists(to_path):
