@@ -39,7 +39,7 @@ def make_file(args):
     df_new['TYPE'] = [0 if i % 2 == 0 else 1 for i in df[2]]
     df_new['VALUE1'] = df[13]
     new_fname = to_path + "/{}.dat".format(iteration)
-    df_new.to_csv(new_fname, sep=" ")
+    df_new.to_csv(new_fname, sep=" ", index=False)
     with open(new_fname, 'r+') as infile:
         content = infile.read()
         infile.seek(0, 0)
