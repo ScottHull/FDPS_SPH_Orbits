@@ -20,9 +20,10 @@ header = ["X", "Y", "Z", "VX", "VY", "VZ", "RADIUS", "ID", "TYPE", "VALUE1"]
 if not os.path.exists(to_path):
     os.mkdir(to_path)
 
-def make_file(iteration):
-    to_fname = "merged_{}_{}.dat".format(max_iteration, randint(0, 100000))
-    cf = CombineFile(num_processes=number_processes, time=max_iteration,
+def make_file(args):
+    iteration = args[0]
+    to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+    cf = CombineFile(num_processes=number_processes, time=iteration,
                      output_path=path_to_unformatted, to_fname=to_fname)
     combined_file = cf.combine()
     formatted_time = round(cf.sim_time * 0.000277778, 2)
