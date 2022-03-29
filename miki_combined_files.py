@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import csv
 import pandas as pd
@@ -41,7 +42,7 @@ def make_file(iteration):
     with open(new_fname, 'r+') as infile:
         content = infile.read()
         infile.seek(0, 0)
-        infile.write(formatted_time + "\n" + particle_count + "\n" + content)
+        infile.write(str(formatted_time) + "\n" + str(particle_count) + "\n" + content)
     infile.close()
 
 pool = mp.Pool(5)
