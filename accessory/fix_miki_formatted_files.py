@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import csv
 import pandas as pd
@@ -15,11 +16,10 @@ def get_time_and_particle_count(f):
 to_path = "/home/theia/scotthull/Paper1_SPH/gi/5_b073_new_high/miki_combined_format"
 
 for file in os.listdir(to_path):
-    df = pd.read_csv(file, skiprows=2, delimiter=" ")
+    df = pd.read_csv(to_path + "/" + file, skiprows=2, delimiter=" ")
     for header in df.keys():
         if header not in ["ID", "TYPE"]:
-            df[header] = ["{:.8E}".format(i) for i in df['header']]
-    os.remove(to_path)
+            df[header] = ["{:.8E}".format(i) for i in df[header]]
     fname = str(int(file.replace(".csv", ""))).zfill(4)
     df.to_csv(to_path + "/{}.dat".format(fname), sep=" ")
-
+    os.remove(to_path + "/" + file)
