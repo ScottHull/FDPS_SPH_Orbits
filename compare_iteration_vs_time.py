@@ -51,8 +51,8 @@ def get_all_sims(high=False):
 sims, titles = get_all_sims(high=False)
 data = {}
 for sim in sims:
+    data.update({sim: []})
     for iteration in np.arange(min_iteration, max_iteration + 1, 1):
-        data.update({sim: []})
         path = base_path + "{}/{}/".format(sim, sim)
         file = path + ftemplate.format(str(iteration).zfill(5),
                                        str(number_processes).zfill(5),
