@@ -14,7 +14,7 @@ runs = "new"
 angle = "b073"
 cutoff_densities = [5, 500, 1000, 2000]
 min_iteration = 0
-max_iteration = 1500
+max_iteration = 1800
 increment = 100
 number_processes = 200
 
