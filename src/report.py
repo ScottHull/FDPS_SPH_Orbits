@@ -28,6 +28,8 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
     filtered_disk = disk[disk['circ_entropy_delta'] <= 5000]  # have some highly inclined orbits sometimes
     escaping = particle_df[particle_df['label'] == "ESCAPE"]
     disk_iron = disk[disk['tag'] % 2 != 0]
+    from_target = disk[disk['tag'] <= 1]
+    from_theia = disk[disk['tag'] > 1]
     vmf = calc_vapor_mass_fraction_from_formatted(df=particle_df, phase_path=phase_path)
     data = {
         "NAME": sim_name,
@@ -55,6 +57,8 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
         "MEAN_DISK_ENTROPY": mean(disk['entropy']),
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": mean(filtered_disk['circ_entropy_delta']),
         "PREDICTED_MOON_MASS": "{} M_L".format(predicted_moon_mass(disk)),
+        "DISK_THEIA_MASS_FRACTION": "{} %".format((sum(from_theia['mass']) / (sum(from_theia['mass']) +
+                                                                              sum(from_target['mass']))) * 100.0)
     }
     if not os.path.exists(to_path):
         os.mkdir(to_path)
