@@ -47,9 +47,9 @@ def make_file(args):
     df_new['VALUE1'] = df[13]
     for header in headers:
         if header not in ['ID', "TYPE"]:
-            df_new[header] = ["{:.8E}".format(i) for i in df[header]]
+            df_new[header] = ["{:.8E}".format(i) for i in df_new[header]]
     new_fname = to_path + "/{}.dat".format(str(iteration).zfill(4))
-    df_new.to_csv(new_fname, sep=" ", index=False)
+    df_new.to_csv(new_fname, sep=" ", index=False, header=False)
     with open(new_fname, 'r+') as infile:
         content = infile.read()
         infile.seek(0, 0)
