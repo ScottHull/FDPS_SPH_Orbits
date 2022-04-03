@@ -15,11 +15,19 @@ L_EM = 3.5 * 10 ** 34
 ROCHE_LIM = 2.9 * (6371 * 1000)
 G = 6.67408 * 10 ** -11
 
+
 def predicted_moon_mass(disk):
     term1 = 1.9 * (sum(disk['angular_momentum']) / ((G * MASS_EARTH * ROCHE_LIM) ** (1 / 2)))
     term2 = 1.1 * sum(disk['mass'])
     term3 = 1.9 * (0.05 * sum(disk['mass']))  # assumption made by Canup & Asphaug 2001, escpaing mass = 0.05 M_D
     return (term1 - term2 - term3) / MASS_MOON
+
+
+def __mean(l):
+    try:
+        return mean(l)
+    except:
+        return 0.0
 
 
 def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, sim_name):
@@ -30,6 +38,19 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
     disk_iron = disk[disk['tag'] % 2 != 0]
     from_target = disk[disk['tag'] <= 1]
     from_theia = disk[disk['tag'] > 1]
+
+    disk_iron_mass_fraction = 0.0
+    disk_iron_mass_fraction_beyond_roche = 0.0
+    try:
+        disk_iron_mass_fraction = sum(disk_iron['mass']) / sum(disk['mass']) * 100.0
+    except:
+        pass
+    try:
+        disk_iron_mass_fraction_beyond_roche = sum(disk_iron[disk_iron['radius'] > ROCHE_LIM]['mass']) / sum(
+            disk['mass']) * 100.0
+    except:
+        pass
+
     vmf = calc_vapor_mass_fraction_from_formatted(df=particle_df, phase_path=phase_path)
     data = {
         "NAME": sim_name,
@@ -44,18 +65,18 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
         "TOTAL_PARTICLES": len(particle_df),
         "DISK_MASS_BEYOND_ROCHE": "{} M_L".format(sum(disk[disk['radius'] > ROCHE_LIM]['mass']) / MASS_MOON),
         "NUM_PARTICLES_BEYOND_ROCHE": len(disk[disk['radius'] > ROCHE_LIM]),
-        "DISK_IRON_MASS_FRACTION": "{} %".format(sum(disk_iron['mass']) / sum(disk['mass']) * 100),
-        "DISK_MASS_FRACTION_BEYOND_ROCHE": "{} %".format(sum(disk_iron[disk_iron['radius'] > ROCHE_LIM]['mass']) /
-                                                         sum(disk['mass']) * 100),
-        "AVERAGE_PLANET_DENSITY": "{} kg/m3".format(mean(planet['planet_avg_density'])),
-        "PLANET_EQUATORIAL_RADIUS": "{} km".format(mean(planet['planet_radius_equatorial']) / 1000),
-        "PLANET_POLAR_RADIUS": "{} km".format(mean(planet['planet_radius_polar']) / 1000),
+        "DISK_IRON_MASS_FRACTION": "{} %".format(disk_iron_mass_fraction),
+        "DISK_MASS_FRACTION_BEYOND_ROCHE": "{} %".format(disk_iron_mass_fraction_beyond_roche),
+        "AVERAGE_PLANET_DENSITY": "{} kg/m3".format(__mean(planet['planet_avg_density'])),
+        "PLANET_EQUATORIAL_RADIUS": "{} km".format(__mean(planet['planet_radius_equatorial']) / 1000),
+        "PLANET_POLAR_RADIUS": "{} km".format(__mean(planet['planet_radius_polar']) / 1000),
         "DISK_ANGULAR_MOMENTUM": "{} L_EM".format(sum(disk['angular_momentum']) / L_EM),
-        "DISK_ANGULAR_MOMENTUM_BEYOND_ROCHE": "{} L_EM".format(sum(disk[disk['radius'] > ROCHE_LIM]['angular_momentum']) / L_EM),
+        "DISK_ANGULAR_MOMENTUM_BEYOND_ROCHE": "{} L_EM".format(
+            sum(disk[disk['radius'] > ROCHE_LIM]['angular_momentum']) / L_EM),
         "DISK VMF": "{} %".format(vmf * 100),
         "TOTAL_ANGULAR_MOMENTUM": "{} L_EM".format(sum(particle_df['angular_momentum'])),
-        "MEAN_DISK_ENTROPY": mean(disk['entropy']),
-        "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": mean(filtered_disk['circ_entropy_delta']),
+        "MEAN_DISK_ENTROPY": __mean(disk['entropy']),
+        "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": __mean(filtered_disk['circ_entropy_delta']),
         "PREDICTED_MOON_MASS": "{} M_L".format(predicted_moon_mass(disk)),
         "DISK_THEIA_MASS_FRACTION": "{} %".format((sum(from_theia['mass']) / (sum(from_theia['mass']) +
                                                                               sum(from_target['mass']))) * 100.0)
@@ -99,6 +120,7 @@ def write_report_at_time(particles, fname):
     })
     df.to_csv(fname)
     return df
+
 
 class BuildReports:
 
