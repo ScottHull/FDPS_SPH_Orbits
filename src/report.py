@@ -41,6 +41,7 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
 
     disk_iron_mass_fraction = 0.0
     disk_iron_mass_fraction_beyond_roche = 0.0
+    theia_disk_mass_fraction = 0.0
     try:
         disk_iron_mass_fraction = sum(disk_iron['mass']) / sum(disk['mass']) * 100.0
     except:
@@ -48,6 +49,10 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
     try:
         disk_iron_mass_fraction_beyond_roche = sum(disk_iron[disk_iron['radius'] > ROCHE_LIM]['mass']) / sum(
             disk['mass']) * 100.0
+    except:
+        pass
+    try:
+        theia_disk_mass_fraction = (sum(from_theia['mass']) / (sum(from_theia['mass']) + sum(from_target['mass']))) * 100.0
     except:
         pass
 
@@ -78,8 +83,7 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
         "MEAN_DISK_ENTROPY": __mean(disk['entropy']),
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": __mean(filtered_disk['circ_entropy_delta']),
         "PREDICTED_MOON_MASS": "{} M_L".format(predicted_moon_mass(disk)),
-        "DISK_THEIA_MASS_FRACTION": "{} %".format((sum(from_theia['mass']) / (sum(from_theia['mass']) +
-                                                                              sum(from_target['mass']))) * 100.0)
+        "DISK_THEIA_MASS_FRACTION": "{} %".format(theia_disk_mass_fraction)
     }
     if not os.path.exists(to_path):
         os.mkdir(to_path)
