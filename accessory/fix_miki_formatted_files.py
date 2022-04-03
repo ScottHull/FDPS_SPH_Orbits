@@ -20,6 +20,6 @@ for file in os.listdir(to_path):
     for header in df.keys():
         if header not in ["ID", "TYPE"]:
             df[header] = ["{:.8E}".format(i) for i in df[header]]
-    fname = str(int(file.replace(".csv", ""))).zfill(4)
-    df.to_csv(to_path + "/{}.dat".format(fname), sep=" ")
+    fname = str(int(file.replace(".dat", ""))).zfill(4)
+    df.to_csv(to_path + "/{}.dat".format(fname), sep=" ", index=False)
     os.remove(to_path + "/" + file)
