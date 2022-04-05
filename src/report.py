@@ -152,12 +152,13 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
         "PREDICTED_MOON_MASS": "${M_{M}$ ($M_L$)}",
         "DISK_THEIA_MASS_FRACTION": "{Disk Theia Mass Fraction ($\%$)}",
     }
-    table_header = ["{Simulation}"]
+    table_header = ["Simulation"]
+    for index, run in enumerate(run_names):
+        table_header.append(run_titles[index])
     run_rows = []
     for header in rows.keys():
         row = [rows[header]]
         for index, run in enumerate(run_names):
-            table_header.append(run_titles[index])
             try:
                 path = to_base_path + "{}/{}_reports/".format(run, run)
                 df = pd.read_csv(path + "{}.csv".format(iteration))
@@ -166,12 +167,14 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
                 print(e)
                 row.append("")
         run_rows.append(row)
+
     if os.path.exists(filename):
         os.remove(filename)
+
     with open(filename, 'w') as outfile:
         header_line = ""
         for index, h in enumerate(table_header):
-            header_line += h
+            header_line += "{" + h + "}"
             if index != len(table_header) - 1:
                 header_line += " $ "
         header_line += " \\\ \midrule\n"
@@ -179,10 +182,10 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
         for row in run_rows:
             line = ""
             for index, v in enumerate(row):
-                if index != 0:
+                if index == 0:
                     line += v
                 else:
-                    line += "{" + line + "}"
+                    line += "{" + v + "}"
                 if index != len(row) - 1:
                     line += " $ "
             line += " \\\ \midrule\n"
