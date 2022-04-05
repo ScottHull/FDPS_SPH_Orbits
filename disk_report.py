@@ -55,7 +55,7 @@ def get_all_sims(high=True):
 
 
 def __build_report(args):
-    index, output_name = args
+    index, output_name, titles = args
     to_path = base_path + output_name + "/circularized_{}".format(output_name)
     if not os.path.exists(to_path):
         os.mkdir(to_path)
@@ -84,7 +84,7 @@ def __build_report(args):
 def build_report():
     sims, titles = get_all_sims(high=False)
     pool = mp.Pool(5)
-    pool.map(__build_report, [[index, output_name] for index, output_name in enumerate(sims)])
+    pool.map(__build_report, [[index, output_name, titles] for index, output_name in enumerate(sims)])
     pool.close()
     pool.join()
 

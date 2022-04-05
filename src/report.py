@@ -80,7 +80,7 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
         "DISK_ANGULAR_MOMENTUM_BEYOND_ROCHE": "{} L_EM".format(
             sum(disk[disk['radius'] > ROCHE_LIM]['angular_momentum']) / L_EM),
         "DISK VMF": "{} %".format(vmf * 100),
-        "TOTAL_ANGULAR_MOMENTUM": "{} L_EM".format(sum(particle_df['angular_momentum'])),
+        "TOTAL_ANGULAR_MOMENTUM": "{} L_EM".format(sum(particle_df['angular_momentum']) / L_EM),
         "MEAN_DISK_ENTROPY": __mean(disk['entropy']),
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": __mean(filtered_disk['circ_entropy_delta']),
         "PREDICTED_MOON_MASS": "{} M_L".format(predicted_moon_mass(disk)),
@@ -162,7 +162,9 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
             try:
                 path = to_base_path + "{}/{}_reports/".format(run, run)
                 df = pd.read_csv(path + "{}.csv".format(iteration))
-                val = df[header][0].split(" ")[0]
+                val = str(df[header][0]).split(" ")[0]
+                if "TOTAL_ANGULAR_MOMENTUM" in header and float(val) > 1e30:
+                    val /= L_EM
                 if "particle" in header.lower():
                     row.append(str(int(val)))
                 else:
