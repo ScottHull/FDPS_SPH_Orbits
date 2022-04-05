@@ -79,7 +79,7 @@ for iteration in iterations:
         order = [target_silicate, target_iron, impactor_silicate, impactor_iron]
         for index, i in enumerate(order):
             axs[current_index].scatter(
-                i['x'], i['y'], s=0.1, marker=".", label=labels[index], edgecolors='none',
+                i['x'], i['y'], s=0.1, marker=".", label=labels[index]
             )
         axs[current_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
                                 "{}\n{} hrs".format(get_name(p.split("/")[-1].split("_")[1]), formatted_time), fontsize=10)
@@ -87,5 +87,5 @@ for iteration in iterations:
 
 legend = axs[0].legend(fontsize=6)
 for handle in legend.legendHandles:
-    handle.set_sizes([3.0])
+    handle.set_sizes([10.0])
 plt.savefig("tag_source_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
