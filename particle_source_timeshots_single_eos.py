@@ -75,9 +75,11 @@ for iteration in iterations:
         target_iron = df[df['tag'] == 1]
         impactor_silicate = df[df['tag'] == 2]
         impactor_iron = df[df['tag'] == 3]
-        for i in [impactor_silicate, impactor_iron, target_silicate, target_iron]:
+        labels = ["Target Silicate", "Target Iron", "Impactor Silicate", "Impactor Iron"]
+        order = [impactor_silicate, impactor_iron, target_silicate, target_iron]
+        for index, i in enumerate(order):
             axs[current_index].scatter(
-                df['x'], df['y'], s=0.1, marker="."
+                df['x'], df['y'], s=0.1, marker=".", label=labels[index]
             )
         axs[current_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
                                 "{}\n{} hrs".format(get_name(p.split("/")[-1].split("_")[1]), formatted_time), fontsize=10)
