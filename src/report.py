@@ -149,7 +149,7 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
         "DISK VMF": "{Disk VMF  ($\%$)}",
         "MEAN_DISK_ENTROPY": "{Avg. $S_{disk}$ (J/K)}",
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": "{Avg. $\Delta S_{circ}$ (J/K)}",
-        "PREDICTED_MOON_MASS": "${M_{M}$ ($M_L$)}",
+        "PREDICTED_MOON_MASS": "{$M_{M}$ ($M_L$)}",
         "DISK_THEIA_MASS_FRACTION": "{Disk Theia Mass Fraction ($\%$)}",
     }
     table_header = ["Simulation"]
@@ -182,7 +182,7 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
         for index, h in enumerate(table_header):
             header_line += "{" + h + "}"
             if index != len(table_header) - 1:
-                header_line += " $ "
+                header_line += " & "
         header_line += " \\\ \midrule\n"
         outfile.write(header_line)
         for row in run_rows:
@@ -193,7 +193,7 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
                 else:
                     line += "{" + v + "}"
                 if index != len(row) - 1:
-                    line += " $ "
+                    line += " & "
             line += " \\\ \midrule\n"
             outfile.write(line)
 
