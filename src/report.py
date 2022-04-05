@@ -162,7 +162,10 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
             try:
                 path = to_base_path + "{}/{}_reports/".format(run, run)
                 df = pd.read_csv(path + "{}.csv".format(iteration))
-                row.append(str(df[header][0]))
+                if "particle" in header.lower():
+                    row.append(str(int(df[header][0])))
+                else:
+                    row.append(str(round(df[header][0], 2)))
             except Exception as e:
                 print(e)
                 row.append("")
