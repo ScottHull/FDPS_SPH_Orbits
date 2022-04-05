@@ -52,7 +52,8 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
     except:
         pass
     try:
-        theia_disk_mass_fraction = (sum(from_theia['mass']) / (sum(from_theia['mass']) + sum(from_target['mass']))) * 100.0
+        theia_disk_mass_fraction = (sum(from_theia['mass']) / (
+                    sum(from_theia['mass']) + sum(from_target['mass']))) * 100.0
     except:
         pass
 
@@ -124,6 +125,62 @@ def write_report_at_time(particles, fname):
     })
     df.to_csv(fname)
     return df
+
+
+def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_base_path: str, filename: str, iteration: int):
+    rows = {
+        "PLANET_MASS": "{Planet Mass ($M_\oplus$)}",
+        "DISK_MASS": "{Disk Mass ($M_L$)}",
+        "ESCAPING_MASS": "{Escaping Mass ($M_L$)}",
+        "NUM_PARTICLES_PLANET": "{$N_{planet}$}",
+        "NUM_PARTICLES_DISK": "{$N_{disk}$}",
+        "NUM_PARTICLES_ESCAPING": "{$N_{escape}$}",
+        "TOTAL_PARTICLES": "{$N_{total}$}",
+        "DISK_MASS_BEYOND_ROCHE": "{Disk Mass $\geq$ $R_{Roche}$ ($M_{L}$)}",
+        "NUM_PARTICLES_BEYOND_ROCHE": "{$N_{$\geq$ $R_{Roche}$}$}",
+        "DISK_MASS_FRACTION_BEYOND_ROCHE": "{Disk Mass Fraction $\geq$ $R_{Roche}$ ($\%$)}",
+        "DISK_IRON_MASS_FRACTION": "{Disk Iron Mass Fraction ($\%$)}",
+        "AVERAGE_PLANET_DENSITY": "{Planet Avg. Density ($kg/m^3$)}",
+        "PLANET_EQUATORIAL_RADIUS": "{Planet $a$ (km)}",
+        "PLANET_POLAR_RADIUS": "{Planet $b$ (km)}",
+        "DISK_ANGULAR_MOMENTUM": "{$L_{Disk}$ ($L_{EM}$)}",
+        "DISK_ANGULAR_MOMENTUM_BEYOND_ROCHE": "{$L_{Disk}$ $\geq R_{Roche}$ ($L_{EM}$)}",
+        "TOTAL_ANGULAR_MOMENTUM": "{L_{total} ($L_{EM}$)}",
+        "DISK VMF": "{Disk VMF  ($\%$)}",
+        "MEAN_DISK_ENTROPY": "{Avg. $S_{disk}$ (J/K)}",
+        "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": "{Avg. $\Delta S_{circ}$ (J/K)}",
+        "PREDICTED_MOON_MASS": "${M_{M}$ ($M_L$)}",
+        "DISK_THEIA_MASS_FRACTION": "{Disk Theia Mass Fraction ($\%$)}",
+    }
+    table_header = ["{Simulation}"]
+    run_rows = []
+    for header in rows.keys():
+        row = [rows['header']]
+        for index, run in enumerate(run_names):
+            table_header.append(run_titles[index])
+            path = to_base_path + "{}/{}_reports/"
+            df = pd.read_csv(path + "{}.csv".format(iteration))
+            row.append(df[header][0])
+        run_rows.append(row)
+    with open(filename, 'r') as outfile:
+        header_line = ""
+        for index, h in enumerate(table_header):
+            header_line += h
+            if index != len(table_header) - 1:
+                header_line += " $ "
+        header_line += " \\\ \midrule\n"
+        outfile.write(header_line)
+        for row in run_rows:
+            line = ""
+            for index, v in enumerate(row):
+                if index != 0:
+                    line += v
+                else:
+                    line += "{" + line + "}"
+                if index != len(row) - 1:
+                    line += " $ "
+            line += " \\\ \midrule\n"
+            outfile.write(line)
 
 
 class BuildReports:

@@ -8,7 +8,7 @@ import multiprocessing as mp
 
 from src.combine import CombineFile
 from src.identify import ParticleMap
-from src.report import get_sim_report, write_report_at_time
+from src.report import get_sim_report, write_report_at_time, build_latex_table_from_disk_report
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 angle = "b073"
@@ -54,7 +54,7 @@ def get_all_sims(high=True):
     return names, titles
 
 
-def build_report(args):
+def __build_report(args):
     index, output_name = args
     to_path = base_path + output_name + "/circularized_{}".format(output_name)
     if not os.path.exists(to_path):
@@ -81,8 +81,14 @@ def build_report(args):
         get_sim_report(particle_df=pd.read_csv(f1), phase_path=phase_path, formatted_time=formatted_time,
                        iteration=iteration, sim_name=title, to_path=to_report_path)
 
-sims, titles = get_all_sims(high=False)
-pool = mp.Pool(5)
-pool.map(build_report, [[index, output_name] for index, output_name in enumerate(sims)])
-pool.close()
-pool.join()
+def build_report():
+    sims, titles = get_all_sims(high=False)
+    pool = mp.Pool(5)
+    pool.map(__build_report, [[index, output_name] for index, output_name in enumerate(sims)])
+    pool.close()
+    pool.join()
+
+def make_report_latex_table():
+    sims, titles = get_all_sims(high=False)
+    build_latex_table_from_disk_report(run_names=sims, run_titles=titles, to_base_path=base_path,
+                            filename="{}_disk_latex_table.txt".format(angle), iteration=max_iteration)
