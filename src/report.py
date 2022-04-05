@@ -155,18 +155,18 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
     table_header = ["{Simulation}"]
     run_rows = []
     for header in rows.keys():
-        row = [rows['header']]
+        row = [rows[header]]
         for index, run in enumerate(run_names):
             table_header.append(run_titles[index])
             try:
-                path = to_base_path + "{}/{}_reports/"
+                path = to_base_path + "{}/{}_reports/".format(run, run)
                 df = pd.read_csv(path + "{}.csv".format(iteration))
                 row.append(str(df[header][0]))
             except Exception as e:
                 print(e)
                 row.append("")
         run_rows.append(row)
-    with open(filename, 'r') as outfile:
+    with open(filename, 'w') as outfile:
         header_line = ""
         for index, h in enumerate(table_header):
             header_line += h
