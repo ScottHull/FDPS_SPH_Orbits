@@ -164,7 +164,7 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
                 df = pd.read_csv(path + "{}.csv".format(iteration))
                 val = str(df[header][0]).split(" ")[0]
                 if "TOTAL_ANGULAR_MOMENTUM" in header and float(val) > 1e30:
-                    val /= L_EM
+                    val = float(val) / L_EM
                 if "particle" in header.lower():
                     row.append(str(int(val)))
                 else:
