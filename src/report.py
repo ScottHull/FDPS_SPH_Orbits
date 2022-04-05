@@ -166,6 +166,8 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
                 print(e)
                 row.append("")
         run_rows.append(row)
+    if os.path.exists(filename):
+        os.remove(filename)
     with open(filename, 'w') as outfile:
         header_line = ""
         for index, h in enumerate(table_header):
