@@ -123,6 +123,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, ang
         label = rows_map[h][1:-1]
         axs[h_index].set_ylabel(label)
         axs[h_index].grid(alpha=0.4)
+        axs[h_index].legend(loc='upper left')
     plt.savefig("{}_disk_report.png".format(angle), format='png', dpi=200)
 
 
