@@ -98,8 +98,8 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, ang
     headers = ["MEAN_DISK_ENTROPY", "DISK VMF", "DISK_MASS", "DISK_ANGULAR_MOMENTUM", "DISK_THEIA_MASS_FRACTION",
                "PREDICTED_MOON_MASS"]
     cutoff_densities = [5, 500, 1000, 2000]
-    fig, axs = plt.subplots(int(len(headers) / 2), 2, figsize=(16, 32), sharex="all",
-                            gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+    fig, axs = plt.subplots(int(len(headers) / 2), 2, figsize=(16, 24), sharex="all",
+                            gridspec_kw={"hspace": 0.14, "wspace": 0.14})
     axs = axs.flatten()
 
     for h_index, h in enumerate(headers):
@@ -118,6 +118,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, ang
         axs[h_index].plot(
             cutoff_densities, y_old, linewidth=2.0, label=r"GADGET M-ANEOS ($N = {10^6}$)"
         )
+        axs[-2].set_xlabel("Cutoff Density")
         axs[-1].set_xlabel("Cutoff Density")
         axs[h_index].set_ylabel(rows_map[h])
         axs[h_index].grid(alpha=0.4)
