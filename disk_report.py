@@ -99,6 +99,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, ang
     cutoff_densities = [5, 500, 1000, 2000]
     fig, axs = plt.subplots(2, int(len(headers) / 2), figsize=(16, 32), sharex="all",
                             gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+    axs = axs.flatten()
 
     for h_index, h in enumerate(headers):
         y_new, y_old = [None, None, None, None], [None, None, None, None]
@@ -117,7 +118,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, ang
             cutoff_densities, y_old, linewidth=2.0, label=r"GADGET M-ANEOS ($N = {10^6}$)"
         )
         axs[-1].set_xlabel("Cutoff Density")
-        axs[h_index].set_ylabel(rows_map[h_index])
+        axs[h_index].set_ylabel(rows_map[h])
         axs[h_index].grid(alpha=0.4)
     plt.savefig("{}_disk_report.png".format(angle), format='png', dpi=200)
 
