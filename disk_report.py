@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from random import randint
 import multiprocessing as mp
+import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 from src.identify import ParticleMap
@@ -80,6 +81,12 @@ def __build_report(args):
         write_report_at_time(particles=particles, fname=f1)
         get_sim_report(particle_df=pd.read_csv(f1), phase_path=phase_path, formatted_time=formatted_time,
                        iteration=iteration, sim_name=title, to_path=to_report_path)
+
+
+def plot_disk_report(run_names: list, run_titles: list, to_base_path: str, filename: str, iteration: int):
+    fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 25), sharex='all', sharey='all',
+                            gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+
 
 def build_report():
     sims, titles = get_all_sims(high=False)
