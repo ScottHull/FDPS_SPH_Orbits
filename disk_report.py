@@ -83,7 +83,7 @@ def __build_report(args):
                        iteration=iteration, sim_name=title, to_path=to_report_path)
 
 
-def plot_disk_report(run_names: list, run_titles: list, to_base_path: str, angle: str, iteration: int):
+def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, angle: str, iteration: int):
     def __map_run_name(r):
         if "5_" in r:
             return 0
@@ -134,3 +134,9 @@ def make_report_latex_table():
     sims, titles = get_all_sims(high=False)
     build_latex_table_from_disk_report(run_names=sims, run_titles=titles, to_base_path=base_path,
                             filename="{}_disk_latex_table.txt".format(angle), iteration=max_iteration)
+
+def plot_disk_report():
+    sims, titles = get_all_sims(high=False)
+    for angle in ['b073', 'b075']:
+        __plot_disk_report(run_names=sims, run_titles=titles, to_base_path=base_path, angle=angle,
+                           iteration=max_iteration)
