@@ -126,9 +126,7 @@ def write_report_at_time(particles, fname):
     df.to_csv(fname)
     return df
 
-
-def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_base_path: str, filename: str, iteration: int):
-    rows = {
+rows_map = {
         "PLANET_MASS": "{Planet Mass ($M_\oplus$)}",
         "DISK_MASS": "{Disk Mass ($M_L$)}",
         "ESCAPING_MASS": "{Escaping Mass ($M_L$)}",
@@ -152,12 +150,14 @@ def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_bas
         "PREDICTED_MOON_MASS": "{$M_{M}$ ($M_L$)}",
         "DISK_THEIA_MASS_FRACTION": "{Disk Theia Mass Fraction ($\%$)}",
     }
+
+def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_base_path: str, filename: str, iteration: int):
     table_header = ["Simulation"]
     for index, run in enumerate(run_names):
         table_header.append(run_titles[index])
     run_rows = []
-    for header in rows.keys():
-        row = [rows[header]]
+    for header in rows_map.keys():
+        row = [rows_map[header]]
         for index, run in enumerate(run_names):
             try:
                 path = to_base_path + "{}/{}_reports/".format(run, run)

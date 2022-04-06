@@ -13,6 +13,12 @@ def get_particle_mass(body_mass, num_particles):
     return body_mass / num_particles
 
 def get_smth_length(m, rho, xi=1.2, n=3):
+    """
+    h = xi * (m_j / rho_j)^(1/n)
+    where xi is a coefficient, m_j is particle mass, and n is the resolution of the simulation.
+    Increasing resolution decreases particle mass and therefore decreases smoothing length.
+    Decreasing cutoff density increases smoothing length.
+    """
     return xi * ((m / rho) ** (1 / n))
 
 def wendland_c6(r, h):
@@ -31,6 +37,8 @@ ax = fig.add_subplot(111)
 ax.set_xlabel("Density (kg/$m^3$)")
 ax.set_ylabel("h (km)")
 ax.set_title("Smoothing Length for Particle Counts (N)")
+print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1e6), 5) / 1000)
+print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1e6), 2000) / 1000)
 for n in particle_counts:
     print(n)
     m = get_particle_mass(target_mass + impactor_mass, n)

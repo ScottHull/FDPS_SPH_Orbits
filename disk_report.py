@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 from src.identify import ParticleMap
-from src.report import get_sim_report, write_report_at_time, build_latex_table_from_disk_report
+from src.report import get_sim_report, write_report_at_time, build_latex_table_from_disk_report, rows_map
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 angle = "b073"
@@ -83,9 +83,44 @@ def __build_report(args):
                        iteration=iteration, sim_name=title, to_path=to_report_path)
 
 
-def plot_disk_report(run_names: list, run_titles: list, to_base_path: str, filename: str, iteration: int):
-    fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 25), sharex='all', sharey='all',
+def plot_disk_report(run_names: list, run_titles: list, to_base_path: str, angle: str, iteration: int):
+    def __map_run_name(r):
+        if "5_" in r:
+            return 0
+        if "500_" in r:
+            return 1
+        if "1000_" in r:
+            return 2
+        if "2000_" in r:
+            return 3
+
+    headers = ["MEAN_DISK_ENTROPY", "DISK VMF", "DISK_MASS", "DISK_ANGULAR_MOMENTUM", "DISK_THEIA_MASS_FRACTION",
+               "PREDICTED_MOON_MASS"]
+    cutoff_densities = [5, 500, 1000, 2000]
+    fig, axs = plt.subplots(2, int(len(headers) / 2), figsize=(16, 32), sharex="all",
                             gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+
+    for h_index, h in enumerate(headers):
+        y_new, y_old = [None, None, None, None], [None, None, None, None]
+        for index, run in enumerate(run_names):
+            path = to_base_path + "{}/{}_reports/".format(run, run)
+            df = pd.read_csv(path + "{}.csv".format(iteration))
+            val = float(str(df[h][0]).split(" ")[0])
+            if "new" in run:
+                y_new[__map_run_name(run)] = val
+            else:
+                y_old[__map_run_name(run)] = val
+        axs[h_index].plot(
+            cutoff_densities, y_new, linewidth=2.0, label=r"Stewart M-ANEOS ($N = {10^6}$)"
+        )
+        axs[h_index].plot(
+            cutoff_densities, y_old, linewidth=2.0, label=r"GADGET M-ANEOS ($N = {10^6}$)"
+        )
+        axs[-1].set_xlabel("Cutoff Density")
+        axs[h_index].set_ylabel(rows_map[h_index])
+        axs[h_index].grid(alpha=0.4)
+    plt.savefig("{}_disk_report.png".format(angle), format='png', dpi=200)
+
 
 
 def build_report():
