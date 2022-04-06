@@ -6,6 +6,7 @@ import numpy as np
 from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
+plt.style.use("dark_background")
 
 from src.combine import CombineFile
 from src.identify import ParticleMap
@@ -97,7 +98,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, ang
     headers = ["MEAN_DISK_ENTROPY", "DISK VMF", "DISK_MASS", "DISK_ANGULAR_MOMENTUM", "DISK_THEIA_MASS_FRACTION",
                "PREDICTED_MOON_MASS"]
     cutoff_densities = [5, 500, 1000, 2000]
-    fig, axs = plt.subplots(2, int(len(headers) / 2), figsize=(16, 32), sharex="all",
+    fig, axs = plt.subplots(int(len(headers) / 2), 2, figsize=(16, 32), sharex="all",
                             gridspec_kw={"hspace": 0.0, "wspace": 0.0})
     axs = axs.flatten()
 
