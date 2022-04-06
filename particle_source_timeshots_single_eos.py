@@ -71,6 +71,7 @@ for iteration in iterations:
         f = p + "/{}.csv".format(iteration)
         formatted_time = get_time(f)
         df = pd.read_csv(f, skiprows=2)
+        df = df[df['z'] <= 0]  # take cross-section
         target_silicate = df[df['tag'] == 0]
         target_iron = df[df['tag'] == 1]
         impactor_silicate = df[df['tag'] == 2]
