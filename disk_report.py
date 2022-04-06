@@ -120,6 +120,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, ang
         )
         axs[-2].set_xlabel("Cutoff Density")
         axs[-1].set_xlabel("Cutoff Density")
+        label = rows_map[h][1:-1]
         axs[h_index].set_ylabel(rows_map[h])
         axs[h_index].grid(alpha=0.4)
     plt.savefig("{}_disk_report.png".format(angle), format='png', dpi=200)
