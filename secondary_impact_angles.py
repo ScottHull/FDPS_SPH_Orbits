@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 import numpy as np
 from math import sin, cos, tan, pi
+from operator import contains
 from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
@@ -134,7 +135,8 @@ def get_impact_angles():
             df = pd.read_csv(output_path + "/{}.csv".format(iteration))
             target_iron = df[df['tag'] == 1]
             impactor_iron = df[df['tag'] == 3]
-            impactor_iron = impactor_iron[impactor_iron['id'] in imp_ids[title]]
+            # impactor_iron = impactor_iron[impactor_iron['id'] in imp_ids[title]]
+            impactor_iron = df.loc[map(contains, imp_ids[title] * len(df), df['id'].tolist())]
             target_com = get_com(target_iron['x'], target_iron['y'], target_iron['z'], target_iron['mass'])
             impactor_com = get_com(impactor_iron['x'], impactor_iron['y'], impactor_iron['z'], impactor_iron['mass'])
             imp_angle = get_angle(target_com, impactor_com)
