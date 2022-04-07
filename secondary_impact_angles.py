@@ -13,8 +13,8 @@ plt.style.use("dark_background")
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 angle = "b073"
 cutoff_densities = [5, 500, 1000, 2000]
-min_iteration = 80
-max_iteration = 1800
+min_iteration = 50
+max_iteration = 600
 increment = 50
 square_scale = 6e7
 
@@ -65,7 +65,7 @@ def get_impactor_com_particles(output_name):
     output_path = base_path + output_name + "/circularized_{}".format(output_name)
     df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
     impactor_iron = df[df['tag'] == 3]
-    impactor_iron = impactor_iron['radius'] > 1e7
+    impactor_iron = impactor_iron[impactor_iron['radius'] > 1e7]
     return impactor_iron['id']
 
 
@@ -114,7 +114,7 @@ def __build_scene(iteration, dfs, sims, titles, impact_angles, target_coms, impa
     plt.savefig(to_save_path + "/{}.png".format(iteration), format='png', dpi=200)
 
 
-def get_impact_angles(args):
+def get_impact_angles():
     sims, titles = get_all_sims(high=False)
     impact_angles = {}
     target_coms = {}
@@ -150,3 +150,5 @@ def get_impact_angles(args):
 
     df = pd.DataFrame(impact_angles, index=np.arange(min_iteration, max_iteration + increment, increment))
     df.to_csv("{}_secondary_impact_angles.csv".format(angle))
+
+get_impact_angles()
