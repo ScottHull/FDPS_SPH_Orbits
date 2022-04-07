@@ -66,7 +66,7 @@ def get_impactor_com_particles(output_name):
     output_path = base_path + output_name + "/circularized_{}".format(output_name)
     df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
     impactor_iron = df[df['tag'] == 3]
-    impactor_iron = impactor_iron[impactor_iron['radius'] > 2e7]
+    impactor_iron = impactor_iron[impactor_iron['radius'] > 1.5e7]
     return impactor_iron['id']
 
 
