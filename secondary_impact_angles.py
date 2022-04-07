@@ -106,12 +106,16 @@ def __build_scene(iteration, dfs, sims, titles, impact_angles, target_coms, impa
             impactor_material['x'], impactor_material['y'], s=1, label="Impactor Material"
         )
         axs[to_index].scatter(
-            impactor_com[0], impactor_com[0], s=20, c='yellow', marker="*", label="Impactor COM"
+            impactor_com[0], impactor_com[1], s=60, c='yellow', marker="*", label="Impactor COM"
         )
         axs[to_index].scatter(
-            target_com[0], target_com[0], s=20, c='green', marker="*", label="Target COM"
+            target_com[0], target_com[1], s=60, c='green', marker="*", label="Target COM"
         )
         axs[to_index].set_title("{} - {} deg.".format(iteration, impact_angle))
+        if "old" in s:
+            index_old += 2
+        else:
+            index_new += 2
     axs[0].legend(loc='upper left')
     plt.savefig(to_save_path + "/{}.png".format(iteration), format='png', dpi=200)
 
