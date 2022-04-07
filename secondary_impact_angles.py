@@ -136,7 +136,7 @@ def get_impact_angles():
             target_iron = df[df['tag'] == 1]
             impactor_iron = df[df['tag'] == 3]
             # impactor_iron = impactor_iron[impactor_iron['id'] in imp_ids[title]]
-            impactor_iron = df.loc[map(contains, imp_ids[title] * len(df), df['id'].tolist())]
+            impactor_iron = impactor_iron[impactor_iron['id'].isin(imp_ids[title].tolist())]
             target_com = get_com(target_iron['x'], target_iron['y'], target_iron['z'], target_iron['mass'])
             impactor_com = get_com(impactor_iron['x'], impactor_iron['y'], impactor_iron['z'], impactor_iron['mass'])
             imp_angle = get_angle(target_com, impactor_com)
