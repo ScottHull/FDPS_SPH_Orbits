@@ -66,7 +66,7 @@ def get_impactor_com_particles(output_name):
     output_path = base_path + output_name + "/circularized_{}".format(output_name)
     df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
     impactor_iron = df[df['tag'] == 3]
-    impactor_iron = impactor_iron[impactor_iron['radius'] > 1e7]
+    impactor_iron = impactor_iron[impactor_iron['radius'] > 2e7]
     return impactor_iron['id']
 
 
@@ -94,17 +94,22 @@ def __build_scene(iteration, dfs, sims, titles, impact_angles, target_coms, impa
     for s, t in zip(sims, titles):
         df, impact_angle, target_com, impactor_com = dfs[t][-1], impact_angles[t][-1], \
                                                      target_coms[t][-1], impactor_coms[t][-1]
-        target_material = df[df['tag'] <= 1]
-        impactor_material = df[df['tag'] > 1]
+        df = df[df['z'] < 0]
+        target_silicate = df[df['tag'] == 0]
+        target_iron = df[df['tag'] == 1]
+        impactor_silicate = df[df['tag'] == 2]
+        impactor_iron = df[df['tag'] == 3]
+        t1 = ["Target Silicate", "Target Iron", "Impactor Silicate", "Impactor Iron"]
+        t2 = [target_silicate, target_iron, impactor_silicate, impactor_iron]
+
         to_index = index_new
         if "old" in s:
             to_index = index_old
-        axs[to_index].scatter(
-            target_material['x'], target_material['y'], s=1, label="Target Material"
-        )
-        axs[to_index].scatter(
-            impactor_material['x'], impactor_material['y'], s=1, label="Impactor Material"
-        )
+        for a, b, in zip(t1, t2):
+            axs[to_index].scatter(
+                b['x'], b['y'], s=1, marker='.', label=a
+            )
+
         axs[to_index].scatter(
             impactor_com[0], impactor_com[1], s=60, c='pink', marker="*", label="Impactor COM"
         )
