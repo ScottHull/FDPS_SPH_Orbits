@@ -9,14 +9,17 @@ from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
 
+from src.combine import CombineFile
+
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 angle = "b073"
 cutoff_densities = [5, 500, 1000, 2000]
+number_processes = 200
 min_iteration = 50
 max_iteration = 600
-increment = 50
+increment = 5
 square_scale = 6e7
 
 
@@ -152,7 +155,22 @@ def get_impact_angles():
             if title not in dfs.keys():
                 dfs.update({title: []})
             output_path = base_path + output_name + "/circularized_{}".format(output_name)
-            df = pd.read_csv(output_path + "/{}.csv".format(iteration))
+            # df = pd.read_csv(output_path + "/{}.csv".format(iteration))
+            path = base_path + "{}/{}".format(output_name, output_name)
+            to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+            cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+            combined_file = cf.combine()
+            formatted_time = round(cf.sim_time * 0.000277778, 2)
+            f = os.getcwd() + "/{}".format(to_fname)
+            headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                       "potential energy", "entropy", "temperature"]
+            df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
+            zero_coords = get_com(df['x'], df['y'], df['z'], df['mass'])
+            df['x'] -= zero_coords[0]
+            df['y'] -= zero_coords[1]
+            df['z'] -= zero_coords[2]
+            # df['radius'] = [(i ** 2 + j ** 2 + k ** 2) ** (1 / 2) for i, j, k in zip(df['x'], df['y'], df['z'])]
+
             target_iron = df[df['tag'] == 1]
             impactor_iron = df[df['tag'] == 3]
             # impactor_iron = impactor_iron[impactor_iron['id'] in imp_ids[title]]
