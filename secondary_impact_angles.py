@@ -71,8 +71,8 @@ def get_impactor_com_particles(output_name):
 
 
 def get_angle(target_com, impactor_com):
-    x_offset = impactor_com[0] - target_com[0]
-    y_offset = impactor_com[1] - target_com[1]
+    x_offset = target_com[0] - impactor_com[0]
+    y_offset = target_com[1] - impactor_com[1]
     return tan(x_offset / y_offset) * (180 / pi)
 
 
