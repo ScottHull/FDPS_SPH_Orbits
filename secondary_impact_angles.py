@@ -129,9 +129,10 @@ def get_impact_angles():
         for output_name, title in zip(sims, titles):
             if title not in impact_angles.keys():
                 impact_angles.update({title: []})
-                dfs.update({title: []})
                 impactor_coms.update({title: []})
                 target_coms.update({title: []})
+            if title not in dfs.keys():
+                dfs.update({title: []})
             output_path = base_path + output_name + "/circularized_{}".format(output_name)
             df = pd.read_csv(output_path + "/{}.csv".format(iteration))
             target_iron = df[df['tag'] == 1]
