@@ -165,6 +165,7 @@ def get_impact_angles():
             headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                        "potential energy", "entropy", "temperature"]
             df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
+            os.remove(f)
             zero_coords = get_com(df['x'], df['y'], df['z'], df['mass'])
             df['x'] -= zero_coords[0]
             df['y'] -= zero_coords[1]
