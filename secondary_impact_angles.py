@@ -92,7 +92,8 @@ def __build_scene(iteration, dfs, sims, titles, impact_angles, target_coms, impa
         ax.set_yticks([], minor=False)
     index_new, index_old = 0, 1
     for s, t in zip(sims, titles):
-        df, impact_angle, target_com, impactor_com = dfs[t], impact_angles[t], target_coms[t], impactor_coms[t]
+        df, impact_angle, target_com, impactor_com = dfs[t][-1], impact_angles[t][-1], \
+                                                     target_coms[t][-1], impactor_coms[t][-1]
         target_material = df[df['tag'] <= 1]
         impactor_material = df[df['tag'] > 1]
         to_index = index_new
