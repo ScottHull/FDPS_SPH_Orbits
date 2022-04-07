@@ -106,12 +106,21 @@ def __build_scene(iteration, dfs, sims, titles, impact_angles, target_coms, impa
             impactor_material['x'], impactor_material['y'], s=1, label="Impactor Material"
         )
         axs[to_index].scatter(
-            impactor_com[0], impactor_com[1], s=60, c='yellow', marker="*", label="Impactor COM"
+            impactor_com[0], impactor_com[1], s=60, c='pink', marker="*", label="Impactor COM"
         )
         axs[to_index].scatter(
             target_com[0], target_com[1], s=60, c='green', marker="*", label="Target COM"
         )
-        axs[to_index].set_title("{} - {} deg.".format(iteration, impact_angle))
+        axs[to_index].plot(
+            [target_com[0], impactor_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="white"
+        )
+        axs[to_index].plot(
+            [target_com[0], target_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="white"
+        )
+        axs[to_index].plot(
+            [impactor_com[0], target_com[0]], [impactor_com[1], impactor_com[1]], linewidth=2.0, color="white"
+        )
+        axs[to_index].set_title("{} - {} deg.".format(iteration, round(impact_angle, 2)))
         if "old" in s:
             index_old += 2
         else:
