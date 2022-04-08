@@ -131,7 +131,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, ang
             return 3
 
     headers = ["MEAN_DISK_ENTROPY", "DISK VMF", "DISK_MASS", "DISK_ANGULAR_MOMENTUM", "DISK_THEIA_MASS_FRACTION",
-               "PREDICTED_MOON_MASS"]
+               "DISK_IRON_MASS_FRACTION"]
     cutoff_densities = [5, 500, 1000, 2000]
     fig, axs = plt.subplots(int(len(headers) / 2), 2, figsize=(16, 24), sharex="all",
                             gridspec_kw={"hspace": 0.14, "wspace": 0.14})
