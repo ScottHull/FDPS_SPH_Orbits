@@ -79,7 +79,7 @@ def get_angle(target_com, impactor_com):
     return atan(x_offset / y_offset) * (180 / pi)  # to degrees
 
 
-def __build_scene(iteration, time, dfs, sims, titles, impact_angles, target_coms, impactor_coms, to_save_path):
+def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_coms, impactor_coms, to_save_path):
     num_new = len([i for i in sims if "new" in i])
     num_old = len([i for i in sims if "old" in i])
     num_rows = max([num_new, num_old])
@@ -95,8 +95,8 @@ def __build_scene(iteration, time, dfs, sims, titles, impact_angles, target_coms
         ax.set_yticks([], minor=False)
     index_new, index_old = 0, 1
     for s, t in zip(sims, titles):
-        df, impact_angle, target_com, impactor_com = dfs[t][-1], impact_angles[t][-1], \
-                                                     target_coms[t][-1], impactor_coms[t][-1]
+        df, impact_angle, target_com, impactor_com, time = dfs[t][-1], impact_angles[t][-1], \
+                                                     target_coms[t][-1], impactor_coms[t][-1], times[t][-1]
         df = df[df['z'] < 0]
         target_silicate = df[df['tag'] == 0]
         target_iron = df[df['tag'] == 1]
@@ -143,6 +143,7 @@ def get_impact_angles():
     target_coms = {}
     impactor_coms = {}
     imp_ids = {}
+    times = {}
     for output_name, title in zip(sims, titles):
         imp_ids.update({title: get_impactor_com_particles(output_name)})
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
@@ -152,6 +153,7 @@ def get_impact_angles():
                 impact_angles.update({title: []})
                 impactor_coms.update({title: []})
                 target_coms.update({title: []})
+                times.update({title: []})
             if title not in dfs.keys():
                 dfs.update({title: []})
             output_path = base_path + output_name + "/circularized_{}".format(output_name)
@@ -161,6 +163,7 @@ def get_impact_angles():
             cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
             combined_file = cf.combine()
             formatted_time = round(cf.sim_time * 0.000277778, 2)
+            times[title].append(formatted_time)
             f = os.getcwd() + "/{}".format(to_fname)
             headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                        "potential energy", "entropy", "temperature"]
@@ -188,7 +191,7 @@ def get_impact_angles():
         if not os.path.exists(to_save_path):
             os.mkdir(to_save_path)
         __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
-                      target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path)
+                      target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
 
     df = pd.DataFrame(impact_angles, index=np.arange(min_iteration, max_iteration + increment, increment))
     df.to_csv("{}_secondary_impact_angles.csv".format(angle))
