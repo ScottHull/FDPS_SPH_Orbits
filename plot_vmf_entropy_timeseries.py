@@ -6,6 +6,7 @@ import numpy as np
 from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
+
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -21,6 +22,7 @@ number_processes_high = 500
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
+
 def get_time(f, local=True):
     formatted_time = None
     if local:  # if not reading from remote server
@@ -31,6 +33,7 @@ def get_time(f, local=True):
     else:
         formatted_time = float(next(f))
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
+
 
 def get_all_sims(high=True):
     fformat = "{}_{}_{}"
@@ -86,7 +89,7 @@ def plot_entropy_and_vmf_vs_time():
             d[sim]['TIME_HRS'], d[sim]['MEAN_DISK_ENTROPY'], linewidth=2.0, label=sim
         )
         axs[to_index + 2].plot(
-            d[sim]['TIME_HRS'], d[sim]['DISK_VMF'], linewidth=2.0, label=sim
+            d[sim]['TIME_HRS'], d[sim]['DISK VMF'], linewidth=2.0, label=sim
         )
     for ax in [axs[0], axs[1]]:
         ax.set_ylabel("Avg. Disk Entropy")
@@ -95,3 +98,5 @@ def plot_entropy_and_vmf_vs_time():
         ax.set_xlabel("Time (hrs)")
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
 
+
+plot_entropy_and_vmf_vs_time()
