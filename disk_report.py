@@ -172,10 +172,7 @@ def build_report():
 
 def build_report_high_res():
     sims, titles = ['5_b073_new_high2'], ['5b073n-high']
-    pool = mp.Pool(5)
-    pool.map(__build_report_iteration_mp, [[index, output_name, titles] for index, output_name in enumerate(sims)])
-    pool.close()
-    pool.join()
+    __build_report_iteration_mp(args=[0, sims[0], titles])
 
 def make_report_latex_table():
     sims, titles = get_all_sims(high=False)
