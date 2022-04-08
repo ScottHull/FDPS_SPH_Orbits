@@ -106,6 +106,8 @@ def plot_entropy_and_vmf_vs_time():
     for ax in [axs[4], axs[5]]:
         ax.set_ylabel(r"Disk Mass ($M_{L}$)")
         ax.set_xlabel("Time (hrs)")
+    axs[0].legend(loc='lower left')
+    axs[1].legend(loc='lower left')
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
 
 
