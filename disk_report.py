@@ -113,7 +113,7 @@ def __build_report_iteration_mp(args):
     if not os.path.exists(to_path):
         os.mkdir(to_path)
     pool = mp.Pool(5)
-    pool.map(__build_report, [[to_path, iteration, output_name, titles, index] for iteration in np.arange(min_iteration,
+    pool.map(__base_build_report, [[to_path, iteration, output_name, titles, index] for iteration in np.arange(min_iteration,
                                                                           max_iteration + increment, increment)])
     pool.close()
     pool.join()
