@@ -119,7 +119,7 @@ def __build_report_iteration_mp(args):
     pool.join()
 
 
-def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, angle: str, iteration: int):
+def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, imp_angle: str, iteration: int):
     def __map_run_name(r):
         if "5_" in r:
             return 0
@@ -159,7 +159,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, ang
         axs[h_index].set_ylabel(label)
         axs[h_index].grid(alpha=0.4)
         axs[h_index].legend(loc='upper left')
-    plt.savefig("{}_disk_report.png".format(angle), format='png', dpi=200)
+    plt.savefig("{}_disk_report.png".format(imp_angle), format='png', dpi=200)
 
 
 
@@ -181,6 +181,6 @@ def make_report_latex_table():
 
 def plot_disk_report():
     sims, titles = get_all_sims(high=False)
-    for angle in ['b073', 'b075']:
-        __plot_disk_report(run_names=sims, run_titles=titles, to_base_path=base_path, angle=angle,
+    for a in ['b073', 'b075']:
+        __plot_disk_report(run_names=sims, run_titles=titles, to_base_path=base_path, imp_angle=a,
                            iteration=max_iteration)
