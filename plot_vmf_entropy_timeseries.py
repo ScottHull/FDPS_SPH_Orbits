@@ -62,7 +62,7 @@ def get_all_sims(high=True):
 
 def plot_entropy_and_vmf_vs_time():
     sims, titles = get_all_sims(high=False)
-    fig, axs = plt.subplots(2, 2, figsize=(16, 24), sharex="all",
+    fig, axs = plt.subplots(3, 2, figsize=(16, 24), sharex="all",
                             gridspec_kw={"hspace": 0.14, "wspace": 0.14})
     axs = axs.flatten()
     axs[0].set_title("Stewart M-ANEOS")
@@ -73,11 +73,12 @@ def plot_entropy_and_vmf_vs_time():
     d = {}
     for sim, title in zip(sims, titles):
         if title not in d.keys():
-            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY': [], 'DISK VMF': []}})
+            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY': [], 'DISK VMF': []}, "DISK_MASS": []})
         for iteration in np.arange(min_iteration, max_iteration + increment, increment):
             path = base_path + "{}/{}_reports/".format(sim, sim)
             df = pd.read_csv(path + "{}.csv".format(iteration))
-            time, avg_disk_entropy, disk_vmf = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY'][0], df['DISK VMF'][0]
+            time, avg_disk_entropy, disk_vmf, disk_mass = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY'][0], \
+                                                          df['DISK VMF'][0], df['DISK_MASS']
             d[title]['TIME_HRS'].append(time)
             d[title]['MEAN_DISK_ENTROPY'].append(avg_disk_entropy)
             d[title]['DISK VMF'].append(disk_vmf)
@@ -95,6 +96,8 @@ def plot_entropy_and_vmf_vs_time():
         ax.set_ylabel("Avg. Disk Entropy")
     for ax in [axs[2], axs[3]]:
         ax.set_ylabel("Disk VMF (%)")
+    for ax in [axs[4], axs[5]]:
+        ax.set_ylabel(r"Disk Mass ($M_{L}$)")
         ax.set_xlabel("Time (hrs)")
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
 
