@@ -121,13 +121,13 @@ def __build_report_iteration_mp(args):
 
 def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, imp_angle: str, iteration: int):
     def __map_run_name(r):
-        if "5_" in r:
+        if "5_" in r.replace("b075", ""):
             return 0
-        if "500_" in r:
+        if "500_" in r.replace("b075", ""):
             return 1
-        if "1000_" in r:
+        if "1000_" in r.replace("b075", ""):
             return 2
-        if "2000_" in r:
+        if "2000_" in r.replace("b075", ""):
             return 3
 
     headers = ["MEAN_DISK_ENTROPY", "DISK VMF", "DISK_MASS", "DISK_ANGULAR_MOMENTUM", "DISK_THEIA_MASS_FRACTION",
