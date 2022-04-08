@@ -73,7 +73,7 @@ def plot_entropy_and_vmf_vs_time():
     d = {}
     for sim, title in zip(sims, titles):
         if title not in d.keys():
-            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY': [], 'DISK VMF': []}, "DISK_MASS": []})
+            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY': [], 'DISK VMF': [], "DISK_MASS": []}})
         for iteration in np.arange(min_iteration, max_iteration + increment, increment):
             path = base_path + "{}/{}_reports/".format(sim, sim)
             df = pd.read_csv(path + "{}.csv".format(iteration))
