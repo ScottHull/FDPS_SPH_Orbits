@@ -82,6 +82,7 @@ def plot_entropy_and_vmf_vs_time():
             d[title]['TIME_HRS'].append(time)
             d[title]['MEAN_DISK_ENTROPY'].append(avg_disk_entropy)
             d[title]['DISK VMF'].append(disk_vmf)
+            d[title]['DISK_MASS'].append(disk_mass)
     for sim in d.keys():
         to_index = new_index
         if "o" in sim:
@@ -91,6 +92,9 @@ def plot_entropy_and_vmf_vs_time():
         )
         axs[to_index + 2].plot(
             d[sim]['TIME_HRS'], d[sim]['DISK VMF'], linewidth=2.0, label=sim
+        )
+        axs[to_index + 4].plot(
+            d[sim]['TIME_HRS'], d[sim]['DISK_MASS'], linewidth=2.0, label=sim
         )
     for ax in [axs[0], axs[1]]:
         ax.set_ylabel("Avg. Disk Entropy")
