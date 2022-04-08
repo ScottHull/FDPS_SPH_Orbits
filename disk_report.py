@@ -181,6 +181,5 @@ def make_report_latex_table():
 
 def plot_disk_report():
     sims, titles = get_all_sims(high=False)
-    for a in ['b073', 'b075']:
-        __plot_disk_report(run_names=sims, run_titles=titles, to_base_path=base_path, imp_angle=a,
-                           iteration=max_iteration)
+    __plot_disk_report(run_names=sims, run_titles=titles, to_base_path=base_path, imp_angle=angle,
+                       iteration=max_iteration)
