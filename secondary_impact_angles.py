@@ -3,7 +3,7 @@ import os
 import csv
 import pandas as pd
 import numpy as np
-from math import sin, cos, tan, pi
+from math import atan, pi
 from operator import contains
 from random import randint
 import multiprocessing as mp
@@ -76,10 +76,10 @@ def get_impactor_com_particles(output_name):
 def get_angle(target_com, impactor_com):
     x_offset = target_com[0] - impactor_com[0]
     y_offset = target_com[1] - impactor_com[1]
-    return tan(x_offset / y_offset) * (180 / pi)
+    return atan(x_offset / y_offset) * (180 / pi)  # to degrees
 
 
-def __build_scene(iteration, dfs, sims, titles, impact_angles, target_coms, impactor_coms, to_save_path):
+def __build_scene(iteration, time, dfs, sims, titles, impact_angles, target_coms, impactor_coms, to_save_path):
     num_new = len([i for i in sims if "new" in i])
     num_old = len([i for i in sims if "old" in i])
     num_rows = max([num_new, num_old])
@@ -120,15 +120,15 @@ def __build_scene(iteration, dfs, sims, titles, impact_angles, target_coms, impa
             target_com[0], target_com[1], s=60, c='green', marker="*", label="Target COM"
         )
         axs[to_index].plot(
-            [target_com[0], impactor_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="blue"
+            [target_com[0], impactor_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
         )
         axs[to_index].plot(
-            [target_com[0], target_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="blue"
+            [target_com[0], target_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
         )
         axs[to_index].plot(
-            [impactor_com[0], target_com[0]], [impactor_com[1], impactor_com[1]], linewidth=2.0, color="blue"
+            [impactor_com[0], target_com[0]], [impactor_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
         )
-        axs[to_index].set_title("{} ({} - {} deg.)".format(t, iteration, round(impact_angle, 2)))
+        axs[to_index].set_title("{} {} hrs. ({} - {} deg.)".format(t, time, iteration, round(impact_angle, 2)))
         if "old" in s:
             index_old += 2
         else:
