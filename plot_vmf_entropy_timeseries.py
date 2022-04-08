@@ -85,7 +85,7 @@ def plot_entropy_and_vmf_vs_time():
             d[title]['DISK_MASS'].append(disk_mass)
     for i in d.keys():
         for j in d[i].keys():
-            d[i][j] = [float(k.split(" ")[0]) for k in d[i][j]]
+            d[i][j] = [float(str(k).split(" ")[0]) for k in d[i][j]]
     for sim in d.keys():
         to_index = new_index
         if "o" in sim:
