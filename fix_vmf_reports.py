@@ -58,7 +58,9 @@ def reformat():
             del df_report['DISK VMF']
             df_report['DISK_VMF_W_CIRC'] = [vmf_circ]
             df_report['DISK_VMF_WITHOUT_CIRC'] = [vmf_uncirc]
-            df_report.to_csv("{}_test.csv".format(iteration), index=False)
+            to_f = report_path = base_path + "{}/{}_reports/".format(sim, sim) + "{}_test.csv".format(iteration)
+            df_report.to_csv(to_f, index=False)
+            print("Rewrote report at {}".format(to_f))
             sys.exit(1)
 
 reformat()
