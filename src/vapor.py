@@ -174,6 +174,7 @@ def calc_vapor_mass_fraction_with_circularization_from_formatted(df, phase_path,
                                   "entropy_sol_liq", "entropy_vap"])
 
     disk_particles = df[df['label'] == "DISK"]
+    # remove all particles on super high orbits with crazy delta s due to orbital circ.
     disk_particles = disk_particles[disk_particles['circ_entropy_delta'] < 5000]
     sil_disk_particles = disk_particles[disk_particles['tag'] % 2 == 0]
     s_t_delta_s_circ = zip(sil_disk_particles['entropy'], sil_disk_particles['temperature'],

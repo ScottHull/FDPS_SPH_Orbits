@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas as pd
 
 from src.vapor import calc_vapor_mass_fraction_from_formatted, \
@@ -47,16 +48,17 @@ def reformat():
         formatted_path = base_path + "{}/circularized_{}/".format(sim, sim)
         report_path = base_path + "{}/{}_reports/".format(sim, sim)
         for i in os.listdir(report_path):
+            iteration = i.replace(".csv", "")
             df_formatted = pd.read_csv(formatted_path + i)
             df_report = pd.read_csv(report_path + i)
+            del df_report['Unnamed: 0']
             vmf_uncirc = calc_vapor_mass_fraction_from_formatted(df=df_formatted, phase_path=phase_path)
             vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(df=df_formatted,
                                                                                     phase_path=phase_path)
-            print(vmf_uncirc, vmf_circ)
-            del df_report['VMF']
+            del df_report['DISK VMF']
             df_report['DISK_VMF_W_CIRC'] = [vmf_circ]
             df_report['DISK_VMF_WITHOUT_CIRC'] = [vmf_uncirc]
-            print(df_report)
-
+            df_report.to_csv("{}_test.csv".format(iteration), index=False)
+            sys.exit(1)
 
 reformat()
