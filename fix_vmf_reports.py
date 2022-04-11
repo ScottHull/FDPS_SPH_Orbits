@@ -5,7 +5,7 @@ from src.vapor import get_all_particle_vapor_fractions_from_formatted, \
     calc_vapor_mass_fraction_with_circularization_from_formatted
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
-angle = ["b073", "b075"]
+angles = ["b073", "b075"]
 cutoff_densities = [5, 500, 1000, 2000]
 
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
@@ -19,22 +19,23 @@ def get_all_sims(high=True):
     titles = []
     high_res_name = None
     high_res_title = None
-    for runs in ["new", "old"]:
-        n = "n"
-        if runs == "old":
-            n = "o"
-        for cd in cutoff_densities:
-            output_name = fformat.format(cd, angle, runs)
-            title_name = tformat.format(cd, angle, n)
-            titles.append(title_name)
-            names.append(output_name)
-            if cd == 5 and high and runs == "new":
-                high_res_name = fformat.format(cd, angle, runs) + "_high"
-                high_res_title = tformat.format(cd, angle, n) + "-high"
-    if high_res_name is not None and high_res_title is not None:
-        names.append(high_res_name)
-        titles.append(high_res_title)
-    return names, titles
+    for angle in angles:
+        for runs in ["new", "old"]:
+            n = "n"
+            if runs == "old":
+                n = "o"
+            for cd in cutoff_densities:
+                output_name = fformat.format(cd, angle, runs)
+                title_name = tformat.format(cd, angle, n)
+                titles.append(title_name)
+                names.append(output_name)
+                if cd == 5 and high and runs == "new":
+                    high_res_name = fformat.format(cd, angle, runs) + "_high"
+                    high_res_title = tformat.format(cd, angle, n) + "-high"
+        if high_res_name is not None and high_res_title is not None:
+            names.append(high_res_name)
+            titles.append(high_res_title)
+        return names, titles
 
 
 def reformat():
