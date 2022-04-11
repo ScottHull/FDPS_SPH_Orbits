@@ -52,11 +52,11 @@ def reformat():
             iteration = i.replace(".csv", "")
             df_formatted = pd.read_csv(formatted_path + i)
             df_report = pd.read_csv(report_path + i)
-            del df_report['Unnamed: 0']
-            vmf_uncirc = calc_vapor_mass_fraction_from_formatted(df=df_formatted, phase_path=phase_path)
-            vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(df=df_formatted,
-                                                                                    phase_path=phase_path)
             try:
+                del df_report['Unnamed: 0']
+                vmf_uncirc = calc_vapor_mass_fraction_from_formatted(df=df_formatted, phase_path=phase_path)
+                vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(df=df_formatted,
+                                                                                        phase_path=phase_path)
                 del df_report['DISK VMF']
                 df_report['DISK_VMF_W_CIRC'] = [str(vmf_circ * 100.0) + " %"]
                 df_report['DISK_VMF_WITHOUT_CIRC'] = [str(vmf_uncirc * 100.0) + " %"]
