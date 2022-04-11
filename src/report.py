@@ -146,7 +146,7 @@ rows_map = {
         "DISK_ANGULAR_MOMENTUM": "{$L_{Disk}$ ($L_{EM}$)}",
         "DISK_ANGULAR_MOMENTUM_BEYOND_ROCHE": "{$L_{Disk}$ $\geq R_{Roche}$ ($L_{EM}$)}",
         "TOTAL_ANGULAR_MOMENTUM": "{L_{total} ($L_{EM}$)}",
-        "DISK VMF": "{Disk VMF  ($\%$)}",
+        "DISK_VMF_W_CIRC": "{Disk VMF  ($\%$)}",
         "MEAN_DISK_ENTROPY": "{Avg. $S_{disk}$ (J/K)}",
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": "{Avg. $\Delta S_{circ}$ (J/K)}",
         "PREDICTED_MOON_MASS": "{$M_{M}$ ($M_L$)}",
