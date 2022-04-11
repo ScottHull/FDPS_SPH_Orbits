@@ -83,7 +83,7 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
         "DISK_VMF_W_CIRC": "{} %".format(vmf * 100),
         "DISK_VMF_WITHOUT_CIRC": "{} %".format(vmf_without_circ * 100),
         "TOTAL_ANGULAR_MOMENTUM": "{} L_EM".format(sum(particle_df['angular_momentum']) / L_EM),
-        "MEAN_DISK_ENTROPY": __mean(disk['entropy']),
+        "MEAN_DISK_ENTROPY": __mean(filtered_disk['entropy'] + filtered_disk['circ_entropy_delta']),
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": __mean(filtered_disk['circ_entropy_delta']),
         "PREDICTED_MOON_MASS": "{} M_L".format(predicted_moon_mass(disk)),
         "DISK_THEIA_MASS_FRACTION": "{} %".format(theia_disk_mass_fraction)
