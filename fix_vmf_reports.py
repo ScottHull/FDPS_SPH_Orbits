@@ -50,7 +50,7 @@ def reformat():
             df_formatted = pd.read_csv(formatted_path + i)
             df_report = pd.read_csv(report_path + i)
             vmf_uncirc = get_all_particle_vapor_fractions_from_formatted(df=df_formatted, phase_path=phase_path)
-            vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(particles=df_formatted,
+            vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(df=df_formatted,
                                                                                     phase_path=phase_path)
             print(vmf_uncirc, vmf_circ)
             del df_report['VMF']
