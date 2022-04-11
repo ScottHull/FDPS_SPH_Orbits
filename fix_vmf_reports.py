@@ -46,13 +46,17 @@ def reformat():
             phase_path = old_phase_path
         formatted_path = base_path + "{}/circularized_{}/".format(sim, sim)
         report_path = base_path + "{}/{}_reports/".format(sim, sim)
-        df_formatted = pd.read_csv(formatted_path)
-        df_report = pd.read_csv(report_path)
-        vmf_uncirc = get_all_particle_vapor_fractions_from_formatted(df=df_formatted, phase_path=phase_path)
-        vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(particles=df_formatted,
-                                                                                phase_path=phase_path)
-        print(vmf_uncirc, vmf_circ)
-        del df_report['VMF']
-        df_report['DISK_VMF_W_CIRC'] = [vmf_circ]
-        df_report['DISK_VMF_WITHOUT_CIRC'] = [vmf_uncirc]
-        print(df_report)
+        for i in os.listdir(report_path):
+            df_formatted = pd.read_csv(formatted_path + i)
+            df_report = pd.read_csv(report_path + i)
+            vmf_uncirc = get_all_particle_vapor_fractions_from_formatted(df=df_formatted, phase_path=phase_path)
+            vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(particles=df_formatted,
+                                                                                    phase_path=phase_path)
+            print(vmf_uncirc, vmf_circ)
+            del df_report['VMF']
+            df_report['DISK_VMF_W_CIRC'] = [vmf_circ]
+            df_report['DISK_VMF_WITHOUT_CIRC'] = [vmf_uncirc]
+            print(df_report)
+
+
+reformat()
