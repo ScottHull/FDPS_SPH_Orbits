@@ -37,7 +37,7 @@ def get_all_sims(high=True):
         if high_res_name is not None and high_res_title is not None:
             names.append(high_res_name)
             titles.append(high_res_title)
-        return names, titles
+    return names, titles
 
 
 def reformat():
