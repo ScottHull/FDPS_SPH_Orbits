@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-from src.vapor import get_all_particle_vapor_fractions_from_formatted, \
+from src.vapor import calc_vapor_mass_fraction_from_formatted, \
     calc_vapor_mass_fraction_with_circularization_from_formatted
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -49,7 +49,7 @@ def reformat():
         for i in os.listdir(report_path):
             df_formatted = pd.read_csv(formatted_path + i)
             df_report = pd.read_csv(report_path + i)
-            vmf_uncirc = get_all_particle_vapor_fractions_from_formatted(df=df_formatted, phase_path=phase_path)
+            vmf_uncirc = calc_vapor_mass_fraction_from_formatted(df=df_formatted, phase_path=phase_path)
             vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(df=df_formatted,
                                                                                     phase_path=phase_path)
             print(vmf_uncirc, vmf_circ)
