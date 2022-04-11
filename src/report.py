@@ -7,7 +7,7 @@ import multiprocessing.dummy as mp
 
 from src.combine import CombineFile
 from src.identify import ParticleMap
-from src.vapor import calc_vapor_mass_fraction_from_formatted
+from src.vapor import calc_vapor_mass_fraction_with_circularization, calc_vapor_mass_fraction_from_formatted
 
 MASS_EARTH = 5.972 * 10 ** 24
 MASS_MOON = 7.34767309 * 10 ** 22
@@ -57,7 +57,8 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
     except:
         pass
 
-    vmf = calc_vapor_mass_fraction_from_formatted(df=particle_df, phase_path=phase_path)
+    vmf = calc_vapor_mass_fraction_with_circularization(particles=particle_df, phase_path=phase_path)
+    vmf_without_circ = calc_vapor_mass_fraction_from_formatted(df=particle_df, phase_path=phase_path)
     data = {
         "NAME": sim_name,
         "ITERATION": iteration,
@@ -79,7 +80,8 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
         "DISK_ANGULAR_MOMENTUM": "{} L_EM".format(sum(disk['angular_momentum']) / L_EM),
         "DISK_ANGULAR_MOMENTUM_BEYOND_ROCHE": "{} L_EM".format(
             sum(disk[disk['radius'] > ROCHE_LIM]['angular_momentum']) / L_EM),
-        "DISK VMF": "{} %".format(vmf * 100),
+        "DISK_VMF_W_CIRC": "{} %".format(vmf * 100),
+        "DISK_VMF_WITHOUT_CIRC": "{} %".format(vmf_without_circ * 100),
         "TOTAL_ANGULAR_MOMENTUM": "{} L_EM".format(sum(particle_df['angular_momentum']) / L_EM),
         "MEAN_DISK_ENTROPY": __mean(disk['entropy']),
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": __mean(filtered_disk['circ_entropy_delta']),

@@ -101,8 +101,10 @@ def plot_entropy_and_vmf_vs_time():
         )
     for ax in [axs[0], axs[1]]:
         ax.set_ylabel("Avg. Disk Entropy")
+        ax.set_ylim(0, 6100)
     for ax in [axs[2], axs[3]]:
         ax.set_ylabel("Disk VMF (%)")
+        ax.set_ylim(0, 35)
     for ax in [axs[4], axs[5]]:
         ax.set_ylabel(r"Disk Mass ($M_{L}$)")
         ax.set_xlabel("Time (hrs)")
