@@ -56,8 +56,8 @@ def reformat():
             vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(df=df_formatted,
                                                                                     phase_path=phase_path)
             del df_report['DISK VMF']
-            df_report['DISK_VMF_W_CIRC'] = [str(vmf_circ) + " %"]
-            df_report['DISK_VMF_WITHOUT_CIRC'] = [str(vmf_uncirc) + " %"]
+            df_report['DISK_VMF_W_CIRC'] = [str(vmf_circ * 100.0) + " %"]
+            df_report['DISK_VMF_WITHOUT_CIRC'] = [str(vmf_uncirc * 100.0) + " %"]
             to_f = report_path = base_path + "{}/{}_reports/".format(sim, sim) + "{}_test.csv".format(iteration)
             df_report.to_csv(to_f, index=False)
             print("Rewrote report at {}".format(to_f))
