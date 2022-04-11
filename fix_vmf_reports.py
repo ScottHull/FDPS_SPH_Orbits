@@ -1,10 +1,15 @@
 import os
 import pandas as pd
 
+from src.vapor import get_all_particle_vapor_fractions_from_formatted, \
+    calc_vapor_mass_fraction_with_circularization_from_formatted
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 angle = ["b073", "b075"]
 cutoff_densities = [5, 500, 1000, 2000]
+
+new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
+old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 
 def get_all_sims(high=True):
@@ -35,8 +40,18 @@ def get_all_sims(high=True):
 def reformat():
     sims, titles = get_all_sims(high=False)
     for sim, title in zip(sims, titles):
+        phase_path = new_phase_path
+        if "old" in sim:
+            phase_path = old_phase_path
         formatted_path = base_path + "{}/circularized_{}/".format(sim, sim)
         report_path = base_path + "{}/{}_reports/".format(sim, sim)
         df_formatted = pd.read_csv(formatted_path)
         df_report = pd.read_csv(report_path)
-        vmf_
+        vmf_uncirc = get_all_particle_vapor_fractions_from_formatted(df=df_formatted, phase_path=phase_path)
+        vmf_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(particles=df_formatted,
+                                                                                phase_path=phase_path)
+        print(vmf_uncirc, vmf_circ)
+        del df_report['VMF']
+        df_report['DISK_VMF_W_CIRC'] = [vmf_circ]
+        df_report['DISK_VMF_WITHOUT_CIRC'] = [vmf_uncirc]
+        print(df_report)

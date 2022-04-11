@@ -2,6 +2,7 @@ import numpy as np
 from math import pi, log10
 import matplotlib.pyplot as plt
 plt.style.use("dark_background")
+plt.rcParams.update({'font.size': 18,})
 
 
 target_mass = 5.29436E+24
@@ -21,52 +22,75 @@ def get_smth_length(m, rho, xi=1.2, n=3):
     """
     return xi * ((m / rho) ** (1 / n))
 
-def wendland_c6(r, h):
-    sigma = 1 / (h ** 3)
-    s = r / h
+def wendland_c6(r, h, support_radius=2.5, n=3):
+    h *= support_radius  # add support radius
+    sigma = 1 / (h ** n)
+    s = abs(r) / h
     W = (1365 * sigma) / (64 * pi)
-    if 0 <= s <= 2:
+    if s < 1:
         W *= ((1 - s) ** 8) * (1 + (8 * s) + (25 * (s ** 2)) + (32 * (s ** 3)))
     else:
         W *= 0
     return W
 
 
-fig = plt.figure(figsize=(16, 9))
-ax = fig.add_subplot(111)
-ax.set_xlabel("Density (kg/$m^3$)")
-ax.set_ylabel("h (km)")
-ax.set_title("Smoothing Length for Particle Counts (N)")
-print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1e6), 5) / 1000)
-print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1e6), 2000) / 1000)
-for n in particle_counts:
-    print(n)
-    m = get_particle_mass(target_mass + impactor_mass, n)
-    smth = [get_smth_length(m, rho) / 1000 for rho in densities]
-    ax.plot(
-        densities, smth, linewidth=2.0, label="N = %.1E" % n
-    )
-    ax.grid(alpha=0.4)
-ax.legend()
+
+# fig = plt.figure(figsize=(16, 9))
+# ax = fig.add_subplot(111)
+# ax.set_xlabel("Density (kg/$m^3$)")
+# ax.set_ylabel("h (km)")
+# ax.set_title("Smoothing Length for Particle Counts (N)")
+# print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1e6), 5) / 1000)
+# print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1e6), 2000) / 1000)
+# for n in particle_counts:
+#     m = get_particle_mass(target_mass + impactor_mass, n)
+#     smth = [get_smth_length(m, rho) / 1000 for rho in densities]
+#     ax.plot(
+#         densities, smth, linewidth=2.0, label="N = %.1E" % n
+#     )
+#     ax.grid(alpha=0.4)
+# ax.legend()
 
 # plt.show()
 # plt.savefig("smth_length.png", format='png', dpi=200)
 
-fig = plt.figure(figsize=(16, 9))
-ax = fig.add_subplot(111)
-ax.set_xlabel("Density (kg/$m^3$)")
-ax.set_ylabel("log(W(r=1, h))")
-ax.set_title("Wendland C6 Kernel for Particle Counts (N) and r=1")
-for n in particle_counts:
-    print(n)
-    m = get_particle_mass(target_mass + impactor_mass, n)
-    smth = [get_smth_length(m, rho) / 1000 for rho in densities]
-    wendland = [log10(wendland_c6(1, s)) for s in smth]
-    ax.plot(
-        densities, wendland, linewidth=2.0, label="N = %.1E" % n
-    )
-    ax.grid(alpha=0.4)
-ax.legend()
+# fig = plt.figure(figsize=(16, 9))
+# ax = fig.add_subplot(111)
+# ax.set_xlabel("Density (kg/$m^3$)")
+# ax.set_ylabel("log(W(r=1, h))")
+# ax.set_title("Wendland C6 Kernel for Particle Counts (N) and r=1")
+# for n in particle_counts:
+#     m = get_particle_mass(target_mass + impactor_mass, n)
+#     smth = [get_smth_length(m, rho) for rho in densities]
+#     wendland = [log10(wendland_c6(1, s)) for s in smth]
+#     ax.plot(
+#         densities, wendland, linewidth=2.0, label="N = %.1E" % n
+#     )
+#     ax.grid(alpha=0.4)
+# ax.legend()
 
 # plt.show()
-plt.savefig("wendlandc6.png", format='png', dpi=200)
+# plt.savefig("wendlandc6.png", format='png', dpi=200)
+
+# what happens when r_i - r_j -> \infty?
+# lets assume that h = 100km constant
+cutoff_density = 2000
+fig = plt.figure(figsize=(16, 9))
+ax = fig.add_subplot(111)
+ax.set_xlabel(r"$r_{i} - r_{j}$ (km)")
+ax.set_ylabel("W($r_{i} - r_{j}$, h)")
+ax.set_title(r"Wendland C6 Kernel for Particle Counts (N) (${\rho}_{c} = %i kg/m^3$)" % cutoff_density)
+for n in particle_counts:
+    particle_distances = [10**0, 10**1, 10**2, 10**3, 10**4, 10**5, 10**6, 10**7, 10**8, 10**9, 10**10]
+    m = get_particle_mass(target_mass + impactor_mass, n)
+    smth = get_smth_length(m, cutoff_density)
+    wendland = [wendland_c6(r_i_minus_r_j, smth) for r_i_minus_r_j in particle_distances]
+    ax.plot(
+        [i / 1000 for i in particle_distances], wendland, linewidth=2.0, label="N = %.1E" % n
+    )
+    ax.grid(alpha=0.4)
+ax.set_xscale('log')
+ax.set_yscale('log')
+ax.legend()
+
+plt.show()

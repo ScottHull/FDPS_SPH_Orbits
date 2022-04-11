@@ -135,7 +135,44 @@ def calc_vapor_mass_fraction(particles, phase_path, only_disk=True):
         return 0.0
     return vapor_mass_fraction
 
-def calc_vapor_mass_fraction_with_circularization(particles, phase_path, only_disk=True):
+def calc_vapor_mass_fraction_with_circularization(df, phase_path, only_disk=True):
+    phase_df = pd.read_fwf(phase_path, skiprows=1,
+                           names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                  "entropy_sol_liq", "entropy_vap"])
+
+    disk_particles = df[df['label'] == "DISK"]
+    sil_disk_particles = disk_particles[disk_particles['tag'] % 2 == 0]
+    s_t_delta_s_circ = zip(sil_disk_particles['entropy'], sil_disk_particles['temperature'],
+                           sil_disk_particles['circ_entropy_delta'])
+    supercritical = max(phase_df['entropy_sol_liq'] + phase_df['entropy_vap'])
+    nearest_neighbor = NearestNeighbor1D()
+    num_particles = 0
+    vapor_mass_fraction = 0
+    for s, t, c in s_t_delta_s_circ:
+        num_particles += 1
+        entropy_i = s + c
+        temperature_i = t
+        nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=temperature_i,
+                                                                    array=list(phase_df['temperature']))
+        entropy_liq = phase_df['entropy_sol_liq'][nearest_temperature_index]
+        entropy_vap = phase_df['entropy_vap'][nearest_temperature_index]
+        if entropy_i > supercritical:
+            return 1.0
+        elif entropy_i < entropy_liq:
+            vapor_mass_fraction += 0.0
+        elif entropy_liq <= entropy_i <= entropy_vap:
+            vapor_mass_fraction += (entropy_i - entropy_liq) / (entropy_vap - entropy_liq)
+        elif entropy_i > entropy_vap:
+            vapor_mass_fraction += 1.0
+
+    try:
+        vapor_mass_fraction = vapor_mass_fraction / num_particles
+    except Exception as e:  # likely if there are no disk particles
+        return 0.0
+    return vapor_mass_fraction
+
+
+def calc_vapor_mass_fraction_with_circularization_from_formatted(particles, phase_path, only_disk=True):
     phase_df = pd.read_fwf(phase_path, skiprows=1,
                            names=["temperature", "density_sol_liq", "density_vap", "pressure",
                                   "entropy_sol_liq", "entropy_vap"])
