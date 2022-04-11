@@ -61,6 +61,5 @@ def reformat():
             to_f = report_path = base_path + "{}/{}_reports/".format(sim, sim) + "{}_test.csv".format(iteration)
             df_report.to_csv(to_f, index=False)
             print("Rewrote report at {}".format(to_f))
-            sys.exit(1)
 
 reformat()
