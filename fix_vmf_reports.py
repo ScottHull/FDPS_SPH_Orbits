@@ -94,10 +94,9 @@ def fix_entropies():
                 disk_filtered = disk[disk['circ_entropy_delta'] < 5000]
                 df_report['MEAN_DISK_ENTROPY_W_CIRC'] = [str(__mean(disk_filtered['entropy'] + disk_filtered['circ_entropy_delta']))]
                 df_report['MEAN_DISK_ENTROPY_WITHOUT_CIRC'] = [str(__mean(disk['entropy']))]
-                to_f = report_path + "{}_test.csv".format(iteration)
+                to_f = report_path + "{}.csv".format(iteration)
                 df_report.to_csv(to_f, index=False)
                 print("Rewrote report at {}".format(to_f))
-                sys.exit(1)
             except Exception as e:
                 print(e)
                 pass
