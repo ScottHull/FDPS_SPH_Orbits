@@ -2,6 +2,7 @@
 import os
 import sys
 import pandas as pd
+from statistics import mean
 
 from src.vapor import calc_vapor_mass_fraction_from_formatted, \
     calc_vapor_mass_fraction_with_circularization_from_formatted
@@ -12,6 +13,13 @@ cutoff_densities = [5, 500, 1000, 2000]
 
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
+
+
+def __mean(l):
+    try:
+        return mean(l)
+    except:
+        return 0.0
 
 
 def get_all_sims(high=True):
@@ -67,4 +75,32 @@ def reformat():
                 print(e)
                 pass
 
-reformat()
+def fix_entropies():
+    sims, titles = get_all_sims(high=False)
+    for sim, title in zip(sims, titles):
+        phase_path = new_phase_path
+        if "old" in sim:
+            phase_path = old_phase_path
+        formatted_path = base_path + "{}/circularized_{}/".format(sim, sim)
+        report_path = base_path + "{}/{}_reports/".format(sim, sim)
+        for i in os.listdir(report_path):
+            iteration = i.replace(".csv", "")
+            df_formatted = pd.read_csv(formatted_path + i)
+            df_report = pd.read_csv(report_path + i)
+            try:
+                del df_report['Unnamed: 0']
+                del df_report['MEAN_DISK_ENTROPY']
+                disk = df_formatted[df_formatted['label'] == "DISK"]
+                disk_filtered = disk[disk['circ_entropy_delta'] < 5000]
+                df_report['MEAN_DISK_ENTROPY_W_CIRC'] = [str(__mean(disk_filtered['entropy'] + disk_filtered['circ_entropy_delta']))]
+                df_report['MEAN_DISK_ENTROPY_WITHOUT_CIRC'] = [str(disk['entropy'])]
+                to_f = report_path + "{}_test.csv".format(iteration)
+                df_report.to_csv(to_f, index=False)
+                print("Rewrote report at {}".format(to_f))
+                sys.exit(1)
+            except Exception as e:
+                print(e)
+                pass
+
+# reformat()
+fix_entropies()
