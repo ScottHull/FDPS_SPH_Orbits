@@ -6,7 +6,7 @@ import numpy as np
 from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
-
+plt.rcParams.update({'font.size': 18,})
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -73,14 +73,14 @@ def plot_entropy_and_vmf_vs_time():
     d = {}
     for sim, title in zip(sims, titles):
         if title not in d.keys():
-            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY': [], 'DISK_VMF_W_CIRC': [], "DISK_MASS": []}})
+            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_W_CIRC': [], 'DISK_VMF_W_CIRC': [], "DISK_MASS": []}})
         for iteration in np.arange(min_iteration, max_iteration + increment, increment):
             path = base_path + "{}/{}_reports/".format(sim, sim)
             df = pd.read_csv(path + "{}.csv".format(iteration))
-            time, avg_disk_entropy, disk_vmf, disk_mass = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY'][0], \
+            time, avg_disk_entropy, disk_vmf, disk_mass = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY_W_CIRC'][0], \
                                                           df['DISK_VMF_W_CIRC'][0], df['DISK_MASS'][0]
             d[title]['TIME_HRS'].append(time)
-            d[title]['MEAN_DISK_ENTROPY'].append(avg_disk_entropy)
+            d[title]['MEAN_DISK_ENTROPY_W_CIRC'].append(avg_disk_entropy)
             d[title]['DISK_VMF_W_CIRC'].append(disk_vmf)
             d[title]['DISK_MASS'].append(disk_mass)
     for i in d.keys():
@@ -91,7 +91,7 @@ def plot_entropy_and_vmf_vs_time():
         if "o" in sim:
             to_index = old_index
         axs[to_index].plot(
-            d[sim]['TIME_HRS'], d[sim]['MEAN_DISK_ENTROPY'], linewidth=2.0, label=sim
+            d[sim]['TIME_HRS'], d[sim]['MEAN_DISK_ENTROPY_W_CIRC'], linewidth=2.0, label=sim
         )
         axs[to_index + 2].plot(
             d[sim]['TIME_HRS'], d[sim]['DISK_VMF_W_CIRC'], linewidth=2.0, label=sim

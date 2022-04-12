@@ -6,6 +6,7 @@ import numpy as np
 from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
+plt.rcParams.update({'font.size': 18,})
 plt.style.use("dark_background")
 
 from src.combine import CombineFile
@@ -130,7 +131,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, imp
         if "2000_" in r.replace("b075", ""):
             return 3
 
-    headers = ["MEAN_DISK_ENTROPY", "DISK_VMF_W_CIRC", "DISK_MASS", "DISK_ANGULAR_MOMENTUM", "DISK_THEIA_MASS_FRACTION",
+    headers = ["MEAN_DISK_ENTROPY_W_CIRC", "DISK_VMF_W_CIRC", "DISK_MASS", "DISK_ANGULAR_MOMENTUM", "DISK_THEIA_MASS_FRACTION",
                "DISK_IRON_MASS_FRACTION"]
     cutoff_densities = [5, 500, 1000, 2000]
     fig, axs = plt.subplots(int(len(headers) / 2), 2, figsize=(16, 24), sharex="all",
