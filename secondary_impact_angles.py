@@ -62,7 +62,7 @@ def get_com(x, y, z, mass):
     x_center = sum(x * mass) / total_mass
     y_center = sum(y * mass) / total_mass
     z_center = sum(z * mass) / total_mass
-    return x_center, y_center, z_center
+    return np.array([x_center, y_center, z_center])
 
 
 def get_impactor_com_particles(output_name):
@@ -196,4 +196,79 @@ def get_impact_angles():
     df = pd.DataFrame(impact_angles, index=np.arange(min_iteration, max_iteration + increment, increment))
     df.to_csv("{}_secondary_impact_angles.csv".format(angle))
 
-get_impact_angles()
+
+def get_mean_vector(vectors):
+    return [float(sum(l)) / len(l) for l in zip(*vectors)]
+
+
+def get_impact_angle_with_velocity_vector():
+    sims, titles = get_all_sims(high=False)
+    impact_angles = {}
+    target_coms = {}
+    impactor_coms = {}
+    imp_ids = {}
+    times = {}
+    r_dot_vs = {}
+    for output_name, title in zip(sims, titles):
+        imp_ids.update({title: get_impactor_com_particles(output_name)})
+    for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+        dfs = {}
+        for output_name, title in zip(sims, titles):
+            if title not in impact_angles.keys():
+                impact_angles.update({title: []})
+                impactor_coms.update({title: []})
+                target_coms.update({title: []})
+                times.update({title: []})
+                r_dot_vs.update({title: []})
+            if title not in dfs.keys():
+                dfs.update({title: []})
+            output_path = base_path + output_name + "/circularized_{}".format(output_name)
+            # df = pd.read_csv(output_path + "/{}.csv".format(iteration))
+            path = base_path + "{}/{}".format(output_name, output_name)
+            to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+            cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+            combined_file = cf.combine()
+            formatted_time = round(cf.sim_time * 0.000277778, 2)
+            times[title].append(formatted_time)
+            f = os.getcwd() + "/{}".format(to_fname)
+            headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                       "potential energy", "entropy", "temperature"]
+            df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
+            os.remove(f)
+            zero_coords = get_com(df[df['tag'] == 1]['x'], df[df['tag'] == 1]['y'],
+                                  df[df['tag'] == 1]['z'], df[df['tag'] == 1]['mass'])
+            df['x'] -= zero_coords[0]
+            df['y'] -= zero_coords[1]
+            df['z'] -= zero_coords[2]
+            # df['radius'] = [(i ** 2 + j ** 2 + k ** 2) ** (1 / 2) for i, j, k in zip(df['x'], df['y'], df['z'])]
+
+            target_iron = df[df['tag'] == 1]
+            impactor_iron = df[df['tag'] == 3]
+
+            # impactor_iron = impactor_iron[impactor_iron['id'] in imp_ids[title]]
+            impactor_iron = impactor_iron[impactor_iron['id'].isin(imp_ids[title].tolist())]
+
+            target_com = get_com(target_iron['x'], target_iron['y'], target_iron['z'], target_iron['mass'])
+            impactor_com = get_com(impactor_iron['x'], impactor_iron['y'], impactor_iron['z'], impactor_iron['mass'])
+
+            r_vector = impactor_com - target_com
+            mean_impactor_velocity_vector = get_mean_vector(
+                zip(impactor_iron['vx'], impactor_iron['vy'], impactor_iron['vz']))
+            r_dot_v = np.dot(r_vector, mean_impactor_velocity_vector)
+
+            imp_angle = get_angle(target_com, impactor_com)
+            dfs[title].append(df)
+            impact_angles[title].append(imp_angle)
+            target_coms[title].append(target_com)
+            impactor_coms[title].append(impactor_com)
+            r_dot_vs[title].append(r_dot_v)
+        # to_save_path = "{}_secondary_impact_angles_scences".format(angle)
+        # if not os.path.exists(to_save_path):
+        #     os.mkdir(to_save_path)
+        # __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
+        #               target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
+
+    df = pd.DataFrame(r_dot_vs, index=np.arange(min_iteration, max_iteration + increment, increment))
+    df.to_csv("{}_secondary_impact_angles_r_dot_v.csv".format(angle))
+
+# get_impact_angles()
