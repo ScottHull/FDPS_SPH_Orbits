@@ -257,7 +257,7 @@ def get_impact_angle_with_velocity_vector():
             r_dot_v = np.dot(r_vector, mean_impactor_velocity_vector)
 
             imp_angle = get_angle(target_com, impactor_com)
-            dfs[title].append(df)
+            # dfs[title].append(df)
             impact_angles[title].append(imp_angle)
             target_coms[title].append(target_com)
             impactor_coms[title].append(impactor_com)
@@ -272,3 +272,4 @@ def get_impact_angle_with_velocity_vector():
     df.to_csv("{}_secondary_impact_angles_r_dot_v.csv".format(angle))
 
 # get_impact_angles()
+get_impact_angle_with_velocity_vector()
