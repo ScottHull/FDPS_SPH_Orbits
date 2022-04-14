@@ -45,7 +45,7 @@ def get_all_sims(high=True):
 
 
 fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex="all", sharey="all",
-                        ridspec_kw={"hspace": 0.0, "wspace": 0.0})
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 axs = axs.flatten()
 cur_index = 0
 for s, t in zip(get_all_sims(high=False)):
@@ -76,5 +76,5 @@ legend = axs[0].legend(loc='upper right')
 for handle in legend.legendHandles:
     handle.set_sizes([10.0])
 
-plt.savefig("{}_planet_disk_escape.png", format='png', dpi=200)
+plt.savefig("{}_planet_disk_escape.png".format(angle), format='png', dpi=200)
 
