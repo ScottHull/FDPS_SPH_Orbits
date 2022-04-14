@@ -175,8 +175,8 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
         )
 
         r_vector = np.array(impactor_com) - np.array(target_com)
-        axs[to_index].quiver([impactor_com[0], impactor_com[1]], mom_vector[0], mom_vector[1], scale=1)
-        axs[to_index].quiver([target_com[0], target_com[1]], r_vector[0], r_vector[1], scale=1)
+        axs[to_index].quiver([impactor_com[0], impactor_com[1]], [mom_vector[0]], [mom_vector[1]])
+        axs[to_index].quiver([target_com[0], target_com[1]], [r_vector[0]], [r_vector[1]])
 
         axs[to_index].set_title("{} {} hrs. ({} - {} deg.)".format(t, time, iteration, round(impact_angle, 2)))
         if "old" in s:
