@@ -6,6 +6,7 @@ import numpy as np
 from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
+from matplotlib.legend_handler import HandlerLine2D
 
 from src.report import rows_map
 
@@ -67,6 +68,11 @@ secondary_impact_times = {
         'primary_impact_time': 0.42,
     },
 }
+
+def change_legend_marker(handle, original):
+    """ Change the marker style of the legend handles """
+    handle.update_from(original)
+    handle.set_marker('s')
 
 def plot_impact_angles_vs_time():
     df = pd.read_csv("/Users/scotthull/Desktop/b073_secondary_impact_angles.csv", index_col="Iteration")
@@ -178,10 +184,9 @@ def plot_vs_disk_property(r_dot_v: bool):
                 )
             axs[index].set_ylabel(rows_map[p][1:-1])
     for ax in axs:
+        ax.set_aspect("equal")
         ax.grid(alpha=0.4)
-        legend = ax.legend()
-        for l in legend.get_lines:
-            l.set_marker('s')
+        ax.legend(handler_map={plt.Line2D: HandlerLine2D(update_func=change_legend_marker)})
     for ax in axs[-2:]:
         ax.set_xlabel(x_label)
     f = "angles"
