@@ -174,15 +174,10 @@ def plot_vs_disk_property(r_dot_v: bool):
         for index, p in enumerate(points):
             time = impact_point["time"] - impact_point['primary_impact_time']  # hrs after primary impact
             plot_x, plot_y = x[t][impact_point["iteration"]], float(str(report[p][0]).split(" ")[0])
-            if "new" in s:
-                axs[index].scatter(
-                    plot_x, plot_y, color=color, marker=scatter_point, s=80
-                )
-            else:
-                axs[index].scatter(
-                    plot_x, plot_y, color=color, marker=scatter_point, s=80
-                )
-            plt.scatter(
+            axs[index].scatter(
+                plot_x, plot_y, color=color, marker=scatter_point, s=80
+            )
+            axs[index].scatter(
                 [], [], s=80, marker="s", label=str(cutoff_density)
             )
             axs[index].set_ylabel(rows_map[p][1:-1])
