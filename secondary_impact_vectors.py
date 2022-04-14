@@ -122,7 +122,8 @@ def get_mean_vector(vectors):
     return [float(sum(l)) / len(l) for l in zip(*vectors)]
 
 
-def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_coms, impactor_coms, mom_vectors,  to_save_path):
+def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_coms, impactor_coms, mom_vectors,
+                  to_save_path):
     num_new = len([i for i in sims if "new" in i])
     num_old = len([i for i in sims if "old" in i])
     num_rows = max([num_new, num_old])
@@ -139,7 +140,8 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
     index_new, index_old = 0, 1
     for s, t in zip(sims, titles):
         df, impact_angle, target_com, impactor_com, time, mom_vector = dfs[t][-1], impact_angles[t][-1], \
-                                           target_coms[t][-1], impactor_coms[t][-1], times[t][-1], mom_vectors[t][-1]
+                                                                       target_coms[t][-1], impactor_coms[t][-1], \
+                                                                       times[t][-1], mom_vectors[t][-1]
         df = df[df['z'] < 0]
         target_silicate = df[df['tag'] == 0]
         target_iron = df[df['tag'] == 1]
@@ -176,7 +178,6 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
         axs[to_index].quiver([impactor_com[0], impactor_com[1]], mom_vector[0], mom_vector[1], scale=1)
         axs[to_index].quiver([target_com[0], target_com[1]], r_vector[0], r_vector[1], scale=1)
 
-
         axs[to_index].set_title("{} {} hrs. ({} - {} deg.)".format(t, time, iteration, round(impact_angle, 2)))
         if "old" in s:
             index_old += 2
@@ -191,6 +192,7 @@ def get_impact_angle_with_velocity_vector():
     impact_angles = {}
     target_coms = {}
     impactor_coms = {}
+    mom_vectors = {}  # specific angular momentum
     imp_ids = {}
     times = {}
     r_dot_vs = {}
@@ -244,4 +246,11 @@ def get_impact_angle_with_velocity_vector():
             impact_angles[title].append(imp_angle)
             target_coms[title].append(target_com)
             impactor_coms[title].append(impactor_com)
+            mom_vectors[title].append(mean_impactor_velocity_vector)
             r_dot_vs[title].append(r_dot_v)
+        to_save_path = "{}_secondary_impact_angles_vectors".format(angle)
+        if not os.path.exists(to_save_path):
+            os.mkdir(to_save_path)
+        __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
+                      target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path,
+                      mom_vectors=mom_vectors, times=times)
