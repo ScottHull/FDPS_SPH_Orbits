@@ -148,6 +148,7 @@ rows_map = {
         "DISK_ANGULAR_MOMENTUM_BEYOND_ROCHE": "{$L_{Disk}$ $\geq R_{Roche}$ ($L_{EM}$)}",
         "TOTAL_ANGULAR_MOMENTUM": "{L_{total} ($L_{EM}$)}",
         "DISK_VMF_W_CIRC": "{Disk VMF  ($\%$)}",
+        "DISK_VMF_WITHOUT_CIRC": "{Disk VMF  ($\%$)}",
         "MEAN_DISK_ENTROPY_W_CIRC": "{Avg. $S_{disk}$ w/ circ. (J/K)}",
         "MEAN_DISK_ENTROPY_WITHOUT_CIRC": "{Avg. $S_{disk}$ w/o circ. (J/K)}",
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": "{Avg. $\Delta S_{circ}$ (J/K)}",

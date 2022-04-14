@@ -7,8 +7,15 @@ from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
 
+from src.report import rows_map
+
 plt.rcParams.update({'font.size': 18, })
 plt.style.use("dark_background")
+
+base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
+angle = "b073"
+end_iteration = 1800
+cutoff_densities = [5, 500, 1000, 2000]
 
 secondary_impact_times = {
     '5b073n': {
@@ -44,20 +51,6 @@ secondary_impact_times = {
         'time': 6.81,
     },
 }
-
-
-def get_impact_momentum_vector_norm(df):
-    mass, vx, vy, vz = df['mass'], df['vx'], df['vy'], df['vz']
-    px, py, pz = mass * vx, mass * vy, mass * vz
-    return np.array([px, py, pz])
-
-
-def get_surface_normal_vector(df, secondary_imp_com):
-    secondary_imp_com = np.array(secondary_imp_com)
-    secondary_imp_com_to_earth_com = secondary_imp_com - np.array([0, 0, 0])
-    surface_normal = secondary_imp_com_to_earth_com / np.linalg.norm(secondary_imp_com_to_earth_com)
-    return surface_normal
-
 
 def plot_impact_angles_vs_time():
     df = pd.read_csv("/Users/scotthull/Desktop/b073_secondary_impact_angles.csv", index_col="Iteration")
@@ -108,4 +101,62 @@ def plot_moment_of_impact_vs_angle():
 
 
 # plot_impact_angles_vs_time()
-plot_moment_of_impact_vs_angle()
+# plot_moment_of_impact_vs_angle()
+
+def get_all_sims(high=True):
+    fformat = "{}_{}_{}"
+    tformat = "{}{}{}"
+    names = []
+    titles = []
+    for runs in ["new", "old"]:
+        n = "n"
+        if runs == "old":
+            n = "o"
+        for cd in cutoff_densities:
+            output_name = fformat.format(cd, angle, runs)
+            title_name = tformat.format(cd, angle, n)
+            titles.append(title_name)
+            names.append(output_name)
+            if cd == 5 and high and runs == "new":
+                output_name = fformat.format(cd, angle, runs) + "_high"
+                names.append(output_name)
+                title_name = tformat.format(cd, angle, n) + "-high"
+                titles.append(title_name)
+    return names, titles
+
+
+def plot_vs_disk_property(r_dot_v: bool):
+    angles_path = "{}_secondary_impact_angles.csv".format(angle)
+    r_dot_v_path = "{}_secondary_impact_angles_r_dot_v.csv".format(angle)
+    angles_df = pd.read_csv(angles_path, index_col="Unnamed: 0")
+    r_dot_v_df = pd.read_csv(r_dot_v_path, index_col="Unnamed: 0")
+    x = angles_df
+    x_label = "Impact Angle (deg.)"
+    if r_dot_v:
+        x = r_dot_v_df
+        x_label = "r $\cdot$ v"
+    sims, titles = get_all_sims(high=False)
+    points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM", "MEAN_DISK_ENTROPY_W_CIRC", "DISK_VMF_WITH_CIRC"]
+    fig, axs = plt.subplots(2, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.14, "wspace": 0.16})
+    axs = axs.flatten()
+    for s, t in zip(sims, titles):
+        impact_point = secondary_impact_times[t]
+        report_path = base_path + "{}/{}/{}.csv".format(s, s, end_iteration)
+        report = pd.read_csv(report_path)
+        for index, p in enumerate(points):
+            axs[index].scatter(
+                x[t][impact_point["iteration"]], report[p][0], s=80, label=t
+            )
+            axs[index].set_ylabel(rows_map[1:-1])
+    for ax in axs():
+        ax.grid(alpha=0.4)
+        ax.legend()
+    for ax in axs[-2:]:
+        ax.set_xlabel(x_label)
+    f = "angles"
+    if r_dot_v:
+        f = "r_dot_v"
+    plt.savefig("{}_{}_secondary_impact_vs_disk_property.png".format(angle, f), format='png', dpi=200)
+
+plot_vs_disk_property(r_dot_v=False)
+plot_vs_disk_property(r_dot_v=True)
