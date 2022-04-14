@@ -141,7 +141,7 @@ def plot_vs_disk_property(r_dot_v: bool):
     axs = axs.flatten()
     for s, t in zip(sims, titles):
         impact_point = secondary_impact_times[t]
-        report_path = base_path + "{}/{}/{}.csv".format(s, s, end_iteration)
+        report_path = base_path + "{}/{}_reports/{}.csv".format(s, s, end_iteration)
         report = pd.read_csv(report_path)
         for index, p in enumerate(points):
             axs[index].scatter(
