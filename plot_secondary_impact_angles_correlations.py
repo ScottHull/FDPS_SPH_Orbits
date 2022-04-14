@@ -136,7 +136,7 @@ def plot_vs_disk_property(r_dot_v: bool):
         x = r_dot_v_df
         x_label = "r $\cdot$ v"
     sims, titles = get_all_sims(high=False)
-    points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM", "MEAN_DISK_ENTROPY_W_CIRC", "DISK_VMF_WITH_CIRC"]
+    points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM", "MEAN_DISK_ENTROPY_W_CIRC", "DISK_VMF_W_CIRC"]
     fig, axs = plt.subplots(2, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.14, "wspace": 0.16})
     axs = axs.flatten()
     for s, t in zip(sims, titles):
