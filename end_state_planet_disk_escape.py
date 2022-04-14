@@ -48,7 +48,8 @@ fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex="all", sharey="all",
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 axs = axs.flatten()
 cur_index = 0
-for s, t in zip(get_all_sims(high=False)):
+sims, titles = get_all_sims(high=False)
+for s, t in zip(sims, titles):
     path = base_path + "{}/circularized_{}/{}.csv".format(s, s, iteration)
     df = pd.read_csv(path)
     planet, disk, escape = df[df['label'] == "PLANET"], df[df['label'] == "DISK"], df[df['label'] == "ESCAPE"]
