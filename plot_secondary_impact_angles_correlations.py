@@ -183,7 +183,7 @@ def plot_vs_disk_property(r_dot_v: bool):
             axs[index].set_ylabel(rows_map[p][1:-1])
     for ax in axs:
         ax.grid(alpha=0.4)
-        ax.legend(handler_map={plt.Line2D: HandlerLine2D(update_func=change_legend_marker)})
+        ax.legend()
     for ax in axs[-2:]:
         ax.set_xlabel(x_label)
     f = "angles"
