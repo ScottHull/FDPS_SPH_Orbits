@@ -175,10 +175,10 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
         )
 
         r_vector = np.array(impactor_com) - np.array(target_com)
-        axs[to_index].quiver(impactor_com[0], impactor_com[1], mom_vector[0], mom_vector[1], color='pink', label="Spec. Mom. Vector")
+        axs[to_index].quiver(impactor_com[0], impactor_com[1], mom_vector[0], mom_vector[1], color='green', label="Spec. Mom. Vector")
         axs[to_index].quiver(target_com[0], target_com[1], r_vector[0], r_vector[1], color='yellow', label="Radial Vector")
 
-        text = "|r\u20D7| = {:.2e}\n|v\u20D7| = {:.2e}\n|r\u20D7 $\cdot$ v\u20D7| = {:.2e}\n".format(
+        text = "|r\u20D7| = {:.2e}\n|v\u20D7| = {:.2e}\nr\u20D7 $\cdot$ v\u20D7 = {:.2e}\n".format(
             np.linalg.norm(r_vector), np.linalg.norm(mom_vector), np.dot(r_vector, mom_vector)
         )
         axs[to_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
