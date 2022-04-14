@@ -150,7 +150,7 @@ def plot_vs_disk_property(r_dot_v: bool):
         report_path = base_path + "{}/{}_reports/{}.csv".format(s, s, end_iteration)
         report = pd.read_csv(report_path)
         for index, p in enumerate(points):
-            time = x[t][impact_point["time"]]
+            time = impact_point["time"]
             plot_x, plot_y = x[t][impact_point["iteration"]], float(str(report[p][0]).split(" ")[0])
             if "new" in s:
                 axs[index].scatter(
