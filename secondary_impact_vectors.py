@@ -207,6 +207,7 @@ def get_impact_angle_with_velocity_vector():
                 target_coms.update({title: []})
                 times.update({title: []})
                 r_dot_vs.update({title: []})
+                mom_vectors.update({title: []})
             if title not in dfs.keys():
                 dfs.update({title: []})
             path = base_path + "{}/{}".format(output_name, output_name)
