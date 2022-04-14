@@ -177,9 +177,10 @@ def plot_vs_disk_property(r_dot_v: bool):
             axs[index].scatter(
                 plot_x, plot_y, color=color, marker=scatter_point, s=80
             )
-            axs[index].scatter(
-                [], [], s=80, marker="s", label=str(cutoff_density)
-            )
+            if "new" in s:
+                axs[index].scatter(
+                    [], [], s=80, marker="s", label=str(cutoff_density)
+                )
             axs[index].set_ylabel(rows_map[p][1:-1])
     for ax in axs:
         ax.grid(alpha=0.4)
