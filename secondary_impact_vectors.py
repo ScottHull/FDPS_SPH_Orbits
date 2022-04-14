@@ -243,7 +243,7 @@ def get_impact_angle_with_velocity_vector():
             r_dot_v = np.dot(r_vector, mean_impactor_velocity_vector)
 
             imp_angle = get_angle(target_com, impactor_com)
-            # dfs[title].append(df)
+            dfs[title].append(df)
             impact_angles[title].append(imp_angle)
             target_coms[title].append(target_com)
             impactor_coms[title].append(impactor_com)
@@ -255,3 +255,5 @@ def get_impact_angle_with_velocity_vector():
         __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
                       target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path,
                       mom_vectors=mom_vectors, times=times)
+
+get_impact_angle_with_velocity_vector()
