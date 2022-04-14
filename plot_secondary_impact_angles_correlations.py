@@ -145,7 +145,7 @@ def plot_vs_disk_property(r_dot_v: bool):
         report = pd.read_csv(report_path)
         for index, p in enumerate(points):
             axs[index].scatter(
-                x[t][impact_point["iteration"]], float(report[p][0].split(" ")[0]), s=80, label=t
+                x[t][impact_point["iteration"]], float(str(report[p][0]).split(" ")[0]), s=80, label=t
             )
             axs[index].set_ylabel(rows_map[p][1:-1])
     for ax in axs:
