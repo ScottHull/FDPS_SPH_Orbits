@@ -147,7 +147,7 @@ def plot_vs_disk_property(r_dot_v: bool):
             axs[index].scatter(
                 x[t][impact_point["iteration"]], report[p][0], s=80, label=t
             )
-            axs[index].set_ylabel(rows_map[1:-1])
+            axs[index].set_ylabel(rows_map[p][1:-1])
     for ax in axs():
         ax.grid(alpha=0.4)
         ax.legend()
