@@ -179,7 +179,7 @@ def plot_vs_disk_property(r_dot_v: bool):
             )
             if "new" in s:
                 axs[index].scatter(
-                    [], [], s=80, marker="s", label=str(cutoff_density)
+                    [], [], s=80, marker="s", label=str(cutoff_density) + " $kg/m^3$"
                 )
             axs[index].set_ylabel(rows_map[p][1:-1])
     for ax in axs:
