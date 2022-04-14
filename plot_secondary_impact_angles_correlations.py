@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 from src.report import rows_map
 
-plt.rcParams.update({'font.size': 18, })
+plt.rcParams.update({'font.size': 16, })
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -153,7 +153,7 @@ def plot_vs_disk_property(r_dot_v: bool):
         x_label = "r $\cdot$ v"
     sims, titles = get_all_sims(high=False)
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
-    fig, axs = plt.subplots(1, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.16, "wspace": 0.16})
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.20, "wspace": 0.20})
     axs = axs.flatten()
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     for s, t in zip(sims, titles):
