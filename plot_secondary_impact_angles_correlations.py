@@ -6,7 +6,8 @@ import numpy as np
 from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
-plt.rcParams.update({'font.size': 18,})
+
+plt.rcParams.update({'font.size': 18, })
 plt.style.use("dark_background")
 
 secondary_impact_times = {
@@ -44,13 +45,14 @@ secondary_impact_times = {
     },
 }
 
+
 def get_impact_momentum_vector_norm(df):
     mass, vx, vy, vz = df['mass'], df['vx'], df['vy'], df['vz']
     px, py, pz = mass * vx, mass * vy, mass * vz
     return np.array([px, py, pz])
 
 
-def get_surface_normal_vector(df, secondary_imp_com)
+def get_surface_normal_vector(df, secondary_imp_com):
     secondary_imp_com = np.array(secondary_imp_com)
     secondary_imp_com_to_earth_com = secondary_imp_com - np.array([0, 0, 0])
     surface_normal = secondary_imp_com_to_earth_com / np.linalg.norm(secondary_imp_com_to_earth_com)
@@ -103,6 +105,7 @@ def plot_moment_of_impact_vs_angle():
     axs[0].set_title("Stewart M-ANEOS")
     axs[1].set_title("GADGET M-ANEOS")
     plt.show()
+
 
 # plot_impact_angles_vs_time()
 plot_moment_of_impact_vs_angle()
