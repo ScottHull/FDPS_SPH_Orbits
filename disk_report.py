@@ -49,7 +49,7 @@ def get_all_sims(high=True):
             title_name = tformat.format(cd, angle, n)
             titles.append(title_name)
             names.append(output_name)
-            if cd == 5 and high and runs == "new":
+            if cd == 5 and high and runs == "new" and angle == "b073":
                 output_name = fformat.format(cd, angle, runs) + "_high"
                 names.append(output_name)
                 title_name = tformat.format(cd, angle, n) + "-high"
