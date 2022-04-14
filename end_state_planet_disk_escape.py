@@ -64,7 +64,7 @@ for s, t in zip(sims, titles):
     )
     # axs[cur_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
     #                    t, fontsize=10)
-    axs[cur_index].title(t)
+    axs[cur_index].set_title(t)
     cur_index += 1
 
 for ax in axs:
@@ -74,7 +74,7 @@ for ax in axs:
     ax.set_yticks([], minor=False)
     ax.axes.set_aspect('equal')
 
-legend = axs[0].legend(loc='upper right')
+legend = axs[0].legend(loc='upper left')
 for handle in legend.legendHandles:
     handle.set_sizes([14.0])
 
