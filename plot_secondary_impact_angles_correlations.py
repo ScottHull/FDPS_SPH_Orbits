@@ -21,34 +21,50 @@ secondary_impact_times = {
     '5b073n': {
         'iteration': 220,
         'time': 6.11,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
     },
     '500b073n': {
         'iteration': 255,
         'time': 6.94,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
     },
     '1000b073n': {
         'iteration': 235,
         'time': 6.53,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
     },
     '2000b073n': {
         'iteration': 205,
         'time': 5.69,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
     },
     '5b073o': {
         'iteration': 235,
         'time': 6.53,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
     },
     '500b073o': {
         'iteration': 260,
         'time': 7.22,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
     },
     '1000b073o': {
         'iteration': 265,
         'time': 7.36,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
     },
     '2000b073o': {
         'iteration': 245,
         'time': 6.81,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
     },
 }
 
@@ -136,8 +152,8 @@ def plot_vs_disk_property(r_dot_v: bool):
         x = r_dot_v_df
         x_label = "r $\cdot$ v"
     sims, titles = get_all_sims(high=False)
-    points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM", "MEAN_DISK_ENTROPY_W_CIRC", "DISK_VMF_W_CIRC"]
-    fig, axs = plt.subplots(2, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.16, "wspace": 0.16})
+    points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.16, "wspace": 0.16})
     axs = axs.flatten()
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     for s, t in zip(sims, titles):
@@ -150,7 +166,7 @@ def plot_vs_disk_property(r_dot_v: bool):
         report_path = base_path + "{}/{}_reports/{}.csv".format(s, s, end_iteration)
         report = pd.read_csv(report_path)
         for index, p in enumerate(points):
-            time = impact_point["time"]
+            time = impact_point["time"] - impact_point['primary_impact_time']  # hrs after primary impact
             plot_x, plot_y = x[t][impact_point["iteration"]], float(str(report[p][0]).split(" ")[0])
             if "new" in s:
                 axs[index].scatter(
@@ -163,7 +179,9 @@ def plot_vs_disk_property(r_dot_v: bool):
             axs[index].set_ylabel(rows_map[p][1:-1])
     for ax in axs:
         ax.grid(alpha=0.4)
-        ax.legend()
+        legend = ax.legend()
+        for l in legend.get_lines:
+            l.set_marker('s')
     for ax in axs[-2:]:
         ax.set_xlabel(x_label)
     f = "angles"
