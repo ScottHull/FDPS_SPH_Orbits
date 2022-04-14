@@ -176,15 +176,17 @@ def plot_vs_disk_property(r_dot_v: bool):
             plot_x, plot_y = x[t][impact_point["iteration"]], float(str(report[p][0]).split(" ")[0])
             if "new" in s:
                 axs[index].scatter(
-                    plot_x, plot_y, color=color, marker=scatter_point, s=80, label=str(cutoff_density)
+                    plot_x, plot_y, color=color, marker=scatter_point, s=80
                 )
             else:
                 axs[index].scatter(
                     plot_x, plot_y, color=color, marker=scatter_point, s=80
                 )
+            plt.scatter(
+                [], [], s=80, marker="s", label=str(cutoff_density)
+            )
             axs[index].set_ylabel(rows_map[p][1:-1])
     for ax in axs:
-        ax.set_aspect("equal")
         ax.grid(alpha=0.4)
         ax.legend(handler_map={plt.Line2D: HandlerLine2D(update_func=change_legend_marker)})
     for ax in axs[-2:]:
