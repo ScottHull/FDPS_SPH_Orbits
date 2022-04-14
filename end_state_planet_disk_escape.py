@@ -12,7 +12,7 @@ from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import multiprocessing as mp
-plt.rcParams.update({'font.size': 18,})
+plt.rcParams.update({'font.size': 10,})
 plt.style.use("dark_background")
 
 angle = "b073"
@@ -44,8 +44,8 @@ def get_all_sims(high=True):
     return names, titles
 
 
-fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex="all", sharey="all",
-                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+fig, axs = plt.subplots(2, 4, figsize=(16, 9), sharex="all", sharey="all",
+                        gridspec_kw={"hspace": 0.14, "wspace": 0.0})
 axs = axs.flatten()
 cur_index = 0
 sims, titles = get_all_sims(high=False)
@@ -62,8 +62,9 @@ for s, t in zip(sims, titles):
     axs[cur_index].scatter(
         escape['x'], escape['y'], s=0.2, label="Escaping"
     )
-    axs[cur_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
-                       t, fontsize=10)
+    # axs[cur_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
+    #                    t, fontsize=10)
+    axs[cur_index].title(t)
     cur_index += 1
 
 for ax in axs:
@@ -75,7 +76,7 @@ for ax in axs:
 
 legend = axs[0].legend(loc='upper right')
 for handle in legend.legendHandles:
-    handle.set_sizes([10.0])
+    handle.set_sizes([14.0])
 
 plt.savefig("{}_planet_disk_escape.png".format(angle), format='png', dpi=200)
 
