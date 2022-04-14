@@ -139,14 +139,27 @@ def plot_vs_disk_property(r_dot_v: bool):
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM", "MEAN_DISK_ENTROPY_W_CIRC", "DISK_VMF_W_CIRC"]
     fig, axs = plt.subplots(2, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.14, "wspace": 0.16})
     axs = axs.flatten()
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     for s, t in zip(sims, titles):
+        cutoff_density = int(s.split("_")[0])
+        color = colors[cutoff_densities.index(cutoff_density)]
+        scatter_point = "o"
+        if "old" in s:
+            scatter_point = "+"
         impact_point = secondary_impact_times[t]
         report_path = base_path + "{}/{}_reports/{}.csv".format(s, s, end_iteration)
         report = pd.read_csv(report_path)
         for index, p in enumerate(points):
-            axs[index].scatter(
-                x[t][impact_point["iteration"]], float(str(report[p][0]).split(" ")[0]), s=80, label=t
-            )
+            if "new" in s:
+                axs[index].scatter(
+                    x[t][impact_point["iteration"]], float(str(report[p][0]).split(" ")[0]), color=color,
+                    marker=scatter_point, s=80, label=str(cutoff_density)
+                )
+            else:
+                axs[index].scatter(
+                    x[t][impact_point["iteration"]], float(str(report[p][0]).split(" ")[0]), color=color,
+                    marker=scatter_point, s=80
+                )
             axs[index].set_ylabel(rows_map[p][1:-1])
     for ax in axs:
         ax.grid(alpha=0.4)
