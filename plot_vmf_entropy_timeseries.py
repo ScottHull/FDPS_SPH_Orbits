@@ -66,7 +66,7 @@ def get_all_sims(high=True):
 def plot_entropy_and_vmf_vs_time():
     sims, titles = get_all_sims(high=True)
     fig, axs = plt.subplots(2, 3, figsize=(16, 9), sharex="all",
-                            gridspec_kw={"hspace": 0.0, "wspace": 0.18})
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.22})
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
     axs[0].set_title("Stewart M-ANEOS")
