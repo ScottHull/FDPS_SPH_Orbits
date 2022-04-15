@@ -11,6 +11,7 @@ from src.report import rows_map
 
 plt.rcParams.update({'font.size': 14, })
 # plt.style.use("dark_background")
+plt.style.use('seaborn-colorblind')
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 angle = "b073"
