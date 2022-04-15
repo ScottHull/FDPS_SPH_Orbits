@@ -87,7 +87,7 @@ def plot_entropy_and_vmf_vs_time():
                 path = base_path + "{}/{}_reports/".format(sim, sim)
                 df = pd.read_csv(path + "{}.csv".format(iteration))
                 time, avg_disk_entropy, disk_temperature, disk_vmf, disk_mass, disk_am, theia_mass_frac = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY_W_CIRC'][0], \
-                                                                       df['DISK_VMF_W_CIRC'][0], df['MEAN_DISK_TEMPERATURE'][0], df['DISK_MASS'][0], \
+                                                                       df['MEAN_DISK_TEMPERATURE'][0], df['DISK_VMF_W_CIRC'][0], df['DISK_MASS'][0], \
                                                                        df['DISK_ANGULAR_MOMENTUM'][0], df['DISK_THEIA_MASS_FRACTION'][0]
                 d[title]['TIME_HRS'].append(time)
                 d[title]['MEAN_DISK_ENTROPY_W_CIRC'].append(avg_disk_entropy)
