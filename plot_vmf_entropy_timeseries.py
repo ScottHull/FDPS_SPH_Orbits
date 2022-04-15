@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 from src.report import rows_map
 
-plt.rcParams.update({'font.size': 16, })
+plt.rcParams.update({'font.size': 14, })
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -66,7 +66,7 @@ def get_all_sims(high=True):
 def plot_entropy_and_vmf_vs_time():
     sims, titles = get_all_sims(high=True)
     fig, axs = plt.subplots(2, 3, figsize=(16, 9), sharex="all",
-                            gridspec_kw={"hspace": 0.0, "wspace": 0.16})
+                            gridspec_kw={"hspace": 0.0, "wspace": 0.18})
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
     axs[0].set_title("Stewart M-ANEOS")
@@ -110,7 +110,7 @@ def plot_entropy_and_vmf_vs_time():
             linestyle = "dotted"
         for index, h in enumerate(list(d[sim].keys())[1:]):
             axs[index].plot(
-                d[sim]['TIME_HRS'], d[sim][h], linewidth=3.0, linestyle=linestyle, color=color,
+                d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color,
             )
             axs[index].set_ylabel(rows_map[h][1:-1])
     for c in cutoff_densities:
