@@ -70,9 +70,10 @@ for s, t in zip(sims, titles):
 for ax in axs:
     ax.set_xlim(-square_scale, square_scale)
     ax.set_ylim(-square_scale, square_scale)
-    ax.set_xticks([], minor=False)
-    ax.set_yticks([], minor=False)
+    # ax.set_xticks([], minor=False)
+    # ax.set_yticks([], minor=False)
     ax.axes.set_aspect('equal')
+    ax.tick_params(direction="in")
 
 legend = axs[0].legend(loc='upper left')
 for handle in legend.legendHandles:
