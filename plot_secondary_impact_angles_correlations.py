@@ -208,7 +208,7 @@ def plot_vs_disk_property_all():
     x_label_r_dot_v = "$r \cdot v$"
     sims, titles = get_all_sims(high=False)
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
-    fig, axs = plt.subplots(2, 5, figsize=(27, 9), gridspec_kw={"hspace": 0.20, "wspace": 0.20})
+    fig, axs = plt.subplots(2, 4, figsize=(27, 9), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
     axs = axs.flatten()
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     for s, t in zip(sims, titles):
@@ -281,7 +281,7 @@ def plot_vs_disk_property_all():
 
     for ax in axs:
         ax.grid(alpha=0.4)
-    axs[0].legend([0], fontsize=8)
+    axs[0].legend(fontsize=8)
     plt.savefig("{}_secondary_impact_vs_disk_property.png".format(angle), format='png', dpi=200)
 
 # plot_vs_disk_property(r_dot_v=False)
