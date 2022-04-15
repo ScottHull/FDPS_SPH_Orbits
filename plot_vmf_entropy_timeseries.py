@@ -131,10 +131,10 @@ def plot_entropy_and_vmf_vs_time():
     letters = list(string.ascii_lowercase)
     for index, ax in enumerate(axs):
         x1, x2, y1, y2 = ax.axis()
-        x_loc = x1 + (0.1 * (x2 - x1))
-        y_loc = y2 - (0.1 * (y2 - y1))
+        x_loc = x2 - (0.1 * (x2 - x1))
+        y_loc = y2 - (0.08 * (y2 - y1))
         ax.grid(alpha=0.4)
-        ax.text(x_loc, y_loc, letters[index])
+        ax.text(x_loc, y_loc, letters[index], fontweight="bold")
     for ax in axs[-3:]:
         ax.set_xlabel("Time (hrs)")
     legend = axs[0].legend(loc='lower right', fontsize=8)
