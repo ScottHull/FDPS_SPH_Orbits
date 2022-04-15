@@ -124,12 +124,13 @@ def plot_entropy_and_vmf_vs_time():
     axs[0].plot(
         [], [], c='black', linewidth=2.0, linestyle="--", label="GADGET M-ANEOS"
     )
-    axs[0].plot(
-        [], [], c='black', linewidth=2.0, linestyle="dotted", label="5b073n-high"
-    )
+    if angle == "b073":
+        axs[0].plot(
+            [], [], c='black', linewidth=2.0, linestyle="dotted", label="5b073n-high"
+        )
     for ax in axs[-3:]:
         ax.set_xlabel("Time (hrs)")
-    legend = axs[0].legend(loc='lower right')
+    legend = axs[0].legend(loc='lower right', fontsize=8)
 
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
 
