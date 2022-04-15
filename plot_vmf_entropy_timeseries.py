@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 from src.report import rows_map
 
-plt.rcParams.update({'font.size': 14, })
+plt.rcParams.update({'font.size': 16, })
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -65,8 +65,8 @@ def get_all_sims(high=True):
 
 def plot_entropy_and_vmf_vs_time():
     sims, titles = get_all_sims(high=True)
-    fig, axs = plt.subplots(2, 2, figsize=(16, 24), sharex="all",
-                            gridspec_kw={"hspace": 0.14, "wspace": 0.14})
+    fig, axs = plt.subplots(2, 2, figsize=(16, 16), sharex="all",
+                            gridspec_kw={"hspace": 0.0, "wspace": 0.16})
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
     axs[0].set_title("Stewart M-ANEOS")
@@ -111,9 +111,9 @@ def plot_entropy_and_vmf_vs_time():
             axs[index].set_ylabel(rows_map[h][1:-1])
     for c in cutoff_densities:
         axs[0].scatter(
-            [], [], marker="s", s=80, label="{} $kg/m^3$".format(c)
+            [], [], marker="s", s=80, label="{} kg/m$^3$".format(c)
         )
-    legend = axs[0].legend()
+    legend = axs[0].legend(loc='bottom right')
 
     axs[0].legend(loc='lower left')
     axs[1].legend(loc='lower left')
