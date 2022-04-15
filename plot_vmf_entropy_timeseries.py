@@ -3,6 +3,7 @@ import os
 import csv
 import pandas as pd
 import numpy as np
+import string
 from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
@@ -70,8 +71,6 @@ def plot_entropy_and_vmf_vs_time():
                             gridspec_kw={"hspace": 0.10, "wspace": 0.26})
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
-    for ax in axs:
-        ax.grid(alpha=0.4)
     d = {}
     for sim, title in zip(sims, titles):
         if title not in d.keys():
@@ -129,6 +128,13 @@ def plot_entropy_and_vmf_vs_time():
         axs[0].plot(
             [], [], c='black', linewidth=2.0, linestyle="dotted", label="5b073n-high"
         )
+    letters = list(string.ascii_lowercase)
+    for index, ax in enumerate(axs):
+        x1, x2, y1, y2 = ax.axis()
+        x_loc = x1 + (0.1 * (x2 - x1))
+        y_loc = y2 - (0.1 * (y2 - y1))
+        ax.grid(alpha=0.4)
+        ax.text(x_loc, y_loc, letters[index])
     for ax in axs[-3:]:
         ax.set_xlabel("Time (hrs)")
     legend = axs[0].legend(loc='lower right', fontsize=8)
