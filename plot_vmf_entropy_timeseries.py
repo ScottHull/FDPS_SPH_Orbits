@@ -104,6 +104,8 @@ def plot_entropy_and_vmf_vs_time():
         linestyle = "-"
         if "o" in sim:
             linestyle = "--"
+        if "high" in sim:
+            linestyle = "."
         for index, h in enumerate(list(d[sim].keys())[1:]):
             axs[index].plot(
                 d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color,
@@ -115,8 +117,6 @@ def plot_entropy_and_vmf_vs_time():
         )
     legend = axs[0].legend(loc='lower right')
 
-    axs[0].legend(loc='lower left')
-    axs[1].legend(loc='lower left')
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
 
 
