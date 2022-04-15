@@ -108,13 +108,15 @@ def plot_entropy_and_vmf_vs_time():
             linestyle = "dotted"
         for index, h in enumerate(list(d[sim].keys())[1:]):
             axs[index].plot(
-                d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color,
+                d[sim]['TIME_HRS'], d[sim][h], linewidth=3.0, linestyle=linestyle, color=color,
             )
             axs[index].set_ylabel(rows_map[h][1:-1])
     for c in cutoff_densities:
         axs[0].scatter(
             [], [], marker="s", s=80, label="{} kg/m$^3$".format(c)
         )
+    for ax in axs[-2:]:
+        ax.set_xlabel("Time (hrs.)")
     legend = axs[0].legend(loc='lower right')
 
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)

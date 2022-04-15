@@ -87,7 +87,8 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
         "MEAN_DISK_ENTROPY_WITHOUT_CIRC": __mean(disk['entropy']),
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": __mean(filtered_disk['circ_entropy_delta']),
         "PREDICTED_MOON_MASS": "{} M_L".format(predicted_moon_mass(disk)),
-        "DISK_THEIA_MASS_FRACTION": "{} %".format(theia_disk_mass_fraction)
+        "DISK_THEIA_MASS_FRACTION": "{} %".format(theia_disk_mass_fraction),
+        "MEAN_DISK_TEMPERATURE": "{} K".format(__mean(disk['temperature'])),
     }
     if not os.path.exists(to_path):
         os.mkdir(to_path)
@@ -154,6 +155,7 @@ rows_map = {
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": "{Avg. $\Delta S_{circ}$ (J/K)}",
         "PREDICTED_MOON_MASS": "{$M_{M}$ ($M_L$)}",
         "DISK_THEIA_MASS_FRACTION": "{Disk Theia Mass Fraction ($\%$)}",
+        "MEAN_DISK_TEMPERATURE": "{Avg. Disk Temperature (K)}"
     }
 
 def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_base_path: str, filename: str, iteration: int):
