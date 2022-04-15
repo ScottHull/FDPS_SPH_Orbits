@@ -65,7 +65,7 @@ def get_all_sims(high=True):
 
 def plot_entropy_and_vmf_vs_time():
     sims, titles = get_all_sims(high=True)
-    fig, axs = plt.subplots(2, 2, figsize=(16, 16), sharex="all",
+    fig, axs = plt.subplots(2, 3, figsize=(16, 9), sharex="all",
                             gridspec_kw={"hspace": 0.0, "wspace": 0.16})
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
@@ -76,8 +76,8 @@ def plot_entropy_and_vmf_vs_time():
     d = {}
     for sim, title in zip(sims, titles):
         if title not in d.keys():
-            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_W_CIRC': [], 'DISK_VMF_W_CIRC': [], "DISK_MASS": [],
-                              "DISK_ANGULAR_MOMENTUM": []}})
+            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_W_CIRC': [], 'DISK_VMF_W_CIRC': [], 'MEAN_DISK_TEMPERATURE': [], "DISK_MASS": [],
+                              "DISK_ANGULAR_MOMENTUM": [], 'DISK_THEIA_MASS_FRACTION': []}})
         inc = increment
         if "high" in sim:
             inc = increment_high
@@ -85,14 +85,16 @@ def plot_entropy_and_vmf_vs_time():
             try:
                 path = base_path + "{}/{}_reports/".format(sim, sim)
                 df = pd.read_csv(path + "{}.csv".format(iteration))
-                time, avg_disk_entropy, disk_vmf, disk_mass, disk_am = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY_W_CIRC'][0], \
-                                                                       df['DISK_VMF_W_CIRC'][0], df['DISK_MASS'][0], \
-                                                                       df['DISK_ANGULAR_MOMENTUM'][0]
+                time, avg_disk_entropy, disk_temperature, disk_vmf, disk_mass, disk_am, theia_mass_frac = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY_W_CIRC'][0], \
+                                                                       df['DISK_VMF_W_CIRC'][0], df['MEAN_DISK_TEMPERATURE'], df['DISK_MASS'][0], \
+                                                                       df['DISK_ANGULAR_MOMENTUM'][0], df['DISK_THEIA_MASS_FRACTION'][0]
                 d[title]['TIME_HRS'].append(time)
                 d[title]['MEAN_DISK_ENTROPY_W_CIRC'].append(avg_disk_entropy)
                 d[title]['DISK_VMF_W_CIRC'].append(disk_vmf)
                 d[title]['DISK_MASS'].append(disk_mass)
                 d[title]['DISK_ANGULAR_MOMENTUM'].append(disk_am)
+                d[title]['MEAN_DISK_TEMPERATURE'].append(disk_temperature)
+                d[title]['DISK_THEIA_MASS_FRACTION'].append(theia_mass_frac)
             except:
                 pass
     for i in d.keys():
@@ -115,8 +117,8 @@ def plot_entropy_and_vmf_vs_time():
         axs[0].scatter(
             [], [], marker="s", s=80, label="{} kg/m$^3$".format(c)
         )
-    for ax in axs[-2:]:
-        ax.set_xlabel("Time (hrs.)")
+    for ax in axs[-3:]:
+        ax.set_xlabel("Time (hrs)")
     legend = axs[0].legend(loc='lower right')
 
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)

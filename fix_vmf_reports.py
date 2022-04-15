@@ -116,7 +116,7 @@ def __add_mean_disk_temp():
             try:
                 # del df_report['Unnamed: 0']
                 disk = df_formatted[df_formatted['label'] == "DISK"]
-                df_report['MEAN_DISK_TEMPERATURE'] = __mean(disk['temperature'])
+                df_report['MEAN_DISK_TEMPERATURE'] = [__mean(disk['temperature'])]
                 to_f = report_path + "{}.csv".format(iteration)
                 df_report.to_csv(to_f, index=False)
                 print("Rewrote report at {}".format(to_f))
