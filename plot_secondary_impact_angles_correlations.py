@@ -264,17 +264,21 @@ def plot_vs_disk_property_all():
         for index in [0, 3]:
             axs[index].set_ylabel("Time After Primary Impact (hrs)")
 
+    for c in cutoff_densities:
+        axs[0].scatter(
+            [], [], s=80, marker="s", color=colors[cutoff_densities.index(c)], label="{} kg/m$^3$".format(c)
+        )
+    axs[0].scatter(
+        [], [], s=80, marker="^", color='black', label="GADGET M-ANEOS"
+    )
+    axs[0].scatter(
+        [], [], s=80, marker="o", color='black', label="Stewart M-ANEOS"
+    )
+    if "high" in ",".join(str(i) for i in sims) and angle == "b073":
+        axs[0].scatter(
+            [], [], s=80, marker="*", color=colors[cutoff_densities.index(5)], label="5b073n-high"
+        )
 
-        axs[0].scatter(
-            [], [], s=80, marker="^", color='black', label="GADGET M-ANEOS"
-        )
-        axs[0].scatter(
-            [], [], s=80, marker="o", color='black', label="Stewart M-ANEOS"
-        )
-        if "high" in s and angle == "b073":
-            axs[0].scatter(
-                [], [], s=80, marker="*", color='black', label="5b073n-high"
-            )
     for ax in axs:
         ax.grid(alpha=0.4)
     axs[0].legend([0], fontsize=8)
