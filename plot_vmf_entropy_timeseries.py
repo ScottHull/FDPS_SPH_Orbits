@@ -113,7 +113,7 @@ def plot_entropy_and_vmf_vs_time():
         axs[0].scatter(
             [], [], marker="s", s=80, label="{} kg/m$^3$".format(c)
         )
-    legend = axs[0].legend(loc='bottom right')
+    legend = axs[0].legend(loc='lower right')
 
     axs[0].legend(loc='lower left')
     axs[1].legend(loc='lower left')
