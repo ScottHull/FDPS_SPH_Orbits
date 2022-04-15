@@ -10,8 +10,9 @@ from matplotlib.legend_handler import HandlerLine2D
 
 from src.report import rows_map
 
-plt.rcParams.update({'font.size': 16, })
-plt.style.use("dark_background")
+plt.rcParams.update({'font.size': 14, })
+# plt.style.use("dark_background")
+plt.style.use('seaborn-colorblind')
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 angle = "b073"
@@ -167,7 +168,7 @@ def plot_vs_disk_property(r_dot_v: bool):
         color = colors[cutoff_densities.index(cutoff_density)]
         scatter_point = "o"
         if "old" in s:
-            scatter_point = "+"
+            scatter_point = "^"
         impact_point = secondary_impact_times[t]
         report_path = base_path + "{}/{}_reports/{}.csv".format(s, s, end_iteration)
         report = pd.read_csv(report_path)
@@ -182,6 +183,12 @@ def plot_vs_disk_property(r_dot_v: bool):
                     [], [], s=80, marker="s", label=str(cutoff_density) + " $kg/m^3$"
                 )
             axs[index].set_ylabel(rows_map[p][1:-1])
+            axs[index].scatter(
+                [], [], s=80, marker="^", label="GADGET M-ANEOS"
+            )
+            axs[index].scatter(
+                [], [], s=80, marker="o", label="Stewart M-ANEOS"
+            )
     for ax in axs:
         ax.grid(alpha=0.4)
         ax.legend()
@@ -192,5 +199,87 @@ def plot_vs_disk_property(r_dot_v: bool):
         f = "r_dot_v"
     plt.savefig("{}_{}_secondary_impact_vs_disk_property.png".format(angle, f), format='png', dpi=200)
 
-plot_vs_disk_property(r_dot_v=False)
-plot_vs_disk_property(r_dot_v=True)
+def plot_vs_disk_property_all():
+    angles_path = "{}_secondary_impact_angles.csv".format(angle)
+    r_dot_v_path = "{}_secondary_impact_angles_r_dot_v.csv".format(angle)
+    angles_df = pd.read_csv(angles_path, index_col="Unnamed: 0")
+    r_dot_v_df = pd.read_csv(r_dot_v_path, index_col="Unnamed: 0")
+    x_label_angle = "Impact Angle (deg.)"
+    x_label_r_dot_v = "$r \cdot v$"
+    sims, titles = get_all_sims(high=False)
+    points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
+    fig, axs = plt.subplots(2, 5, figsize=(16, 9), gridspec_kw={"hspace": 0.20, "wspace": 0.20})
+    axs = axs.flatten()
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+    for s, t in zip(sims, titles):
+        cutoff_density = int(s.split("_")[0])
+        color = colors[cutoff_densities.index(cutoff_density)]
+        scatter_point = "o"
+        if "old" in s:
+            scatter_point = "^"
+        if "high" in s:
+            scatter_point = "*"
+        impact_point = secondary_impact_times[t]
+        impact_angle = angles_df[impact_point['iteration']]
+        impact_r_dot_v = r_dot_v_df[impact_point['iteration']]
+        report_path = base_path + "{}/{}_reports/{}.csv".format(s, s, end_iteration)
+        report = pd.read_csv(report_path)
+        time = impact_point["time"] - impact_point['primary_impact_time']  # hrs after primary impact
+        axs[0].scatter(
+            impact_angle, time, color=color, marker=scatter_point, s=80
+        )
+        axs[1].scatter(
+            impact_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        )
+        axs[2].scatter(
+            impact_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        )
+        axs[3].scatter(
+            impact_r_dot_v, time, color=color, marker=scatter_point, s=80
+        )
+        axs[4].scatter(
+            impact_r_dot_v, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        )
+        axs[5].scatter(
+            impact_r_dot_v, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        )
+        axs[6].scatter(
+            time, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        )
+        axs[7].scatter(
+            time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        )
+        
+        for ax in axs[0:2]:
+            ax.set_xlabel(x_label_angle)
+        for ax in axs[3:5]:
+            ax.set_xlabel(x_label_r_dot_v)
+        for ax in [axs[6], axs[7]]:
+            ax.set_xlabel("Time After Primary Impact (hrs)")
+
+        for index in [1, 4, 6]:
+            axs[index].set_ylabel(rows_map[0][1:-1])
+        for index in [2, 5, 7]:
+            axs[index].set_ylabel(rows_map[1][1:-1])
+        for index in [0, 3]:
+            axs[index].set_ylabel("Time After Primary Impact (hrs)")
+
+
+        axs[0].scatter(
+            [], [], s=80, marker="^", color='black', label="GADGET M-ANEOS"
+        )
+        axs[0].scatter(
+            [], [], s=80, marker="o", color='black', label="Stewart M-ANEOS"
+        )
+        if "high" in s and angle == "b073":
+            axs[0].scatter(
+                [], [], s=80, marker="*", color='black', label="5b073n-high"
+            )
+    for ax in axs:
+        ax.grid(alpha=0.4)
+    axs[0].legend([0], fontsize=8)
+    plt.savefig("{}_secondary_impact_vs_disk_property.png".format(angle), format='png', dpi=200)
+
+# plot_vs_disk_property(r_dot_v=False)
+# plot_vs_disk_property(r_dot_v=True)
+plot_vs_disk_property_all()
