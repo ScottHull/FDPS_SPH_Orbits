@@ -104,7 +104,7 @@ def plot_entropy_and_vmf_vs_time():
         linestyle = "-"
         if "o" in sim:
             linestyle = "--"
-        for index, h in enumerate(d[sim].keys()):
+        for index, h in enumerate(list(d[sim].keys())[1:]):
             axs[index].plot(
                 d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color,
             )
