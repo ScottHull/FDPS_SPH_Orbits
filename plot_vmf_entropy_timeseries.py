@@ -8,7 +8,8 @@ import multiprocessing as mp
 import matplotlib.pyplot as plt
 
 from src.report import rows_map
-plt.rcParams.update({'font.size': 14,})
+
+plt.rcParams.update({'font.size': 14, })
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -75,7 +76,8 @@ def plot_entropy_and_vmf_vs_time():
     d = {}
     for sim, title in zip(sims, titles):
         if title not in d.keys():
-            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_W_CIRC': [], 'DISK_VMF_W_CIRC': [], "DISK_MASS": [], "DISK_ANGULAR_MOMENTUM": []}})
+            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_W_CIRC': [], 'DISK_VMF_W_CIRC': [], "DISK_MASS": [],
+                              "DISK_ANGULAR_MOMENTUM": []}})
         inc = increment
         if "high" in sim:
             inc = increment_high
@@ -83,12 +85,13 @@ def plot_entropy_and_vmf_vs_time():
             path = base_path + "{}/{}_reports/".format(sim, sim)
             df = pd.read_csv(path + "{}.csv".format(iteration))
             time, avg_disk_entropy, disk_vmf, disk_mass, disk_am = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY_W_CIRC'][0], \
-                                                          df['DISK_VMF_W_CIRC'][0], df['DISK_MASS'][0], df['DISK_ANGULAR_MOMENTUM'][0]
+                                                                   df['DISK_VMF_W_CIRC'][0], df['DISK_MASS'][0], \
+                                                                   df['DISK_ANGULAR_MOMENTUM'][0]
             d[title]['TIME_HRS'].append(time)
             d[title]['MEAN_DISK_ENTROPY_W_CIRC'].append(avg_disk_entropy)
             d[title]['DISK_VMF_W_CIRC'].append(disk_vmf)
             d[title]['DISK_MASS'].append(disk_mass)
-            d[title]['DISK_ANGULAR_MOMENTUM"'].append(disk_am)
+            d[title]['DISK_ANGULAR_MOMENTUM'].append(disk_am)
     for i in d.keys():
         for j in d[i].keys():
             d[i][j] = [float(str(k).split(" ")[0]) for k in d[i][j]]
