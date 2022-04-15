@@ -65,8 +65,8 @@ def get_all_sims(high=True):
 
 def plot_entropy_and_vmf_vs_time():
     sims, titles = get_all_sims(high=True)
-    fig, axs = plt.subplots(2, 3, figsize=(16, 9), sharex="all",
-                            gridspec_kw={"hspace": 0.10, "wspace": 0.22})
+    fig, axs = plt.subplots(2, 3, figsize=(18, 9), sharex="all",
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.26})
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
     axs[0].set_title("Stewart M-ANEOS")
@@ -76,7 +76,8 @@ def plot_entropy_and_vmf_vs_time():
     d = {}
     for sim, title in zip(sims, titles):
         if title not in d.keys():
-            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_W_CIRC': [], 'DISK_VMF_W_CIRC': [], 'MEAN_DISK_TEMPERATURE': [], "DISK_MASS": [],
+            d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_W_CIRC': [], 'MEAN_DISK_TEMPERATURE': [],
+                              'DISK_VMF_W_CIRC': [], "DISK_MASS": [],
                               "DISK_ANGULAR_MOMENTUM": [], 'DISK_THEIA_MASS_FRACTION': []}})
         inc = increment
         if "high" in sim:
