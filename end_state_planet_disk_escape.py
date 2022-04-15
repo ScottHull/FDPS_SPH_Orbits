@@ -45,7 +45,16 @@ def get_all_sims(high=True):
 
 
 fig, axs = plt.subplots(2, 4, figsize=(16, 9), sharex="all", sharey="all",
-                        gridspec_kw={"hspace": 0.14, "wspace": 0.0})
+                        gridspec_kw={"hspace": 0.14, "wspace": 0.08})
+
+# add a big axes, hide frame
+fig.add_subplot(111, frameon=False)
+# hide tick and tick label of the big axes
+plt.tick_params(labelcolor='none', top=False, bottom=False, left=False, right=False)
+plt.grid(False)
+plt.xlabel("X")
+plt.ylabel("Y")
+
 axs = axs.flatten()
 cur_index = 0
 sims, titles = get_all_sims(high=False)
