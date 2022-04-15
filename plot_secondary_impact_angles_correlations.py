@@ -50,6 +50,12 @@ secondary_impact_times = {
         'primary_impact_iteration': 15,
         'primary_impact_time': 0.42,
     },
+    '5b073n-high': {
+        'iteration': 230,
+        'time': 6.39,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
+    },
     '500b073o': {
         'iteration': 260,
         'time': 7.22,
@@ -206,7 +212,7 @@ def plot_vs_disk_property_all():
     r_dot_v_df = pd.read_csv(r_dot_v_path, index_col="Unnamed: 0")
     x_label_angle = "Impact Angle (deg.)"
     x_label_r_dot_v = "$r \cdot v$"
-    sims, titles = get_all_sims(high=False)
+    sims, titles = get_all_sims(high=True)
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
     fig, axs = plt.subplots(2, 4, figsize=(27, 9), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
     axs = axs.flatten()
