@@ -103,7 +103,7 @@ def plot_entropy_and_vmf_vs_time():
     for i in d.keys():
         for j in d[i].keys():
             d[i][j] = [float(str(k).split(" ")[0]) for k in d[i][j]]
-    for sim in list(d.keys())[1:]:
+    for sim in list(d.keys()):
         cutoff_density = int(sim.split("b")[0])
         color = colors[cutoff_densities.index(cutoff_density)]
         linestyle = "-"
