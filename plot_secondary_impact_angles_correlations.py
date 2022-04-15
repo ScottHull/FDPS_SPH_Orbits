@@ -258,9 +258,9 @@ def plot_vs_disk_property_all():
             ax.set_xlabel("Time After Primary Impact (hrs)")
 
         for index in [1, 4, 6]:
-            axs[index].set_ylabel(rows_map[0][1:-1])
+            axs[index].set_ylabel(rows_map[points[0]][1:-1])
         for index in [2, 5, 7]:
-            axs[index].set_ylabel(rows_map[1][1:-1])
+            axs[index].set_ylabel(rows_map[points[1]][1:-1])
         for index in [0, 3]:
             axs[index].set_ylabel("Time After Primary Impact (hrs)")
 
