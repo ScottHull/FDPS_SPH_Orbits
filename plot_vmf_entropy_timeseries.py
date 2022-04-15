@@ -119,13 +119,13 @@ def plot_entropy_and_vmf_vs_time():
             [], [], marker="s", s=80, label="{} kg/m$^3$".format(c)
         )
     axs[0].plot(
-        [], [], c='black', linewidth=2.0, style="-", label="Stewart M-ANEOS"
+        [], [], c='black', linewidth=2.0, linestyle="-", label="Stewart M-ANEOS"
     )
     axs[0].plot(
-        [], [], c='black', linewidth=2.0, style="--", label="GADGET M-ANEOS"
+        [], [], c='black', linewidth=2.0, linestyle="--", label="GADGET M-ANEOS"
     )
     axs[0].plot(
-        [], [], c='black', linewidth=2.0, style="dotted", label="5b073n-high"
+        [], [], c='black', linewidth=2.0, linestyle="dotted", label="5b073n-high"
     )
     for ax in axs[-3:]:
         ax.set_xlabel("Time (hrs)")
