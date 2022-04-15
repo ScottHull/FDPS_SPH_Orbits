@@ -220,8 +220,8 @@ def plot_vs_disk_property_all():
         if "high" in s:
             scatter_point = "*"
         impact_point = secondary_impact_times[t]
-        impact_angle = angles_df[impact_point['iteration']]
-        impact_r_dot_v = r_dot_v_df[impact_point['iteration']]
+        impact_angle = angles_df[t][impact_point['iteration']]
+        impact_r_dot_v = r_dot_v_df[t][impact_point['iteration']]
         report_path = base_path + "{}/{}_reports/{}.csv".format(s, s, end_iteration)
         report = pd.read_csv(report_path)
         time = impact_point["time"] - impact_point['primary_impact_time']  # hrs after primary impact
