@@ -51,8 +51,8 @@ secondary_impact_times = {
         'primary_impact_time': 0.42,
     },
     '5b073n-high': {
-        'iteration': 230,
-        'time': 6.39,
+        'iteration': 220,
+        'time': 6.11,
         'primary_impact_iteration': 15,
         'primary_impact_time': 0.42,
     },
