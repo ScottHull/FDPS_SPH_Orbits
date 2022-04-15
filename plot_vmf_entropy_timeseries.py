@@ -69,8 +69,6 @@ def plot_entropy_and_vmf_vs_time():
                             gridspec_kw={"hspace": 0.10, "wspace": 0.26})
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
-    axs[0].set_title("Stewart M-ANEOS")
-    axs[1].set_title("GADGET M-ANEOS")
     for ax in axs:
         ax.grid(alpha=0.4)
     d = {}
