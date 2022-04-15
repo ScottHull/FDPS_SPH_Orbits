@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 import numpy as np
 from random import randint
+import string
 import multiprocessing as mp
 import matplotlib.pyplot as plt
 from matplotlib.legend_handler import HandlerLine2D
@@ -44,15 +45,15 @@ secondary_impact_times = {
         'primary_impact_iteration': 15,
         'primary_impact_time': 0.42,
     },
-    '5b073o': {
-        'iteration': 235,
-        'time': 6.53,
-        'primary_impact_iteration': 15,
-        'primary_impact_time': 0.42,
-    },
     '5b073n-high': {
         'iteration': 220,
         'time': 6.11,
+        'primary_impact_iteration': 15,
+        'primary_impact_time': 0.42,
+    },
+    '5b073o': {
+        'iteration': 235,
+        'time': 6.53,
         'primary_impact_iteration': 15,
         'primary_impact_time': 0.42,
     },
@@ -212,9 +213,9 @@ def plot_vs_disk_property_all():
     r_dot_v_df = pd.read_csv(r_dot_v_path, index_col="Unnamed: 0")
     x_label_angle = "Impact Angle (deg.)"
     x_label_r_dot_v = "$r \cdot v$"
-    sims, titles = get_all_sims(high=True)
+    sims, titles = get_all_sims(high=False)
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
-    fig, axs = plt.subplots(2, 4, figsize=(27, 9), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
+    fig, axs = plt.subplots(2, 4, figsize=(16, 9), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
     axs = axs.flatten()
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     for s, t in zip(sims, titles):
@@ -288,6 +289,13 @@ def plot_vs_disk_property_all():
     for ax in axs:
         ax.grid(alpha=0.4)
     axs[0].legend(fontsize=8)
+    letters = list(string.ascii_lowercase)
+    for index, ax in enumerate(axs):
+        x1, x2, y1, y2 = ax.axis()
+        x_loc = x1 + (0.02 * (x2 - x1))
+        y_loc = y2 - (0.08 * (y2 - y1))
+        ax.grid(alpha=0.4)
+        ax.text(x_loc, y_loc, letters[index], fontweight="bold")
     plt.savefig("{}_secondary_impact_vs_disk_property.png".format(angle), format='png', dpi=200)
 
 # plot_vs_disk_property(r_dot_v=False)
