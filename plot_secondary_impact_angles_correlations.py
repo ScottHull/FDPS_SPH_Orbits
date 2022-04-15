@@ -250,9 +250,9 @@ def plot_vs_disk_property_all():
             time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
         )
         
-        for ax in axs[0:2]:
+        for ax in axs[0:3]:
             ax.set_xlabel(x_label_angle)
-        for ax in axs[3:5]:
+        for ax in axs[3:6]:
             ax.set_xlabel(x_label_r_dot_v)
         for ax in [axs[6], axs[7]]:
             ax.set_xlabel("Time After Primary Impact (hrs)")
