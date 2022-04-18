@@ -3,7 +3,7 @@ import os
 import csv
 import pandas as pd
 import numpy as np
-from math import atan, pi
+from math import atan, pi, acos
 from operator import contains
 from random import randint
 import multiprocessing as mp
@@ -209,6 +209,7 @@ def get_impact_angle_with_velocity_vector():
     imp_ids = {}
     times = {}
     r_dot_vs = {}
+    r_dot_v_angles = {}
     for output_name, title in zip(sims, titles):
         imp_ids.update({title: get_impactor_com_particles(output_name)})
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
@@ -220,6 +221,7 @@ def get_impact_angle_with_velocity_vector():
                 target_coms.update({title: []})
                 times.update({title: []})
                 r_dot_vs.update({title: []})
+                r_dot_v_angles.update({title: []})
             if title not in dfs.keys():
                 dfs.update({title: []})
             output_path = base_path + output_name + "/circularized_{}".format(output_name)
@@ -255,6 +257,7 @@ def get_impact_angle_with_velocity_vector():
             mean_impactor_velocity_vector = get_mean_vector(
                 zip(impactor_iron['vx'], impactor_iron['vy'], impactor_iron['vz']))
             r_dot_v = np.dot(r_vector, mean_impactor_velocity_vector)
+            angle_between_v_and_r = acos(r_dot_v / (np.linalg.norm(r_vector) * np.linalg.norm(mean_impactor_velocity_vector)))
 
             imp_angle = get_angle(target_com, impactor_com)
             # dfs[title].append(df)
@@ -262,6 +265,7 @@ def get_impact_angle_with_velocity_vector():
             target_coms[title].append(target_com)
             impactor_coms[title].append(impactor_com)
             r_dot_vs[title].append(r_dot_v)
+            r_dot_v_angles[title].append(angle_between_v_and_r)
         # to_save_path = "{}_secondary_impact_angles_scences".format(angle)
         # if not os.path.exists(to_save_path):
         #     os.mkdir(to_save_path)
@@ -269,7 +273,9 @@ def get_impact_angle_with_velocity_vector():
         #               target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
 
     df = pd.DataFrame(r_dot_vs, index=np.arange(min_iteration, max_iteration + increment, increment))
+    df2 = pd.DataFrame(r_dot_v_angles, index=np.arange(min_iteration, max_iteration + increment, increment))
     df.to_csv("{}_secondary_impact_angles_r_dot_v.csv".format(angle))
+    df2.to_csv("{}_secondary_impact_angles_angle_between_r_and_v".format(angle))
 
 
 # get_impact_angles()

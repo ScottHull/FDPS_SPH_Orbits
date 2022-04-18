@@ -286,8 +286,6 @@ def plot_vs_disk_property_all():
             [], [], s=80, marker="*", color=colors[cutoff_densities.index(5)], label="5b073n-high"
         )
 
-    for ax in axs:
-        ax.grid(alpha=0.4)
     axs[0].legend(fontsize=8)
     letters = list(string.ascii_lowercase)
     for index, ax in enumerate(axs):
