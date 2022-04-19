@@ -138,7 +138,7 @@ def get_angle(target_com, impactor_com):
 
 
 def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_coms, impactor_coms, mom_vectors,
-                  to_save_path, r_vectors, v_vectors, r_dot_vs):
+                  to_save_path, r_vectors, v_vectors):
     num_new = len([i for i in sims if "new" in i])
     num_old = len([i for i in sims if "old" in i])
     num_rows = max([num_new, num_old])
@@ -266,7 +266,8 @@ def get_impact_angles():
         if not os.path.exists(to_save_path):
             os.mkdir(to_save_path)
         __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
-                      target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
+                      target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times,
+                      r_vectors=)
 
     df = pd.DataFrame(impact_angles, index=np.arange(min_iteration, max_iteration + increment, increment))
     df.to_csv("{}_secondary_impact_angles.csv".format(angle))
@@ -352,7 +353,7 @@ def get_impact_angle_with_velocity_vector():
             os.mkdir(to_save_path)
         __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
                       target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times,
-                      mom_vectors=v_vectors)
+                      mom_vectors=v_vectors, r_vectors=r_vectors, v_vectors=v_vectors)
 
     df = pd.DataFrame(r_dot_vs, index=np.arange(min_iteration, max_iteration + increment, increment))
     df2 = pd.DataFrame(r_dot_v_angles, index=np.arange(min_iteration, max_iteration + increment, increment))
