@@ -214,7 +214,8 @@ def plot_vs_disk_property_all():
     angles_df = pd.read_csv(angles_path, index_col="Unnamed: 0")
     r_dot_v_df = pd.read_csv(r_dot_v_path, index_col="Unnamed: 0")
     r_dot_v_angle_df = pd.read_csv(r_dot_v_angle, index_col="Unnamed: 0")
-    x_label_angle = "Impact Angle (deg.)"
+    # x_label_angle = "Impact Angle (deg.)"
+    x_label_angle = r"$\theta$"
     # x_label_r_dot_v = "$r \cdot v$"
     x_label_r_dot_v = r"$\phi$"
     sims, titles = get_all_sims(high=False)
