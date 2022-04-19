@@ -209,10 +209,13 @@ def plot_vs_disk_property(r_dot_v: bool):
 def plot_vs_disk_property_all():
     angles_path = "{}_secondary_impact_angles.csv".format(angle)
     r_dot_v_path = "{}_secondary_impact_angles_r_dot_v.csv".format(angle)
+    r_dot_v_angle = "{}_secondary_impact_angles_angle_between_r_and_v.csv".format(angle)
     angles_df = pd.read_csv(angles_path, index_col="Unnamed: 0")
     r_dot_v_df = pd.read_csv(r_dot_v_path, index_col="Unnamed: 0")
+    r_dot_v_angle_df = pd.read_csv(r_dot_v_angle, index_col="Unnamed: 0")
     x_label_angle = "Impact Angle (deg.)"
-    x_label_r_dot_v = "$r \cdot v$"
+    # x_label_r_dot_v = "$r \cdot v$"
+    x_label_r_dot_v = r"$\phi$"
     sims, titles = get_all_sims(high=False)
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
     fig, axs = plt.subplots(2, 4, figsize=(27, 9), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
@@ -229,9 +232,34 @@ def plot_vs_disk_property_all():
         impact_point = secondary_impact_times[t]
         impact_angle = angles_df[t][impact_point['iteration']]
         impact_r_dot_v = r_dot_v_df[t][impact_point['iteration']]
+        impact_r_v_angle = r_dot_v_angle_df[t][impact_point['iteration']]
         report_path = base_path + "{}/{}_reports/{}.csv".format(s, s, end_iteration)
         report = pd.read_csv(report_path)
         time = impact_point["time"] - impact_point['primary_impact_time']  # hrs after primary impact
+        # axs[0].scatter(
+        #     impact_angle, time, color=color, marker=scatter_point, s=80
+        # )
+        # axs[1].scatter(
+        #     impact_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
+        # axs[2].scatter(
+        #     impact_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
+        # axs[3].scatter(
+        #     impact_r_dot_v, time, color=color, marker=scatter_point, s=80
+        # )
+        # axs[4].scatter(
+        #     impact_r_dot_v, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
+        # axs[5].scatter(
+        #     impact_r_dot_v, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
+        # axs[6].scatter(
+        #     time, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
+        # axs[7].scatter(
+        #     time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
         axs[0].scatter(
             impact_angle, time, color=color, marker=scatter_point, s=80
         )
@@ -242,13 +270,13 @@ def plot_vs_disk_property_all():
             impact_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
         )
         axs[3].scatter(
-            impact_r_dot_v, time, color=color, marker=scatter_point, s=80
+            impact_r_v_angle, time, color=color, marker=scatter_point, s=80
         )
         axs[4].scatter(
-            impact_r_dot_v, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+            impact_r_v_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
         )
         axs[5].scatter(
-            impact_r_dot_v, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+            impact_r_v_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
         )
         axs[6].scatter(
             time, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
