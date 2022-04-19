@@ -265,9 +265,8 @@ def get_impact_angles():
         to_save_path = "{}_secondary_impact_angles_scences".format(angle)
         if not os.path.exists(to_save_path):
             os.mkdir(to_save_path)
-        __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
-                      target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times,
-                      r_vectors=)
+        # __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
+        #               target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
 
     df = pd.DataFrame(impact_angles, index=np.arange(min_iteration, max_iteration + increment, increment))
     df.to_csv("{}_secondary_impact_angles.csv".format(angle))
@@ -348,7 +347,7 @@ def get_impact_angle_with_velocity_vector():
             r_dot_v_angles[title].append(angle_between_v_and_r)
             r_vectors[title].append(r_vector)
             v_vectors[title].append(mean_impactor_velocity_vector)
-        to_save_path = "{}_secondary_impact_angles_scences".format(angle)
+        to_save_path = "{}_secondary_impact_angles_scenes".format(angle)
         if not os.path.exists(to_save_path):
             os.mkdir(to_save_path)
         __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
