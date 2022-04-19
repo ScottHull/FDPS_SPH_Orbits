@@ -359,9 +359,9 @@ def get_impact_angle_with_velocity_vector():
     df3 = pd.DataFrame(r_vectors, index=np.arange(min_iteration, max_iteration + increment, increment))
     df4 = pd.DataFrame(v_vectors, index=np.arange(min_iteration, max_iteration + increment, increment))
     df.to_csv("{}_secondary_impact_angles_r_dot_v.csv".format(angle))
-    df2.to_csv("{}_secondary_impact_angles_angle_between_r_and_v".format(angle))
-    df3.to_csv("{}_secondary_impact_angles_r_vector".format(angle))
-    df4.to_csv("{}_secondary_impact_angles_v_vector".format(angle))
+    df2.to_csv("{}_secondary_impact_angles_angle_between_r_and_v.csv".format(angle))
+    df3.to_csv("{}_secondary_impact_angles_r_vector.csv".format(angle))
+    df4.to_csv("{}_secondary_impact_angles_v_vector.csv".format(angle))
 
 
 # get_impact_angles()
