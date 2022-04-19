@@ -339,7 +339,7 @@ def get_impact_angle_with_velocity_vector():
             angle_between_v_and_r = acos(r_dot_v / (np.linalg.norm(r_vector) * np.linalg.norm(mean_impactor_velocity_vector))) * (180 / pi)
 
             imp_angle = get_angle(target_com, impactor_com)
-            # dfs[title].append(df)
+            dfs[title].append(df)
             impact_angles[title].append(imp_angle)
             target_coms[title].append(target_com)
             impactor_coms[title].append(impactor_com)
