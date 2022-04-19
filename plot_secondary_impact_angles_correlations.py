@@ -161,7 +161,8 @@ def plot_vs_disk_property(r_dot_v: bool):
     angles_df = pd.read_csv(angles_path, index_col="Unnamed: 0")
     r_dot_v_df = pd.read_csv(r_dot_v_path, index_col="Unnamed: 0")
     x = angles_df
-    x_label = "Impact Angle (deg.)"
+    # x_label = "Impact Angle (deg.)"
+    x_label = r"$\theta$"
     if r_dot_v:
         x = r_dot_v_df
         x_label = "r $\cdot$ v"
