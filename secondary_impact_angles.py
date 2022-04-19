@@ -18,7 +18,7 @@ angle = "b073"
 cutoff_densities = [5, 500, 1000, 2000]
 number_processes = 200
 min_iteration = 50
-max_iteration = 500
+max_iteration = 300
 increment = 5
 square_scale = 6e7
 
