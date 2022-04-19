@@ -194,7 +194,7 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
         axs[to_index].quiver(impactor_com[0], impactor_com[1], mom_vector[0], mom_vector[1], color='green', label="Spec. Mom. Vector")
         axs[to_index].quiver(target_com[0], target_com[1], r_vector[0], r_vector[1], color='yellow', label="Radial Vector")
 
-        psi = acos(mom_vector / (np.linalg.norm(r_vector) * np.linalg.norm(v_vector))) * (180 / pi)
+        psi = acos(np.dot(r_vector, mom_vector) / (np.linalg.norm(r_vector) * np.linalg.norm(v_vector))) * (180 / pi)
         text = "|r\u20D7| = {:.2e}\n|v\u20D7| = {:.2e}\nr\u20D7 $\cdot$ v\u20D7 = {:.2e}\nr = {}\nv = {}\npsi = {:.2e}".format(
             np.linalg.norm(r_vector), np.linalg.norm(mom_vector), np.dot(r_vector, mom_vector),
             str(r_vector), str(v_vector), psi
