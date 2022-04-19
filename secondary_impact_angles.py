@@ -79,7 +79,66 @@ def get_angle(target_com, impactor_com):
     return atan(x_offset / y_offset) * (180 / pi)  # to degrees
 
 
-def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_coms, impactor_coms, to_save_path):
+# def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_coms, impactor_coms, to_save_path):
+#     num_new = len([i for i in sims if "new" in i])
+#     num_old = len([i for i in sims if "old" in i])
+#     num_rows = max([num_new, num_old])
+#     plt.style.use("dark_background")
+#     fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all',
+#                             gridspec_kw={"hspace": 0.10, "wspace": 0.12})
+#     fig.patch.set_facecolor('xkcd:black')
+#     axs = axs.flatten()
+#     for ax in axs:
+#         ax.set_xlim(-square_scale, square_scale)
+#         ax.set_ylim(-square_scale, square_scale)
+#         ax.set_xticks([], minor=False)
+#         ax.set_yticks([], minor=False)
+#     index_new, index_old = 0, 1
+#     for s, t in zip(sims, titles):
+#         df, impact_angle, target_com, impactor_com, time = dfs[t][-1], impact_angles[t][-1], \
+#                                                            target_coms[t][-1], impactor_coms[t][-1], times[t][-1]
+#         df = df[df['z'] < 0]
+#         target_silicate = df[df['tag'] == 0]
+#         target_iron = df[df['tag'] == 1]
+#         impactor_silicate = df[df['tag'] == 2]
+#         impactor_iron = df[df['tag'] == 3]
+#         t1 = ["Target Silicate", "Target Iron", "Impactor Silicate", "Impactor Iron"]
+#         t2 = [target_silicate, target_iron, impactor_silicate, impactor_iron]
+#
+#         to_index = index_new
+#         if "old" in s:
+#             to_index = index_old
+#         for a, b, in zip(t1, t2):
+#             axs[to_index].scatter(
+#                 b['x'], b['y'], s=1, marker='.', label=a
+#             )
+#
+#         axs[to_index].scatter(
+#             impactor_com[0], impactor_com[1], s=60, c='pink', marker="*", label="Impactor COM"
+#         )
+#         axs[to_index].scatter(
+#             target_com[0], target_com[1], s=60, c='green', marker="*", label="Target COM"
+#         )
+#         axs[to_index].plot(
+#             [target_com[0], impactor_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
+#         )
+#         axs[to_index].plot(
+#             [target_com[0], target_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
+#         )
+#         axs[to_index].plot(
+#             [impactor_com[0], target_com[0]], [impactor_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
+#         )
+#         axs[to_index].set_title("{} {} hrs. ({} - {} deg.)".format(t, time, iteration, round(impact_angle, 2)))
+#         if "old" in s:
+#             index_old += 2
+#         else:
+#             index_new += 2
+#     axs[0].legend(loc='upper left')
+#     plt.savefig(to_save_path + "/{}.png".format(iteration), format='png', dpi=200)
+
+
+def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_coms, impactor_coms, mom_vectors,
+                  to_save_path):
     num_new = len([i for i in sims if "new" in i])
     num_old = len([i for i in sims if "old" in i])
     num_rows = max([num_new, num_old])
@@ -95,8 +154,9 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
         ax.set_yticks([], minor=False)
     index_new, index_old = 0, 1
     for s, t in zip(sims, titles):
-        df, impact_angle, target_com, impactor_com, time = dfs[t][-1], impact_angles[t][-1], \
-                                                           target_coms[t][-1], impactor_coms[t][-1], times[t][-1]
+        df, impact_angle, target_com, impactor_com, time, mom_vector = dfs[t][-1], impact_angles[t][-1], \
+                                                                       target_coms[t][-1], impactor_coms[t][-1], \
+                                                                       times[t][-1], mom_vectors[t][-1]
         df = df[df['z'] < 0]
         target_silicate = df[df['tag'] == 0]
         target_iron = df[df['tag'] == 1]
@@ -128,6 +188,18 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
         axs[to_index].plot(
             [impactor_com[0], target_com[0]], [impactor_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
         )
+
+        r_vector = np.array(impactor_com) - np.array(target_com)
+        axs[to_index].quiver(impactor_com[0], impactor_com[1], mom_vector[0], mom_vector[1], color='green', label="Spec. Mom. Vector")
+        axs[to_index].quiver(target_com[0], target_com[1], r_vector[0], r_vector[1], color='yellow', label="Radial Vector")
+
+        text = "|r\u20D7| = {:.2e}\n|v\u20D7| = {:.2e}\nr\u20D7 $\cdot$ v\u20D7 = {:.2e}\n".format(
+            np.linalg.norm(r_vector), np.linalg.norm(mom_vector), np.dot(r_vector, mom_vector)
+        )
+        axs[to_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
+                                text,
+                                fontsize=10)
+
         axs[to_index].set_title("{} {} hrs. ({} - {} deg.)".format(t, time, iteration, round(impact_angle, 2)))
         if "old" in s:
             index_old += 2
@@ -276,7 +348,8 @@ def get_impact_angle_with_velocity_vector():
         if not os.path.exists(to_save_path):
             os.mkdir(to_save_path)
         __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles, impact_angles=impact_angles,
-                      target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
+                      target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times,
+                      mom_vectors=v_vectors)
 
     df = pd.DataFrame(r_dot_vs, index=np.arange(min_iteration, max_iteration + increment, increment))
     df2 = pd.DataFrame(r_dot_v_angles, index=np.arange(min_iteration, max_iteration + increment, increment))
