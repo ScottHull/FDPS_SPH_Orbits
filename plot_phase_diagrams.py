@@ -98,6 +98,9 @@ def plot_phase_diagrams():
             high = False
         sims, titles = get_all_sims(angle=angle, high=high)
         for s, t in zip(sims, titles):
+            marker = "."
+            if "high" in s:
+                marker = "^"
             to_path = base_path + "{}/circularized_{}/{}.csv".format(s, s, iteration)
             df = pd.read_csv(to_path)
             disk = df[df['label'] == "DISK"]
@@ -118,7 +121,7 @@ def plot_phase_diagrams():
                 to_index = 3
             print(t)
             axs[to_index].scatter(
-                temp, entropy, s=5, color=color, label=t
+                temp, entropy, s=1, marker=marker, color=color, label=t
             )
 
 plot_phase_diagrams()
