@@ -58,6 +58,12 @@ for ax in [axs[0], axs[2]]:
         linewidth=2.0,
         color='black'
     )
+    ax.plot(
+        new_phase_df['entropy_vap'],
+        new_phase_df['temperature'],
+        linewidth=2.0,
+        color='black'
+    )
     ax.set_ylabel("Temperature (K)")
 for ax in [axs[1], axs[3]]:
     ax.plot(
@@ -66,8 +72,14 @@ for ax in [axs[1], axs[3]]:
         linewidth=2.0,
         color='black'
     )
+    ax.plot(
+        old_phase_df['entropy_vap'],
+        old_phase_df['temperature'],
+        linewidth=2.0,
+        color='black'
+    )
     ax.fill_between(
-        x=old_phase_df['entropy_sol_liq'],
+        x=old_phase_df['entropy_vap'],
         y1=old_phase_df['temperature'],
         color='red',
         alpha=0.2,
@@ -89,7 +101,7 @@ def plot_phase_diagrams():
         high = True
         if angle == "b075":
             high = False
-        sims, titles = get_all_sims(angle=True, high=high)
+        sims, titles = get_all_sims(angle=angle, high=high)
         for s, t in zip(sims, titles):
             to_path = base_path + "{}/circularized_{}/{}.csv".format(s, s, iteration)
             df = pd.read_csv(to_path)
