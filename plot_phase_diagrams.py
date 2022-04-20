@@ -49,8 +49,8 @@ colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 for ax in axs:
     ax.grid(alpha=0.4)
-    ax.set_xlim(0, 12000)
-    ax.set_ylim(0, 20000)
+    ax.set_xlim(1800, 12000)
+    ax.set_ylim(0, 15000)
 
 for ax in [axs[0], axs[2]]:
     critical_point = max(new_phase_df['temperature'])
@@ -116,10 +116,11 @@ def plot_phase_diagrams():
                 to_index = 2
             else:
                 to_index = 3
+            print(t)
             axs[to_index].scatter(
                 temp, entropy, s=5, color=color, label=t
             )
 
-axs[0].legend()
 plot_phase_diagrams()
+axs[0].legend(loc='upper left')
 plt.savefig("phase_curves.png", format='png', dpi=200)
