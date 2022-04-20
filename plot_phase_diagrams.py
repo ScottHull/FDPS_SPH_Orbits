@@ -79,15 +79,8 @@ for ax in [axs[1], axs[3]]:
         color='black'
     )
     ax.fill_between(
-        x=old_phase_df['entropy_vap'],
-        y1=old_phase_df['temperature'],
-        color='red',
-        alpha=0.2,
-        label="Mixed"
-    )
-    ax.fill_between(
-        x=old_phase_df['entropy_sol_liq'],
-        y1=old_phase_df['temperature'],
+        x=list(old_phase_df['entropy_sol_liq']) + list(old_phase_df['entropy_vap']),
+        y1=list(old_phase_df['temperature']) + list(old_phase_df['temperature']),
         color='red',
         alpha=0.2,
         label="Mixed"
@@ -125,4 +118,6 @@ def plot_phase_diagrams():
                 temp, entropy, s=5, color=color, label=t
             )
 
+
+plot_phase_diagrams()
 plt.savefig("phase_curves.png", format='png', dpi=200)
