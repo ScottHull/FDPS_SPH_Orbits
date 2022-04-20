@@ -81,8 +81,9 @@ for ax in [axs[1], axs[3]]:
         color='black'
     )
     ax.fill_between(
-        x=list(old_phase_df['entropy_sol_liq']) + list(old_phase_df['entropy_vap']),
-        y1=list(old_phase_df['temperature']) + list(old_phase_df['temperature']),
+        x=old_phase_df['entropy_vap'],
+        y1=old_phase_df['temperature'],
+        y2=1e10
         color='red',
         alpha=0.2,
         label="Mixed"
