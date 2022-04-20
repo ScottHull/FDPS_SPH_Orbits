@@ -98,7 +98,6 @@ def plot_phase_diagrams():
             temp, entropy = disk_filtered['temperature'], disk_filtered['entropy'] + disk_filtered['circ_entropy_delta']
             cd = int(s.split("_")[0])
             color = colors[cutoff_densities.index(cd)]
-            phase_curve = new_phase_df
             if "old" in s:
                 phase_curve = old_phase_df
             to_index = 0
@@ -113,3 +112,5 @@ def plot_phase_diagrams():
             axs[to_index].scatter(
                 temp, entropy, s=5, color=color, label=t
             )
+
+plt.savefig("phase_curves.png", format='png', dpi=200)
