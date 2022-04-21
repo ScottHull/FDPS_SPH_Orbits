@@ -70,7 +70,7 @@ def __build_scene(iteration, times, to_save_path, dfs, sims, titles, target_coms
     index_new, index_old = 0, 1
     for s, t in zip(sims, titles):
         df, target_com, impactor_com, time = dfs[t][-1], target_coms[t][-1], impactor_coms[t][-1], times[t][-1]
-        df = df[df['z'] < 0]
+        # df = df[df['z'] < 0]
         target_silicate = df[df['tag'] == 0]
         target_iron = df[df['tag'] == 1]
         impactor_silicate = df[df['tag'] == 2]
