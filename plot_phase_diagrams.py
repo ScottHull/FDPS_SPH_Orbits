@@ -88,7 +88,7 @@ for ax in [axs[1], axs[3]]:
         y2=critical_point_old,
         color='red',
         alpha=0.2,
-        label="Mixed"
+        label="100% Vapor"
     )
     ax.fill_between(
         x=old_phase_df['entropy_sol_liq'],
@@ -96,7 +96,28 @@ for ax in [axs[1], axs[3]]:
         y2=critical_point_old,
         color='blue',
         alpha=0.2,
+        label="100% Yellow"
+    )
+    ax.fill_between(
+        x=old_phase_df['entropy_sol_liq'],
+        y1=critical_point_old,
+        y2=1e10,
+        color='yellow',
+        alpha=0.2,
+        label="Supercritical"
+    )
+    ax.fill_between(
+        x=old_phase_df['entropy_sol_liq'],
+        y1=old_phase_df['temperature'],
+        color='green',
+        alpha=0.2,
         label="Mixed"
+    )
+    ax.fill_between(
+        x=old_phase_df['entropy_vap'][1:],
+        y1=old_phase_df['temperature'][1:],
+        color='green',
+        alpha=0.2,
     )
 for ax in [axs[2], axs[3]]:
     ax.set_xlabel("Entropy")
