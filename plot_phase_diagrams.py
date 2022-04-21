@@ -168,7 +168,7 @@ axs[1].set_title("GADGET M-ANEOS ($b=0.73$)")
 axs[2].set_title("Stewart M-ANEOS ($b=0.75$)")
 axs[3].set_title("GADGET M-ANEOS ($b=0.75$)")
 plot_phase_diagrams()
-legend = axs[0].legend(loc='upper left', fontsize=6)
+legend = axs[0].legend(loc='lower right', fontsize=6)
 for handle in legend.legendHandles:
     try:
         handle.set_sizes([30.0])

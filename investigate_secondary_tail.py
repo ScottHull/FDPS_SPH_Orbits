@@ -5,7 +5,7 @@ plt.rcParams.update({'font.size': 14, })
 # plt.style.use("dark_background")
 plt.style.use('seaborn-colorblind')
 
-iteration = 1800
+iteration = 190
 angles = ['b073', 'b075']
 cutoff_densities = [5, 500, 1000, 2000]
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -40,3 +40,7 @@ def get_all_sims(angle, high=True):
         title_name = tformat.format(5, angle, "new") + "-high"
         titles.append(title_name)
     return names, titles
+
+def plot_secondary_impact():
+
+
