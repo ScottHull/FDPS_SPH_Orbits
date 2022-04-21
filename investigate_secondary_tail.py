@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-plt.rcParams.update({'font.size': 14, })
+plt.rcParams.update({'font.size': 8, })
 # plt.style.use("dark_background")
 plt.style.use('seaborn-colorblind')
 
@@ -55,10 +55,8 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
     fig.patch.set_facecolor('xkcd:black')
     axs = axs.flatten()
     for ax in axs:
-        ax.set_xlim(-square_scale, square_scale)
-        ax.set_ylim(-square_scale, square_scale)
-        ax.set_xticks([], minor=False)
-        ax.set_yticks([], minor=False)
+        ax.set_xlim(-hsquare_scale, hsquare_scale)
+        ax.set_ylim(-vsquare_scale, 0)
     index_new, index_old = 0, 1
     for s, t in zip(sims, titles):
         df, impact_angle, target_com, impactor_com, time, mom_vector, r_vector, v_vector = dfs[t][-1], impact_angles[t][-1], \
@@ -101,14 +99,6 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
         axs[to_index].quiver(impactor_com[0], impactor_com[1], mom_vector[0], mom_vector[1], color='green', label="Spec. Mom. Vector")
         axs[to_index].quiver(target_com[0], target_com[1], r_vector[0], r_vector[1], color='yellow', label="Radial Vector")
 
-        psi = acos(np.dot(r_vector, mom_vector) / (np.linalg.norm(r_vector) * np.linalg.norm(v_vector))) * (180 / pi)
-        text = "|r\u20D7| = {:.2e}\n|v\u20D7| = {:.2e}\nr\u20D7 $\cdot$ v\u20D7 = {:.2e}\nr = {}\nv = {}\n$\psi$ = {}".format(
-            np.linalg.norm(r_vector), np.linalg.norm(mom_vector), np.dot(r_vector, mom_vector),
-            str([round(i / 1000, 2) for i in r_vector]), str([round(i / 1000, 2) for i in v_vector]), round(psi, 2)
-        )
-        axs[to_index].text(square_scale - (0.70 * square_scale), -square_scale + (0.2 * square_scale),
-                                text,
-                                fontsize=8)
 
         axs[to_index].set_title("{} {} hrs. ({} - {} deg.)".format(t, time, iteration, round(impact_angle, 2)))
         if "old" in s:

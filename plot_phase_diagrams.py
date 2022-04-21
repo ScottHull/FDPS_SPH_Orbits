@@ -156,7 +156,7 @@ def plot_phase_diagrams():
                 to_index = 2
             else:
                 to_index = 3
-            label = r"$\rho_c = 5$ kg/m$^3$"
+            label = r"$\rho_c = {}$ kg/m$^3$".format(cd)
             if "high" in s:
                 label = t
             axs[to_index].scatter(
