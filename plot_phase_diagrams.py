@@ -110,7 +110,6 @@ for ax in [axs[1], axs[3]]:
         x=old_phase_df['entropy_sol_liq'],
         y1=old_phase_df['temperature'],
         color='green',
-        facecolor="none",
         edgecolor="none",
         alpha=0.2,
         label="Mixed"
@@ -119,7 +118,6 @@ for ax in [axs[1], axs[3]]:
         x=old_phase_df['entropy_vap'],
         y1=old_phase_df['temperature'],
         color='green',
-        facecolor="none",
         edgecolor="none",
         alpha=0.2,
     )
