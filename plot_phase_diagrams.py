@@ -47,13 +47,15 @@ axs = axs.flatten()
 b073n_index, b073o_index, b075n_index, b075o_index = 0, 1, 2, 3
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
+critical_point_new = max(new_phase_df['temperature'])
+critical_point_old = max(old_phase_df['temperature'])
+
 for ax in axs:
     ax.grid(alpha=0.4)
     ax.set_xlim(1800, 12000)
     ax.set_ylim(0, 15000)
 
 for ax in [axs[0], axs[2]]:
-    critical_point = max(new_phase_df['temperature'])
     ax.plot(
         new_phase_df['entropy_sol_liq'],
         new_phase_df['temperature'],
@@ -83,8 +85,16 @@ for ax in [axs[1], axs[3]]:
     ax.fill_between(
         x=old_phase_df['entropy_vap'],
         y1=old_phase_df['temperature'],
-        y2=1e10,
+        y2=critical_point_old,
         color='red',
+        alpha=0.2,
+        label="Mixed"
+    )
+    ax.fill_between(
+        x=old_phase_df['entropy_sol_liq'],
+        y1=old_phase_df['temperature'],
+        y2=critical_point_old,
+        color='blue',
         alpha=0.2,
         label="Mixed"
     )
