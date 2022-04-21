@@ -67,6 +67,7 @@ def __build_scene(iteration, times, to_save_path, dfs, sims, titles, target_coms
     for ax in axs:
         ax.set_xlim(-hsquare_scale, 0.5 * hsquare_scale)
         ax.set_ylim(-vsquare_scale, 2000)
+        ax.grid(alpha=0.4)
     index_new, index_old = 0, 1
     for s, t in zip(sims, titles):
         df, target_com, impactor_com, time = dfs[t][-1], target_coms[t][-1], impactor_coms[t][-1], times[t][-1]
