@@ -107,11 +107,21 @@ for ax in [axs[1], axs[3]]:
         label="Supercritical"
     )
     ax.fill_between(
-        x=sorted(list(old_phase_df['entropy_sol_liq']) + list(old_phase_df['entropy_vap'])),
-        y1=sorted(list(old_phase_df['temperature']) + list(old_phase_df['temperature'])),
+        x=old_phase_df['entropy_sol_liq'],
+        y1=old_phase_df['temperature'],
         color='green',
+        facecolor=None,
+        edgecolor=None,
         alpha=0.2,
         label="Mixed"
+    )
+    ax.fill_between(
+        x=old_phase_df['entropy_vap'],
+        y1=old_phase_df['temperature'],
+        facecolor=None,
+        edgecolor=None,
+        color='green',
+        alpha=0.2,
     )
 for ax in [axs[2], axs[3]]:
     ax.set_xlabel("Entropy")
