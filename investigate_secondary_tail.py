@@ -192,3 +192,5 @@ def get_secondary_and_tail():
             os.mkdir(to_save_path)
         __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles,
                       target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
+
+get_secondary_and_tail()
