@@ -58,6 +58,8 @@ def shade_plot(s, ax):
     if "old" in s:
         phase_df = old_phase_df
         cp = critical_point_old
+        # ax.text((3000, 5000), "100% Liquid", fontsize=8)
+        # ax.text((3000, 5000), "100% Liquid", fontsize=8)
     ax.plot(
         phase_df['entropy_sol_liq'],
         phase_df['temperature'],
@@ -120,6 +122,10 @@ for ax in [axs[0], axs[2]]:
     ax.set_ylabel("Temperature (K)")
 for ax in [axs[2], axs[3]]:
     ax.set_xlabel("Entropy")
+for ax in [axs[0], axs[2]]:
+    shade_plot(s="new", ax=ax)
+for ax in [axs[1], axs[3]]:
+    shade_plot(s="old", ax=ax)
 
 
 def plot_phase_diagrams():
@@ -148,7 +154,6 @@ def plot_phase_diagrams():
                 to_index = 2
             else:
                 to_index = 3
-            shade_plot(s=s, ax=axs[to_index])
             print(t)
             axs[to_index].scatter(
                 temp, entropy, s=1, marker=marker, alpha=0.4, color=color, label=t
