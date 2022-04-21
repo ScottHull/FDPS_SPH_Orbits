@@ -86,7 +86,7 @@ def shade_plot(s, ax):
         y2=cp,
         color='blue',
         alpha=0.2,
-        # label="100% Liquid"
+        label="100% Liquid"
     )
     ax.fill_between(
         x=sorted(list(phase_df['entropy_sol_liq']) + list(new_phase_df['entropy_vap'])),
@@ -94,7 +94,7 @@ def shade_plot(s, ax):
         y2=1e10,
         color='yellow',
         alpha=0.2,
-        # label="Supercritical"
+        label="Supercritical"
     )
     ax.fill_between(
         x=phase_df['entropy_sol_liq'],
@@ -102,7 +102,7 @@ def shade_plot(s, ax):
         color='green',
         edgecolor="none",
         alpha=0.2,
-        # label="Mixed"
+        label="Mixed"
     )
     ax.fill_between(
         x=phase_df['entropy_vap'],
@@ -143,6 +143,8 @@ def plot_phase_diagrams():
             temp, entropy = disk_filtered['temperature'], disk_filtered['entropy'] + disk_filtered['circ_entropy_delta']
             cd = int(s.split("_")[0])
             color = colors[cutoff_densities.index(cd)]
+            if "high" in s:
+                color = colors[cutoff_densities.index(cutoff_densities[-1]) + 1]
             if "old" in s:
                 phase_curve = old_phase_df
             to_index = 0
@@ -162,6 +164,6 @@ def plot_phase_diagrams():
 plot_phase_diagrams()
 legend = axs[0].legend(loc='upper left', fontsize=8)
 for handle in legend.legendHandles:
-    handle.set_sizes([10.0])
+    handle.set_sizes([14.0])
 
 plt.savefig("phase_curves.png", format='png', dpi=200)
