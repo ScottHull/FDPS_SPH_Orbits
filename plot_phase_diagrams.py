@@ -50,77 +50,74 @@ colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 critical_point_new = max(new_phase_df['temperature'])
 critical_point_old = max(old_phase_df['temperature'])
 
+
+
+def shade_plot(s, ax):
+    phase_df = new_phase_df
+    cp = critical_point_new
+    if "old" in s:
+        phase_df = old_phase_df
+        cp = critical_point_old
+    ax.plot(
+        phase_df['entropy_sol_liq'],
+        phase_df['temperature'],
+        linewidth=2.0,
+        color='black'
+    )
+    ax.plot(
+        phase_df['entropy_vap'],
+        phase_df['temperature'],
+        linewidth=2.0,
+        color='black'
+    )
+    ax.fill_between(
+        x=phase_df['entropy_vap'],
+        y1=phase_df['temperature'],
+        y2=cp,
+        color='red',
+        alpha=0.2,
+        # label="100% Vapor"
+    )
+    ax.fill_between(
+        x=phase_df['entropy_sol_liq'],
+        y1=phase_df['temperature'],
+        y2=cp,
+        color='blue',
+        alpha=0.2,
+        # label="100% Liquid"
+    )
+    ax.fill_between(
+        x=sorted(list(phase_df['entropy_sol_liq']) + list(new_phase_df['entropy_vap'])),
+        y1=cp,
+        y2=1e10,
+        color='yellow',
+        alpha=0.2,
+        # label="Supercritical"
+    )
+    ax.fill_between(
+        x=phase_df['entropy_sol_liq'],
+        y1=phase_df['temperature'],
+        color='green',
+        edgecolor="none",
+        alpha=0.2,
+        # label="Mixed"
+    )
+    ax.fill_between(
+        x=phase_df['entropy_vap'],
+        y1=phase_df['temperature'],
+        color='green',
+        edgecolor="none",
+        alpha=0.2,
+    )
+
+
 for ax in axs:
     ax.grid(alpha=0.4)
     ax.set_xlim(1800, 12000)
     ax.set_ylim(0, 15000)
 
 for ax in [axs[0], axs[2]]:
-    ax.plot(
-        new_phase_df['entropy_sol_liq'],
-        new_phase_df['temperature'],
-        linewidth=2.0,
-        color='black'
-    )
-    ax.plot(
-        new_phase_df['entropy_vap'],
-        new_phase_df['temperature'],
-        linewidth=2.0,
-        color='black'
-    )
     ax.set_ylabel("Temperature (K)")
-for ax in [axs[1], axs[3]]:
-    ax.plot(
-        old_phase_df['entropy_sol_liq'],
-        old_phase_df['temperature'],
-        linewidth=2.0,
-        color='black'
-    )
-    ax.plot(
-        old_phase_df['entropy_vap'],
-        old_phase_df['temperature'],
-        linewidth=2.0,
-        color='black'
-    )
-    ax.fill_between(
-        x=old_phase_df['entropy_vap'],
-        y1=old_phase_df['temperature'],
-        y2=critical_point_old,
-        color='red',
-        alpha=0.2,
-        label="100% Vapor"
-    )
-    ax.fill_between(
-        x=old_phase_df['entropy_sol_liq'],
-        y1=old_phase_df['temperature'],
-        y2=critical_point_old,
-        color='blue',
-        alpha=0.2,
-        label="100% Liquid"
-    )
-    ax.fill_between(
-        x=sorted(list(old_phase_df['entropy_sol_liq']) + list(new_phase_df['entropy_vap'])),
-        y1=critical_point_old,
-        y2=1e10,
-        color='yellow',
-        alpha=0.2,
-        label="Supercritical"
-    )
-    ax.fill_between(
-        x=old_phase_df['entropy_sol_liq'],
-        y1=old_phase_df['temperature'],
-        color='green',
-        edgecolor="none",
-        alpha=0.2,
-        label="Mixed"
-    )
-    ax.fill_between(
-        x=old_phase_df['entropy_vap'],
-        y1=old_phase_df['temperature'],
-        color='green',
-        edgecolor="none",
-        alpha=0.2,
-    )
 for ax in [axs[2], axs[3]]:
     ax.set_xlabel("Entropy")
 
@@ -153,11 +150,11 @@ def plot_phase_diagrams():
                 to_index = 2
             else:
                 to_index = 3
+            shade_plot(s=s, ax=axs[to_index])
             print(t)
             axs[to_index].scatter(
                 temp, entropy, s=1, marker=marker, alpha=0.4, color=color, label=t
             )
-            break
 
 plot_phase_diagrams()
 axs[0].legend(loc='upper left')
