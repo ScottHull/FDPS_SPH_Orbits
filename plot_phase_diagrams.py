@@ -83,7 +83,7 @@ for ax in [axs[1], axs[3]]:
     ax.fill_between(
         x=old_phase_df['entropy_vap'],
         y1=old_phase_df['temperature'],
-        y2=1e10
+        y2=1e10,
         color='red',
         alpha=0.2,
         label="Mixed"
