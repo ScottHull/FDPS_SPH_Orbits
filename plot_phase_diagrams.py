@@ -116,7 +116,7 @@ def shade_plot(s, ax):
 for ax in axs:
     ax.grid(alpha=0.4)
     ax.set_xlim(1800, 12000)
-    ax.set_ylim(0, 15000)
+    ax.set_ylim(0, 12500)
 
 for ax in [axs[0], axs[2]]:
     ax.set_ylabel("Temperature (K)")
@@ -160,7 +160,7 @@ def plot_phase_diagrams():
             if "high" in s:
                 label = t
             axs[to_index].scatter(
-                temp, entropy, s=1, marker=marker, alpha=0.4, color=color, label=label
+                temp, entropy, s=1, marker=marker, alpha=0.6, color=color, label=label
             )
 
 axs[0].set_title("Stewart M-ANEOS ($b=0.73$)")
