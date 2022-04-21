@@ -34,11 +34,11 @@ def get_all_sims(angle, high=True):
             title_name = tformat.format(cd, angle, n)
             titles.append(title_name)
             names.append(output_name)
-            if cd == 5 and high and runs == "new":
-                output_name = fformat.format(cd, angle, runs) + "_high"
-                names.append(output_name)
-                title_name = tformat.format(cd, angle, n) + "-high"
-                titles.append(title_name)
+    if high:
+        output_name = fformat.format(5, angle, runs) + "_high"
+        names.append(output_name)
+        title_name = tformat.format(5, angle, n) + "-high"
+        titles.append(title_name)
     return names, titles
 
 
@@ -130,8 +130,6 @@ def plot_phase_diagrams():
         sims, titles = get_all_sims(angle=angle, high=high)
         for s, t in zip(sims, titles):
             marker = "."
-            if "high" in s:
-                marker = "^"
             to_path = base_path + "{}/circularized_{}/{}.csv".format(s, s, iteration)
             df = pd.read_csv(to_path)
             disk = df[df['label'] == "DISK"]
@@ -157,6 +155,6 @@ def plot_phase_diagrams():
             )
 
 plot_phase_diagrams()
-axs[0].legend(loc='upper left')
-axs[1].legend(loc='upper left')
+axs[0].legend(loc='upper left', fontsize=8)
+
 plt.savefig("phase_curves.png", format='png', dpi=200)
