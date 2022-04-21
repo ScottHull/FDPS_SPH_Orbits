@@ -156,9 +156,11 @@ def plot_phase_diagrams():
                 to_index = 2
             else:
                 to_index = 3
-            print(t)
+            label = r"$\rho_c = 5$ kg/m$^3$"
+            if "high" in s:
+                label = t
             axs[to_index].scatter(
-                temp, entropy, s=1, marker=marker, alpha=0.4, color=color, label=t
+                temp, entropy, s=1, marker=marker, alpha=0.4, color=color, label=label
             )
 
 axs[0].set_title("Stewart M-ANEOS ($b=0.73$)")
