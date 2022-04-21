@@ -96,10 +96,10 @@ for ax in [axs[1], axs[3]]:
         y2=critical_point_old,
         color='blue',
         alpha=0.2,
-        label="100% Yellow"
+        label="100% Liquid"
     )
     ax.fill_between(
-        x=old_phase_df['entropy_sol_liq'] + new_phase_df['entropy_vap'],
+        x=list(old_phase_df['entropy_sol_liq']) + list(new_phase_df['entropy_vap']),
         y1=critical_point_old,
         y2=1e10,
         color='yellow',
@@ -163,4 +163,5 @@ def plot_phase_diagrams():
 
 plot_phase_diagrams()
 axs[0].legend(loc='upper left')
+axs[1].legend(loc='upper left')
 plt.savefig("phase_curves.png", format='png', dpi=200)
