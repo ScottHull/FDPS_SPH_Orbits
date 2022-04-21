@@ -76,15 +76,15 @@ def shade_plot(s, ax):
         x=phase_df['entropy_vap'],
         y1=phase_df['temperature'],
         y2=cp,
-        color='red',
+        color=colors[-1],
         alpha=0.2,
-        # label="100% Vapor"
+        label="100% Vapor"
     )
     ax.fill_between(
         x=phase_df['entropy_sol_liq'],
         y1=phase_df['temperature'],
         y2=cp,
-        color='blue',
+        color=colors[-2],
         alpha=0.2,
         label="100% Liquid"
     )
@@ -92,14 +92,14 @@ def shade_plot(s, ax):
         x=sorted(list(phase_df['entropy_sol_liq']) + list(new_phase_df['entropy_vap'])),
         y1=cp,
         y2=1e10,
-        color='yellow',
+        color=colors[-3],
         alpha=0.2,
         label="Supercritical"
     )
     ax.fill_between(
         x=phase_df['entropy_sol_liq'],
         y1=phase_df['temperature'],
-        color='green',
+        color=colors[-4],
         edgecolor="none",
         alpha=0.2,
         label="Mixed"
@@ -107,7 +107,7 @@ def shade_plot(s, ax):
     ax.fill_between(
         x=phase_df['entropy_vap'],
         y1=phase_df['temperature'],
-        color='green',
+        color=colors[-4],
         edgecolor="none",
         alpha=0.2,
     )
@@ -165,7 +165,7 @@ plot_phase_diagrams()
 legend = axs[0].legend(loc='upper left', fontsize=8)
 for handle in legend.legendHandles:
     try:
-        handle.set_sizes([14.0])
+        handle.set_sizes([30.0])
     except:
         pass
 
