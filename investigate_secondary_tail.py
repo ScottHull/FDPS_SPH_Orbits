@@ -21,7 +21,7 @@ angle = 'b073'
 cutoff_densities = [5, 500, 1000, 2000]
 number_processes = 200
 vsquare_scale = 6e7
-hsquare_scale = 1e7
+hsquare_scale = 3e7
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
@@ -66,7 +66,7 @@ def __build_scene(iteration, times, to_save_path, dfs, sims, titles, target_coms
     axs = axs.flatten()
     for ax in axs:
         ax.set_xlim(-hsquare_scale, hsquare_scale)
-        ax.set_ylim(-vsquare_scale, 0)
+        ax.set_ylim(-vsquare_scale, 2000)
     index_new, index_old = 0, 1
     for s, t in zip(sims, titles):
         df, target_com, impactor_com, time = dfs[t][-1], target_coms[t][-1], impactor_coms[t][-1], times[t][-1]
