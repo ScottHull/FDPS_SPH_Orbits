@@ -122,8 +122,9 @@ def plot_phase_diagrams():
                 to_index = 3
             print(t)
             axs[to_index].scatter(
-                temp, entropy, s=1, marker=marker, alph=0.4, color=color, label=t
+                temp, entropy, s=1, marker=marker, alpha=0.4, color=color, label=t
             )
+            break
 
 plot_phase_diagrams()
 axs[0].legend(loc='upper left')
