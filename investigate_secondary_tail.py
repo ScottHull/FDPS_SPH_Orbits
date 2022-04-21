@@ -195,6 +195,25 @@ def get_com(x, y, z, mass):
     return np.array([x_center, y_center, z_center])
 
 
+def get_secondary_imp_and_tail_particles(title, df):
+    lims = secondary_impact_lims[title]
+    x_lims_si = [lims['si_min_x'], lims['si_max_x']]
+    y_lims_si = [lims['si_min_y'], lims['si_max_y']]
+    x_lims_tail = [lims['tail_min_x'], lims['tail_max_x']]
+    y_lims_tail = [lims['tail_min_y'], lims['tail_max_y']]
+    min_x_si, max_x_si = min(x_lims_si), max(x_lims_si)
+    min_y_si, max_y_si = min(y_lims_si), max(y_lims_si)
+    min_x_tail, max_x_tail = min(x_lims_tail), max(x_lims_tail)
+    min_y_tail, max_y_tail = min(y_lims_tail), max(y_lims_tail)
+    
+    si = df[min_x_si <= df['x'] <= max_x_si]
+    si = si[min_y_si <= si['y'] <= max_y_si]
+    tail = df[~df['id'].isin(si['id'].tolist())]
+    tail = df[min_x_tail <= df['x'] <= max_x_tail]
+    tail = tail[min_y_tail <= tail['y'] <= max_y_tail]
+    return si, tail
+
+
 def get_impactor_com_particles(output_name):
     output_path = base_path + output_name + "/circularized_{}".format(output_name)
     df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
