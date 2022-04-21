@@ -23,15 +23,90 @@ number_processes = 200
 vsquare_scale = 5e7
 hsquare_scale = 4e7
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
-new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
-old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
-new_phase_df = pd.read_fwf(new_phase_path, skiprows=1,
-                           names=["temperature", "density_sol_liq", "density_vap", "pressure",
-                                  "entropy_sol_liq", "entropy_vap"])
-old_phase_df = pd.read_fwf(old_phase_path, skiprows=1,
-                           names=["temperature", "density_sol_liq", "density_vap", "pressure",
-                                  "entropy_sol_liq", "entropy_vap"])
+
+secondary_impact_lims = {
+    '5b073n': {
+        'si_min_x': 0.4e7,
+        'si_max_x': -0.5e7,
+        'si_min_y': -2.3e7,
+        'si_max_y': -1.6e7,
+        'tail_min_x': -2.7e7,
+        'tail_max_x': -1.1e7,
+        'tail_min_y': -4.1e7,
+        'tail_max_y': -2.3e7,
+    },
+    '500b073n': {
+        'si_min_x': -1.1e7,
+        'si_max_x': -1.85e7,
+        'si_min_y': -2.05e7,
+        'si_max_y': -2.7e7,
+        'tail_min_x': -1.3e7,
+        'tail_max_x': -2.2e7,
+        'tail_min_y': -2.7e7,
+        'tail_max_y': -4.2e7,
+    },
+    '1000b073n': {
+        'si_min_x': -0.95e7,
+        'si_max_x': -1.65e7,
+        'si_min_y': -1.8e7,
+        'si_max_y': -2.5e7,
+        'tail_min_x': -1.2e7,
+        'tail_max_x': -2.3e7,
+        'tail_min_y': -2.5e7,
+        'tail_max_y': -4.2e7,
+    },
+    '2000b073n': {
+        'si_min_x': -0.45e7,
+        'si_max_x': -1e7,
+        'si_min_y': -1.3e7,
+        'si_max_y': -2e7,
+        'tail_min_x': -2.6e7,
+        'tail_max_x': -3e7,
+        'tail_min_y': -2e7,
+        'tail_max_y': -4e7,
+    },
+    '5b0b73o': {
+        'si_min_x': -0.8e7,
+        'si_max_x': -1.55e7,
+        'si_min_y': -1.85e7,
+        'si_max_y': -2.5e7,
+        'tail_min_x': -1e7,
+        'tail_max_x': -2.4e7,
+        'tail_min_y': -2.5e7,
+        'tail_max_y': -4.1e7,
+    },
+    '500b0b73o': {
+        'si_min_x': -1.1e7,
+        'si_max_x': -1.8e7,
+        'si_min_y': -2.1e7,
+        'si_max_y': -3e7,
+        'tail_min_x': -1.1e7,
+        'tail_max_x': -3e7,
+        'tail_min_y': -3e7,
+        'tail_max_y': -4.5e7,
+    },
+    '1000b0b73o': {
+        'si_min_x': -1.05e7,
+        'si_max_x': -1.9e7,
+        'si_min_y': -2.2e7,
+        'si_max_y': -3.15e7,
+        'tail_min_x': -1.5e7,
+        'tail_max_x': -2e7,
+        'tail_min_y': -2.5e7,
+        'tail_max_y': -4.1e7,
+    },
+    '2000b0b73o': {
+        'si_min_x': -1.05e7,
+        'si_max_x': -1.6e7,
+        'si_min_y': -2e7,
+        'si_max_y': -2.6e7,
+        'tail_min_x': -1.1e7,
+        'tail_max_x': -1.05e7,
+        'tail_min_y': -2.6e7,
+        'tail_max_y': -4.1e7,
+    },
+}
 
 
 def get_all_sims(angle, high=True):
