@@ -155,6 +155,8 @@ def plot_phase_diagrams():
             )
 
 plot_phase_diagrams()
-axs[0].legend(loc='upper left', fontsize=8)
+legend = axs[0].legend(loc='upper left', fontsize=8)
+for handle in legend.legendHandles:
+    handle.set_sizes([10.0])
 
 plt.savefig("phase_curves.png", format='png', dpi=200)
