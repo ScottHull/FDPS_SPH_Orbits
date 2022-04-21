@@ -102,12 +102,7 @@ def __build_scene(iteration, times, to_save_path, dfs, sims, titles, target_coms
             [impactor_com[0], target_com[0]], [impactor_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
         )
 
-        r_vector = np.array(impactor_com) - np.array(target_com)
-        axs[to_index].quiver(impactor_com[0], impactor_com[1], mom_vector[0], mom_vector[1], color='green', label="Spec. Mom. Vector")
-        axs[to_index].quiver(target_com[0], target_com[1], r_vector[0], r_vector[1], color='yellow', label="Radial Vector")
-
-
-        axs[to_index].set_title("{} {} hrs. ({} - {} deg.)".format(t, time, iteration, round(impact_angle, 2)))
+        axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
         if "old" in s:
             index_old += 2
         else:
