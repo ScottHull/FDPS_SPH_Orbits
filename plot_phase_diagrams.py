@@ -35,9 +35,9 @@ def get_all_sims(angle, high=True):
             titles.append(title_name)
             names.append(output_name)
     if high:
-        output_name = fformat.format(5, angle, "new") + "_high"
+        output_name = fformat.format(5, angle, "n") + "_high"
         names.append(output_name)
-        title_name = tformat.format(5, angle, "new") + "-high"
+        title_name = tformat.format(5, angle, "n") + "-high"
         titles.append(title_name)
     return names, titles
 
