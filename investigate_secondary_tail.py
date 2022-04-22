@@ -352,10 +352,10 @@ def get_secondary_and_tail():
         si, tail, not_classified = get_secondary_imp_and_tail_particles(title, df)
 
         si_mass, tail_mass = si['mass'], tail['mass']
-        si_position_vector = np.array(zip(si['x'], si['y'], si['z']))
-        si_velocity_vector = np.array(zip(si['vx'], si['vy'], si['vz']))
-        tail_position_vector = np.array(zip(tail['x'], tail['y'], tail['z']))
-        tail_velocity_vector = np.array(zip(tail['vx'], tail['vy'], tail['vz']))
+        si_position_vector = list(zip(si['x'], si['y'], si['z']))
+        si_velocity_vector = list(zip(si['vx'], si['vy'], si['vz']))
+        tail_position_vector = list(zip(tail['x'], tail['y'], tail['z']))
+        tail_velocity_vector = list(zip(tail['vx'], tail['vy'], tail['vz']))
         si_ang_mom = si['mass'] * np.array([np.cross(i, j) for i, j in list(zip(si_position_vector, si_velocity_vector))])
         tail_ang_mom = tail['mass'] * np.array([np.cross(i, j) for i, j in list(zip(tail_position_vector, tail_velocity_vector))])
         si_pct_tar_silicate = len(si[si['tag'] == 0]) / len(si)
