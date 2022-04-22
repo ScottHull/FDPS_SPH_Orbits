@@ -370,7 +370,7 @@ def get_secondary_and_tail():
         si_pct_iron = len(si[si['tag'] % 2 != 0]) / len(si)
         tail_pct_silicate = len(tail[tail['tag'] % 2 == 0]) / len(tail)
         tail_pct_iron = len(tail[tail['tag'] % 2 != 0]) / len(tail)
-        si_and_tail_data[title] = [si_mass[0], si_ang_mom, tail_mass[0], tail_ang_mom, si_pct_tar_silicate, si_pct_tar_iron,
+        si_and_tail_data[title] = [sum(si_mass), si_ang_mom, sum(tail_mass), tail_ang_mom, si_pct_tar_silicate, si_pct_tar_iron,
                                    si_pct_imp_silicate, si_pct_imp_iron, tail_pct_tar_silicate, tail_pct_tar_iron, 
                                    tail_pct_imp_silicate, tail_pct_imp_iron, si_pct_silicate, si_pct_iron, 
                                    tail_pct_silicate, tail_pct_iron]
