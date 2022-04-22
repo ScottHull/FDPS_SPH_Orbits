@@ -385,31 +385,43 @@ def get_secondary_and_tail():
         tail_planet = len([i for i in tail_labels if i == "PLANET"]) / len(tail)
         tail_disk = len([i for i in tail_labels if i == "DISK"]) / len(tail)
         tail_escape = len([i for i in tail_labels if i == "ESCAPE"]) / len(tail)
-        planet_from_si = len(
-            [i for i in end_state_df.index if i in si['id'] and end_state_df['label'][i] == "PLANET"]) / len(
+
+        num_particles_planet_from_si = [i for i in end_state_df.index if
+                                        i in si['id'] and end_state_df['label'][i] == "PLANET"]
+        num_particles_disk_from_si = [i for i in end_state_df.index if
+                                        i in si['id'] and end_state_df['label'][i] == "DISK"]
+        num_particles_escape_from_si = [i for i in end_state_df.index if
+                                        i in si['id'] and end_state_df['label'][i] == "ESCAPE"]
+        num_particles_planet_from_tail = [i for i in end_state_df.index if
+                                        i in tail['id'] and end_state_df['label'][i] == "PLANET"]
+        num_particles_disk_from_tail = [i for i in end_state_df.index if
+                                      i in tail['id'] and end_state_df['label'][i] == "DISK"]
+        num_particles_escape_from_tail = [i for i in end_state_df.index if
+                                        i in tail['id'] and end_state_df['label'][i] == "ESCAPE"]
+        
+        planet_from_si = len(num_particles_planet_from_si) / len(
             end_state_df[end_state_df['label'] == "PLANET"])
-        disk_from_si = len(
-            [i for i in end_state_df.index if i in si['id'] and end_state_df['label'][i] == "DISK"]) / len(
+        disk_from_si = len(num_particles_disk_from_si) / len(
             end_state_df[end_state_df['label'] == "DISK"])
-        escape_from_si = len(
-            [i for i in end_state_df.index if i in si['id'] and end_state_df['label'][i] == "ESCAPE"]) / len(
+        escape_from_si = len(num_particles_escape_from_si) / len(
             end_state_df[end_state_df['label'] == "ESCAPE"])
-        planet_from_tail = len(
-            [i for i in end_state_df.index if i in tail['id'] and end_state_df['label'][i] == "PLANET"]) / len(
+        planet_from_tail = len(num_particles_planet_from_tail) / len(
             end_state_df[end_state_df['label'] == "PLANET"])
-        disk_from_tail = len(
-            [i for i in end_state_df.index if i in tail['id'] and end_state_df['label'][i] == "DISK"]) / len(
+        disk_from_tail = len(num_particles_disk_from_tail) / len(
             end_state_df[end_state_df['label'] == "DISK"])
-        escape_from_tail = len(
-            [i for i in end_state_df.index if i in tail['id'] and end_state_df['label'][i] == "ESCAPE"]) / len(
+        escape_from_tail = len(num_particles_escape_from_tail) / len(
             end_state_df[end_state_df['label'] == "ESCAPE"])
-        si_and_tail_data[title] = [sum(si_mass), si_ang_mom, sum(tail_mass), tail_ang_mom, si_pct_tar_silicate,
+        si_and_tail_data[title] = [sum(si_mass), si_ang_mom, sum(tail_mass), tail_ang_mom, len(si), len(tail),
+                                   si_pct_tar_silicate,
                                    si_pct_tar_iron,
                                    si_pct_imp_silicate, si_pct_imp_iron, tail_pct_tar_silicate, tail_pct_tar_iron,
                                    tail_pct_imp_silicate, tail_pct_imp_iron, si_pct_silicate, si_pct_iron,
                                    tail_pct_silicate, tail_pct_iron, si_planet, si_disk, si_escape, tail_planet,
                                    tail_disk,
-                                   tail_escape, planet_from_si, disk_from_si, escape_from_si, planet_from_tail,
+                                   tail_escape, num_particles_planet_from_si, num_particles_disk_from_si, 
+                                   num_particles_escape_from_si, num_particles_planet_from_tail, 
+                                   num_particles_disk_from_tail, num_particles_escape_from_tail,
+                                   planet_from_si, disk_from_si, escape_from_si, planet_from_tail,
                                    disk_from_tail, escape_from_tail]
 
         dfs[title].append(df)
@@ -420,7 +432,8 @@ def get_secondary_and_tail():
         not_classifieds[title].append(not_classified)
 
     index_headers = ["Secondary Impactor Mass", "Secondary Impactor Angular Momentum",
-                     "Tail Mass", "Tail Angular Momentum", "SI Frac. Target Silicate",
+                     "Tail Mass", "Tail Angular Momentum", "Num. Particles SI", "Num. Particles Tail",
+                     "SI Frac. Target Silicate",
                      "SI Frac. Target Iron", "SI Frac. Impactor Silicate",
                      "SI Frac. Impactor Iron", "Tail Frac. Target Silicate",
                      "Tail Frac. Target Iron", "Tail Frac. Impactor Silicate",
@@ -428,7 +441,10 @@ def get_secondary_and_tail():
                      "SI Frac. Iron", "Tail Frac. Silicate",
                      "Tail Frac. Iron", "SI Frac. Planet", "SI Frac. Disk",
                      "SI Frac. Escape", "Tail Frac. Planet", "Tail Frac. Disk",
-                     "Tail Frac. Escape", "Frac. Planet From SI",
+                     "Tail Frac. Escape", "Num. Particles Planet from SI",  "Num. Particles Disk from SI",
+                     "Num. Particles Escape from SI", "Num. Particles Planet from Tail",  "Num. Particles Disk from Tail",
+                     "Num. Particles Escape from Tail",
+                     "Frac. Planet From SI",
                      "Frac. Disk From SI", "Frac. Escape From SI", "Frac. Planet From Tail",
                      "Frac. Disk From Tail", "Frac. Escape From Tail"]
 
