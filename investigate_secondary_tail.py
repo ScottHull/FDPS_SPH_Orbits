@@ -66,7 +66,7 @@ secondary_impact_lims = {
         'tail_min_y': -2e7,
         'tail_max_y': -4e7,
     },
-    '5b0b73o': {
+    '5b073o': {
         'si_min_x': -0.8e7,
         'si_max_x': -1.55e7,
         'si_min_y': -1.85e7,
@@ -76,7 +76,7 @@ secondary_impact_lims = {
         'tail_min_y': -2.5e7,
         'tail_max_y': -4.1e7,
     },
-    '500b0b73o': {
+    '500b073o': {
         'si_min_x': -1.1e7,
         'si_max_x': -1.8e7,
         'si_min_y': -2.1e7,
@@ -86,7 +86,7 @@ secondary_impact_lims = {
         'tail_min_y': -3e7,
         'tail_max_y': -4.5e7,
     },
-    '1000b0b73o': {
+    '1000b073o': {
         'si_min_x': -1.05e7,
         'si_max_x': -1.9e7,
         'si_min_y': -2.2e7,
@@ -96,7 +96,7 @@ secondary_impact_lims = {
         'tail_min_y': -2.5e7,
         'tail_max_y': -4.1e7,
     },
-    '2000b0b73o': {
+    '2000b073o': {
         'si_min_x': -1.05e7,
         'si_max_x': -1.6e7,
         'si_min_y': -2e7,
