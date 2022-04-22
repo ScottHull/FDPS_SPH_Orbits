@@ -27,8 +27,8 @@ base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 
 secondary_impact_lims = {
     '5b073n': {
-        'si_min_x': 0.4e7,
-        'si_max_x': -0.5e7,
+        'si_min_x': -0.7e7,
+        'si_max_x': -1.4e7,
         'si_min_y': -2.3e7,
         'si_max_y': -1.6e7,
         'tail_min_x': -2.7e7,
@@ -270,9 +270,9 @@ def get_secondary_imp_and_tail_particles(title, df):
     si = si[si['y'] <= max_y_si]
     si = si[si['y'] >= min_y_si]
     tail = df[~df['id'].isin(si['id'].tolist())]
-    tail = df[df['x'] <= max_x_tail]
+    tail = tail[tail['x'] <= max_x_tail]
     tail = tail[tail['x'] >= min_x_tail]
-    tail = df[df['y'] <= max_y_tail]
+    tail = tail[tail['y'] <= max_y_tail]
     tail = tail[tail['y'] >= min_y_tail]
     not_classified = df[~df['id'].isin(si['id'].tolist())]
     not_classified = not_classified[~not_classified['id'].isin(tail['id'].tolist())]
