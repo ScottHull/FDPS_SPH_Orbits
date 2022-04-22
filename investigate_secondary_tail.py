@@ -91,7 +91,7 @@ secondary_impact_lims = {
         'si_max_x': -1.9e7,
         'si_min_y': -2.2e7,
         'si_max_y': -3.15e7,
-        'tail_min_x': -1.5e7,
+        'tail_min_x': -1.1e7,
         'tail_max_x': -2e7,
         'tail_min_y': -2.5e7,
         'tail_max_y': -4.1e7,
