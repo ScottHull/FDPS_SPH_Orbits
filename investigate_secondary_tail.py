@@ -187,6 +187,65 @@ def __build_scene(iteration, times, to_save_path, dfs, sims, titles, target_coms
     plt.savefig(to_save_path + "/{}.png".format(iteration), format='png', dpi=200)
 
 
+def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_coms, impactor_coms, sis, tails, not_classifieds):
+    num_new = len([i for i in sims if "new" in i])
+    num_old = len([i for i in sims if "old" in i])
+    num_rows = max([num_new, num_old])
+    plt.style.use("dark_background")
+    fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all',
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.12})
+    fig.patch.set_facecolor('xkcd:black')
+    axs = axs.flatten()
+    for ax in axs:
+        ax.set_xlim(-hsquare_scale, 0.5 * hsquare_scale)
+        ax.set_ylim(-vsquare_scale, 2000)
+        ax.grid(alpha=0.4)
+    index_new, index_old = 0, 1
+    for s, t in zip(sims, titles):
+        df, target_com, impactor_com, time, si, tail, not_classified = dfs[t][-1], target_coms[t][-1], \
+                                                                       impactor_coms[t][-1], times[t][-1], sis[t][-1], \
+                                                                       tails[t][-1], not_classifieds[t][-1]
+        # df = df[df['z'] < 0]
+        # target_silicate = df[df['tag'] == 0]
+        # target_iron = df[df['tag'] == 1]
+        # impactor_silicate = df[df['tag'] == 2]
+        # impactor_iron = df[df['tag'] == 3]
+        t1 = ["Secondary Impactor", "Debris Tail", "Other"]
+        t2 = [si, tail, not_classified]
+
+        to_index = index_new
+        if "old" in s:
+            to_index = index_old
+        for a, b, in zip(t1, t2):
+            axs[to_index].scatter(
+                b['x'], b['y'], s=1, marker='.', label=a
+            )
+
+        axs[to_index].scatter(
+            impactor_com[0], impactor_com[1], s=60, c='pink', marker="*", label="Impactor COM"
+        )
+        axs[to_index].scatter(
+            target_com[0], target_com[1], s=60, c='green', marker="*", label="Target COM"
+        )
+        axs[to_index].plot(
+            [target_com[0], impactor_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
+        )
+        axs[to_index].plot(
+            [target_com[0], target_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
+        )
+        axs[to_index].plot(
+            [impactor_com[0], target_com[0]], [impactor_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
+        )
+
+        axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
+        if "old" in s:
+            index_old += 2
+        else:
+            index_new += 2
+    axs[0].legend(loc='upper left')
+    plt.savefig(to_save_path + "/{}.png".format(iteration), format='png', dpi=200)
+
+
 def get_com(x, y, z, mass):
     total_mass = float(np.sum(mass))
     x_center = sum(x * mass) / total_mass
@@ -211,7 +270,9 @@ def get_secondary_imp_and_tail_particles(title, df):
     tail = df[~df['id'].isin(si['id'].tolist())]
     tail = df[min_x_tail <= df['x'] <= max_x_tail]
     tail = tail[min_y_tail <= tail['y'] <= max_y_tail]
-    return si, tail
+    not_classified = df[~df['id'].isin(si['id'].tolist())]
+    not_classified = not_classified[~not_classified['id'].isin(tail['id'].tolist())]
+    return si, tail, not_classified
 
 
 def get_impactor_com_particles(output_name):
@@ -233,6 +294,9 @@ def get_secondary_and_tail():
     r_dot_v_angles = {}
     r_vectors = {}
     v_vectors = {}
+    sis = {}
+    tails = {}
+    not_classifieds = {}
     for output_name, title in zip(sims, titles):
         imp_ids.update({title: get_impactor_com_particles(output_name)})
     dfs = {}
@@ -246,6 +310,9 @@ def get_secondary_and_tail():
             r_dot_v_angles.update({title: []})
             r_vectors.update({title: []})
             v_vectors.update({title: []})
+            sis.update({title: []})
+            tails.update({title: []})
+            not_classifieds.update({title: []})
         if title not in dfs.keys():
             dfs.update({title: []})
         output_path = base_path + output_name + "/circularized_{}".format(output_name)
@@ -276,16 +343,23 @@ def get_secondary_and_tail():
 
         target_com = get_com(target_iron['x'], target_iron['y'], target_iron['z'], target_iron['mass'])
         impactor_com = get_com(impactor_iron['x'], impactor_iron['y'], impactor_iron['z'], impactor_iron['mass'])
+        si, tail, not_classified = get_secondary_imp_and_tail_particles(title, df)
 
 
         dfs[title].append(df)
         target_coms[title].append(target_com)
         impactor_coms[title].append(impactor_com)
+        sis[title].append(si)
+        tails[title].append(tail)
+        not_classifieds[title].append(not_classified)
 
     to_save_path = "{}_secondary_impact_structures".format(angle)
     if not os.path.exists(to_save_path):
         os.mkdir(to_save_path)
-    __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles,
-                  target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
+    # __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles,
+    #               target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
+    __plot_secondary(iteration=iteration, dfs=dfs, sims=sims, titles=titles,
+                  target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times,
+                     sis=sis, tails=tails, not_classifieds=not_classifieds)
 
 get_secondary_and_tail()
