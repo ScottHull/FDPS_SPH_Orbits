@@ -383,7 +383,7 @@ def get_secondary_and_tail():
         not_classifieds[title].append(not_classified)
         
     index_headers = ["Secondary Impactor Mass", "Secondary Impactor Angular Momentum", 
-                                                                "Tail Mass", "Tail Angular Momentum", "SI Frac. Target Silicate"
+                                                                "Tail Mass", "Tail Angular Momentum", "SI Frac. Target Silicate",
                                                                 "SI Frac. Target Iron", "SI Frac. Impactor Silicate",
                                                                 "SI Frac. Impactor Iron", "Tail Frac. Target Silicate",
                                                                 "Tail Frac. Target Iron", "Tail Frac. Impactor Silicate",
