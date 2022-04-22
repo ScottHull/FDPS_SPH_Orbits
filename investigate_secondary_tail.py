@@ -387,22 +387,22 @@ def get_secondary_and_tail():
         tail_escape = len([i for i in tail_labels if i == "ESCAPE"]) / len(tail)
         planet_from_si = len(
             [i for i in end_state_df.index if i in si['id'] and end_state_df['label'][i] == "PLANET"]) / len(
-            end_state_df['id'])
+            end_state_df.index)
         disk_from_si = len(
             [i for i in end_state_df.index if i in si['id'] and end_state_df['label'][i] == "DISK"]) / len(
-            end_state_df['id'])
+            end_state_df.index)
         escape_from_si = len(
             [i for i in end_state_df.index if i in si['id'] and end_state_df['label'][i] == "ESCAPE"]) / len(
-            end_state_df['id'])
+            end_state_df.index)
         planet_from_tail = len(
             [i for i in end_state_df.index if i in tail['id'] and end_state_df['label'][i] == "PLANET"]) / len(
-            end_state_df['id'])
+            end_state_df.index)
         disk_from_tail = len(
             [i for i in end_state_df.index if i in tail['id'] and end_state_df['label'][i] == "DISK"]) / len(
-            end_state_df['id'])
+            end_state_df.index)
         escape_from_tail = len(
             [i for i in end_state_df.index if i in tail['id'] and end_state_df['label'][i] == "ESCAPE"]) / len(
-            end_state_df['id'])
+            end_state_df.index)
         si_and_tail_data[title] = [sum(si_mass), si_ang_mom, sum(tail_mass), tail_ang_mom, si_pct_tar_silicate,
                                    si_pct_tar_iron,
                                    si_pct_imp_silicate, si_pct_imp_iron, tail_pct_tar_silicate, tail_pct_tar_iron,
