@@ -301,7 +301,7 @@ def get_secondary_and_tail():
     sis = {}
     tails = {}
     not_classifieds = {}
-    si_ang_tail_data = {}
+    si_and_tail_data = {}
     for output_name, title in zip(sims, titles):
         imp_ids.update({title: get_impactor_com_particles(output_name)})
     dfs = {}
@@ -320,7 +320,7 @@ def get_secondary_and_tail():
             not_classifieds.update({title: []})
         if title not in dfs.keys():
             dfs.update({title: []})
-            si_ang_tail_data.update({title: []})
+            si_and_tail_data.update({title: []})
         output_path = base_path + output_name + "/circularized_{}".format(output_name)
         # df = pd.read_csv(output_path + "/{}.csv".format(iteration))
         path = base_path + "{}/{}".format(output_name, output_name)
@@ -370,7 +370,7 @@ def get_secondary_and_tail():
         si_pct_iron = len(si[si['tag'] % 2 != 0]) / len(si)
         tail_pct_silicate = len(tail[tail['tag'] % 2 == 0]) / len(tail)
         tail_pct_iron = len(tail[tail['tag'] % 2 != 0]) / len(tail)
-        si_ang_tail_data[title] = [si_mass, si_ang_mom, tail_mass, tail_ang_mom, si_pct_tar_silicate, si_pct_tar_iron, 
+        si_and_tail_data[title] = [si_mass, si_ang_mom, tail_mass, tail_ang_mom, si_pct_tar_silicate, si_pct_tar_iron, 
                                    si_pct_imp_silicate, si_pct_imp_iron, tail_pct_tar_silicate, tail_pct_tar_iron, 
                                    tail_pct_imp_silicate, tail_pct_imp_iron, si_pct_silicate, si_pct_iron, 
                                    tail_pct_silicate, tail_pct_iron]
@@ -381,15 +381,19 @@ def get_secondary_and_tail():
         sis[title].append(si)
         tails[title].append(tail)
         not_classifieds[title].append(not_classified)
-
-    df_si_and_tail_data = pd.DataFrame(si_ang_tail_data, index=["Secondary Impactor Mass", "Secondary Impactor Angular Momentum", 
+        
+    index_headers = ["Secondary Impactor Mass", "Secondary Impactor Angular Momentum", 
                                                                 "Tail Mass", "Tail Angular Momentum", "SI Frac. Target Silicate"
                                                                 "SI Frac. Target Iron", "SI Frac. Impactor Silicate"
                                                                 "SI Frac. Impactor Iron", "Tail Frac. Target Silicate"
                                                                 "Tail Frac. Target Iron", "Tail Frac. Impactor Silicate"
                                                                 "Tail Frac. Impactor Iron", "SI Frac. Silicate",
                                                                 "SI Frac. Iron", "Tail Frac. Silicate",
-                                                                "Tail Frac. Iron"])
+                                                                "Tail Frac. Iron"]
+    for i in si_and_tail_data.keys():
+        print(len(si_and_tail_data[i]), len(index_headers))
+
+    df_si_and_tail_data = pd.DataFrame(si_and_tail_data, index=index_headers)
     df_si_and_tail_data.to_csv("{}_secondary_impact_structure_data.csv".format(angle))
     to_save_path = "{}_secondary_impact_structures".format(angle)
     if not os.path.exists(to_save_path):
