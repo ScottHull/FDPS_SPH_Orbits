@@ -266,10 +266,14 @@ def get_secondary_imp_and_tail_particles(title, df):
     min_y_tail, max_y_tail = min(y_lims_tail), max(y_lims_tail)
     
     si = df[min_x_si <= df['x'] <= max_x_si]
-    si = si[min_y_si <= si['y'] <= max_y_si]
+    si = si[si['x'] >= min_x_si]
+    si = si[si['y'] <= max_y_si]
+    si = si[si['y'] >= min_y_si]
     tail = df[~df['id'].isin(si['id'].tolist())]
-    tail = df[min_x_tail <= df['x'] <= max_x_tail]
-    tail = tail[min_y_tail <= tail['y'] <= max_y_tail]
+    tail = df[df['x'] <= max_x_tail]
+    tail = tail[tail['x'] >= min_x_tail]
+    tail = df[df['y'] <= max_y_tail]
+    tail = tail[tail['y'] >= min_y_tail]
     not_classified = df[~df['id'].isin(si['id'].tolist())]
     not_classified = not_classified[~not_classified['id'].isin(tail['id'].tolist())]
     return si, tail, not_classified
