@@ -25,7 +25,6 @@ vsquare_scale = 5e7
 hsquare_scale = 4e7
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 
-
 secondary_impact_lims = {
     '5b073n': {
         'si_min_x': -0.7e7,
@@ -131,6 +130,7 @@ def get_all_sims(angle, high=True):
         titles.append(title_name)
     return names, titles
 
+
 def __build_scene(iteration, times, to_save_path, dfs, sims, titles, target_coms, impactor_coms):
     num_new = len([i for i in sims if "new" in i])
     num_old = len([i for i in sims if "old" in i])
@@ -188,7 +188,8 @@ def __build_scene(iteration, times, to_save_path, dfs, sims, titles, target_coms
     plt.savefig(to_save_path + "/{}.png".format(iteration), format='png', dpi=200)
 
 
-def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_coms, impactor_coms, sis, tails, not_classifieds):
+def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_coms, impactor_coms, sis, tails,
+                     not_classifieds):
     num_new = len([i for i in sims if "new" in i])
     num_old = len([i for i in sims if "old" in i])
     num_rows = max([num_new, num_old])
@@ -265,7 +266,7 @@ def get_secondary_imp_and_tail_particles(title, df):
     min_y_si, max_y_si = min(y_lims_si), max(y_lims_si)
     min_x_tail, max_x_tail = min(x_lims_tail), max(x_lims_tail)
     min_y_tail, max_y_tail = min(y_lims_tail), max(y_lims_tail)
-    
+
     si = df[df['x'] <= max_x_si]
     si = si[si['x'] >= min_x_si]
     si = si[si['y'] <= max_y_si]
@@ -360,8 +361,10 @@ def get_secondary_and_tail():
         si_velocity_vector = list(zip(si['vx'], si['vy'], si['vz']))
         tail_position_vector = list(zip(tail['x'], tail['y'], tail['z']))
         tail_velocity_vector = list(zip(tail['vx'], tail['vy'], tail['vz']))
-        si_ang_mom = sum([np.linalg.norm(i * np.cross(j, k)) for i, j, k in list(zip(si_mass, si_position_vector, si_velocity_vector))])
-        tail_ang_mom = sum([np.linalg.norm(i * np.cross(j, k)) for i, j, k in list(zip(tail_mass, tail_position_vector, tail_velocity_vector))])
+        si_ang_mom = sum([np.linalg.norm(i * np.cross(j, k)) for i, j, k in
+                          list(zip(si_mass, si_position_vector, si_velocity_vector))])
+        tail_ang_mom = sum([np.linalg.norm(i * np.cross(j, k)) for i, j, k in
+                            list(zip(tail_mass, tail_position_vector, tail_velocity_vector))])
         si_pct_tar_silicate = len(si[si['tag'] == 0]) / len(si)
         si_pct_tar_iron = len(si[si['tag'] == 1]) / len(si)
         si_pct_imp_silicate = len(si[si['tag'] == 2]) / len(si)
@@ -382,11 +385,32 @@ def get_secondary_and_tail():
         tail_planet = len([i for i in tail_labels if i == "PLANET"]) / len(tail)
         tail_disk = len([i for i in tail_labels if i == "DISK"]) / len(tail)
         tail_escape = len([i for i in tail_labels if i == "ESCAPE"]) / len(tail)
-        si_and_tail_data[title] = [sum(si_mass), si_ang_mom, sum(tail_mass), tail_ang_mom, si_pct_tar_silicate, si_pct_tar_iron,
-                                   si_pct_imp_silicate, si_pct_imp_iron, tail_pct_tar_silicate, tail_pct_tar_iron, 
-                                   tail_pct_imp_silicate, tail_pct_imp_iron, si_pct_silicate, si_pct_iron, 
-                                   tail_pct_silicate, tail_pct_iron, si_planet, si_disk, si_escape, tail_planet, tail_disk, tail_escape]
-        
+        planet_from_si = len(
+            [i for i in end_state_df['id'] if i in si['id'] and end_state_df['label'][i] == "PLANET"]) / len(
+            end_state_df['id'])
+        disk_from_si = len(
+            [i for i in end_state_df['id'] if i in si['id'] and end_state_df['label'][i] == "DISK"]) / len(
+            end_state_df['id'])
+        escape_from_si = len(
+            [i for i in end_state_df['id'] if i in si['id'] and end_state_df['label'][i] == "ESCAPE"]) / len(
+            end_state_df['id'])
+        planet_from_tail = len(
+            [i for i in end_state_df['id'] if i in tail['id'] and end_state_df['label'][i] == "PLANET"]) / len(
+            end_state_df['id'])
+        disk_from_tail = len(
+            [i for i in end_state_df['id'] if i in tail['id'] and end_state_df['label'][i] == "DISK"]) / len(
+            end_state_df['id'])
+        escape_from_tail = len(
+            [i for i in end_state_df['id'] if i in tail['id'] and end_state_df['label'][i] == "ESCAPE"]) / len(
+            end_state_df['id'])
+        si_and_tail_data[title] = [sum(si_mass), si_ang_mom, sum(tail_mass), tail_ang_mom, si_pct_tar_silicate,
+                                   si_pct_tar_iron,
+                                   si_pct_imp_silicate, si_pct_imp_iron, tail_pct_tar_silicate, tail_pct_tar_iron,
+                                   tail_pct_imp_silicate, tail_pct_imp_iron, si_pct_silicate, si_pct_iron,
+                                   tail_pct_silicate, tail_pct_iron, si_planet, si_disk, si_escape, tail_planet,
+                                   tail_disk,
+                                   tail_escape, planet_from_si, disk_from_si, escape_from_si, planet_from_tail,
+                                   disk_from_tail, escape_from_tail]
 
         dfs[title].append(df)
         target_coms[title].append(target_com)
@@ -394,17 +418,19 @@ def get_secondary_and_tail():
         sis[title].append(si)
         tails[title].append(tail)
         not_classifieds[title].append(not_classified)
-        
-    index_headers = ["Secondary Impactor Mass", "Secondary Impactor Angular Momentum", 
-                                                                "Tail Mass", "Tail Angular Momentum", "SI Frac. Target Silicate",
-                                                                "SI Frac. Target Iron", "SI Frac. Impactor Silicate",
-                                                                "SI Frac. Impactor Iron", "Tail Frac. Target Silicate",
-                                                                "Tail Frac. Target Iron", "Tail Frac. Impactor Silicate",
-                                                                "Tail Frac. Impactor Iron", "SI Frac. Silicate",
-                                                                "SI Frac. Iron", "Tail Frac. Silicate",
-                                                                "Tail Frac. Iron", "SI Frac. Planet", "SI Frac. Disk", 
-                                                                "SI Frac. Escape", "Tail Frac. Planet", "Tail Frac. Disk", 
-                                                                "Tail Frac. Escape"]
+
+    index_headers = ["Secondary Impactor Mass", "Secondary Impactor Angular Momentum",
+                     "Tail Mass", "Tail Angular Momentum", "SI Frac. Target Silicate",
+                     "SI Frac. Target Iron", "SI Frac. Impactor Silicate",
+                     "SI Frac. Impactor Iron", "Tail Frac. Target Silicate",
+                     "Tail Frac. Target Iron", "Tail Frac. Impactor Silicate",
+                     "Tail Frac. Impactor Iron", "SI Frac. Silicate",
+                     "SI Frac. Iron", "Tail Frac. Silicate",
+                     "Tail Frac. Iron", "SI Frac. Planet", "SI Frac. Disk",
+                     "SI Frac. Escape", "Tail Frac. Planet", "Tail Frac. Disk",
+                     "Tail Frac. Escape", "Frac. Planet From SI",
+                     "Frac. Disk From SI", "Frac. Escape From SI", "Frac. Planet From Tail",
+                     "Frac. Disk From Tail", "Frac. Escape From Tail"]
 
     df_si_and_tail_data = pd.DataFrame(si_and_tail_data, index=index_headers)
     df_si_and_tail_data.to_csv("{}_secondary_impact_structure_data.csv".format(angle))
@@ -414,7 +440,8 @@ def get_secondary_and_tail():
     # __build_scene(iteration=iteration, dfs=dfs, sims=sims, titles=titles,
     #               target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times)
     __plot_secondary(iteration=iteration, dfs=dfs, sims=sims, titles=titles,
-                  target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times,
+                     target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times,
                      sis=sis, tails=tails, not_classifieds=not_classifieds)
+
 
 get_secondary_and_tail()
