@@ -418,9 +418,9 @@ def get_secondary_and_tail():
                                    tail_pct_imp_silicate, tail_pct_imp_iron, si_pct_silicate, si_pct_iron,
                                    tail_pct_silicate, tail_pct_iron, si_planet, si_disk, si_escape, tail_planet,
                                    tail_disk,
-                                   tail_escape, num_particles_planet_from_si, num_particles_disk_from_si, 
-                                   num_particles_escape_from_si, num_particles_planet_from_tail, 
-                                   num_particles_disk_from_tail, num_particles_escape_from_tail,
+                                   tail_escape, len(num_particles_planet_from_si), len(num_particles_disk_from_si),
+                                   len(num_particles_escape_from_si), len(num_particles_planet_from_tail),
+                                   len(num_particles_disk_from_tail), len(num_particles_escape_from_tail),
                                    planet_from_si, disk_from_si, escape_from_si, planet_from_tail,
                                    disk_from_tail, escape_from_tail]
 
