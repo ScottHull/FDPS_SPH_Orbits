@@ -384,14 +384,12 @@ def get_secondary_and_tail():
         
     index_headers = ["Secondary Impactor Mass", "Secondary Impactor Angular Momentum", 
                                                                 "Tail Mass", "Tail Angular Momentum", "SI Frac. Target Silicate"
-                                                                "SI Frac. Target Iron", "SI Frac. Impactor Silicate"
-                                                                "SI Frac. Impactor Iron", "Tail Frac. Target Silicate"
-                                                                "Tail Frac. Target Iron", "Tail Frac. Impactor Silicate"
+                                                                "SI Frac. Target Iron", "SI Frac. Impactor Silicate",
+                                                                "SI Frac. Impactor Iron", "Tail Frac. Target Silicate",
+                                                                "Tail Frac. Target Iron", "Tail Frac. Impactor Silicate",
                                                                 "Tail Frac. Impactor Iron", "SI Frac. Silicate",
                                                                 "SI Frac. Iron", "Tail Frac. Silicate",
                                                                 "Tail Frac. Iron"]
-    for i in si_and_tail_data.keys():
-        print(len(si_and_tail_data[i]), len(index_headers))
 
     df_si_and_tail_data = pd.DataFrame(si_and_tail_data, index=index_headers)
     df_si_and_tail_data.to_csv("{}_secondary_impact_structure_data.csv".format(angle))
