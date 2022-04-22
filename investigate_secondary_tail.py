@@ -17,6 +17,7 @@ plt.style.use('seaborn-colorblind')
 
 min_iteration = 50
 iteration = 190
+max_iteration = 1800
 angle = 'b073'
 cutoff_densities = [5, 500, 1000, 2000]
 number_processes = 200
@@ -351,6 +352,9 @@ def get_secondary_and_tail():
         impactor_com = get_com(impactor_iron['x'], impactor_iron['y'], impactor_iron['z'], impactor_iron['mass'])
         si, tail, not_classified = get_secondary_imp_and_tail_particles(title, df)
 
+        end_state_file = base_path + "{}/circularized_{}/{}.csv".format(output_name, output_name, max_iteration)
+        end_state_df = pd.read_csv(end_state_file, index_col="id")
+
         si_mass, tail_mass = si['mass'], tail['mass']
         si_position_vector = list(zip(si['x'], si['y'], si['z']))
         si_velocity_vector = list(zip(si['vx'], si['vy'], si['vz']))
@@ -370,10 +374,19 @@ def get_secondary_and_tail():
         si_pct_iron = len(si[si['tag'] % 2 != 0]) / len(si)
         tail_pct_silicate = len(tail[tail['tag'] % 2 == 0]) / len(tail)
         tail_pct_iron = len(tail[tail['tag'] % 2 != 0]) / len(tail)
+        si_labels = [end_state_df['label'][i] for i in si['id']]
+        tail_labels = [end_state_df['label'][i] for i in tail['id']]
+        si_planet = len([i for i in si_labels if i == "PLANET"]) / len(si)
+        si_disk = len([i for i in si_labels if i == "DISK"]) / len(si)
+        si_escape = len([i for i in si_labels if i == "ESCAPE"]) / len(si)
+        tail_planet = len([i for i in tail_labels if i == "PLANET"]) / len(tail)
+        tail_disk = len([i for i in tail_labels if i == "DISK"]) / len(tail)
+        tail_escape = len([i for i in tail_labels if i == "ESCAPE"]) / len(tail)
         si_and_tail_data[title] = [sum(si_mass), si_ang_mom, sum(tail_mass), tail_ang_mom, si_pct_tar_silicate, si_pct_tar_iron,
                                    si_pct_imp_silicate, si_pct_imp_iron, tail_pct_tar_silicate, tail_pct_tar_iron, 
                                    tail_pct_imp_silicate, tail_pct_imp_iron, si_pct_silicate, si_pct_iron, 
-                                   tail_pct_silicate, tail_pct_iron]
+                                   tail_pct_silicate, tail_pct_iron, si_planet, si_disk, si_escape, tail_planet, tail_disk, tail_escape]
+        
 
         dfs[title].append(df)
         target_coms[title].append(target_com)
@@ -389,7 +402,9 @@ def get_secondary_and_tail():
                                                                 "Tail Frac. Target Iron", "Tail Frac. Impactor Silicate",
                                                                 "Tail Frac. Impactor Iron", "SI Frac. Silicate",
                                                                 "SI Frac. Iron", "Tail Frac. Silicate",
-                                                                "Tail Frac. Iron"]
+                                                                "Tail Frac. Iron", "SI Frac. Planet", "SI Frac. Disk", 
+                                                                "SI Frac. Escape", "Tail Frac. Planet", "Tail Frac. Disk", 
+                                                                "Tail Frac. Escape"]
 
     df_si_and_tail_data = pd.DataFrame(si_and_tail_data, index=index_headers)
     df_si_and_tail_data.to_csv("{}_secondary_impact_structure_data.csv".format(angle))
