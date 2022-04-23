@@ -15,14 +15,13 @@ plt.rcParams.update({'font.size': 8, })
 # plt.style.use("dark_background")
 plt.style.use('seaborn-colorblind')
 
-min_iteration = 50
+min_iteration = 0
 max_iteration = 1800
 increment = 20
 angle = 'b073'
 cutoff_densities = [5, 500, 1000, 2000]
 number_processes = 200
-vsquare_scale = 5e7
-hsquare_scale = 4e7
+square_scale = 6e7
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 
 def get_all_sims(angle, high=True):
@@ -62,13 +61,62 @@ def get_end_states(angle, high):
         endstates.update({t: end_state_df})
     return endstates
 
-def plot_iteration(dfs):
+def plot_iteration(iteration, time, dfs, end_dfs, to_path):
+    num_new = len([i for i in dfs.keys() if "n" in i])
+    num_old = len([i for i in dfs.keys() if "o" in i])
+    num_rows = max([num_new, num_old])
+    plt.style.use("dark_background")
+    fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all',
+                            gridspec_kw={"hspace": 0.10, "wspace": 0.12})
+    fig.patch.set_facecolor('xkcd:black')
+    axs = axs.flatten()
+    for ax in axs:
+        ax.set_xlim(-square_scale, square_scale)
+        ax.set_ylim(-square_scale, square_scale)
+        ax.grid(alpha=0.1)
+    index_new, index_old = 0, 1
+    for t, df in dfs.items():
+        to_index = index_new
+        if "o" in t:
+            to_index = index_old
+        end_df = end_dfs[t]
+        planet = end_df[end_df['label'] == "PLANET"]
+        disk = end_df[end_df['label'] == "DISK"]
+        escape = end_df[end_df['label'] == "ESCAPE"]
+        to_planet = df[df['id'].isin(planet['id'].tolist())]
+        to_disk = df[df['id'].isin(disk['id'].tolist())]
+        to_escape = df[df['id'].isin(escape['id'].tolist())]
+        for d, label in zip([to_planet, to_disk, to_escape], ["PLANET", "DISK", 'ESCAPE']):
+            axs[to_index].scatter(
+                d['x'], d['y'], marker=".", s=1, label=label
+            )
+            axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
+        if "o" in t:
+            index_old += 2
+        else:
+            index_new += 2
+
+    legend = axs[0].legend(loc='upper left', fontsize=8)
+    for handle in legend.legendHandles:
+        try:
+            handle.set_sizes([30.0])
+        except:
+            pass
+
+    plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
+
+
 
 
 def run_proc(args):
-    iteration = args[0]
+    iteration, to_path = args
+    if not os.path.exists(to_path):
+        os.mkdir(to_path)
     data = {}
-    sims, titles = get_all_sims(angle, high=False)
+    high = False
+    sims, titles = get_all_sims(angle, high=high)
+    formatted_time = None
+    endstates = get_end_states(angle=angle, high=high)
     for s, t in zip(sims, titles):
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -86,4 +134,15 @@ def run_proc(args):
         df['y'] -= zero_coords[1]
         df['z'] -= zero_coords[2]
 
+        data.update({t: df})
 
+    plot_iteration(iteration=iteration, time=formatted_time, dfs=data, end_dfs=endstates, to_path=to_path)
+
+
+def run():
+    to_path = "{}_endstates".format(angle)
+    pool = mp.Pool(5)
+    pool.map(run_proc, [[iteration, to_path] for iteration in
+                        np.arange(min_iteration, max_iteration + increment, increment)])
+    pool.close()
+    pool.join()
