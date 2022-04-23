@@ -146,3 +146,5 @@ def run():
                         np.arange(min_iteration, max_iteration + increment, increment)])
     pool.close()
     pool.join()
+
+run()
