@@ -24,6 +24,7 @@ number_processes = 200
 square_scale = 6e7
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 
+
 def get_all_sims(angle, high=True):
     fformat = "{}_{}_{}"
     tformat = "{}{}{}"
@@ -45,12 +46,14 @@ def get_all_sims(angle, high=True):
         titles.append(title_name)
     return names, titles
 
+
 def get_com(x, y, z, mass):
     total_mass = float(np.sum(mass))
     x_center = sum(x * mass) / total_mass
     y_center = sum(y * mass) / total_mass
     z_center = sum(z * mass) / total_mass
     return np.array([x_center, y_center, z_center])
+
 
 def get_end_states(angle, high):
     endstates = {}
@@ -60,6 +63,7 @@ def get_end_states(angle, high):
         end_state_df = pd.read_csv(end_state_file, index_col="id")
         endstates.update({t: end_state_df})
     return endstates
+
 
 def plot_iteration(iteration, time, dfs, end_dfs, to_path):
     num_new = len([i for i in dfs.keys() if "n" in i])
@@ -106,8 +110,6 @@ def plot_iteration(iteration, time, dfs, end_dfs, to_path):
     plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
 
 
-
-
 def run_proc(args):
     iteration, to_path = args
     if not os.path.exists(to_path):
@@ -118,6 +120,7 @@ def run_proc(args):
     formatted_time = None
     endstates = get_end_states(angle=angle, high=high)
     for s, t in zip(sims, titles):
+        print("{} - {}".format(iteration, t))
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
         cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
@@ -136,6 +139,7 @@ def run_proc(args):
 
         data.update({t: df})
 
+    print("here")
     plot_iteration(iteration=iteration, time=formatted_time, dfs=data, end_dfs=endstates, to_path=to_path)
 
 
@@ -146,5 +150,6 @@ def run():
                         np.arange(min_iteration, max_iteration + increment, increment)])
     pool.close()
     pool.join()
+
 
 run()
