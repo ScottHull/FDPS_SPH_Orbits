@@ -87,9 +87,9 @@ def plot_iteration(iteration, time, dfs, end_dfs, to_path):
         planet = end_df[end_df['label'] == "PLANET"]
         disk = end_df[end_df['label'] == "DISK"]
         escape = end_df[end_df['label'] == "ESCAPE"]
-        to_planet = df[df['id'].isin(planet['id'].tolist())]
-        to_disk = df[df['id'].isin(disk['id'].tolist())]
-        to_escape = df[df['id'].isin(escape['id'].tolist())]
+        to_planet = df[df['id'].isin(planet.index.tolist())]
+        to_disk = df[df['id'].isin(disk.index.tolist())]
+        to_escape = df[df['id'].isin(escape.index.tolist())]
         for d, label in zip([to_planet, to_disk, to_escape], ["PLANET", "DISK", 'ESCAPE']):
             axs[to_index].scatter(
                 d['x'], d['y'], marker=".", s=1, label=label
