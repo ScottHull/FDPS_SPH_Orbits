@@ -141,7 +141,7 @@ def run_proc(args):
 
 def run():
     to_path = "{}_endstates".format(angle)
-    pool = mp.Pool(5)
+    pool = mp.Pool(10)
     pool.map(run_proc, [[iteration, to_path] for iteration in
                         np.arange(min_iteration, max_iteration + increment, increment)])
     pool.close()
