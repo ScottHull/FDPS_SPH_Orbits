@@ -379,6 +379,7 @@ def get_secondary_and_tail():
         tail_pct_iron = len(tail[tail['tag'] % 2 != 0]) / len(tail)
         si_labels = [end_state_df['label'][i] for i in si['id']]
         tail_labels = [end_state_df['label'][i] for i in tail['id']]
+
         si_planet = len([i for i in si_labels if i == "PLANET"]) / len(si)
         si_disk = len([i for i in si_labels if i == "DISK"]) / len(si)
         si_escape = len([i for i in si_labels if i == "ESCAPE"]) / len(si)
