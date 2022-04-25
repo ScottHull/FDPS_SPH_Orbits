@@ -250,9 +250,10 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk['id'].tolist())]
         disk_rest = endstate_disk[~endstate_disk.index.isin(tail_in_disk['id'].tolist())]
         disk_rest = disk_rest[~disk_rest.index.isin(tail_not_in_disk['id'].tolist())]
-        not_disk = df[~df['label'] == "DISK"]
+        not_disk = df[~df['id'].isin(endstate_disk.index.tolist())]
+        not_disk = not_disk[~not_disk['id'].isin(tail_in_disk['id'].tolist())]
         axs[to_index].scatter(
-            not_disk['x'], not_disk['y'], s=2, alpha=0.2, label="Not Disk"
+            not_disk['x'], not_disk['y'], s=2, alpha=0.2
         )
         for d, label in zip([tail_in_disk, tail_not_in_disk, disk_rest], ["TAIL IN DISK", "TAIL NOT IN DISK", "DISK NOT IN TAIL"]):
             axs[to_index].scatter(
