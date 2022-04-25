@@ -246,7 +246,7 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         endstate_disk = endstate[endstate['label'] == "DISK"]
         si = sis[t][-1]
         tail = tails[t][-1]
-        tail_in_disk = endstate_disk[endstate_disk.index.isin(tail[tail['id']].tolist())]
+        tail_in_disk = endstate_disk[endstate_disk.index.isin(tail['id'].tolist())]
         tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk.index.tolist())]
         disk_rest = endstate_disk[~endstate_disk.index.isin(tail_in_disk.index.tolist())]
         disk_rest = disk_rest[~disk_rest.index.isin(tail_not_in_disk['id'].tolist())]
