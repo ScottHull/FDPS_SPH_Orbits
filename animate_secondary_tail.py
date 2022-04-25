@@ -320,7 +320,7 @@ def run_proc(args):
 
 def run():
     sis, tails = get_secondary_and_tail()
-    endstates = get_end_states(angle=angle, high=high)
+    endstates = get_end_states(angle=angle, high=False)
     image_path = "{}_tail_in_disk".format(angle)
     if not os.path.exists(image_path):
         os.mkdir(image_path)
