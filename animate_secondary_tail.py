@@ -281,15 +281,13 @@ def get_end_states(angle, high):
 
 
 def run_proc(args):
-    iteration, to_path = args
+    iteration, to_path, endstates, sis, tails = args
     if not os.path.exists(to_path):
         os.mkdir(to_path)
     data = {}
     high = False
     sims, titles = get_all_sims(angle, high=high)
     formatted_time = None
-    sis, tails = get_secondary_and_tail()
-    endstates = get_end_states(angle=angle, high=high)
 
     for s, t in zip(sims, titles):
         print("{} - {}".format(iteration, t))
@@ -317,11 +315,13 @@ def run_proc(args):
     )
 
 def run():
+    sis, tails = get_secondary_and_tail()
+    endstates = get_end_states(angle=angle, high=high)
     image_path = "{}_tail_in_disk".format(angle)
     if not os.path.exists(image_path):
         os.mkdir(image_path)
     pool = mp.Pool(10)
-    pool.map(run_proc, [[iteration, image_path] for iteration in
+    pool.map(run_proc, [[iteration, image_path, endstates, sis, tails] for iteration in
                         np.arange(min_iteration, max_iteration + increment, increment)])
     pool.close()
     pool.join()
