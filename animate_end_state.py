@@ -139,7 +139,6 @@ def run_proc(args):
 
         data.update({t: df})
 
-    print("here")
     plot_iteration(iteration=iteration, time=formatted_time, dfs=data, end_dfs=endstates, to_path=to_path)
 
 
