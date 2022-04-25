@@ -244,7 +244,7 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
             to_index = index_old
         endstate = endstates[t]
         endstate_disk = endstate[endstate['label'] == "DISK"]
-        curr_disk = df[df['id'].isin(endstate_disk['id'].tolist())]
+        curr_disk = df[df['id'].isin(endstate_disk.index.tolist())]
         si = sis[t][-1]
         tail = tails[t][-1]
         tail_in_disk = curr_disk[curr_disk.index.isin(tail['id'].tolist())]
