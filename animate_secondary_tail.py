@@ -229,7 +229,7 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
     num_old = len([i for i in dfs.keys() if "o" in i])
     num_cols = max([num_new, num_old])
     plt.style.use("dark_background")
-    fig, axs = plt.subplots(2, num_cols, figsize=(16, 9), sharex='all',
+    fig, axs = plt.subplots(2, num_cols, figsize=(20, 10), sharex='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.12})
     fig.patch.set_facecolor('xkcd:black')
     axs = axs.flatten()
