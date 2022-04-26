@@ -245,24 +245,32 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         endstate = endstates[t]
         endstate_disk = endstate[endstate['label'] == "DISK"]
         curr_disk = df[df['id'].isin(endstate_disk.index.tolist())]
+
         si = sis[t][-1]
         tail = tails[t][-1]
-        
+
+        rest = df[~df['id'].isin(si['id'].tolist())]
+        rest = df[~df['id'].isin(tail['id'].tolist())]
                 
-        tail_in_disk = curr_disk[curr_disk['id'].isin(tail['id'].tolist())]
-        tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk['id'].tolist())]
-        tail_not_in_disk = df[df['id'].isin(tail_not_in_disk['id'].to_list())]
-        disk_rest = curr_disk[~curr_disk['id'].isin(tail_in_disk['id'].tolist())]
-        disk_rest = disk_rest[~disk_rest['id'].isin(tail_not_in_disk['id'].tolist())]
-        not_disk = df[~df['id'].isin(endstate_disk.index.tolist())]
-        not_disk = not_disk[~not_disk['id'].isin(tail_in_disk['id'].tolist())]
-        axs[to_index].scatter(
-            not_disk['x'], not_disk['y'], s=2, alpha=0.2, label="Other"
-        )
-        for d, label in zip([disk_rest, tail_in_disk, tail_not_in_disk], ["DISK NOT IN TAIL", "TAIL IN DISK", "TAIL NOT IN DISK"]):
+        # tail_in_disk = curr_disk[curr_disk['id'].isin(tail['id'].tolist())]
+        # tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk['id'].tolist())]
+        # tail_not_in_disk = df[df['id'].isin(tail_not_in_disk['id'].to_list())]
+        # disk_rest = curr_disk[~curr_disk['id'].isin(tail_in_disk['id'].tolist())]
+        # disk_rest = disk_rest[~disk_rest['id'].isin(tail_not_in_disk['id'].tolist())]
+        # not_disk = df[~df['id'].isin(endstate_disk.index.tolist())]
+        # not_disk = not_disk[~not_disk['id'].isin(tail_in_disk['id'].tolist())]
+        # axs[to_index].scatter(
+        #     not_disk['x'], not_disk['y'], s=2, alpha=0.2, label="Other"
+        # )
+        # for d, label in zip([disk_rest, tail_in_disk, tail_not_in_disk], ["DISK NOT IN TAIL", "TAIL IN DISK", "TAIL NOT IN DISK"]):
+        #     axs[to_index].scatter(
+        #         d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
+        #     )
+        #     axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
+        for d, label in zip([si, tail, rest], ["si", "tail", "rest"]):
             axs[to_index].scatter(
-                d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
-            )
+                    d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
+                )
             axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
         if "o" in t:
             index_old += 1

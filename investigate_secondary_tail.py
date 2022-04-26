@@ -151,10 +151,10 @@ def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_c
                                                                        impactor_coms[t][-1], times[t][-1], sis[t][-1], \
                                                                        tails[t][-1], not_classifieds[t][-1]
 
-        # t1 = ["Secondary Impactor", "Debris Tail", "Other"]
-        # t2 = [si, tail, not_classified]
-        t1 = ["Debris Tail", "Other"]
-        t2 = [tail, not_classified]
+        t1 = ["Secondary Impactor", "Debris Tail", "Other"]
+        t2 = [si, tail, not_classified]
+        # t1 = ["Debris Tail", "Other"]
+        # t2 = [tail, not_classified]
 
         to_index = index_new
         if "old" in s:
