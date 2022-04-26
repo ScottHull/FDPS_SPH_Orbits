@@ -247,14 +247,16 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         curr_disk = df[df['id'].isin(endstate_disk.index.tolist())]
         si = sis[t][-1]
         tail = tails[t][-1]
-        tail_in_disk = curr_disk[curr_disk.index.isin(tail['id'].tolist())]
-        tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk.index.tolist())]
+        
+                
+        tail_in_disk = tail[curr_disk['id'].isin(tail['id'].tolist())]
+        tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk['id'].tolist())]
         tail_not_in_disk = df[df['id'].isin(tail_not_in_disk.index.to_list())]
-        # tail_not_in_disk = tail_not_in_disk[~tail_not_in_disk['id'].isin(tail_in_disk.index.tolist())]
-        disk_rest = curr_disk[~curr_disk.index.isin(tail_in_disk.index.tolist())]
+        # tail_not_in_disk = tail_not_in_disk[~tail_not_in_disk['id'].isin(tail_in_disk['id'].tolist())]
+        disk_rest = curr_disk[~curr_disk['id'].isin(tail_in_disk['id'].tolist())]
         disk_rest = disk_rest[~disk_rest.index.isin(tail_not_in_disk['id'].tolist())]
         not_disk = df[~df['id'].isin(endstate_disk.index.tolist())]
-        not_disk = not_disk[~not_disk['id'].isin(tail_in_disk.index.tolist())]
+        not_disk = not_disk[~not_disk['id'].isin(tail_in_disk['id'].tolist())]
         axs[to_index].scatter(
             not_disk['x'], not_disk['y'], s=2, alpha=0.2, label="Other"
         )
