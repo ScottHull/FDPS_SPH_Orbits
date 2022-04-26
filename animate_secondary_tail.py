@@ -260,7 +260,7 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         )
         for d, label in zip([disk_rest, tail_in_disk, tail_not_in_disk], ["DISK NOT IN TAIL", "TAIL IN DISK", "TAIL NOT IN DISK"]):
             axs[to_index].scatter(
-                d['x'], d['y'], marker=".", s=2, label=label
+                d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
             )
             axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
         if "o" in t:
