@@ -227,9 +227,9 @@ def get_secondary_and_tail():
 def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
     num_new = len([i for i in dfs.keys() if "n" in i])
     num_old = len([i for i in dfs.keys() if "o" in i])
-    num_rows = max([num_new, num_old])
+    num_cols = max([num_new, num_old])
     plt.style.use("dark_background")
-    fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all',
+    fig, axs = plt.subplots(2, num_cols, figsize=(16, 32), sharex='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.12})
     fig.patch.set_facecolor('xkcd:black')
     axs = axs.flatten()
@@ -237,7 +237,7 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         ax.set_xlim(-square_scale, square_scale)
         ax.set_ylim(-square_scale, square_scale)
         ax.grid(alpha=0.1)
-    index_new, index_old = 0, 1
+    index_new, index_old = 0, num_cols
     for t, df in dfs.items():
         to_index = index_new
         if "o" in t:
