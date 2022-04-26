@@ -131,63 +131,6 @@ def get_all_sims(angle, high=True):
     return names, titles
 
 
-def __build_scene(iteration, times, to_save_path, dfs, sims, titles, target_coms, impactor_coms):
-    num_new = len([i for i in sims if "new" in i])
-    num_old = len([i for i in sims if "old" in i])
-    num_rows = max([num_new, num_old])
-    plt.style.use("dark_background")
-    fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all',
-                            gridspec_kw={"hspace": 0.10, "wspace": 0.12})
-    fig.patch.set_facecolor('xkcd:black')
-    axs = axs.flatten()
-    for ax in axs:
-        ax.set_xlim(-hsquare_scale, 0.5 * hsquare_scale)
-        ax.set_ylim(-vsquare_scale, 2000)
-        ax.grid(alpha=0.4)
-    index_new, index_old = 0, 1
-    for s, t in zip(sims, titles):
-        df, target_com, impactor_com, time = dfs[t][-1], target_coms[t][-1], impactor_coms[t][-1], times[t][-1]
-        # df = df[df['z'] < 0]
-        target_silicate = df[df['tag'] == 0]
-        target_iron = df[df['tag'] == 1]
-        impactor_silicate = df[df['tag'] == 2]
-        impactor_iron = df[df['tag'] == 3]
-        t1 = ["Target Silicate", "Target Iron", "Impactor Silicate", "Impactor Iron"]
-        t2 = [target_silicate, target_iron, impactor_silicate, impactor_iron]
-
-        to_index = index_new
-        if "old" in s:
-            to_index = index_old
-        for a, b, in zip(t1, t2):
-            axs[to_index].scatter(
-                b['x'], b['y'], s=1, marker='.', label=a
-            )
-
-        axs[to_index].scatter(
-            impactor_com[0], impactor_com[1], s=60, c='pink', marker="*", label="Impactor COM"
-        )
-        axs[to_index].scatter(
-            target_com[0], target_com[1], s=60, c='green', marker="*", label="Target COM"
-        )
-        axs[to_index].plot(
-            [target_com[0], impactor_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
-        )
-        axs[to_index].plot(
-            [target_com[0], target_com[0]], [target_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
-        )
-        axs[to_index].plot(
-            [impactor_com[0], target_com[0]], [impactor_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
-        )
-
-        axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
-        if "old" in s:
-            index_old += 2
-        else:
-            index_new += 2
-    axs[0].legend(loc='upper left')
-    plt.savefig(to_save_path + "/{}.png".format(iteration), format='png', dpi=200)
-
-
 def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_coms, impactor_coms, sis, tails,
                      not_classifieds):
     num_new = len([i for i in sims if "new" in i])
@@ -207,13 +150,11 @@ def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_c
         df, target_com, impactor_com, time, si, tail, not_classified = dfs[t][-1], target_coms[t][-1], \
                                                                        impactor_coms[t][-1], times[t][-1], sis[t][-1], \
                                                                        tails[t][-1], not_classifieds[t][-1]
-        # df = df[df['z'] < 0]
-        # target_silicate = df[df['tag'] == 0]
-        # target_iron = df[df['tag'] == 1]
-        # impactor_silicate = df[df['tag'] == 2]
-        # impactor_iron = df[df['tag'] == 3]
-        t1 = ["Secondary Impactor", "Debris Tail", "Other"]
-        t2 = [si, tail, not_classified]
+
+        # t1 = ["Secondary Impactor", "Debris Tail", "Other"]
+        # t2 = [si, tail, not_classified]
+        t1 = ["Debris Tail", "Other"]
+        t2 = [tail, not_classified]
 
         to_index = index_new
         if "old" in s:
