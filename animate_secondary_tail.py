@@ -222,10 +222,10 @@ def get_secondary_and_tail():
         tails[title].append(tail)
         not_classifieds[title].append(not_classified)
 
-    return sis, tails
+    return sis, tails, not_classifieds
 
 
-def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
+def plot_time(dfs, sis, tails, endstates, not_classifieds, to_path, iteration, time):
     num_new = len([i for i in dfs.keys() if "n" in i])
     num_old = len([i for i in dfs.keys() if "o" in i])
     num_cols = max([num_new, num_old])
@@ -249,6 +249,7 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
 
         si = sis[t][-1]
         tail = tails[t][-1]
+        not_classified = not_classifieds[t][-1]
 
         # curr_si = df[df['id'].isin(si['id'].tolist())]
         # curr_tail = df[df['id'].isin(tail['id'].tolist())]
@@ -256,19 +257,32 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         # rest = df[~df['id'].isin(si['id'].tolist())]
         # rest = df[~df['id'].isin(tail['id'].tolist())]
 
+        not_classified['radius'] = [(i ** 2 + j ** 2 + k ** 2) ** (1 / 2) for i, j, k in
+                                            zip(not_classified['x'], not_classified['y'], not_classified['z'])]
 
         tail_in_disk = curr_disk[curr_disk['id'].isin(tail['id'].tolist())]
         tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk['id'].tolist())]
         tail_not_in_disk = df[df['id'].isin(tail_not_in_disk['id'].to_list())]
-        disk_rest = curr_disk[~curr_disk['id'].isin(tail_in_disk['id'].tolist())]
-        disk_rest = disk_rest[~disk_rest['id'].isin(tail_not_in_disk['id'].tolist())]
+
         not_disk = df[~df['id'].isin(endstate_disk.index.tolist())]
         not_disk = not_disk[~not_disk['id'].isin(tail_in_disk['id'].tolist())]
+        disk_from_within_earth = not_classifieds[not_classifieds['id'].isin(endstate_disk.index)]
+        disk_from_within_earth = disk_from_within_earth[disk_from_within_earth['radius'] < 1e7]
+
+        disk_from_outside_earth = not_classifieds[not_classifieds['id'].isin(endstate_disk.index)]
+        disk_from_outside_earth = disk_from_outside_earth[disk_from_outside_earth['radius'] >= 1e7]
+        disk_from_outside_earth = disk_from_outside_earth[~disk_from_outside_earth['id'].isin(tail['id'].tolist())]
+        disk_from_outside_earth = disk_from_outside_earth[~disk_from_outside_earth['id'].isin(si['id'].tolist())]
+
+        disk_rest = curr_disk[~curr_disk['id'].isin(tail_in_disk['id'].tolist())]
+        disk_rest = disk_rest[~disk_rest['id'].isin(tail_not_in_disk['id'].tolist())]
+        disk_rest = disk_rest[~disk_rest['id'].isin(disk_from_outside_earth['id'].tolist())]
+        disk_rest = disk_rest[~disk_rest['id'].isin(disk_from_within_earth['id'].tolist())]
 
         axs[to_index].scatter(
             not_disk['x'], not_disk['y'], s=2, alpha=0.2, label="Other"
         )
-        for d, label in zip([disk_rest, tail_in_disk, tail_not_in_disk], ["DISK NOT IN TAIL", "TAIL IN DISK", "TAIL NOT IN DISK"]):
+        for d, label in zip([disk_rest, disk_from_within_earth, disk_from_outside_earth tail_in_disk, tail_not_in_disk], ["DISK NOT IN TAIL", "DISK FROM WITHIN EARTH", "DISK FROM FAR AWAY", "TAIL IN DISK", "TAIL NOT IN DISK"]):
             axs[to_index].scatter(
                 d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
             )
@@ -302,7 +316,7 @@ def get_end_states(angle, high):
         endstates.update({t: end_state_df})
     return endstates
 
-sis, tails = get_secondary_and_tail()
+sis, tails, not_classifieds = get_secondary_and_tail()
 endstates = get_end_states(angle=angle, high=False)
 
 def run_proc(args):
@@ -336,7 +350,8 @@ def run_proc(args):
         data.update({t: df})
 
     plot_time(
-        dfs=data, sis=sis, tails=tails, endstates=endstates, to_path=to_path, iteration=iteration, time=formatted_time
+        dfs=data, sis=sis, tails=tails, endstates=endstates, not_classifieds=not_classifieds, to_path=to_path,
+        iteration=iteration, time=formatted_time
     )
 
 def run():
