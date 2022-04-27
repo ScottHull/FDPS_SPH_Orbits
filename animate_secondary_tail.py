@@ -161,6 +161,7 @@ def get_secondary_imp_and_tail_particles(title, df):
     tail = tail[tail['y'] >= min_y_tail]
     not_classified = df[~df['id'].isin(si['id'].tolist())]
     not_classified = not_classified[~not_classified['id'].isin(tail['id'].tolist())]
+
     return si, tail, not_classified
 
 def get_secondary_and_tail():
@@ -249,32 +250,34 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         si = sis[t][-1]
         tail = tails[t][-1]
 
-        curr_si = df[df['id'].isin(si['id'].tolist())]
-        curr_tail = df[df['id'].isin(tail['id'].tolist())]
+        # curr_si = df[df['id'].isin(si['id'].tolist())]
+        # curr_tail = df[df['id'].isin(tail['id'].tolist())]
+        #
+        # rest = df[~df['id'].isin(si['id'].tolist())]
+        # rest = df[~df['id'].isin(tail['id'].tolist())]
 
-        rest = df[~df['id'].isin(si['id'].tolist())]
-        rest = df[~df['id'].isin(tail['id'].tolist())]
-                
-        # tail_in_disk = curr_disk[curr_disk['id'].isin(tail['id'].tolist())]
-        # tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk['id'].tolist())]
-        # tail_not_in_disk = df[df['id'].isin(tail_not_in_disk['id'].to_list())]
-        # disk_rest = curr_disk[~curr_disk['id'].isin(tail_in_disk['id'].tolist())]
-        # disk_rest = disk_rest[~disk_rest['id'].isin(tail_not_in_disk['id'].tolist())]
-        # not_disk = df[~df['id'].isin(endstate_disk.index.tolist())]
-        # not_disk = not_disk[~not_disk['id'].isin(tail_in_disk['id'].tolist())]
-        # axs[to_index].scatter(
-        #     not_disk['x'], not_disk['y'], s=2, alpha=0.2, label="Other"
-        # )
-        # for d, label in zip([disk_rest, tail_in_disk, tail_not_in_disk], ["DISK NOT IN TAIL", "TAIL IN DISK", "TAIL NOT IN DISK"]):
-        #     axs[to_index].scatter(
-        #         d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
-        #     )
-        #     axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
-        for d, label in zip([rest, curr_si, curr_tail], ["rest", "si", "tail"]):
+
+        tail_in_disk = curr_disk[curr_disk['id'].isin(tail['id'].tolist())]
+        tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk['id'].tolist())]
+        tail_not_in_disk = df[df['id'].isin(tail_not_in_disk['id'].to_list())]
+        disk_rest = curr_disk[~curr_disk['id'].isin(tail_in_disk['id'].tolist())]
+        disk_rest = disk_rest[~disk_rest['id'].isin(tail_not_in_disk['id'].tolist())]
+        not_disk = df[~df['id'].isin(endstate_disk.index.tolist())]
+        not_disk = not_disk[~not_disk['id'].isin(tail_in_disk['id'].tolist())]
+
+        axs[to_index].scatter(
+            not_disk['x'], not_disk['y'], s=2, alpha=0.2, label="Other"
+        )
+        for d, label in zip([disk_rest, tail_in_disk, tail_not_in_disk], ["DISK NOT IN TAIL", "TAIL IN DISK", "TAIL NOT IN DISK"]):
             axs[to_index].scatter(
-                    d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
-                )
+                d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
+            )
             axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
+        # for d, label in zip([rest, curr_si, curr_tail], ["rest", "si", "tail"]):
+        #     axs[to_index].scatter(
+        #             d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
+        #         )
+        #     axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
         if "o" in t:
             index_old += 1
         else:
