@@ -270,7 +270,7 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         #         d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
         #     )
         #     axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
-        for d, label in zip([curr_si, curr_tail, rest], ["si", "tail", "rest"]):
+        for d, label in zip([rest, curr_si, curr_tail], ["rest", "si", "tail"]):
             axs[to_index].scatter(
                     d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
                 )
