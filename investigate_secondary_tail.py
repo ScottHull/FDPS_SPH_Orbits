@@ -293,6 +293,10 @@ def get_secondary_and_tail():
         target_com = get_com(target_iron['x'], target_iron['y'], target_iron['z'], target_iron['mass'])
         impactor_com = get_com(impactor_iron['x'], impactor_iron['y'], impactor_iron['z'], impactor_iron['mass'])
         si, tail, not_classified = get_secondary_imp_and_tail_particles(title, df)
+        not_classified['radius'] = [
+            (i ** 2 + j ** 2 + k ** 2) ** (1 / 2) for i, j, k in
+            zip(not_classified['x'], not_classified['y'], not_classified['z'])
+        ]
 
         end_state_file = base_path + "{}/circularized_{}/{}.csv".format(output_name, output_name, max_iteration)
         end_state_df = pd.read_csv(end_state_file, index_col="id")
@@ -328,6 +332,17 @@ def get_secondary_and_tail():
         tail_disk = len([i for i in tail_labels if i == "DISK"]) / len(tail)
         tail_escape = len([i for i in tail_labels if i == "ESCAPE"]) / len(tail)
 
+        end_state_disk = end_state_df[end_state_df['label'] == "DISK"]
+        disk_particles_from_inside_earth = not_classified[not_classified['id'].isin(end_state_disk.index.tolist())]
+        disk_particles_from_inside_earth = disk_particles_from_inside_earth[disk_particles_from_inside_earth['radius'] < 1e7]
+
+        disk_particles_outside_earth_and_tail = end_state_disk[
+            ~end_state_disk.index.isin(disk_particles_from_inside_earth)]
+        disk_particles_outside_earth_and_tail = disk_particles_outside_earth_and_tail[
+            ~disk_particles_outside_earth_and_tail['id'].isin(tail['id'].tolist())]
+        disk_particles_outside_earth_and_tail = disk_particles_outside_earth_and_tail[
+            ~disk_particles_outside_earth_and_tail['id'].isin(si['id'].tolist())]
+
         num_particles_planet_from_si = [i for i in end_state_df.index if
                                         i in si['id'] and end_state_df['label'][i] == "PLANET"]
         num_particles_disk_from_si = [i for i in end_state_df.index if
@@ -340,6 +355,7 @@ def get_secondary_and_tail():
                                       i in tail['id'] and end_state_df['label'][i] == "DISK"]
         num_particles_escape_from_tail = [i for i in end_state_df.index if
                                         i in tail['id'] and end_state_df['label'][i] == "ESCAPE"]
+
         
         planet_from_si = len(num_particles_planet_from_si) / len(
             end_state_df[end_state_df['label'] == "PLANET"])
@@ -353,6 +369,10 @@ def get_secondary_and_tail():
             end_state_df[end_state_df['label'] == "DISK"])
         escape_from_tail = len(num_particles_escape_from_tail) / len(
             end_state_df[end_state_df['label'] == "ESCAPE"])
+
+        frac_disk_from_inside_earth = len(disk_particles_from_inside_earth) / len(end_state_disk)
+        frac_disk_from_outside_earth_and_tail = len(disk_particles_outside_earth_and_tail) / len(end_state_disk)
+
         si_and_tail_data[title] = [sum(si_mass), si_ang_mom, sum(tail_mass), tail_ang_mom, len(si), len(tail),
                                    si_pct_tar_silicate,
                                    si_pct_tar_iron,
@@ -364,7 +384,9 @@ def get_secondary_and_tail():
                                    len(num_particles_escape_from_si), len(num_particles_planet_from_tail),
                                    len(num_particles_disk_from_tail), len(num_particles_escape_from_tail),
                                    planet_from_si, disk_from_si, escape_from_si, planet_from_tail,
-                                   disk_from_tail, escape_from_tail]
+                                   disk_from_tail, escape_from_tail, frac_disk_from_inside_earth,
+                                   frac_disk_from_outside_earth_and_tail]
+
 
         dfs[title].append(df)
         target_coms[title].append(target_com)
@@ -388,7 +410,7 @@ def get_secondary_and_tail():
                      "Num. Particles Escape from Tail",
                      "Frac. Planet From SI",
                      "Frac. Disk From SI", "Frac. Escape From SI", "Frac. Planet From Tail",
-                     "Frac. Disk From Tail", "Frac. Escape From Tail"]
+                     "Frac. Disk From Tail", "Frac. Escape From Tail", "Frac. Disk From Inside Earth", "Frac. Disk From Outside Earth and Tail"]
 
     df_si_and_tail_data = pd.DataFrame(si_and_tail_data, index=index_headers)
     df_si_and_tail_data.to_csv("{}_secondary_impact_structure_data.csv".format(angle))
