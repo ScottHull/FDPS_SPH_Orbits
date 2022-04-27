@@ -249,6 +249,9 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         si = sis[t][-1]
         tail = tails[t][-1]
 
+        curr_si = df[df['id'].isin(si['id'].tolist())]
+        curr_tail = df[df['id'].isin(tail['id'].tolist())]
+
         rest = df[~df['id'].isin(si['id'].tolist())]
         rest = df[~df['id'].isin(tail['id'].tolist())]
                 
@@ -267,7 +270,7 @@ def plot_time(dfs, sis, tails, endstates, to_path, iteration, time):
         #         d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
         #     )
         #     axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
-        for d, label in zip([si, tail, rest], ["si", "tail", "rest"]):
+        for d, label in zip([curr_si, curr_tail, rest], ["si", "tail", "rest"]):
             axs[to_index].scatter(
                     d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
                 )
