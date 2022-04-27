@@ -339,9 +339,9 @@ def get_secondary_and_tail():
         disk_particles_outside_earth_and_tail = end_state_disk[
             ~end_state_disk.index.isin(disk_particles_from_inside_earth)]
         disk_particles_outside_earth_and_tail = disk_particles_outside_earth_and_tail[
-            ~disk_particles_outside_earth_and_tail['id'].isin(tail['id'].tolist())]
+            ~disk_particles_outside_earth_and_tail.index.isin(tail['id'].tolist())]
         disk_particles_outside_earth_and_tail = disk_particles_outside_earth_and_tail[
-            ~disk_particles_outside_earth_and_tail['id'].isin(si['id'].tolist())]
+            ~disk_particles_outside_earth_and_tail.index.isin(si['id'].tolist())]
 
         num_particles_planet_from_si = [i for i in end_state_df.index if
                                         i in si['id'] and end_state_df['label'][i] == "PLANET"]
