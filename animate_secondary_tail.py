@@ -282,7 +282,7 @@ def plot_time(dfs, sis, tails, endstates, not_classifieds, to_path, iteration, t
         axs[to_index].scatter(
             not_disk['x'], not_disk['y'], s=2, alpha=0.2, label="Other"
         )
-        for d, label in zip([disk_rest, disk_from_within_earth, disk_from_outside_earth tail_in_disk, tail_not_in_disk], ["DISK NOT IN TAIL", "DISK FROM WITHIN EARTH", "DISK FROM FAR AWAY", "TAIL IN DISK", "TAIL NOT IN DISK"]):
+        for d, label in zip([disk_rest, disk_from_within_earth, disk_from_outside_earth, tail_in_disk, tail_not_in_disk], ["DISK NOT IN TAIL", "DISK FROM WITHIN EARTH", "DISK FROM FAR AWAY", "TAIL IN DISK", "TAIL NOT IN DISK"]):
             axs[to_index].scatter(
                 d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
             )
