@@ -227,6 +227,9 @@ def reformat_dict(d: dict):
     return pd.DataFrame(data, index=index_l)
 
 
+def plot_timestep(dfs, ):
+
+
 sis, tails, not_classifieds = get_secondary_and_tail()
 endstates = get_end_states(angle=angle, high=False)
 
