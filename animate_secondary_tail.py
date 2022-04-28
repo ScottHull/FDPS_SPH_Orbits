@@ -268,11 +268,13 @@ def plot_time(dfs, sis, tails, endstates, not_classifieds, to_path, iteration, t
         not_disk = not_disk[~not_disk['id'].isin(tail_in_disk['id'].tolist())]
         disk_from_within_earth = not_classified[not_classified['id'].isin(endstate_disk.index)]
         disk_from_within_earth = disk_from_within_earth[disk_from_within_earth['radius'] < 1e7]
+        disk_from_within_earth = df[df['id'].isin(disk_from_within_earth['id'].tolist())]
 
         disk_from_outside_earth = not_classified[not_classified['id'].isin(endstate_disk.index)]
         disk_from_outside_earth = disk_from_outside_earth[disk_from_outside_earth['radius'] >= 1e7]
         disk_from_outside_earth = disk_from_outside_earth[~disk_from_outside_earth['id'].isin(tail['id'].tolist())]
         disk_from_outside_earth = disk_from_outside_earth[~disk_from_outside_earth['id'].isin(si['id'].tolist())]
+        disk_from_outside_earth = df[df['id'].isin(disk_from_outside_earth['id'].tolist())]
 
         disk_rest = curr_disk[~curr_disk['id'].isin(tail_in_disk['id'].tolist())]
         disk_rest = disk_rest[~disk_rest['id'].isin(tail_not_in_disk['id'].tolist())]
