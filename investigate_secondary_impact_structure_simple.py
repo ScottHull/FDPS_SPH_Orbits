@@ -322,10 +322,10 @@ def plot_iteration(iteration, time, dfs, tail_in_disk, planet_in_disk, exterior_
         if "o" in t:
             to_index = index_old
         axs[to_index].scatter(
-            other['x'], other['y'], s=2, alpha=0.2, label="Other"
+            other[t][-1]['x'], other[t][-1]['y'], s=2, alpha=0.2, label="Other"
         )
         for d, label in zip(
-                [tail_in_disk, planet_in_disk, disk_from_si, exterior_in_disk],
+                [tail_in_disk[t][-1], planet_in_disk[t][-1], disk_from_si[t][-1], exterior_in_disk[t][-1]],
                 ["Disk From Tail", "Disk from Planet", "Disk from SI", "Disk from Exterior Debris"]):
             axs[to_index].scatter(
                 d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
