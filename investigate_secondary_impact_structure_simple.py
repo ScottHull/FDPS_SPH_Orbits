@@ -282,10 +282,10 @@ for s, t in zip(sims, titles):
                         data[t]["% DISK FROM INSIDE PLANET"] + data[t]["% DISK FROM OUTSIDE PLANET (not tail/si)"]
     })
 
-    check1 = disk[disk.index.isin(si_in_disk['id'].tolist)]
-    check2 = disk[disk.index.isin(tail_in_disk['id'].tolist)]
-    check3 = disk[disk.index.isin(nc_disk_interior['id'].tolist)]
-    check4 = disk[disk.index.isin(nc_disk_interior['id'].tolist)]
+    check1 = disk[disk.index.isin(si_in_disk['id'].tolist())]
+    check2 = disk[disk.index.isin(tail_in_disk['id'].tolist())]
+    check3 = disk[disk.index.isin(nc_disk_interior['id'].tolist())]
+    check4 = disk[disk.index.isin(nc_disk_interior['id'].tolist())]
 
     data[t].update({
         "CHECK1": len(check1) / len(disk) * 100.0,
