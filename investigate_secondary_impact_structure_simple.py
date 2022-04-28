@@ -255,10 +255,10 @@ for s, t in zip(sims, titles):
     data[t].update({
         "% PLANET FROM SI": len(si_in_planet) / len(planet) * 100.0,
         "% DISK FROM SI": len(si_in_disk) / len(disk) * 100.0,
-        "% ESCAPE FROM SI": len(escape) / len(escape) * 100.0,
+        "% ESCAPE FROM SI": len(si_in_escape) / len(escape) * 100.0,
         "% PLANET FROM TAIL": len(tail_in_planet) / len(planet) * 100.0,
         "% DISK FROM TAIL": len(tail_in_disk) / len(disk) * 100.0,
-        "% ESCAPE FROM TAIL": len(escape) / len(escape) * 100.0,
+        "% ESCAPE FROM TAIL": len(tail_in_escape) / len(escape) * 100.0,
 
     })
 
