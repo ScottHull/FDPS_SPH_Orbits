@@ -282,20 +282,20 @@ for s, t in zip(sims, titles):
                         data[t]["% DISK FROM INSIDE PLANET"] + data[t]["% DISK FROM OUTSIDE PLANET (not tail/si)"]
     })
 
-    check1 = disk[disk.index.isin(si_in_disk['id'].tolist())]
-    check2 = disk[disk.index.isin(tail_in_disk['id'].tolist())]
-    check3 = disk[disk.index.isin(nc_disk_interior['id'].tolist())]
-    check4 = disk[disk.index.isin(nc_disk_exterior['id'].tolist())]
-
-    data[t].update({
-        "CHECK1": len(check1) / len(disk) * 100.0,
-        "CHECK2": len(check2) / len(disk) * 100.0,
-        "CHECK3": len(check3) / len(disk) * 100.0,
-        "CHECK4": len(check4) / len(disk) * 100.0,
-    })
-    data[t].update({
-        "CHECK % CHECK": data[t]["CHECK1"] + data[t]["CHECK2"] + data[t]["CHECK3"] + data[t]["CHECK4"]
-    })
+    # check1 = disk[disk.index.isin(si_in_disk['id'].tolist())]
+    # check2 = disk[disk.index.isin(tail_in_disk['id'].tolist())]
+    # check3 = disk[disk.index.isin(nc_disk_interior['id'].tolist())]
+    # check4 = disk[disk.index.isin(nc_disk_exterior['id'].tolist())]
+    #
+    # data[t].update({
+    #     "CHECK1": len(check1) / len(disk) * 100.0,
+    #     "CHECK2": len(check2) / len(disk) * 100.0,
+    #     "CHECK3": len(check3) / len(disk) * 100.0,
+    #     "CHECK4": len(check4) / len(disk) * 100.0,
+    # })
+    # data[t].update({
+    #     "CHECK % CHECK": data[t]["CHECK1"] + data[t]["CHECK2"] + data[t]["CHECK3"] + data[t]["CHECK4"]
+    # })
 
 d = reformat_dict(data)
 d.to_csv("{}_secondary_impact_struc_data.csv".format(angle))
