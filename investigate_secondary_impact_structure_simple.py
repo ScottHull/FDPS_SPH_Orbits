@@ -303,7 +303,7 @@ def profile_time():
     d.to_csv("{}_secondary_impact_struc_data.csv".format(angle))
 
 
-def plot_iteration(iteration, time, dfs, tail_in_disk, planet_in_disk, exterior_in_disk, disk_from_si, other, to_path):
+def plot_iteration(iteration, times, dfs, tail_in_disk, planet_in_disk, exterior_in_disk, disk_from_si, other, to_path):
     num_new = len([i for i in dfs.keys() if "n" in i])
     num_old = len([i for i in dfs.keys() if "o" in i])
     num_cols = max([num_new, num_old])
@@ -330,7 +330,7 @@ def plot_iteration(iteration, time, dfs, tail_in_disk, planet_in_disk, exterior_
             axs[to_index].scatter(
                 d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
             )
-            axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
+            axs[to_index].set_title("{} {} hrs. ({})".format(t, times[t], iteration))
         if "o" in t:
             index_old += 1
         else:
@@ -416,7 +416,7 @@ def run_proc(args):
         si_in_disks.update({t: si_in_disk})
         other.update({t: other_particles})
 
-    plot_iteration(iteration=iteration, time=times, dfs=dfs, tail_in_disk=tail_in_disks, planet_in_disk=planet_in_disks,
+    plot_iteration(iteration=iteration, times=times, dfs=dfs, tail_in_disk=tail_in_disks, planet_in_disk=planet_in_disks,
                    exterior_in_disk=exterior_in_disks, disk_from_si=si_in_disks, other=other, to_path=to_path)
 
 
