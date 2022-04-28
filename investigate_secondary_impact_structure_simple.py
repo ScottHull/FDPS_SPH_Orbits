@@ -161,8 +161,18 @@ def get_secondary_imp_and_tail_particles(title, df):
     tail = tail[tail['y'] >= min_y_tail]
     not_classified = df[~df['id'].isin(si['id'].tolist())]
     not_classified = not_classified[~not_classified['id'].isin(tail['id'].tolist())]
-
     return si, tail, not_classified
+
+
+def get_end_states(angle, high):
+    endstates = {}
+    sims, titles = get_all_sims(angle, high)
+    for s, t in zip(sims, titles):
+        end_state_file = base_path + "{}/circularized_{}/{}.csv".format(s, s, max_iteration)
+        end_state_df = pd.read_csv(end_state_file, index_col="id")
+        endstates.update({t: end_state_df})
+    return endstates
+
 
 def get_secondary_and_tail():
     sims, titles = get_all_sims(angle=angle, high=False)
@@ -209,147 +219,68 @@ def get_secondary_and_tail():
     return sis, tails, not_classifieds
 
 
-def plot_time(dfs, sis, tails, endstates, not_classifieds, to_path, iteration, time):
-    num_new = len([i for i in dfs.keys() if "n" in i])
-    num_old = len([i for i in dfs.keys() if "o" in i])
-    num_cols = max([num_new, num_old])
-    plt.style.use("dark_background")
-    fig, axs = plt.subplots(2, num_cols, figsize=(20, 10), sharex='all',
-                            gridspec_kw={"hspace": 0.10, "wspace": 0.12})
-    fig.patch.set_facecolor('xkcd:black')
-    axs = axs.flatten()
-    for ax in axs:
-        ax.set_xlim(-square_scale, square_scale)
-        ax.set_ylim(-square_scale, square_scale)
-        ax.grid(alpha=0.1)
-    index_new, index_old = 0, num_cols
-    for t, df in dfs.items():
-        to_index = index_new
-        if "o" in t:
-            to_index = index_old
-        endstate = endstates[t]
-        endstate_disk = endstate[endstate['label'] == "DISK"]
-        curr_disk = df[df['id'].isin(endstate_disk.index.tolist())]
+def reformat_dict(d: dict):
+    index_l = list(d[list(d.keys())[0]].keys())
+    data = {}
+    for t in d.keys():
+        data.update({t: [d[t][h] for h in index_l]})
+    return pd.DataFrame(data, index=index_l)
 
-        si = sis[t][-1]
-        tail = tails[t][-1]
-        not_classified = not_classifieds[t][-1]
-
-        # curr_si = df[df['id'].isin(si['id'].tolist())]
-        # curr_tail = df[df['id'].isin(tail['id'].tolist())]
-        #
-        # rest = df[~df['id'].isin(si['id'].tolist())]
-        # rest = df[~df['id'].isin(tail['id'].tolist())]
-
-        not_classified['radius'] = [(i ** 2 + j ** 2 + k ** 2) ** (1 / 2) for i, j, k in
-                                            zip(not_classified['x'], not_classified['y'], not_classified['z'])]
-
-        tail_in_disk = curr_disk[curr_disk['id'].isin(tail['id'].tolist())]
-        tail_not_in_disk = tail[~tail['id'].isin(tail_in_disk['id'].tolist())]
-        tail_not_in_disk = df[df['id'].isin(tail_not_in_disk['id'].to_list())]
-
-        not_disk = df[~df['id'].isin(endstate_disk.index.tolist())]
-        not_disk = not_disk[~not_disk['id'].isin(tail_in_disk['id'].tolist())]
-        disk_from_within_earth = not_classified[not_classified['id'].isin(endstate_disk.index)]
-        disk_from_within_earth = disk_from_within_earth[disk_from_within_earth['radius'] < 1.5e7]
-        disk_from_within_earth = df[df['id'].isin(disk_from_within_earth['id'].tolist())]
-
-        disk_from_outside_earth = not_classified[not_classified['id'].isin(endstate_disk.index)]
-        disk_from_outside_earth = disk_from_outside_earth[disk_from_outside_earth['radius'] >= 1.5e7]
-        disk_from_outside_earth = disk_from_outside_earth[~disk_from_outside_earth['id'].isin(tail['id'].tolist())]
-        disk_from_outside_earth = disk_from_outside_earth[~disk_from_outside_earth['id'].isin(si['id'].tolist())]
-        disk_from_outside_earth = df[df['id'].isin(disk_from_outside_earth['id'].tolist())]
-
-        disk_rest = curr_disk[~curr_disk['id'].isin(tail_in_disk['id'].tolist())]
-        disk_rest = disk_rest[~disk_rest['id'].isin(tail_not_in_disk['id'].tolist())]
-        disk_rest = disk_rest[~disk_rest['id'].isin(disk_from_outside_earth['id'].tolist())]
-        disk_rest = disk_rest[~disk_rest['id'].isin(disk_from_within_earth['id'].tolist())]
-
-        axs[to_index].scatter(
-            not_disk['x'], not_disk['y'], s=2, alpha=0.2, label="Other"
-        )
-        for d, label in zip([disk_rest, disk_from_within_earth, disk_from_outside_earth, tail_in_disk, tail_not_in_disk],
-                            ["DISK NOT IN TAIL", "DISK FROM WITHIN EARTH", "DISK FROM FAR AWAY", "TAIL IN DISK", "TAIL NOT IN DISK"]):
-            axs[to_index].scatter(
-                d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
-            )
-            axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
-        # for d, label in zip([rest, curr_si, curr_tail], ["rest", "si", "tail"]):
-        #     axs[to_index].scatter(
-        #             d['x'], d['y'], marker=".", s=2, alpha=1.0, label=label
-        #         )
-        #     axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
-        if "o" in t:
-            index_old += 1
-        else:
-            index_new += 1
-
-    legend = axs[0].legend(loc='upper left', fontsize=8)
-    for handle in legend.legendHandles:
-        try:
-            handle.set_sizes([30.0])
-        except:
-            pass
-
-    plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
-
-
-def get_end_states(angle, high):
-    endstates = {}
-    sims, titles = get_all_sims(angle, high)
-    for s, t in zip(sims, titles):
-        end_state_file = base_path + "{}/circularized_{}/{}.csv".format(s, s, max_iteration)
-        end_state_df = pd.read_csv(end_state_file, index_col="id")
-        endstates.update({t: end_state_df})
-    return endstates
 
 sis, tails, not_classifieds = get_secondary_and_tail()
 endstates = get_end_states(angle=angle, high=False)
 
-def run_proc(args):
-    iteration, to_path = args
-    if not os.path.exists(to_path):
-        os.mkdir(to_path)
-    data = {}
-    high = False
-    sims, titles = get_all_sims(angle, high=high)
-    formatted_time = None
+sims, titles = get_all_sims(angle, False)
 
-    for s, t in zip(sims, titles):
-        print("{} - {}".format(iteration, t))
+data = {}
+for s, t in zip(sims, titles):
+    data.update({t: {}})
+    endstate = endstates[t]
+    si = sis[t][-1]
+    tail = tails[t][-1]
+    not_classified = not_classifieds[t][-1]
 
-        path = base_path + "{}/{}".format(s, s)
-        to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
-        cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
-        combined_file = cf.combine()
-        formatted_time = round(cf.sim_time * 0.000277778, 2)
-        f = os.getcwd() + "/{}".format(to_fname)
-        headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
-                   "potential energy", "entropy", "temperature"]
-        df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
-        os.remove(f)
-        zero_coords = get_com(df[df['tag'] == 1]['x'], df[df['tag'] == 1]['y'],
-                              df[df['tag'] == 1]['z'], df[df['tag'] == 1]['mass'])
-        df['x'] -= zero_coords[0]
-        df['y'] -= zero_coords[1]
-        df['z'] -= zero_coords[2]
+    planet, disk, escape = endstate[endstate['label'] == "PLANET"], endstate[endstate['label'] == "DISK"], \
+                           endstate[endstate['label'] == "ESCAPE"]
+    not_classified['radius'] = [(i ** 2 + j ** 2 + k ** 2) ** (1 / 2) for i, j, k in
+                                zip(not_classified['x'], not_classified['y'], not_classified['z'])]
 
-        data.update({t: df})
+    si_in_planet = si[si['id'].isin(planet.index.tolist())]
+    si_in_disk = si[si['id'].isin(disk.index.tolist())]
+    si_in_escape = si[si['id'].isin(escape.index.tolist())]
+    tail_in_planet = tail[tail['id'].isin(planet.index.tolist())]
+    tail_in_disk = tail[tail['id'].isin(disk.index.tolist())]
+    tail_in_escape = tail[tail['id'].isin(escape.index.tolist())]
 
-    plot_time(
-        dfs=data, sis=sis, tails=tails, endstates=endstates, not_classifieds=not_classifieds, to_path=to_path,
-        iteration=iteration, time=formatted_time
-    )
+    data[t].update({
+        "% PLANET FROM SI": len(si_in_planet) / len(planet) * 100.0,
+        "% DISK FROM SI": len(si_in_disk) / len(disk) * 100.0,
+        "% ESCAPE FROM SI": len(escape) / len(escape) * 100.0,
+        "% PLANET FROM TAIL": len(tail_in_planet) / len(planet) * 100.0,
+        "% DISK FROM TAIL": len(tail_in_disk) / len(disk) * 100.0,
+        "% ESCAPE FROM TAIL": len(escape) / len(escape) * 100.0,
 
-def run():
-    image_path = "{}_tail_in_disk".format(angle)
-    if not os.path.exists(image_path):
-        os.mkdir(image_path)
-    pool = mp.Pool(10)
-    pool.map(run_proc, [[iteration, image_path] for iteration in
-                        np.arange(min_iteration, max_iteration + increment, increment)])
-    pool.close()
-    pool.join()
+    })
 
+    # for particles not in tail or SI
+    nc_planet, nc_disk, nc_escape = not_classified[not_classified['id'].isin(planet.index)], \
+                                    not_classified[not_classified['id'].isin(disk.index)], \
+                                    not_classified[not_classified['id'].isin(escape.index)]
 
-run()
+    # disk from inside planet
+    nc_disk_interior = nc_disk[nc_disk['radius'] < 1.5e7]
+    # disk from far away planet (outside tail)
+    nc_disk_exterior = nc_disk[nc_disk['radius'] >= 1.5e7]
+
+    data[t].update({
+        "% DISK FROM INSIDE PLANET": len(nc_disk_interior) / len(disk) * 100.0,
+        "% DISK FROM OUTSIDE PLANET (not tail/si)": len(nc_disk_exterior) / len(disk) * 100.0,
+    })
+
+    data[t].update({
+        "DISK % CHECK": data[t]["% DISK FROM SI"] + data[t]["% DISK FROM TAIL"] +
+                        data[t]["% DISK FROM INSIDE PLANET"] + data[t]["% DISK FROM OUTSIDE PLANET (not tail/si)"]
+    })
+
+d = reformat_dict(data)
+d.to_csv("{}_secondary_impact_struc_data.csv".format(angle))
