@@ -409,12 +409,13 @@ def run_proc(args):
         other_particles = other_particles[~other_particles['id'].isin(nc_disk_interior['id'].tolist())]
         other_particles = other_particles[~other_particles['id'].isin(nc_disk_exterior['id'].tolist())]
 
+
         dfs.update({t: df})
-        tail_in_disks.update({t: tail_in_disk})
-        planet_in_disks.update({t: nc_disk_interior})
-        exterior_in_disks.update({t: nc_disk_exterior})
-        si_in_disks.update({t: si_in_disk})
-        other.update({t: other_particles})
+        tail_in_disks.update({t: df[df['id'].isin(tail_in_disk['id'].tolist())]})
+        planet_in_disks.update({t: df[df['id'].isin(nc_disk_interior['id'].tolist())]})
+        exterior_in_disks.update({t: df[df['id'].isin(nc_disk_exterior['id'].tolist())]})
+        si_in_disks.update({t: df[df['id'].isin(si_in_disk['id'].tolist())]})
+        other.update({t: df[df['id'].isin(other_particles['id'].tolist())]})
 
     plot_iteration(iteration=iteration, times=times, dfs=dfs, tail_in_disk=tail_in_disks, planet_in_disk=planet_in_disks,
                    exterior_in_disk=exterior_in_disks, disk_from_si=si_in_disks, other=other, to_path=to_path)
