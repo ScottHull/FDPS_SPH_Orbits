@@ -303,8 +303,8 @@ def profile_time():
         #     "CHECK % CHECK": data[t]["CHECK1"] + data[t]["CHECK2"] + data[t]["CHECK3"] + data[t]["CHECK4"]
         # })
         
-        mass_si = si['mass'].sum() / LUNAR_MASS
-        mass_tail = tail['mass'].sum() / LUNAR_MASS
+        mass_si = si['mass'].sum()
+        mass_tail = tail['mass'].sum()
 
         si_radial_vec = zip(si['x'], si['y'], si['z'])
         tail_radial_vec = zip(tail['x'], tail['y'], tail['z'])
