@@ -25,6 +25,10 @@ number_processes = 200
 square_scale = 6e7
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 
+EARTH_MASS = 5.972 * 10 ** 24
+LUNAR_MASS = 7.34767309 * 10 ** 22
+L_EM = 3.5 * 10 ** 34
+
 secondary_impact_lims = {
     '5b073n': {
         'si_min_x': -0.7e7,
@@ -298,6 +302,24 @@ def profile_time():
         # data[t].update({
         #     "CHECK % CHECK": data[t]["CHECK1"] + data[t]["CHECK2"] + data[t]["CHECK3"] + data[t]["CHECK4"]
         # })
+        
+        mass_si = si['mass'].sum() / LUNAR_MASS
+        mass_tail = tail['mass'].sum() / LUNAR_MASS
+
+        si_radial_vec = zip(si['x'], si['y'], si['z'])
+        tail_radial_vec = zip(tail['x'], tail['y'], tail['z'])
+        si_velocity_vec = zip(si['vx'], si['vy'], si['vz'])
+        tail_velocity_vec = zip(tail['vx'], tail['vy'], tail['vz'])
+
+        angular_momentum_si = si['mass'] * np.array([np.cross(si['radius'], si_velocity_vec)]) / L_EM
+        angular_momentum_tail = tail['mass'] * np.array([np.cross(tail['radius'], tail_velocity_vec)]) / L_EM
+
+        data[t].update({
+            "MASS SI": mass_si,
+            "MASS TAIL": mass_tail,
+            "ANGULAR MOMENTUM SI": np.linalg.norm(angular_momentum_si),
+            "ANGULAR MOMENTUM TAIL": np.linalg.norm(angular_momentum_tail),
+        })
 
     d = reformat_dict(data)
     d.to_csv("{}_secondary_impact_struc_data.csv".format(angle))
