@@ -317,8 +317,8 @@ def profile_time():
         data[t].update({
             "MASS SI": mass_si,
             "MASS TAIL": mass_tail,
-            "ANGULAR MOMENTUM SI": np.linalg.norm(angular_momentum_si),
-            "ANGULAR MOMENTUM TAIL": np.linalg.norm(angular_momentum_tail),
+            "ANGULAR MOMENTUM SI": angular_momentum_si,
+            "ANGULAR MOMENTUM TAIL": angular_momentum_tail,
         })
 
     d = reformat_dict(data)
