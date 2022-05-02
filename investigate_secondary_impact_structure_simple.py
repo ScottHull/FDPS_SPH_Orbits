@@ -304,7 +304,7 @@ def profile_time():
         # })
         
         mass_si = sum(si['mass'])
-        mass_tail = sum(tail['mass'].sum())
+        mass_tail = sum(tail['mass'])
 
         si_radial_vec = zip(si['x'], si['y'], si['z'])
         tail_radial_vec = zip(tail['x'], tail['y'], tail['z'])
