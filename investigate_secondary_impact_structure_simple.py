@@ -311,10 +311,10 @@ def profile_time():
         si_velocity_vec = zip(si['vx'], si['vy'], si['vz'])
         tail_velocity_vec = zip(tail['vx'], tail['vy'], tail['vz'])
 
-        angular_momentum_si = (mass_si * sum(
-            [np.linalg.norm(np.cross(v, r)) for r, v in zip(si_radial_vec, si_velocity_vec)])) / L_EM
-        angular_momentum_tail = (mass_tail * sum(
-            [np.linalg.norm(np.cross(v, r)) for r, v in zip(tail_radial_vec, tail_velocity_vec)])) / L_EM
+        angular_momentum_si = sum(
+            [np.linalg.norm(m * np.cross(r, v)) for m, v, r in zip(si['mass'], si_velocity_vec, si_radial_vec)]) / L_EM
+        angular_momentum_tail = sum(
+            [np.linalg.norm(m * np.cross(r, v)) for m, v, r in zip(tail['mass'], tail_velocity_vec, tail_radial_vec)]) / L_EM
 
         data[t].update({
             "MASS SI": mass_si,
