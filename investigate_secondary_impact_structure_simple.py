@@ -303,16 +303,18 @@ def profile_time():
         #     "CHECK % CHECK": data[t]["CHECK1"] + data[t]["CHECK2"] + data[t]["CHECK3"] + data[t]["CHECK4"]
         # })
         
-        mass_si = si['mass'].sum()
-        mass_tail = tail['mass'].sum()
+        mass_si = sum(si['mass'])
+        mass_tail = sum(tail['mass'].sum())
 
         si_radial_vec = zip(si['x'], si['y'], si['z'])
         tail_radial_vec = zip(tail['x'], tail['y'], tail['z'])
         si_velocity_vec = zip(si['vx'], si['vy'], si['vz'])
         tail_velocity_vec = zip(tail['vx'], tail['vy'], tail['vz'])
 
-        angular_momentum_si = (mass_si * sum(np.array([np.linalg.norm(np.cross(i, j)) for i, j in zip(si_radial_vec, si_velocity_vec)]))) / L_EM
-        angular_momentum_tail = (mass_tail * sum(np.array([np.linalg.norm(np.cross(i, j)) for i, j in zip(tail_radial_vec, tail_velocity_vec)]))) / L_EM
+        angular_momentum_si = (mass_si * sum(
+            [np.linalg.norm(np.cross(v, r)) for r, v in zip(si_radial_vec, si_velocity_vec)])) / L_EM
+        angular_momentum_tail = (mass_tail * sum(
+            [np.linalg.norm(np.cross(v, r)) for r, v in zip(tail_radial_vec, tail_velocity_vec)])) / L_EM
 
         data[t].update({
             "MASS SI": mass_si,
