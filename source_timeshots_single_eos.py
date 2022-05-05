@@ -113,6 +113,11 @@ for iteration in iterations:
                                 "{}\n{} hrs".format(t, formatted_time), fontsize=10)
         current_index += 1
 
-axs[0].legend(loc='upper left', fontsize=10)
+legend = axs[0].legend(loc='upper left', fontsize=14)
+for handle in legend.legendHandles:
+    try:
+        handle.set_sizes([30.0])
+    except:
+        pass
 
 plt.savefig("source_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
