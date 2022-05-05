@@ -95,8 +95,20 @@ for iteration in iterations:
         cd = cutoff_densities.index(int(s.split("_")[0]))
         p = base_path + "{}/circularized_{}".format(s, s)
         f = p + "/{}.csv".format(iteration)
-        formatted_time = get_time(f)
         df = pd.read_csv(f, skiprows=2)
+        path = base_path + "{}/{}".format(s, s)
+        if "high" in s:
+            number_processes = 500
+        else:
+            number_processes = 200
+        file_format = "results.{}_{}_{}.dat"
+        p2 = base_path + "{}/{}".format(s, s)
+        base_file = file_format.format(
+            str(iteration).zfill(5),
+            str(number_processes).zfill(5),
+            str(0).zfill(5)
+        )
+        formatted_time = get_time(p2 + "/" + base_file)
         planet, disk, escape = df[df['label'] == "PLANET"], df[df['label'] == "DISK"], df[df['label'] == "ESCAPE"]
         for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
             axs[current_index].scatter(
