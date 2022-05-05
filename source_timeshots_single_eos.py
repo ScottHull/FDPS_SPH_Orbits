@@ -40,20 +40,19 @@ if runs == "old":
 
 
 
-def get_all_sims(angle, high=True):
+def get_all_sims(angle, runs: str, high=True):
     fformat = "{}_{}_{}"
     tformat = "{}{}{}"
     names = []
     titles = []
-    for runs in ["new", "old"]:
-        n = "n"
-        if runs == "old":
-            n = "o"
-        for cd in cutoff_densities:
-            output_name = fformat.format(cd, angle, runs)
-            title_name = tformat.format(cd, angle, n)
-            titles.append(title_name)
-            names.append(output_name)
+    n = "n"
+    if runs == "old":  # runs = new or old
+        n = "o"
+    for cd in cutoff_densities:
+        output_name = fformat.format(cd, angle, runs)
+        title_name = tformat.format(cd, angle, n)
+        titles.append(title_name)
+        names.append(output_name)
     if high:
         output_name = fformat.format(5, angle, "new") + "_high"
         names.append(output_name)
@@ -74,7 +73,7 @@ def get_time(f, local=True):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 
-sims, titles = get_all_sims(angle, high)
+sims, titles = get_all_sims(angle, runs, high)
 fig, axs = plt.subplots(len(iterations), len(sims), figsize=(20, 25), sharex='all', sharey='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 axs = axs.flatten()
