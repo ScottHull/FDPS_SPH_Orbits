@@ -38,19 +38,6 @@ phase_path = new_phase_path
 if runs == "old":
     phase_path = old_phase_path
 
-run_set = ["{}_{}_{}".format(i, angle, runs) for i in [5, 500, 1000, 2000]]
-paths = [base_path + "{}/formatted_{}".format(i, i) for i in run_set]
-
-
-fig, axs = plt.subplots(len(iterations), len(paths), figsize=(20, 25), sharex='all', sharey='all',
-                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
-axs = axs.flatten()
-for ax in axs:
-    ax.set_xlim(-square_scale, square_scale)
-    ax.set_ylim(-square_scale, square_scale)
-    # ax.set_xticks([], minor=False)
-    # ax.set_yticks([], minor=False)
-    ax.axes.set_aspect('equal')
 
 
 def get_all_sims(angle, high=True):
@@ -88,6 +75,15 @@ def get_time(f, local=True):
 
 
 sims, titles = get_all_sims(angle, high)
+fig, axs = plt.subplots(len(iterations), len(sims), figsize=(20, 25), sharex='all', sharey='all',
+                        gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+axs = axs.flatten()
+for ax in axs:
+    ax.set_xlim(-square_scale, square_scale)
+    ax.set_ylim(-square_scale, square_scale)
+    # ax.set_xticks([], minor=False)
+    # ax.set_yticks([], minor=False)
+    ax.axes.set_aspect('equal')
 current_index = 0
 # colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for iteration in iterations:
