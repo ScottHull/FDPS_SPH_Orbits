@@ -110,13 +110,13 @@ for iteration in iterations:
                 i['x'], i['y'], s=0.1, marker=".", alpha=1, label=label
             )
         axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.3 * square_scale),
-                                "{}\n{} hrs".format(t, formatted_time), fontsize=10)
+                                "{}\n{} hrs".format(t, formatted_time), fontsize=14)
         current_index += 1
 
 legend = axs[0].legend(loc='upper left', fontsize=14)
 for handle in legend.legendHandles:
     try:
-        handle.set_sizes([30.0])
+        handle.set_sizes([50.0])
     except:
         pass
 
