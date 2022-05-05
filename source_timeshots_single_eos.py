@@ -91,7 +91,7 @@ for iteration in iterations:
         cd = cutoff_densities.index(int(s.split("_")[0]))
         p = base_path + "{}/circularized_{}".format(s, s)
         f = p + "/{}.csv".format(iteration)
-        df = pd.read_csv(f, skiprows=2)
+        df = pd.read_csv(f)
         path = base_path + "{}/{}".format(s, s)
         if "high" in s:
             number_processes = 500
