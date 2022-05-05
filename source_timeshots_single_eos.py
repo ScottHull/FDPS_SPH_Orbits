@@ -24,7 +24,7 @@ plt.style.use("dark_background")
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 runs = "new"
 angle = "b073"
-iterations = [500, 1000, 1400, 1800]
+iterations = [300, 500, 1000, 1400, 1800]
 cutoff_densities = [5, 500, 1000, 2000]
 high = True
 square_scale = 6e7
@@ -53,11 +53,11 @@ def get_all_sims(angle, runs: str, high=True):
         title_name = tformat.format(cd, angle, n)
         titles.append(title_name)
         names.append(output_name)
-    if high:
-        output_name = fformat.format(5, angle, "new") + "_high"
-        names.append(output_name)
-        title_name = tformat.format(5, angle, "n") + "-high"
-        titles.append(title_name)
+        if cd == 5 and high and angle == "b073":
+            output_name = fformat.format(5, angle, "new") + "_high"
+            names.append(output_name)
+            title_name = tformat.format(5, angle, "n") + "-high"
+            titles.append(title_name)
     return names, titles
 
 
@@ -74,7 +74,7 @@ def get_time(f, local=True):
 
 
 sims, titles = get_all_sims(angle, runs, high)
-fig, axs = plt.subplots(len(iterations), len(sims), figsize=(20, 25), sharex='all', sharey='all',
+fig, axs = plt.subplots(len(iterations), len(sims), figsize=(25, 25), sharex='all', sharey='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 axs = axs.flatten()
 for ax in axs:
@@ -109,8 +109,10 @@ for iteration in iterations:
             axs[current_index].scatter(
                 i['x'], i['y'], s=0.1, marker=".", alpha=1, label=label
             )
-        axs[current_index].text(square_scale - (0.5 * square_scale), -square_scale + (0.3 * square_scale),
+        axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.3 * square_scale),
                                 "{}\n{} hrs".format(t, formatted_time), fontsize=10)
         current_index += 1
+
+axs[0].legend(loc='upper left', fontsize=10)
 
 plt.savefig("source_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
