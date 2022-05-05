@@ -74,7 +74,10 @@ def get_time(f, local=True):
 
 
 sims, titles = get_all_sims(angle, runs, high)
-fig, axs = plt.subplots(len(iterations), len(sims), figsize=(25, 25), sharex='all', sharey='all',
+figsize = (20, 20)
+if high and angle == "b073" and runs == "new":
+    figsize = (25, 25)
+fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 axs = axs.flatten()
 for ax in axs:
