@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+import os
+import csv
+import pandas as pd
+import numpy as np
+from math import atan, pi, acos
+from operator import contains
+from random import randint
+import multiprocessing as mp
+import matplotlib.pyplot as plt
+
+from src.combine import CombineFile
+
+plt.rcParams.update({'font.size': 8, })
+# plt.style.use("dark_background")
+plt.style.use('seaborn-colorblind')
+
+min_iteration = 0
+end_iteration = 1800
+increment = 100
+square_scale = 6e7
+base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
+to_path = "animate_high_res"
+sim, title = "5_b073_new_high_res", "5b073n-high"
+
+iterations = list(np.arange(min_iteration, end_iteration + increment, increment))
+if not os.path.exists(to_path):
+    os.mkdir(to_path)
+
+endstate = pd.read_csv(base_path + "{}/circularized_{}/{}.csv".format(sim, sim, end_iteration))
+end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[endstate['label'] == "DISK"], \
+                                   endstate[endstate['label'] == "ESCAPE"]
+
+def get_time(f, local=True):
+    formatted_time = None
+    if local:  # if not reading from remote server
+        with open(f, 'r') as infile:
+            reader = csv.reader(infile, delimiter="\t")
+            formatted_time = float(next(reader)[0])
+        infile.close()
+    else:
+        formatted_time = float(next(f))
+    return round(formatted_time * 0.000277778, 2)  # seconds -> hours
+
+for iteration in iterations:
+    if "high" in s:
+        number_processes = 500
+    else:
+        number_processes = 200
+    file_format = "results.{}_{}_{}.dat"
+    p2 = base_path + "{}/{}".format(s, s)
+    base_file = file_format.format(
+        str(iteration).zfill(5),
+        str(number_processes).zfill(5),
+        str(0).zfill(5)
+    )
+    formatted_time = get_time(p2 + "/" + base_file)
+
+    fig = plt.figure(figsize=(10, 10))
+    ax = fig.add_subplot(111, aspect='equal')
+    df = pd.read_csv(base_path + "{}/circularized_{}/{}.csv".format(sim, sim, iteration))
+    planet = df[df['id'].isin(end_planet.index.tolist())]
+    disk = df[df['id'].isin(end_disk.index.tolist())]
+    escape = df[df['id'].isin(end_escape.index.tolist())]
+    for i, label in zip([planet, disk, escape], ['Planet', 'Disk', 'Escape']):
+        ax.scatter(
+            i['x'], i['y'], alpha=1, marker=".", s=1, label=label
+        )
+    ax.set_xlim(-square_scale, square_scale)
+    ax.set_ylim(-square_scale, square_scale)
+    ax.set_title("{} - {} hrs ({})".format(title, formatted_time, iteration))
+
+    plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
+
+animate(
+    start_time=min_iteration,
+    end_time=end_iteration,
+    interval=increment,
+    path=to_path,
+    fps=10,
+    filename="animate_5b073n-high.mp4",
+)
