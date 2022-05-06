@@ -30,6 +30,7 @@ high = True
 square_scale = 6e7
 min_normalize = 0
 max_normalize = 2e11
+end_iteration = 1800
 
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
@@ -37,7 +38,6 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 phase_path = new_phase_path
 if runs == "old":
     phase_path = old_phase_path
-
 
 
 def get_all_sims(angle, runs: str, high=True):
@@ -73,8 +73,19 @@ def get_time(f, local=True):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 
+def get_end_states(angle, high):
+    endstates = {}
+    sims, titles = get_all_sims(angle, high)
+    for s, t in zip(sims, titles):
+        end_state_file = base_path + "{}/circularized_{}/{}.csv".format(s, s, end_iteration)
+        end_state_df = pd.read_csv(end_state_file, index_col="id")
+        endstates.update({t: end_state_df})
+    return endstates
+
+
 sims, titles = get_all_sims(angle, runs, high)
-figsize = (20, 20)
+endstates = get_end_states(angle=angle, high=high)
+figsize = (20, 25)
 if high and angle == "b073" and runs == "new":
     figsize = (25, 25)
 fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all',
@@ -107,7 +118,9 @@ for iteration in iterations:
             str(0).zfill(5)
         )
         formatted_time = get_time(p2 + "/" + base_file)
-        planet, disk, escape = df[df['label'] == "PLANET"], df[df['label'] == "DISK"], df[df['label'] == "ESCAPE"]
+        endstate = endstates[t]
+        end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
+        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())], df[df['id'].isin(end_disk.index.tolist())], df[df['id'].isin(end_escape.index.tolist())]
         for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
             axs[current_index].scatter(
                 i['x'], i['y'], s=0.1, marker=".", alpha=1, label=label
