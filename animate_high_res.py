@@ -10,6 +10,7 @@ import multiprocessing as mp
 import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
+from src.animate import animate
 
 plt.rcParams.update({'font.size': 8, })
 # plt.style.use("dark_background")
@@ -43,12 +44,12 @@ def get_time(f, local=True):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 for iteration in iterations:
-    if "high" in s:
+    if "high" in sim:
         number_processes = 500
     else:
         number_processes = 200
     file_format = "results.{}_{}_{}.dat"
-    p2 = base_path + "{}/{}".format(s, s)
+    p2 = base_path + "{}/{}".format(sim, sim)
     base_file = file_format.format(
         str(iteration).zfill(5),
         str(number_processes).zfill(5),
