@@ -75,7 +75,7 @@ def get_time(f, local=True):
 
 def get_end_states(angle, high):
     endstates = {}
-    sims, titles = get_all_sims(angle, high)
+    sims, titles = get_all_sims(angle, runs, high)
     for s, t in zip(sims, titles):
         end_state_file = base_path + "{}/circularized_{}/{}.csv".format(s, s, end_iteration)
         end_state_df = pd.read_csv(end_state_file, index_col="id")
