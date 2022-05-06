@@ -42,7 +42,8 @@ def get_time(f, local=True):
         formatted_time = float(next(f))
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
-for iteration in iterations:
+def run_proc(args):
+    iteration = args[0]
     if "high" in sim:
         number_processes = 500
     else:
@@ -94,6 +95,15 @@ for iteration in iterations:
     except Exception as e:
         print(e)
         pass
+
+def run():
+    pool = mp.Pool(10)
+    pool.map(run_proc, [[iteration] for iteration in iterations])
+    pool.close()
+    pool.join()
+
+
+run()
 
 animate(
     start_time=min_iteration,
