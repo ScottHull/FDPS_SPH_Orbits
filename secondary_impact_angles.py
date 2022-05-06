@@ -66,11 +66,27 @@ def get_com(x, y, z, mass):
 
 
 def get_impactor_com_particles(output_name):
-    output_path = base_path + output_name + "/circularized_{}".format(output_name)
-    df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
-    impactor_iron = df[df['tag'] == 3]
-    impactor_iron = impactor_iron[impactor_iron['radius'] > 1.5e7]
-    return impactor_iron['id']
+    try:
+        output_path = base_path + output_name + "/circularized_{}".format(output_name)
+        df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
+        impactor_iron = df[df['tag'] == 3]
+        impactor_iron = impactor_iron[impactor_iron['radius'] > 1.5e7]
+        return impactor_iron['id']
+    except FileNotFoundError:
+        path = base_path + "{}/{}".format(output_name, output_name)
+        to_fname = "merged_{}_{}.dat".format(min_iteration, randint(0, 100000))
+        cf = CombineFile(num_processes=number_processes, time=min_iteration, output_path=path, to_fname=to_fname)
+        combined_file = cf.combine()
+        formatted_time = round(cf.sim_time * 0.000277778, 2)
+        f = os.getcwd() + "/{}".format(to_fname)
+        headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                   "potential energy", "entropy", "temperature"]
+        df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
+        os.remove(f)
+        impactor_iron = df[df['tag'] == 3]
+        impactor_iron['radius'] = [(i ** 2 + j ** 2 + k ** 2) ** (1 / 2) for i, j, k in zip(impactor_iron['x'], impactor_iron['y'], impactor_iron['z'])]
+        impactor_iron = impactor_iron[impactor_iron['radius'] > 1.5e7]
+        return impactor_iron['id']
 
 
 def get_angle(target_com, impactor_com):
@@ -287,8 +303,8 @@ def get_impact_angle_with_velocity_vector():
     r_dot_v_angles = {}
     r_vectors = {}
     v_vectors = {}
-    # for output_name, title in zip(sims, titles):
-    #     imp_ids.update({title: get_impactor_com_particles(output_name)})
+    for output_name, title in zip(sims, titles):
+        imp_ids.update({title: get_impactor_com_particles(output_name)})
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         dfs = {}
         for output_name, title in zip(sims, titles):
