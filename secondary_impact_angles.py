@@ -213,7 +213,7 @@ def __build_scene(iteration, times, dfs, sims, titles, impact_angles, target_com
 
 
 def get_impact_angles():
-    sims, titles = get_all_sims(high=False)
+    sims, titles = get_all_sims(high=True)
     impact_angles = {}
     target_coms = {}
     impactor_coms = {}
@@ -277,7 +277,7 @@ def get_mean_vector(vectors):
 
 
 def get_impact_angle_with_velocity_vector():
-    sims, titles = get_all_sims(high=False)
+    sims, titles = get_all_sims(high=True)
     impact_angles = {}
     target_coms = {}
     impactor_coms = {}
@@ -287,8 +287,8 @@ def get_impact_angle_with_velocity_vector():
     r_dot_v_angles = {}
     r_vectors = {}
     v_vectors = {}
-    for output_name, title in zip(sims, titles):
-        imp_ids.update({title: get_impactor_com_particles(output_name)})
+    # for output_name, title in zip(sims, titles):
+    #     imp_ids.update({title: get_impactor_com_particles(output_name)})
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         dfs = {}
         for output_name, title in zip(sims, titles):
