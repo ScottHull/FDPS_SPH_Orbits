@@ -56,28 +56,30 @@ for iteration in iterations:
     )
     formatted_time = get_time(p2 + "/" + base_file)
 
-    fig = plt.figure(figsize=(10, 10))
-    ax = fig.add_subplot(111, aspect='equal')
-    df = pd.read_csv(base_path + "{}/circularized_{}/{}.csv".format(sim, sim, iteration))
-    planet = df[df['id'].isin(end_planet.index.tolist())]
-    disk = df[df['id'].isin(end_disk.index.tolist())]
-    escape = df[df['id'].isin(end_escape.index.tolist())]
-    for i, label in zip([planet, disk, escape], ['Planet', 'Disk', 'Escape']):
-        ax.scatter(
-            i['x'], i['y'], alpha=1, marker=".", s=1, label=label
-        )
-    ax.set_xlim(-square_scale, square_scale)
-    ax.set_ylim(-square_scale, square_scale)
-    ax.set_title("{} - {} hrs ({})".format(title, formatted_time, iteration))
+    try:
+        fig = plt.figure(figsize=(10, 10))
+        ax = fig.add_subplot(111, aspect='equal')
+        df = pd.read_csv(base_path + "{}/circularized_{}/{}.csv".format(sim, sim, iteration))
+        planet = df[df['id'].isin(end_planet.index.tolist())]
+        disk = df[df['id'].isin(end_disk.index.tolist())]
+        escape = df[df['id'].isin(end_escape.index.tolist())]
+        for i, label in zip([planet, disk, escape], ['Planet', 'Disk', 'Escape']):
+            ax.scatter(
+                i['x'], i['y'], alpha=1, marker=".", s=1, label=label
+            )
+        ax.set_xlim(-square_scale, square_scale)
+        ax.set_ylim(-square_scale, square_scale)
+        ax.set_title("{} - {} hrs ({})".format(title, formatted_time, iteration))
 
-    legend = ax.legend(loc='upper left', fontsize=14)
-    for handle in legend.legendHandles:
-        try:
-            handle.set_sizes([50.0])
-        except:
-            pass
-
-    plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
+        legend = ax.legend(loc='upper left', fontsize=14)
+        for handle in legend.legendHandles:
+            try:
+                handle.set_sizes([50.0])
+            except:
+                pass
+        plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
+    except Exception as e:
+        pass
 
 animate(
     start_time=min_iteration,
