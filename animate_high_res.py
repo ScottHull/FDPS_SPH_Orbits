@@ -21,7 +21,7 @@ increment = 100
 square_scale = 6e7
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 to_path = "animate_high_res"
-sim, title = "5_b073_new_high_res", "5b073n-high"
+sim, title = "5_b073_new_high", "5b073n-high"
 
 iterations = list(np.arange(min_iteration, end_iteration + increment, increment))
 if not os.path.exists(to_path):
