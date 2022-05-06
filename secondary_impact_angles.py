@@ -66,6 +66,10 @@ def get_com(x, y, z, mass):
 
 
 def get_impactor_com_particles(output_name):
+    if "high" in output_name:
+        number_processes = 500
+    else:
+        number_processes = 200
     try:
         output_path = base_path + output_name + "/circularized_{}".format(output_name)
         df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
@@ -323,6 +327,10 @@ def get_impact_angle_with_velocity_vector():
             # df = pd.read_csv(output_path + "/{}.csv".format(iteration))
             path = base_path + "{}/{}".format(output_name, output_name)
             to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+            if "high" in output_name:
+                number_processes = 500
+            else:
+                number_processes = 200
             cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
             combined_file = cf.combine()
             formatted_time = round(cf.sim_time * 0.000277778, 2)
