@@ -14,7 +14,7 @@ from src.animate import animate
 
 plt.rcParams.update({'font.size': 8, })
 # plt.style.use("dark_background")
-plt.style.use('seaborn-colorblind')
+plt.style.use("dark_background")
 
 min_iteration = 0
 end_iteration = 1800
@@ -70,6 +70,13 @@ for iteration in iterations:
     ax.set_xlim(-square_scale, square_scale)
     ax.set_ylim(-square_scale, square_scale)
     ax.set_title("{} - {} hrs ({})".format(title, formatted_time, iteration))
+
+    legend = ax.legend(loc='upper left', fontsize=14)
+    for handle in legend.legendHandles:
+        try:
+            handle.set_sizes([50.0])
+        except:
+            pass
 
     plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
 
