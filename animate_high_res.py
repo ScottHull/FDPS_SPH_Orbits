@@ -17,7 +17,7 @@ plt.style.use("dark_background")
 
 min_iteration = 0
 end_iteration = 1800
-increment = 100
+increment = 20
 square_scale = 6e7
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 to_path = "animate_high_res"
@@ -59,10 +59,23 @@ for iteration in iterations:
     try:
         fig = plt.figure(figsize=(10, 10))
         ax = fig.add_subplot(111, aspect='equal')
-        df = pd.read_csv(base_path + "{}/circularized_{}/{}.csv".format(sim, sim, iteration))
+        # df = pd.read_csv(base_path + "{}/circularized_{}/{}.csv".format(sim, sim, iteration))
+        # planet = df[df['id'].isin(end_planet.index.tolist())]
+        # disk = df[df['id'].isin(end_disk.index.tolist())]
+        # escape = df[df['id'].isin(end_escape.index.tolist())]
+        path = base_path + "{}/{}".format(sim, sim)
+        to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+        cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+        combined_file = cf.combine()
+        formatted_time = round(cf.sim_time * 0.000277778, 2)
+        f = os.getcwd() + "/{}".format(to_fname)
+        headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                   "potential energy", "entropy", "temperature"]
+        df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
         planet = df[df['id'].isin(end_planet.index.tolist())]
         disk = df[df['id'].isin(end_disk.index.tolist())]
         escape = df[df['id'].isin(end_escape.index.tolist())]
+        os.remove(f)
         for i, label in zip([planet, disk, escape], ['Planet', 'Disk', 'Escape']):
             ax.scatter(
                 i['x'], i['y'], alpha=1, marker=".", s=1, label=label
@@ -79,6 +92,7 @@ for iteration in iterations:
                 pass
         plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
     except Exception as e:
+        print(e)
         pass
 
 animate(
