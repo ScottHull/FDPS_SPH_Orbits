@@ -13,7 +13,6 @@ from src.combine import CombineFile
 from src.animate import animate
 
 plt.rcParams.update({'font.size': 8, })
-# plt.style.use("dark_background")
 plt.style.use("dark_background")
 
 min_iteration = 0

@@ -19,6 +19,7 @@ from src.animate import animate
 from src.identify import ParticleMap
 from src.combine import CombineFile
 
+plt.rcParams.update({'font.size': 8, })
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
