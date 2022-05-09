@@ -145,9 +145,10 @@ def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_c
                      not_classifieds):
     num_new = len([i for i in sims if "new" in i])
     num_old = len([i for i in sims if "old" in i])
-    num_rows = max([num_new, num_old])
+    num_cols = max([num_new, num_old])
+    num_rows = round(num_cols / 2)
     plt.style.use("dark_background")
-    fig, axs = plt.subplots(num_rows, 2, figsize=(16, 32), sharex='all',
+    fig, axs = plt.subplots(num_rows, num_cols, figsize=(16, 32), sharex='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.12})
     fig.patch.set_facecolor('xkcd:black')
     axs = axs.flatten()
@@ -155,7 +156,7 @@ def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_c
         ax.set_xlim(-hsquare_scale, 0.5 * hsquare_scale)
         ax.set_ylim(-vsquare_scale, 2000)
         ax.grid(alpha=0.4)
-    index_new, index_old = 0, 1
+    to_index = 0
     for s, t in zip(sims, titles):
         df, target_com, impactor_com, time, si, tail, not_classified = dfs[t][-1], target_coms[t][-1], \
                                                                        impactor_coms[t][-1], times[t][-1], sis[t][-1], \
@@ -165,14 +166,6 @@ def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_c
         t2 = [si, tail, not_classified]
         # t1 = ["Debris Tail", "Other"]
         # t2 = [tail, not_classified]
-
-        to_index = index_new
-        if "old" in s:
-            to_index = index_old
-        for a, b, in zip(t1, t2):
-            axs[to_index].scatter(
-                b['x'], b['y'], s=1, marker='.', label=a
-            )
 
         axs[to_index].scatter(
             impactor_com[0], impactor_com[1], s=60, c='pink', marker="*", label="Impactor COM"
@@ -191,10 +184,8 @@ def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_c
         )
 
         axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
-        if "old" in s:
-            index_old += 2
-        else:
-            index_new += 2
+
+        to_index += 1
     axs[0].legend(loc='upper left')
     plt.savefig(to_save_path + "/{}.png".format(iteration), format='png', dpi=200)
 
@@ -241,7 +232,7 @@ def get_impactor_com_particles(output_name):
 
 
 def get_secondary_and_tail():
-    sims, titles = get_all_sims(angle=angle, high=False)
+    sims, titles = get_all_sims(angle=angle, high=True)
     impact_angles = {}
     target_coms = {}
     impactor_coms = {}
