@@ -27,7 +27,10 @@ iterations = list(np.arange(min_iteration, end_iteration + increment, increment)
 if not os.path.exists(to_path):
     os.mkdir(to_path)
 
-endstate = pd.read_csv(base_path + "{}/circularized_{}/{}.csv".format(sim, sim, end_iteration))
+headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                   "potential energy", "entropy", "temperature"]
+
+endstate = pd.read_csv(base_path + "{}/circularized_{}/{}.csv".format(sim, sim, end_iteration), index_col='id')
 end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[endstate['label'] == "DISK"], \
                                    endstate[endstate['label'] == "ESCAPE"]
 
@@ -70,8 +73,6 @@ def run_proc(args):
         combined_file = cf.combine()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
         f = os.getcwd() + "/{}".format(to_fname)
-        headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
-                   "potential energy", "entropy", "temperature"]
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
         planet = df[df['id'].isin(end_planet.index.tolist())]
         disk = df[df['id'].isin(end_disk.index.tolist())]

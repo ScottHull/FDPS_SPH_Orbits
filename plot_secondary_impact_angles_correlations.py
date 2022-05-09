@@ -238,7 +238,7 @@ def plot_vs_disk_property_all():
     x_label_r_dot_v = r"$\phi$"
     sims, titles = get_all_sims(high=False)
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
-    fig, axs = plt.subplots(2, 4, figsize=(27, 9), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
+    fig, axs = plt.subplots(2, 3, figsize=(16, 9), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
     axs = axs.flatten()
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     for s, t in zip(sims, titles):
@@ -280,54 +280,60 @@ def plot_vs_disk_property_all():
         # axs[7].scatter(
         #     time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
         # )
+        # axs[0].scatter(
+        #     impact_angle, time, color=color, marker=scatter_point, s=80
+        # )
+        # axs[1].scatter(
+        #     impact_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
+        # axs[2].scatter(
+        #     impact_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
         axs[0].scatter(
-            impact_angle, time, color=color, marker=scatter_point, s=80
-        )
-        axs[1].scatter(
-            impact_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
-        )
-        axs[2].scatter(
-            impact_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
-        )
-        axs[3].scatter(
             impact_r_v_angle, time, color=color, marker=scatter_point, s=80
         )
-        axs[4].scatter(
+        axs[1].scatter(
             impact_r_v_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
         )
-        axs[5].scatter(
+        axs[2].scatter(
             impact_r_v_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
         )
-        axs[6].scatter(
-            time, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
-        )
-        axs[7].scatter(
-            time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
-        )
+        # axs[6].scatter(
+        #     time, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
+        # axs[7].scatter(
+        #     time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        # )
         
-        for ax in axs[0:3]:
-            ax.set_xlabel(x_label_angle)
-        for ax in axs[3:6]:
-            ax.set_xlabel(x_label_r_dot_v)
-        for ax in [axs[6], axs[7]]:
-            ax.set_xlabel("Time After Primary Impact (hrs)")
+        # for ax in axs[0:3]:
+        #     ax.set_xlabel(x_label_angle)
+        # for ax in axs[3:6]:
+        #     ax.set_xlabel(x_label_r_dot_v)
+        # for ax in [axs[6], axs[7]]:
+        #     ax.set_xlabel("Time After Primary Impact (hrs)")
+        #
+        # for index in [1, 4, 6]:
+        #     axs[index].set_ylabel(rows_map[points[0]][1:-1])
+        # for index in [2, 5, 7]:
+        #     axs[index].set_ylabel(rows_map[points[1]][1:-1])
+        # for index in [0, 3]:
+        #     axs[index].set_ylabel("Time After Primary Impact (hrs)")
 
-        for index in [1, 4, 6]:
-            axs[index].set_ylabel(rows_map[points[0]][1:-1])
-        for index in [2, 5, 7]:
-            axs[index].set_ylabel(rows_map[points[1]][1:-1])
-        for index in [0, 3]:
-            axs[index].set_ylabel("Time After Primary Impact (hrs)")
+        for ax in axs:
+            ax.set_xlabel(r"$\phi$ (degrees)")
+        axs[0].set_ylabel("Time of Secondary Impact (hrs)")
+        axs[1].set_ylabel("Disk Mass ($M_{L}$)")
+        axs[2].set_ylabel("Disk Angular Momentum ($L_{EM}$)")
 
     for c in cutoff_densities:
         axs[0].scatter(
             [], [], s=80, marker="s", color=colors[cutoff_densities.index(c)], label="{} kg/m$^3$".format(c)
         )
     axs[0].scatter(
-        [], [], s=80, marker="^", color='black', label="GADGET M-ANEOS"
+        [], [], s=80, marker="*", color='black', label="5b073n-high"
     )
     axs[0].scatter(
-        [], [], s=80, marker="o", color='black', label="Stewart M-ANEOS"
+        [], [], s=80, marker="^", color='black', label="GADGET M-ANEOS"
     )
     if "high" in ",".join(str(i) for i in sims) and angle == "b073":
         axs[0].scatter(
