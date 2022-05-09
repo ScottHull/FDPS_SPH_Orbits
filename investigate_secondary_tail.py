@@ -3,7 +3,7 @@ import os
 import csv
 import pandas as pd
 import numpy as np
-from math import atan, pi, acos
+from math import atan, pi, acos, ceil
 from operator import contains
 from random import randint
 import multiprocessing as mp
@@ -146,7 +146,7 @@ def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_c
     num_new = len([i for i in sims if "new" in i])
     num_old = len([i for i in sims if "old" in i])
     num_cols = max([num_new, num_old])
-    num_rows = round(num_cols / 2)
+    num_rows = ceil(num_cols / 2)
     plt.style.use("dark_background")
     fig, axs = plt.subplots(num_rows, num_cols, figsize=(32, 16), sharex='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.12})
@@ -181,6 +181,15 @@ def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_c
         )
         axs[to_index].plot(
             [impactor_com[0], target_com[0]], [impactor_com[1], impactor_com[1]], linewidth=2.0, color="aqua"
+        )
+        axs[to_index].scatter(
+            not_classified['x'], not_classified['y'], s=2, alpha=1.0, marker=".", label="Other"
+        )
+        axs[to_index].scatter(
+            si['x'], si['y'], s=2, alpha=1.0, marker=".", label="Secondary Impactor"
+        )
+        axs[to_index].scatter(
+            tail['x'], tail['y'], s=2, alpha=1.0, marker=".", label="Tail"
         )
 
         axs[to_index].set_title("{} {} hrs. ({})".format(t, time, iteration))
