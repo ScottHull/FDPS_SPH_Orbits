@@ -223,12 +223,40 @@ def get_secondary_imp_and_tail_particles(title, df):
     return si, tail, not_classified
 
 
+# def get_impactor_com_particles(output_name):
+#     output_path = base_path + output_name + "/circularized_{}".format(output_name)
+#     df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
+#     impactor_iron = df[df['tag'] == 3]
+#     impactor_iron = impactor_iron[impactor_iron['radius'] > 1.5e7]
+#     return impactor_iron['id']
+
+
 def get_impactor_com_particles(output_name):
-    output_path = base_path + output_name + "/circularized_{}".format(output_name)
-    df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
-    impactor_iron = df[df['tag'] == 3]
-    impactor_iron = impactor_iron[impactor_iron['radius'] > 1.5e7]
-    return impactor_iron['id']
+    if "high" in output_name:
+        number_processes = 500
+    else:
+        number_processes = 200
+    try:
+        output_path = base_path + output_name + "/circularized_{}".format(output_name)
+        df = pd.read_csv(output_path + "/{}.csv".format(min_iteration))
+        impactor_iron = df[df['tag'] == 3]
+        impactor_iron = impactor_iron[impactor_iron['radius'] > 1.5e7]
+        return impactor_iron['id']
+    except FileNotFoundError:
+        path = base_path + "{}/{}".format(output_name, output_name)
+        to_fname = "merged_{}_{}.dat".format(min_iteration, randint(0, 100000))
+        cf = CombineFile(num_processes=number_processes, time=min_iteration, output_path=path, to_fname=to_fname)
+        combined_file = cf.combine()
+        formatted_time = round(cf.sim_time * 0.000277778, 2)
+        f = os.getcwd() + "/{}".format(to_fname)
+        headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                   "potential energy", "entropy", "temperature"]
+        df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
+        os.remove(f)
+        impactor_iron = df[df['tag'] == 3]
+        impactor_iron['radius'] = [(i ** 2 + j ** 2 + k ** 2) ** (1 / 2) for i, j, k in zip(impactor_iron['x'], impactor_iron['y'], impactor_iron['z'])]
+        impactor_iron = impactor_iron[impactor_iron['radius'] > 1.5e7]
+        return impactor_iron['id']
 
 
 def get_secondary_and_tail():
