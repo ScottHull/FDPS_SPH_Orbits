@@ -329,21 +329,21 @@ def plot_vs_disk_property_all():
         axs[0].scatter(
             [], [], s=80, marker="s", color=colors[cutoff_densities.index(c)], label="{} kg/m$^3$".format(c)
         )
-    axs[0].scatter(
-        [], [], s=80, marker="*", color='black', label="5b073n-high"
-    )
+    # axs[0].scatter(
+    #     [], [], s=80, marker="*", color='black', label="5b073n-high"
+    # )
+    if "high" in ",".join(str(i) for i in sims) and angle == "b073":
+        axs[0].scatter(
+            [], [], s=80, marker="*", color=colors[cutoff_densities.index(5)], label="5b073n-high"
+        )
     axs[0].scatter(
         [], [], s=80, marker="o", color='black', label="Stewart M-ANEOS"
     )
     axs[0].scatter(
         [], [], s=80, marker="^", color='black', label="GADGET M-ANEOS"
     )
-    if "high" in ",".join(str(i) for i in sims) and angle == "b073":
-        axs[0].scatter(
-            [], [], s=80, marker="*", color=colors[cutoff_densities.index(5)], label="5b073n-high"
-        )
 
-    axs[0].legend(fontsize=8)
+    axs[0].legend(loc='lower right', fontsize=8)
     letters = list(string.ascii_lowercase)
     for index, ax in enumerate(axs):
         x1, x2, y1, y2 = ax.axis()
