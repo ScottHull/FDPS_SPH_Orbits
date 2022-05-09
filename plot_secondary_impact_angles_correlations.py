@@ -236,9 +236,9 @@ def plot_vs_disk_property_all():
     x_label_angle = r"$\theta$"
     # x_label_r_dot_v = "$r \cdot v$"
     x_label_r_dot_v = r"$\phi$"
-    sims, titles = get_all_sims(high=False)
+    sims, titles = get_all_sims(high=True)
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
-    fig, axs = plt.subplots(1, 3, figsize=(18, 6), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
+    fig, axs = plt.subplots(1, 3, figsize=(20, 6), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
     axs = axs.flatten()
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     for s, t in zip(sims, titles):
@@ -321,7 +321,6 @@ def plot_vs_disk_property_all():
 
         for ax in axs:
             ax.set_xlabel(r"$\phi$ (degrees)")
-            ax.set_aspect('equal')
         axs[0].set_ylabel("Time of Secondary Impact (hrs)")
         axs[1].set_ylabel("Disk Mass ($M_{L}$)")
         axs[2].set_ylabel("Disk Angular Momentum ($L_{EM}$)")
@@ -332,6 +331,9 @@ def plot_vs_disk_property_all():
         )
     axs[0].scatter(
         [], [], s=80, marker="*", color='black', label="5b073n-high"
+    )
+    axs[0].scatter(
+        [], [], s=80, marker="o", color='black', label="Stewart M-ANEOS"
     )
     axs[0].scatter(
         [], [], s=80, marker="^", color='black', label="GADGET M-ANEOS"
