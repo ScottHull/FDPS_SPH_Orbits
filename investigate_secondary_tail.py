@@ -293,6 +293,10 @@ def get_secondary_and_tail():
         if title not in dfs.keys():
             dfs.update({title: []})
             si_and_tail_data.update({title: []})
+        if 'high' in output_name:
+            number_processes = 500
+        else:
+            number_processes = 200
         output_path = base_path + output_name + "/circularized_{}".format(output_name)
         # df = pd.read_csv(output_path + "/{}.csv".format(iteration))
         path = base_path + "{}/{}".format(output_name, output_name)
