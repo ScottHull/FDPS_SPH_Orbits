@@ -456,5 +456,88 @@ def get_secondary_and_tail():
                      target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times,
                      sis=sis, tails=tails, not_classifieds=not_classifieds)
 
+def plot_seconary_and_tail():
+    sims, titles = get_all_sims(angle=angle, high=True)
+    impact_angles = {}
+    target_coms = {}
+    impactor_coms = {}
+    imp_ids = {}
+    times = {}
+    r_dot_vs = {}
+    r_dot_v_angles = {}
+    r_vectors = {}
+    v_vectors = {}
+    sis = {}
+    tails = {}
+    not_classifieds = {}
+    si_and_tail_data = {}
+    for output_name, title in zip(sims, titles):
+        imp_ids.update({title: get_impactor_com_particles(output_name)})
+    dfs = {}
+    for output_name, title in zip(sims, titles):
+        if title not in impact_angles.keys():
+            impact_angles.update({title: []})
+            impactor_coms.update({title: []})
+            target_coms.update({title: []})
+            times.update({title: []})
+            r_dot_vs.update({title: []})
+            r_dot_v_angles.update({title: []})
+            r_vectors.update({title: []})
+            v_vectors.update({title: []})
+            sis.update({title: []})
+            tails.update({title: []})
+            not_classifieds.update({title: []})
+        if title not in dfs.keys():
+            dfs.update({title: []})
+            si_and_tail_data.update({title: []})
+        if 'high' in output_name:
+            number_processes = 500
+        else:
+            number_processes = 200
+        output_path = base_path + output_name + "/circularized_{}".format(output_name)
+        # df = pd.read_csv(output_path + "/{}.csv".format(iteration))
+        path = base_path + "{}/{}".format(output_name, output_name)
+        to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+        cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+        combined_file = cf.combine()
+        formatted_time = round(cf.sim_time * 0.000277778, 2)
+        times[title].append(formatted_time)
+        f = os.getcwd() + "/{}".format(to_fname)
+        headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                   "potential energy", "entropy", "temperature"]
+        df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
+        os.remove(f)
+        zero_coords = get_com(df[df['tag'] == 1]['x'], df[df['tag'] == 1]['y'],
+                              df[df['tag'] == 1]['z'], df[df['tag'] == 1]['mass'])
+        df['x'] -= zero_coords[0]
+        df['y'] -= zero_coords[1]
+        df['z'] -= zero_coords[2]
+        # df['radius'] = [(i ** 2 + j ** 2 + k ** 2) ** (1 / 2) for i, j, k in zip(df['x'], df['y'], df['z'])]
 
-get_secondary_and_tail()
+        target_iron = df[df['tag'] == 1]
+        impactor_iron = df[df['tag'] == 3]
+
+        # impactor_iron = impactor_iron[impactor_iron['id'] in imp_ids[title]]
+        impactor_iron = impactor_iron[impactor_iron['id'].isin(imp_ids[title].tolist())]
+
+        target_com = get_com(target_iron['x'], target_iron['y'], target_iron['z'], target_iron['mass'])
+        impactor_com = get_com(impactor_iron['x'], impactor_iron['y'], impactor_iron['z'], impactor_iron['mass'])
+        si, tail, not_classified = get_secondary_imp_and_tail_particles(title, df)
+
+        dfs[title].append(df)
+        target_coms[title].append(target_com)
+        impactor_coms[title].append(impactor_com)
+        sis[title].append(si)
+        tails[title].append(tail)
+        not_classifieds[title].append(not_classified)
+
+    to_save_path = "{}_secondary_impact_structures".format(angle)
+    if not os.path.exists(to_save_path):
+        os.mkdir(to_save_path)
+    __plot_secondary(iteration=iteration, dfs=dfs, sims=sims, titles=titles,
+                     target_coms=target_coms, impactor_coms=impactor_coms, to_save_path=to_save_path, times=times,
+                     sis=sis, tails=tails, not_classifieds=not_classifieds)
+
+
+# get_secondary_and_tail()
+plot_seconary_and_tail()
