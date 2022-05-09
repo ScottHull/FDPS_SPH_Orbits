@@ -148,7 +148,7 @@ def __plot_secondary(iteration, times, to_save_path, dfs, sims, titles, target_c
     num_cols = max([num_new, num_old])
     num_rows = round(num_cols / 2)
     plt.style.use("dark_background")
-    fig, axs = plt.subplots(num_rows, num_cols, figsize=(16, 32), sharex='all',
+    fig, axs = plt.subplots(num_rows, num_cols, figsize=(32, 16), sharex='all',
                             gridspec_kw={"hspace": 0.10, "wspace": 0.12})
     fig.patch.set_facecolor('xkcd:black')
     axs = axs.flatten()
