@@ -226,11 +226,11 @@ def plot_vs_disk_property(r_dot_v: bool):
     plt.savefig("{}_{}_secondary_impact_vs_disk_property.png".format(angle, f), format='png', dpi=200)
 
 def plot_vs_disk_property_all():
-    angles_path = "{}_secondary_impact_angles.csv".format(angle)
-    r_dot_v_path = "{}_secondary_impact_angles_r_dot_v.csv".format(angle)
+    # angles_path = "{}_secondary_impact_angles.csv".format(angle)
+    # r_dot_v_path = "{}_secondary_impact_angles_r_dot_v.csv".format(angle)
     r_dot_v_angle = "{}_secondary_impact_angles_angle_between_r_and_v.csv".format(angle)
-    angles_df = pd.read_csv(angles_path, index_col="Unnamed: 0")
-    r_dot_v_df = pd.read_csv(r_dot_v_path, index_col="Unnamed: 0")
+    # angles_df = pd.read_csv(angles_path, index_col="Unnamed: 0")
+    # r_dot_v_df = pd.read_csv(r_dot_v_path, index_col="Unnamed: 0")
     r_dot_v_angle_df = pd.read_csv(r_dot_v_angle, index_col="Unnamed: 0")
     # x_label_angle = "Impact Angle (deg.)"
     x_label_angle = r"$\theta$"
@@ -250,8 +250,8 @@ def plot_vs_disk_property_all():
         if "high" in s:
             scatter_point = "*"
         impact_point = secondary_impact_times[t]
-        impact_angle = angles_df[t][impact_point['iteration']]
-        impact_r_dot_v = r_dot_v_df[t][impact_point['iteration']]
+        # impact_angle = angles_df[t][impact_point['iteration']]
+        # impact_r_dot_v = r_dot_v_df[t][impact_point['iteration']]
         impact_r_v_angle = 180 - r_dot_v_angle_df[t][impact_point['iteration']]
         report_path = base_path + "{}/{}_reports/{}.csv".format(s, s, end_iteration)
         report = pd.read_csv(report_path)
