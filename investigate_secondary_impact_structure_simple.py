@@ -246,7 +246,7 @@ endstates = get_end_states(angle=angle, high=False)
 
 def profile_time():
 
-    sims, titles = get_all_sims(angle, False)
+    sims, titles = get_all_sims(angle, True)
 
     data = {}
     for s, t in zip(sims, titles):

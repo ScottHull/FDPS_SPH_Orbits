@@ -343,7 +343,7 @@ def plot_vs_disk_property_all():
         [], [], s=80, marker="^", color='black', label="GADGET M-ANEOS"
     )
 
-    axs[0].legend(loc='lower right', fontsize=8)
+    axs[0].legend(loc='lower right', fontsize=12)
     letters = list(string.ascii_lowercase)
     for index, ax in enumerate(axs):
         x1, x2, y1, y2 = ax.axis()
