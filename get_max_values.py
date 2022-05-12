@@ -51,7 +51,7 @@ def find_max(df, title, curr_maxes, iteration, time):
     max_entropy = max(df['entropy'])
 
     for i, j in zip([max_rho, max_pressure, max_internal_energy, max_temperature, max_entropy],
-                    ['density', 'pressure', 'internal_energy', 'temperature', 'entropy']):
+                    ['density', 'pressure', 'internal energy', 'temperature', 'entropy']):
         if j not in curr_maxes[title]:
             curr_maxes[title][j] = {"iteration": None, "time": None, "value": -1e99}
         if i > curr_maxes[title][j]['value']:
