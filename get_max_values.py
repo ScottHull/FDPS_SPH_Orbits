@@ -52,9 +52,9 @@ def find_max(df, title, curr_maxes, iteration, time):
 
     for i, j in zip([max_rho, max_pressure, max_internal_energy, max_temperature, max_entropy],
                     ['density', 'pressure', 'internal energy', 'temperature', 'entropy']):
-        if j not in curr_maxes[title]:
-            curr_maxes[title][j] = {"iteration": None, "time": None, "value": -1e99}
-        if i > curr_maxes[title][j]['value']:
+        if j not in curr_maxes:
+            curr_maxes[j] = {"iteration": None, "time": None, "value": -1e99}
+        if i > curr_maxes[j]['value']:
             curr_maxes[j]['value'] = i
             curr_maxes[j]['iteration'] = iteration
             curr_maxes[j]['time'] = time
@@ -65,6 +65,7 @@ def __run_proc(args):
     number_processes = 200
     if "high" in s:
         number_processes = 500
+    curr_max = {}
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -76,7 +77,8 @@ def __run_proc(args):
                    "potential energy", "entropy", "temperature"]
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
         os.remove(f)
-        find_max(df, t, max_vals, iteration, formatted_time)
+        curr_max = find_max(df, t, curr_max, iteration, formatted_time)
+    max_vals[t] = curr_max
 
 def run():
     pool = mp.Pool(10)
