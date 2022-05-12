@@ -46,7 +46,7 @@ max_vals = dict(zip(titles, [{} for i in titles]))
 def find_max(df, title, curr_maxes, iteration, time):
     max_rho = max(df['density'])
     max_pressure = max(df['density'])
-    max_internal_energy = max(df['internal_energy'])
+    max_internal_energy = max(df['internal energy'])
     max_temperature = max(df['temperature'])
     max_entropy = max(df['entropy'])
 
