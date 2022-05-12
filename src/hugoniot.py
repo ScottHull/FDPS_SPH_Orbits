@@ -44,7 +44,7 @@ class Hugoniot_Granite:
         self.get_interpolation_functions(self.gridded_temperatures, self.gridded_densities)
 
     def __get_interp2d_func(self, x_array, y_array, z_array):
-        return LinearNDInterpolator((x_array, y_array), z_array)
+        return LinearNDInterpolator((x_array, y_array), z_array[list(z_array.keys())[0]])
 
     def interpolate2D(self, variable: str, x_value, y_value):
         """
@@ -57,7 +57,7 @@ class Hugoniot_Granite:
         :return:
         """
         f = self.interp_funcs[variable]
-        return f(x_value, y_value)[0]  # return the interpolated value
+        return f(x_value, y_value)  # return the interpolated value
 
     def get_interpolation_functions(self, x_array, y_array):
         self.interp_funcs = {
@@ -202,14 +202,14 @@ class Hugoniot_Granite:
 
 
 
-class Hugoniot_Forsterite:
+class Hugoniot_ANEOS:
 
     def __init__(self):
         pass
 
 
     def read_ANEOS(self, file_path):
-        df = pd.read_csv(file_path, delimiter="\t", header=None, skiprows=2)
+        df = pd.read_fwf(file_path, sep="\t", header=None, skiprows=2)
         self.gridded_densities = df[0]
         self.gridded_internal_energies = df[1]
         self.temperatures = df[2]
@@ -217,10 +217,12 @@ class Hugoniot_Forsterite:
         self.soundspeeds = df[4]
         self.entropies = df[5]
 
+        self.set_temperatures = list(set(self.temperatures))
+
         self.densities = list(set(self.gridded_densities))
         self.internal_energies = list(set(self.gridded_internal_energies))
 
-        self.get_interpolation_functions(self.gridded_densities, self.gridded_internal_energies)
+        self.get_interpolation_functions(self.gridded_densities.tolist(), self.gridded_internal_energies.tolist())
 
     def __get_interp2d_func(self, x_array, y_array, z_array):
         return LinearNDInterpolator((x_array, y_array), z_array)
@@ -236,14 +238,15 @@ class Hugoniot_Forsterite:
         :return:
         """
         f = self.interp_funcs[variable]
-        return f(x_value, y_value)[0]  # return the interpolated value
+        return f(x_value, y_value)  # return the interpolated value
 
     def get_interpolation_functions(self, x_array, y_array):
         self.interp_funcs = {
             "pressure": self.__get_interp2d_func(x_array, y_array, self.pressures),
             "soundspeed": self.__get_interp2d_func(x_array, y_array, self.soundspeeds),
+            "internal_energy": self.__get_interp2d_func(x_array, y_array, self.gridded_internal_energies),
             "entropy": self.__get_interp2d_func(x_array, y_array, self.entropies),
-            "temperature": self.__get_interp2d_func(x_array, y_array, self.temperatures),
+            "temperature": self.__get_interp2d_func(x_array, y_array, self.temperatures)
         }
 
     def initial_conditions(self, aneos_hugoniot_filepath):
@@ -253,15 +256,17 @@ class Hugoniot_Forsterite:
         :return:
         """
         # get ANEOS Hugoniot data and store it in order to get initial conditions
-        df = pd.read_fwf(aneos_hugoniot_filepath, header=None)
-        self.rho_h, self.T_h, self.P_h, self.U_h, self.S_h, self.Us_h, self.Up_h = df[0], df[1], df[2] * 10 ** 9, \
-                                                                                   df[4], df[5], df[6] * 1000, df[
-                                                                                       7] * 1000
-        rho1, T1 = self.rho_h[0], self.T_h[0]
-        P1 = self.interpolate2D("pressure", T1, rho1)
-        C1 = self.interpolate2D("soundspeed", T1, rho1)
-        U1 = self.interpolate2D("internal_energy", T1, rho1)
-        S1 = self.interpolate2D("entropy", T1, rho1)
+        df = pd.read_fwf(aneos_hugoniot_filepath, header=None, skiprows=1)
+        self.rho_h, self.P_h, self.T_h, self.U_h, self.C_h, self.S_h, self.Us_h, self.Up_h = [df[i] for i in list(df.keys())[:-1]]
+        self.P_h /= 10 ** 9
+        self.U_h *= 1000
+        self.Us_h *= 1000
+        self.Up_h *= 1000
+        rho1, U1 = self.rho_h[0], self.U_h[0]
+        P1 = self.interpolate2D("pressure", rho1, U1)
+        C1 = self.interpolate2D("soundspeed", rho1, U1)
+        T1 = self.interpolate2D("temperature", rho1, U1)
+        S1 = self.interpolate2D("entropy", rho1, U1)
         return rho1, P1, C1, U1, S1
 
     def calculate_internal_energy(self, U1, P1, P2, rho1, rho2):
@@ -285,22 +290,22 @@ class Hugoniot_Forsterite:
         """
         return U1 + (0.5 * (P1 + P2) * (rho2 - rho1) / (rho1 * rho2))
 
-    def calculate_U2(self, P2, rho2):
+    def calculate_T2(self, P2, rho2):
         """
         Linearly interpolates T2 from the 2D-interpolated pressure.
         :param P2:
         :param rho2:
         :return:
         """
-        U_prev = self.internal_energies.tolist()[0]  # the initial temperature for the interpolation
-        P_prev = self.interpolate2D("pressure", rho2, U_prev)  # pressure corresponding to the initial temperature
-        for U in self.internal_energies.tolist()[1:]:
-            P = self.interpolate2D("pressure", rho2, U)  # the pressure at T and rho2
+        T_prev = self.temperatures.tolist()[0]  # the initial temperature for the interpolation
+        P_prev = self.interpolate2D("pressure", T_prev, rho2)  # pressure corresponding to the initial temperature
+        for T in self.temperatures.tolist()[1:]:
+            P = self.interpolate2D("pressure", T, rho2)  # the pressure at T and rho2
             # begin temperature interpolation
             if (P - P2) * (P_prev - P2) < 0:  # this is a midpoint condition between P_prev and P2
                 # assume that temperature scales with pressure according to (P2_p_prev) / (P - P_prev)
-                return U_prev + ((U - U_prev) / (P - P_prev) * (P2 - P_prev))  # this is T2
-            U_prev = U
+                return T_prev + ((T - T_prev) / (P - P_prev) * (P2 - P_prev))  # this is T2
+            T_prev = T
             P_prev = P
 
     def update_tracked_list(self, list_to_update, new_value, index):
@@ -344,7 +349,7 @@ class Hugoniot_Forsterite:
                 if self.interpolate2D("pressure", self.temperatures.tolist()[-1],
                                       rho2) > P2:  # enforce an increase in pressure from the previous iteration
                     T2 = self.calculate_T2(P2, rho2)  # the temperature at the second state
-                    U2 = self.interpolate2D("internal_energy", T2, rho1)  # why rho1?
+                    U2 = self.interpolate2D("internal_energy", rho2)  # why rho1?
                     U2_calc = self.calculate_internal_energy(U1, P1, P2, rho1, rho2)
 
                     # these hold old values for some reason?
@@ -379,4 +384,3 @@ class Hugoniot_Forsterite:
                 rho2 += 100  # bump rho2 by 100
 
         return T_s, Rho_s, Us_s, Up_s, P_s, U_s, S_s
-
