@@ -76,7 +76,7 @@ def __run_proc(args):
                    "potential energy", "entropy", "temperature"]
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
         os.remove(f)
-        max_vals = find_max(df, t, max_vals, iteration, formatted_time)
+        find_max(df, t, max_vals, iteration, formatted_time)
 
 def run():
     pool = mp.Pool(10)
@@ -90,3 +90,4 @@ def run():
         f.write(str(max_vals))
     f.close()
 
+run()
