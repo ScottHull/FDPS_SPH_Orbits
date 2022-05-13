@@ -1,4 +1,4 @@
-from src.hugoniot import Hugoniot_Granite
+from src.hugoniot import Hugoniot
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 granite_aneos_path = "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/Hugoniot/data/granite_from_table.dat"
 aneos_hugoniot_path = "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/Hugoniot/data/aneos_hugoniot_granite.dat"
 
-h = Hugoniot_Granite()
+h = Hugoniot()
 h.read_SESAME(granite_aneos_path)
-rho1, P1, C1, U1, S1 = h.initial_conditions(aneos_hugoniot_path)
+rho1, P1, C1, U1, S1 = h.initial_conditions_granite(aneos_hugoniot_path)
 T_s, Rho_s, Us_s, Up_s, P_s, U_s, S_s = h.rankine_hugoniot_equations(rho1, P1, U1)
 P_s = np.array(P_s) / 10 ** 9
 Us_s = np.array(Us_s) / 10 ** 3

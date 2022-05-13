@@ -1,14 +1,19 @@
-from src.hugoniot import Hugoniot_ANEOS
+import sys
+
+from src.hugoniot import Hugoniot
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sys import exit
 
-forsterite_aneos_path = "src/phase_data/forst_STS.rho_u.txt"
+forsterite_aneos_path = "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/Hugoniot/data/forst_STS.table.txt"
 forsterite_aneos_hugoniot_path = "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/FDPS_SPH_Orbits/src/phase_data/forstSTS__hugoniot.txt"
+# forsterite_aneos_path = "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/Hugoniot/data/duniteN.table.txt"
+# forsterite_aneos_hugoniot_path = "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/FDPS_SPH_Orbits/src/phase_data/duniteN__hugoniot.txt"
 
-h = Hugoniot_ANEOS()
+h = Hugoniot()
 h.read_ANEOS(forsterite_aneos_path)
-rho1, P1, C1, U1, S1 = h.initial_conditions(forsterite_aneos_hugoniot_path)
+rho1, P1, C1, U1, S1 = h.initial_conditions_aneos(forsterite_aneos_hugoniot_path)
 T_s, Rho_s, Us_s, Up_s, P_s, U_s, S_s = h.rankine_hugoniot_equations(rho1, P1, U1)
 P_s = np.array(P_s) / 10 ** 9
 Us_s = np.array(Us_s) / 10 ** 3
@@ -61,6 +66,15 @@ axs[4].plot(
 )
 axs[4].set_xlabel("Density (kg/m^3)")
 axs[4].set_ylabel("T (K)")
+
+axs[5].plot(
+    Rho_s, S_s, linewidth=2.0, label="Calculated"
+)
+axs[5].plot(
+    h.rho_h, h.S_h, linewidth=2.0, linestyle="--", label="ANEOS"
+)
+axs[5].set_xlabel("Density (kg/m^3)")
+axs[5].set_ylabel("Entropy (J/kg/K)")
 
 for ax in axs:
     ax.grid(alpha=0.4)
