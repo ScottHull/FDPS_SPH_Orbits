@@ -42,7 +42,7 @@ def get_all_sims(angle, high=True):
     return names, titles
 
 def get_endstate(s):
-    path = base_path + "circularized_{}/{}".format(s, s)
+    path = base_path + "{}/circularized_{}".format(s, s)
     df = pd.read_csv(path + "/{}.csv".format(end_state_iteration))
     disk = df[df['label'] == "DISK"]
     return disk['id'].tolist()
