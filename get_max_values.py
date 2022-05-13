@@ -53,7 +53,7 @@ def find_max(df, title, curr_maxes, iteration, time):
     for i, j in zip([max_rho, max_pressure, max_internal_energy, max_temperature, max_entropy],
                     ['density', 'pressure', 'internal energy', 'temperature', 'entropy']):
         if j not in curr_maxes:
-            curr_maxes[j] = {"iteration": None, "time": None, "value": -1e99}
+            curr_maxes.update({j: {"iteration": None, "time": None, "value": -1e99}})
         if i > curr_maxes[j]['value']:
             curr_maxes[j]['value'] = i
             curr_maxes[j]['iteration'] = iteration
