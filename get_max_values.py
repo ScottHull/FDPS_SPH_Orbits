@@ -14,6 +14,7 @@ from src.combine import CombineFile
 
 min_iteration = 0
 max_iteration = 300
+end_state_iteration = 1800
 increment = 1
 angle = 'b073'
 cutoff_densities = [5, 500, 1000, 2000]
@@ -40,6 +41,12 @@ def get_all_sims(angle, high=True):
         titles.append(title_name)
     return names, titles
 
+def get_endstate(s):
+    path = base_path + "circularized_{}/{}".format(s, s)
+    df = pd.read_csv(path + "/{}".format(end_state_iteration))
+    disk = df[df['label'] == "DISK"]
+    return disk['id'].tolist()
+
 sims, titles = get_all_sims(angle=angle, high=True)
 max_vals = dict(zip(titles, [{} for i in titles]))
 
@@ -62,6 +69,7 @@ def find_max(df, title, curr_maxes, iteration, time):
 
 def __run_proc(args):
     s, t = args
+    endstate = get_endstate(s)
     number_processes = 200
     if "high" in s:
         number_processes = 500
@@ -76,8 +84,9 @@ def __run_proc(args):
         headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
+        disk = df[df['id'].isin(endstate)]
         os.remove(f)
-        curr_max = find_max(df, t, curr_max, iteration, formatted_time)
+        curr_max = find_max(disk, t, curr_max, iteration, formatted_time)
     max_vals[t] = curr_max
 
 def run():
