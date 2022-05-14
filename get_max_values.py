@@ -88,6 +88,12 @@ def __run_proc(args):
         os.remove(f)
         curr_max = find_max(disk, t, curr_max, iteration, formatted_time)
     max_vals[t] = curr_max
+    f = "{}_{}_max_vals.csv".format(t, angle)
+    if os.path.exists(f):
+        os.remove(f)
+    with open(f, 'w') as infile:
+        infile.write(str(curr_max))
+    infile.close()
 
 def run():
     pool = mp.Pool(10)
