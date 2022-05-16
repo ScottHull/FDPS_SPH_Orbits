@@ -20,6 +20,7 @@ si_iteration = 190
 max_iteration = 1800
 increment = 20
 angle = 'b073'
+high = True
 cutoff_densities = [5, 500, 1000, 2000]
 number_processes = 200
 square_scale = 6e7
@@ -189,7 +190,7 @@ def get_end_states(angle, high):
 
 
 def get_secondary_and_tail():
-    sims, titles = get_all_sims(angle=angle, high=False)
+    sims, titles = get_all_sims(angle=angle, high=True)
     impact_angles = {}
     times = {}
     sis = {}
@@ -242,7 +243,7 @@ def reformat_dict(d: dict):
 
 
 sis, tails, not_classifieds = get_secondary_and_tail()
-endstates = get_end_states(angle=angle, high=False)
+endstates = get_end_states(angle=angle, high=True)
 
 def profile_time():
 
