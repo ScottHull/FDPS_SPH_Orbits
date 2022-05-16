@@ -1,5 +1,3 @@
-import sys
-
 from src.hugoniot import Hugoniot
 import numpy as np
 import pandas as pd

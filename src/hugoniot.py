@@ -50,7 +50,6 @@ class Hugoniot:
             df[1]
         except:
             df = pd.read_csv(file_path, delimiter="\t", header=None, skiprows=1)
-        print(df)
         df = df.dropna()
 
         self.gridded_densities = df[0].tolist()
