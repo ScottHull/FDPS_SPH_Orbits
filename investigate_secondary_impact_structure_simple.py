@@ -209,6 +209,9 @@ def get_secondary_and_tail():
         # df = pd.read_csv(output_path + "/{}.csv".format(iteration))
         path = base_path + "{}/{}".format(output_name, output_name)
         to_fname = "merged_{}_{}.dat".format(si_iteration, randint(0, 100000))
+        number_processes = 200
+        if "high" in output_name:
+            number_processes = 500
         cf = CombineFile(num_processes=number_processes, time=si_iteration, output_path=path, to_fname=to_fname)
         combined_file = cf.combine()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
@@ -396,6 +399,9 @@ def run_proc(args):
 
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+        number_processes = 200
+        if "high" in s:
+            number_processes = 500
         cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
         combined_file = cf.combine()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
