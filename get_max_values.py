@@ -61,8 +61,8 @@ def find_max(df, title, curr_maxes, iteration, time):
             curr_maxes[df['id'][row]]['iteration'] = iteration
             curr_maxes[df['id'][row]]['density'] = df['density'][row]
             curr_maxes[df['id'][row]]['entropy'] = df['entropy'][row]
-            curr_maxes[df['id'][row]]['temperature'] = df[['temperature']][row]
-            curr_maxes[df['id'][row]]['internal energy'] = df[['internal energy']][row]
+            curr_maxes[df['id'][row]]['temperature'] = df['temperature'][row]
+            curr_maxes[df['id'][row]]['internal energy'] = df['internal energy'][row]
     return curr_maxes
 
 
