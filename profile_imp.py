@@ -63,12 +63,13 @@ for i in ['new', 'old']:
 
     for ax in axs:
         ax.grid(alpha=0.4)
+        ax.set_xlabel("Radius (km)")
+        ax.set_title(eos)
 
     fig.supxlabel("Radius (km)")
     axs[0].set_ylabel("Density (kg/m^3)")
     axs[1].set_ylabel("Pressure (Pa)")
     axs[2].set_ylabel("Internal Energy (J)")
     axs[3].set_ylabel("Entropy (J/kg/K)")
-    fig.suptitle(eos)
     axs[0].legend(loc='upper left')
     plt.savefig("{}_impactor_profile.png".format(eos), format='png', dpi=200)
