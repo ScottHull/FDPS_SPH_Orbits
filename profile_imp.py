@@ -29,17 +29,17 @@ for i in ['new', 'old']:
                    "potential energy", "entropy", "temperature"]
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
         df['radius'] = [((i ** 2 + j ** 2 + k ** 2) ** 0.5) / 1000.0 for i, j, k in zip(df['x'], df['y'], df['z'])]
-        axs[0].plot(
-            df['radius'], df['density'], linewidth=2.0, label=name
+        axs[0].scatter(
+            df['radius'], df['density'], marker='.', s=2, label=name
         )
-        axs[1].plot(
-            df['radius'], df['pressure'], linewidth=2.0, label=name
+        axs[1].scatter(
+            df['radius'], df['pressure'], marker='.', s=2, label=name
         )
-        axs[2].plot(
-            df['radius'], df['internal energy'], linewidth=2.0, label=name
+        axs[2].scatter(
+            df['radius'], df['internal energy'], marker='.', s=2, label=name
         )
-        axs[3].plot(
-            df['radius'], df['entropy'], linewidth=2.0, label=name
+        axs[3].scatter(
+            df['radius'], df['entropy'], marker='.', s=2, label=name
         )
         if cd == 5 and i == "new":
             name = "{}_{}_high".format(cd, i)
@@ -48,17 +48,17 @@ for i in ['new', 'old']:
                        "potential energy", "entropy", "temperature"]
             df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
             df['radius'] = [((i ** 2 + j ** 2 + k ** 2) ** 0.5) / 1000.0 for i, j, k in zip(df['x'], df['y'], df['z'])]
-            axs[0].plot(
-                df['radius'], df['density'], linewidth=2.0, label=name
+            axs[0].scatter(
+                df['radius'], df['density'], marker='.', s=2, label=name
             )
-            axs[1].plot(
-                df['radius'], df['pressure'], linewidth=2.0, label=name
+            axs[1].scatter(
+                df['radius'], df['pressure'], marker='.', s=2, label=name
             )
-            axs[2].plot(
-                df['radius'], df['internal energy'], linewidth=2.0, label=name
+            axs[2].scatter(
+                df['radius'], df['internal energy'], marker='.', s=2, label=name
             )
-            axs[3].plot(
-                df['radius'], df['entropy'], linewidth=2.0, label=name
+            axs[3].scatter(
+                df['radius'], df['entropy'], marker='.', s=2, label=name
             )
 
     for ax in axs:
@@ -66,7 +66,6 @@ for i in ['new', 'old']:
         ax.set_xlabel("Radius (km)")
         ax.set_title(eos)
 
-    fig.supxlabel("Radius (km)")
     axs[0].set_ylabel("Density (kg/m^3)")
     axs[1].set_ylabel("Pressure (Pa)")
     axs[2].set_ylabel("Internal Energy (J)")
