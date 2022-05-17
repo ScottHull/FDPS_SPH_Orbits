@@ -1,5 +1,6 @@
 from sys import exit
 import pandas as pd
+import numpy as np
 from scipy.interpolate import interp2d, RectBivariateSpline, LinearNDInterpolator
 import warnings
 warnings.filterwarnings("ignore")
@@ -170,7 +171,8 @@ class Hugoniot:
         U_s = []
         S_s = []
 
-        for index, Up in enumerate(list(sorted(list(set(self.Up_h))))):  # 50 is the length of the given Hugoniot data
+        # for index, Up in enumerate(list(sorted(list(set(self.Up_h))))):  # 50 is the length of the given Hugoniot data
+        for index, Up in enumerate(np.arange(0, 1000 * 1000, 1000)):
             print("At loop number: ", index)
             rho2 = rho1 + 10  # bump rho2 from rho1 by 10
 
@@ -178,7 +180,7 @@ class Hugoniot:
             tracked_rho2 = []  # tracks previous rho2 values
             tracked_U2 = []  # tracks previous U2 values
 
-            while rho2 < 9000:  # sets a limit for rho2 convergence
+            while rho2 < 15000:  # sets a limit for rho2 convergence
                 print("At counter: ", counter)
                 Us = rho2 / (rho2 - rho1) * Up  # conservation of momentum
                 # P2 - P1 = rho1 (Us - u1) * (Up - U1)

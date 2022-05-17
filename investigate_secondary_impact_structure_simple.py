@@ -11,9 +11,9 @@ import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 
-plt.rcParams.update({'font.size': 8, })
+plt.rcParams.update({'font.size': 12, })
 # plt.style.use("dark_background")
-plt.style.use('seaborn-colorblind')
+# plt.style.use('seaborn-colorblind')
 
 min_iteration = 50
 si_iteration = 190
@@ -245,8 +245,8 @@ def reformat_dict(d: dict):
     return pd.DataFrame(data, index=index_l)
 
 
-sis, tails, not_classifieds = get_secondary_and_tail()
-endstates = get_end_states(angle=angle, high=True)
+# sis, tails, not_classifieds = get_secondary_and_tail()
+# endstates = get_end_states(angle=angle, high=True)
 
 def profile_time():
 
@@ -472,6 +472,32 @@ def run():
     pool.close()
     pool.join()
 
-profile_time()
-# run()
 
+def plot_tail_mass_and_am():
+    path = "/Users/scotthull/Desktop/b073_secondary_impact_struc_data.csv"
+    df = pd.read_csv(path, index_col="Unnamed: 0")
+    runs = df.keys()
+    tail_mass = [df[r]['MASS TAIL'] for r in runs]
+    si_mass = [df[r]['MASS SI'] for r in runs]
+    tail_am = [df[r]['ANGULAR MOMENTUM TAIL'] for r in runs]
+    si_am = [df[r]['ANGULAR MOMENTUM SI'] for r in runs]
+
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9))
+    axs[0].plot(runs, tail_mass, label="Tail")
+    axs[0].plot(runs, si_mass, label="Secondary Impactor")
+    axs[1].plot(runs, tail_am, label="Tail")
+    axs[1].plot(runs, si_am, label="Secondary Impactor")
+    fig.supxlabel("Run")
+    axs[0].set_ylabel("Mass ($M_L$)")
+    axs[1].set_ylabel("Angular Momentum ($L_{EM}$)")
+    for ax in axs:
+        ax.grid(alpha=0.4)
+        for tick in ax.get_xticklabels():
+            tick.set_rotation(45)
+    axs[0].legend(loc="upper left")
+    # plt.show()
+    plt.savefig("{}_secondary_impact_mass_and_am_mpl.png".format(angle), format='png', dpi=200)
+
+# profile_time()
+# run()
+plot_tail_mass_and_am()

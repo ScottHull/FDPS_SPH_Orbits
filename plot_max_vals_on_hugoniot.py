@@ -75,7 +75,7 @@ for i in ["Stewart M-ANEOS", "GADGET M-ANEOS"]:
     Up_s = np.array(Up_s) / 10 ** 3
     U_s = np.array(U_s) / 10 ** 6
 
-    fig, axs = plt.subplots(3, 2, figsize=(12, 18), gridspec_kw={"hspace": 0.10, "wspace": 0.18})
+    fig, axs = plt.subplots(3, 2, figsize=(12, 18), gridspec_kw={"hspace": 0.14, "wspace": 0.18})
     axs = axs.flatten()
 
     axs[0].plot(

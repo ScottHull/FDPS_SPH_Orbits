@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 
-
 min_iteration = 0
 max_iteration = 300
 end_state_iteration = 1800
@@ -19,6 +18,7 @@ increment = 1
 angle = 'b073'
 cutoff_densities = [5, 500, 1000, 2000]
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
+
 
 def get_all_sims(angle, high=True):
     fformat = "{}_{}_{}"
@@ -41,31 +41,30 @@ def get_all_sims(angle, high=True):
         titles.append(title_name)
     return names, titles
 
+
 def get_endstate(s):
     path = base_path + "{}/circularized_{}".format(s, s)
     df = pd.read_csv(path + "/{}.csv".format(end_state_iteration))
     disk = df[df['label'] == "DISK"]
     return disk['id'].tolist()
 
+
 sims, titles = get_all_sims(angle=angle, high=True)
 max_vals = dict(zip(titles, [{} for i in titles]))
 
-def find_max(df, title, curr_maxes, iteration, time):
-    max_rho = max(df['density'])
-    max_pressure = max(df['density'])
-    max_internal_energy = max(df['internal energy'])
-    max_temperature = max(df['temperature'])
-    max_entropy = max(df['entropy'])
 
-    for i, j in zip([max_rho, max_pressure, max_internal_energy, max_temperature, max_entropy],
-                    ['density', 'pressure', 'internal energy', 'temperature', 'entropy']):
-        if j not in curr_maxes:
-            curr_maxes.update({j: {"iteration": None, "time": None, "value": -1e99}})
-        if i > curr_maxes[j]['value']:
-            curr_maxes[j]['value'] = i
-            curr_maxes[j]['iteration'] = iteration
-            curr_maxes[j]['time'] = time
+def find_max(df, title, curr_maxes, iteration, time):
+    for row in df.index:
+        if df['pressure'][row] > curr_maxes[df['id'][row]]['pressure']:
+            curr_maxes[df['id'][row]]['pressure'] = df['pressure'][row]
+            curr_maxes[df['id'][row]]['time'] = time
+            curr_maxes[df['id'][row]]['iteration'] = iteration
+            curr_maxes[df['id'][row]]['density'] = df['density'][row]
+            curr_maxes[df['id'][row]]['entropy'] = df['entropy'][row]
+            curr_maxes[df['id'][row]]['temperature'] = df[['temperature']][row]
+            curr_maxes[df['id'][row]]['internal energy'] = df[['internal energy']][row]
     return curr_maxes
+
 
 def __run_proc(args):
     s, t = args
@@ -73,7 +72,8 @@ def __run_proc(args):
     number_processes = 200
     if "high" in s:
         number_processes = 500
-    curr_max = {}
+    curr_max = {i: {'pressure': -1e99, "time": None, "iteration": None, "density": None, "entropy": None,
+                    "internal energy": None} for i in endstate}
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -95,6 +95,7 @@ def __run_proc(args):
         infile.write(str(curr_max))
     infile.close()
 
+
 def run():
     pool = mp.Pool(10)
     pool.map(__run_proc, [[s, t] for s, t in zip(sims, titles)])
@@ -106,5 +107,6 @@ def run():
     with open(fname, "w") as f:
         f.write(str(max_vals))
     f.close()
+
 
 run()
