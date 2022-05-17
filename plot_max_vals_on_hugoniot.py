@@ -42,15 +42,15 @@ def get_all_sims(angle, high=True):
 
 
 def get_max_vals(angle, title):
-    path = base_max_val_folders_loc + "{}_maxvals/{}_{}_max_vals.csv".format(angle, title, angle)
+    path = base_max_val_folders_loc + "{}_maxvals_all_disk_particles/{}_{}_max_vals.csv".format(angle, title, angle)
     with open(path, 'r') as infile:
         data = infile.readline().rstrip()
         return literal_eval(data)
 
 
 high = False
-if angle == "b073":
-    high = True
+# if angle == "b073":
+#     high = True
 sims, titles = get_all_sims(angle, high)
 
 maxvals = {}
@@ -75,92 +75,19 @@ for i in ["Stewart M-ANEOS", "GADGET M-ANEOS"]:
     Up_s = np.array(Up_s) / 10 ** 3
     U_s = np.array(U_s) / 10 ** 6
 
-    fig, axs = plt.subplots(3, 2, figsize=(12, 18), gridspec_kw={"hspace": 0.14, "wspace": 0.18})
-    axs = axs.flatten()
+    fig, axs = plt.subplots(1, 1, figsize=(12, 12), gridspec_kw={"hspace": 0.14, "wspace": 0.18})
 
-    axs[0].plot(
-        Up_s, Us_s, linewidth=2.0, label="Calculated"
-    )
-    axs[0].plot(
-        h.Up_h / 1000, h.Us_h / 1000, linewidth=2.0, linestyle="--", label="ANEOS"
-    )
-    axs[0].set_xlabel("Up (km/s)")
-    axs[0].set_ylabel("Us (km/s)")
-    axs[1].plot(
-        P_s, T_s, linewidth=2.0, label="Calculated"
-    )
-    axs[1].plot(
-        h.P_h / 10 ** 9, h.T_h, linewidth=2.0, linestyle="--", label="ANEOS"
-    )
-    axs[1].set_xlabel("P (GPa)")
-    axs[1].set_ylabel("T (K)")
-    # axs[1].set_xlim(10 ** 0, 10 ** 4)
-    axs[2].plot(
-        P_s, Rho_s, linewidth=2.0, label="Calculated"
-    )
-    axs[2].plot(
-        h.P_h / 10 ** 9, h.rho_h, linewidth=2.0, linestyle="--", label="ANEOS"
-    )
-    axs[2].set_xlabel("P (GPa)")
-    axs[2].set_ylabel("Density (kg/m^3)")
-    # axs[2].set_xlim(10 ** 0, 10 ** 4)
-    axs[3].plot(
-        P_s, U_s, linewidth=2.0, label="Calculated"
-    )
-    axs[3].plot(
-        h.P_h / 10 ** 9, h.U_h / 10 ** 6, linewidth=2.0, linestyle="--", label="ANEOS"
-    )
-    axs[3].set_xlabel("P (GPa)")
-    axs[3].set_ylabel("Internal Energy (J/K/kg)")
-    # axs[3].set_xlim(10 ** 0, 10 ** 4)
-    axs[4].plot(
-        Rho_s, T_s, linewidth=2.0, label="Calculated"
-    )
-    axs[4].plot(
-        h.rho_h, h.T_h, linewidth=2.0, linestyle="--", label="ANEOS"
-    )
-    axs[4].set_xlabel("Density (kg/m^3)")
-    axs[4].set_ylabel("T (K)")
+    for j, (title, max_vals) in enumerate(maxvals.items()):
+        x, y = [max_vals[p]['pressure'] / 10 ** 9 for p in max_vals.keys()], [max_vals[p]['entropy'] for p in max_vals.keys()]
+        axs.scatter(x, y, marker='o', s=4, label=title)
 
-    axs[5].plot(
-        Rho_s, S_s, linewidth=2.0, label="Calculated"
-    )
-    axs[5].plot(
-        h.rho_h, h.S_h, linewidth=2.0, linestyle="--", label="ANEOS"
-    )
-    axs[5].set_xlabel("Density (kg/m^3)")
-    axs[5].set_ylabel("Entropy (J/kg/K)")
-
-    runs = [j for j in titles if "{}{}".format(angle, title_appendix) in j]
-    for run in runs:
-        axs[1].scatter(
-            maxvals[run]['pressure']['value'], maxvals[run]['temperature']['value'],
-            marker="o", label=run
-        )
-        axs[2].scatter(
-            maxvals[run]['pressure']['value'], maxvals[run]['density']['value'],
-            marker="o", label=run
-        )
-        axs[3].scatter(
-            maxvals[run]['pressure']['value'], maxvals[run]['internal energy']['value'] / 10 ** 6,
-            marker="o", label=run
-        )
-        axs[4].scatter(
-            maxvals[run]['density']['value'], maxvals[run]['temperature']['value'],
-        )
-        axs[5].scatter(
-            maxvals[run]['density']['value'], maxvals[run]['entropy']['value'],
-            marker="o", label=run
-        )
-
-    axs[1].legend(loc="upper left")
-
-    for ax in axs:
-        ax.grid(alpha=0.4)
-    for ax in axs[1:-2]:
-        ax.set_xscale("log")
-    for ax in axs[1:3]:
-        ax.set_yscale("log")
+    axs.plot(P_s, S_s, linewidth=2.0, label="Calculated")
+    axs.plot(h.P_h / 10 ** 9, h.S_h, linewidth=2.0, label="ANEOS")
+    axs.grid()
+    axs.set_xlabel("Pressure (GPa)")
+    axs.set_ylabel("Entropy (J/K)")
+    axs.set_xscale("log")
+    axs.legend()
 
     fig.suptitle(i)
 
