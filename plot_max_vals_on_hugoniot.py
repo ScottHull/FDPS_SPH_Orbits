@@ -18,6 +18,10 @@ stewart_aneos_hugoniot_path = "src/phase_data/forstSTS__hugoniot.txt"
 gadget_aneos_path = "src/phase_data/duniteN.table.txt"
 gadget_aneos_hugoniot_path = "src/phase_data/duniteN__hugoniot.txt"
 
+stewart_avg_surface_rho = 3729.72  # average surface density of the Stewart impactors acros cutoff densities
+stewart_avg_surface_u = 874952.14  # average surface internal energy of the Stewart impactors acros cutoff densities
+gadget_avg_surface_rho = 3609.38  # average surface density of the GADGET impactors acros cutoff densities
+gadget_avg_surface_u = 1035922.78  # average surface internal energy of the GADGET impactors acros cutoff densities
 
 def get_all_sims(angle, high=True):
     fformat = "{}_{}_{}"
@@ -68,7 +72,9 @@ for i in ["Stewart M-ANEOS", "GADGET M-ANEOS"]:
         aneos = gadget_aneos_hugoniot_path
     h = Hugoniot()
     h.read_ANEOS(experimental)
-    rho1, P1, C1, U1, S1 = h.initial_conditions_aneos(aneos)
+    # rho1, P1, C1, U1, S1 = h.initial_conditions_aneos(aneos)
+    rho1 = stewart_avg_surface_rho
+
     T_s, Rho_s, Us_s, Up_s, P_s, U_s, S_s = h.rankine_hugoniot_equations(rho1, P1, U1)
     P_s = np.array(P_s) / 10 ** 9
     Us_s = np.array(Us_s) / 10 ** 3
