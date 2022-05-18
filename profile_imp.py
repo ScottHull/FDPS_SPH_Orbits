@@ -41,6 +41,7 @@ for i in ['new', 'old']:
         axs[3].scatter(
             df['radius'], df['entropy'], marker='.', s=2, label=name
         )
+        print(name, max(df['radius']), min(df['internal energy']))
         if cd == 5 and i == "new":
             name = "{}_{}_high".format(cd, i)
             f = base_path + "{}/imp.dat".format(name)
@@ -60,6 +61,7 @@ for i in ['new', 'old']:
             axs[3].scatter(
                 df['radius'], df['entropy'], marker='.', s=2, label=name
             )
+            print(name, max(df['radius']), min(df['internal energy']))
 
     for ax in axs:
         ax.grid(alpha=0.4)
