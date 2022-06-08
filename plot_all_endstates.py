@@ -62,10 +62,9 @@ for s, t in zip(sims, titles):
     escape = df[df['label'] == "ESCAPE"]
     df = df.sort_values(by=['id'])
     df = df.reset_index(drop=True)
-    ax = axs[0][index]
-    axs[index].plot(planet['x'] / 1000, planet['y'] / 1000, '.', markersize=1, label="Earth")
-    axs[index].plot(disk['x'] / 1000, disk['y'] / 1000, '.', markersize=1, label="Disk")
-    axs[index].plot(escape['x'] / 1000, escape['y'] / 1000, '.', markersize=1, label="Escaping")
+    axs[index].scatter(planet['x'] / 1000, planet['y'] / 1000, marker='.', s=1, label="Earth")
+    axs[index].scatter(disk['x'] / 1000, disk['y'] / 1000, marker='.', s=1, label="Disk")
+    axs[index].scatter(escape['x'] / 1000, escape['y'] / 1000, marker='.', s=1, label="Escaping")
     axs[index].set_xlim([-square_scale / 1000, square_scale / 1000])
     axs[index].set_ylim([-square_scale / 1000, square_scale / 1000])
     x1, x2, y1, y2 = axs[index].axis()
@@ -81,4 +80,5 @@ for handle in legend.legendHandles:
         handle.set_sizes([30.0])
     except:
         pass
+plt.tight_layout()
 plt.savefig("{}_endstates.png".format(angle), format='png', dpi=300)
