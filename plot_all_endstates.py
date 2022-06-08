@@ -8,6 +8,7 @@ import pandas as pd
 from random import randint
 from statistics import mean
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
@@ -68,16 +69,20 @@ for s, t in zip(sims, titles):
     axs[index].set_xlim([-square_scale / 1000, square_scale / 1000])
     axs[index].set_ylim([-square_scale / 1000, square_scale / 1000])
     x1, x2, y1, y2 = axs[index].axis()
-    x_loc = x2 - (0.4 * (x2 - x1))
-    y_loc = y2 - (0.2 * (y2 - y1))
+    x_loc = x2 - (0.30 * (x2 - x1))
+    y_loc = y2 - (0.1 * (y2 - y1))
     axs[index].text(x_loc, y_loc, t, fontweight="bold")
+    nbins_x = len(axs[index].get_xticklabels())
+    nbins_y = len(axs[index].get_yticklabels())
+    axs[index].yaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
+    axs[index].yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
 
     index += 1
 
 legend = axs[0].legend(loc='upper left')
 for handle in legend.legendHandles:
     try:
-        handle.set_sizes([30.0])
+        handle.set_sizes([50.0])
     except:
         pass
 plt.tight_layout()
