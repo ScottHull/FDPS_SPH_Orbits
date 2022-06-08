@@ -49,7 +49,7 @@ def get_all_sims(angle, high=False):
         titles.append(title_name)
     return names, titles
 
-fig, axs = plt.subplots(2, len(cutoff_densities), figsize=(20, 25), sharex='all', sharey='all',
+fig, axs = plt.subplots(2, len(cutoff_densities), figsize=(16, 9), sharex='all', sharey='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 index = 0
 sims, titles = get_all_sims(angle, False)
@@ -62,11 +62,6 @@ for s, t in zip(sims, titles):
     df = df.sort_values(by=['id'])
     df = df.reset_index(drop=True)
     ax = axs[0][index]
-    ax.set_title(t)
-    ax.set_xlabel("x (m)")
-    ax.set_ylabel("y (m)")
-    ax.set_xlim([-square_scale, square_scale])
-    ax.set_ylim([-square_scale, square_scale])
     ax.plot(planet['x'], planet['y'], '.', markersize=1, label="Earth")
     ax.plot(disk['x'], disk['y'], '.', markersize=1, label="Disk")
     ax.plot(escape['x'], escape['y'], '.', markersize=1, label="Escaping")
