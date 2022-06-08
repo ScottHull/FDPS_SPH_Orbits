@@ -69,9 +69,9 @@ for s, t in zip(sims, titles):
     axs[index].set_xlim([-square_scale / 1000, square_scale / 1000])
     axs[index].set_ylim([-square_scale / 1000, square_scale / 1000])
     x1, x2, y1, y2 = axs[index].axis()
-    x_loc = x2 - (0.30 * (x2 - x1))
+    x_loc = x2 - (0.25 * (x2 - x1))
     y_loc = y2 - (0.1 * (y2 - y1))
-    axs[index].text(x_loc, y_loc, t, fontweight="bold")
+    axs[index].text(x_loc, y_loc, t, fontweight="bold", fontsize=20)
 
     index += 1
 
@@ -82,10 +82,10 @@ for handle in legend.legendHandles:
     except:
         pass
 plt.tight_layout()
-for ax in axs[4:]:
+for ax in axs[5:]:
     nbins_x = len(ax.get_xticklabels())
     ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='lower'))
-for ax in [axs[0], axs[4]]:
+for ax in [axs[4]]:
     nbins_y = len(ax.get_yticklabels())
     ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='lower'))
 
