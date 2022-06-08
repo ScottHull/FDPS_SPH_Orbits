@@ -51,6 +51,7 @@ def get_all_sims(angle, high=False):
 
 fig, axs = plt.subplots(2, len(cutoff_densities), figsize=(16, 9), sharex='all', sharey='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+axs = axs.flatten()
 index = 0
 sims, titles = get_all_sims(angle, False)
 for s, t in zip(sims, titles):
@@ -62,16 +63,22 @@ for s, t in zip(sims, titles):
     df = df.sort_values(by=['id'])
     df = df.reset_index(drop=True)
     ax = axs[0][index]
-    axs[index].plot(planet['x'], planet['y'], '.', markersize=1, label="Earth")
-    axs[index].plot(disk['x'], disk['y'], '.', markersize=1, label="Disk")
-    axs[index].plot(escape['x'], escape['y'], '.', markersize=1, label="Escaping")
-    axs[index].set_xlim([-square_scale, square_scale])
-    axs[index].set_ylim([-square_scale, square_scale])
+    axs[index].plot(planet['x'] / 1000, planet['y'] / 1000, '.', markersize=1, label="Earth")
+    axs[index].plot(disk['x'] / 1000, disk['y'] / 1000, '.', markersize=1, label="Disk")
+    axs[index].plot(escape['x'] / 1000, escape['y'] / 1000, '.', markersize=1, label="Escaping")
+    axs[index].set_xlim([-square_scale / 1000, square_scale / 1000])
+    axs[index].set_ylim([-square_scale / 1000, square_scale / 1000])
     x1, x2, y1, y2 = axs[index].axis()
     x_loc = x2 - (0.4 * (x2 - x1))
     y_loc = y2 - (0.2 * (y2 - y1))
     axs[index].text(x_loc, y_loc, t, fontweight="bold")
-    axs[index].legend(loc='upper left')
+
     index += 1
 
+legend = axs[0].legend(loc='upper left')
+for handle in legend.legendHandles:
+    try:
+        handle.set_sizes([30.0])
+    except:
+        pass
 plt.savefig("{}_endstates.png".format(angle), format='png', dpi=300)
