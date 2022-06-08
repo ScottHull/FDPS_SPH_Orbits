@@ -69,7 +69,7 @@ for s, t in zip(sims, titles):
     axs[index].set_xlim([-square_scale / 1000, square_scale / 1000])
     axs[index].set_ylim([-square_scale / 1000, square_scale / 1000])
     x1, x2, y1, y2 = axs[index].axis()
-    x_loc = x2 - (0.25 * (x2 - x1))
+    x_loc = x2 - (0.32 * (x2 - x1))
     y_loc = y2 - (0.1 * (y2 - y1))
     axs[index].text(x_loc, y_loc, t, fontweight="bold", fontsize=12)
 
