@@ -62,14 +62,16 @@ for s, t in zip(sims, titles):
     df = df.sort_values(by=['id'])
     df = df.reset_index(drop=True)
     ax = axs[0][index]
-    ax.plot(planet['x'], planet['y'], '.', markersize=1, label="Earth")
-    ax.plot(disk['x'], disk['y'], '.', markersize=1, label="Disk")
-    ax.plot(escape['x'], escape['y'], '.', markersize=1, label="Escaping")
-    ax.set_xlim([-square_scale, square_scale])
-    ax.set_ylim([-square_scale, square_scale])
-    x1, x2, y1, y2 = ax.axis()
+    axs[index].plot(planet['x'], planet['y'], '.', markersize=1, label="Earth")
+    axs[index].plot(disk['x'], disk['y'], '.', markersize=1, label="Disk")
+    axs[index].plot(escape['x'], escape['y'], '.', markersize=1, label="Escaping")
+    axs[index].set_xlim([-square_scale, square_scale])
+    axs[index].set_ylim([-square_scale, square_scale])
+    x1, x2, y1, y2 = axs[index].axis()
     x_loc = x2 - (0.4 * (x2 - x1))
     y_loc = y2 - (0.2 * (y2 - y1))
-    ax.text(x_loc, y_loc, t, fontweight="bold")
+    axs[index].text(x_loc, y_loc, t, fontweight="bold")
+    axs[index].legend(loc='upper left')
+    index += 1
 
 plt.savefig("{}_endstates.png".format(angle), format='png', dpi=300)
