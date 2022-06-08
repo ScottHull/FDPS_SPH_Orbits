@@ -72,10 +72,13 @@ for s, t in zip(sims, titles):
     x_loc = x2 - (0.30 * (x2 - x1))
     y_loc = y2 - (0.1 * (y2 - y1))
     axs[index].text(x_loc, y_loc, t, fontweight="bold")
-    nbins_x = len(axs[index].get_xticklabels())
-    nbins_y = len(axs[index].get_yticklabels())
-    axs[index].yaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
-    axs[index].yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
+    try:
+        nbins_x = len(axs[index].get_xticklabels())
+        nbins_y = len(axs[index].get_yticklabels())
+        axs[index].yaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
+        axs[index].yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
+    except:
+        pass
 
     index += 1
 
