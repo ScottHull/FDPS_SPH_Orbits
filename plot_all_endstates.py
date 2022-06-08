@@ -20,7 +20,7 @@ from src.animate import animate
 from src.identify import ParticleMap
 from src.combine import CombineFile
 
-
+plt.rcParams.update({'font.size': 8, })
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -52,7 +52,7 @@ def get_all_sims(angle, high=False):
 
 fig, axs = plt.subplots(2, len(cutoff_densities), figsize=(16, 9), sharex='all', sharey='all',
                         gridspec_kw={"hspace": 0.0, "wspace": 0.0})
-axs = axs.flatten()
+axs = list(axs.flatten())
 index = 0
 sims, titles = get_all_sims(angle, False)
 for s, t in zip(sims, titles):
@@ -82,15 +82,11 @@ for handle in legend.legendHandles:
     except:
         pass
 plt.tight_layout()
-for ax in axs:
-    try:
-        nbins_x = len(ax.get_xticklabels())
-        ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
-    except:
-        pass
-    try:
-        nbins_y = len(ax.get_yticklabels())
-        ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
-    except:
-        pass
+for ax in axs[4:]:
+    nbins_x = len(ax.get_xticklabels())
+    ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='lower'))
+for ax in [axs[0], axs[4]]:
+    nbins_y = len(ax.get_yticklabels())
+    ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='lower'))
+
 plt.savefig("{}_endstates.png".format(angle), format='png', dpi=300)
