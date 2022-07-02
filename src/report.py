@@ -7,7 +7,7 @@ import multiprocessing.dummy as mp
 
 from src.combine import CombineFile
 from src.identify import ParticleMap
-from src.vapor import calc_vapor_mass_fraction_with_circularization, calc_vapor_mass_fraction_from_formatted
+from src.vapor import calc_vapor_mass_fraction_with_circularization, calc_vapor_mass_fraction_from_formatted, calc_vapor_mass_fraction_with_circularization_from_formatted
 
 MASS_EARTH = 5.972 * 10 ** 24
 MASS_MOON = 7.34767309 * 10 ** 22
@@ -57,7 +57,7 @@ def get_sim_report(particle_df, phase_path, to_path, iteration, formatted_time, 
     except:
         pass
 
-    vmf = calc_vapor_mass_fraction_with_circularization(particles=particle_df, phase_path=phase_path)
+    vmf = calc_vapor_mass_fraction_with_circularization_from_formatted(df=particle_df, phase_path=phase_path)
     vmf_without_circ = calc_vapor_mass_fraction_from_formatted(df=particle_df, phase_path=phase_path)
     data = {
         "NAME": sim_name,

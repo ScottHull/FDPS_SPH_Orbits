@@ -67,8 +67,7 @@ def get_all_sims(high=True):
 
 def plot_entropy_and_vmf_vs_time():
     sims, titles = get_all_sims(high=True)
-    fig, axs = plt.subplots(2, 3, figsize=(18, 9), sharex="all",
-                            gridspec_kw={"hspace": 0.10, "wspace": 0.26})
+    fig, axs = plt.subplots(2, 3, figsize=(18, 9), sharex="all")
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
     d = {}
@@ -122,7 +121,7 @@ def plot_entropy_and_vmf_vs_time():
         [], [], c='black', linewidth=2.0, linestyle="-", label="Stewart M-ANEOS"
     )
     axs[0].plot(
-        [], [], c='black', linewidth=2.0, linestyle="--", label="GADGET M-ANEOS"
+        [], [], c='black', linewidth=2.0, linestyle="--", label="N-SPH M-ANEOS"
     )
     if angle == "b073":
         axs[0].plot(
@@ -137,8 +136,9 @@ def plot_entropy_and_vmf_vs_time():
         ax.text(x_loc, y_loc, letters[index], fontweight="bold")
     for ax in axs[-3:]:
         ax.set_xlabel("Time (hrs)")
-    legend = axs[0].legend(loc='lower right', fontsize=8)
 
+    fig.legend(loc=7, fontsize=16)
+    fig.subplots_adjust(right=0.82)
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
 
 

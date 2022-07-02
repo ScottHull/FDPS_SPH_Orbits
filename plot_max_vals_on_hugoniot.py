@@ -11,10 +11,10 @@ from src.interpolation import GenericTrilinearInterpolation
 plt.rcParams.update({'font.size': 12, })
 plt.style.use('seaborn-colorblind')
 
-angle = 'b075'
+angle = 'b073'
 cutoff_densities = [5, 500, 1000, 2000]
-# base_max_val_folders_loc = "/Users/scotthull/Desktop/"
-base_max_val_folders_loc = "C:/Users/Scott/Desktop/"
+base_max_val_folders_loc = "/Users/scotthull/Desktop/"
+# base_max_val_folders_loc = "C:/Users/Scott/Desktop/"
 
 stewart_aneos_path = "src/phase_data/forst_STS.table.txt"
 stewart_rho_u = "src/phase_data/forst_STS.rho_u.txt"
@@ -74,7 +74,7 @@ for i in ["Stewart M-ANEOS", "GADGET M-ANEOS"]:
     sims, titles = get_all_sims(angle, runs, high)
 
     initial_impact_path = base_max_val_folders_loc + "{}_maxvals_at_time_of_primary_impact".format(angle)
-    all_time_maxval_path = base_max_val_folders_loc + "{}_maxvals_all_disk_particles".format(angle)
+    all_time_maxval_path = base_max_val_folders_loc + "{}_maxvals_at_endstate".format(angle)
     title_appendix = "n"
     experimental = stewart_aneos_path
     aneos = stewart_aneos_hugoniot_path
@@ -131,9 +131,9 @@ for index, i in enumerate(["5b073n-high"] + [r"$\rho_c$ = {} kg/m$^3$".format(cd
         axs[0].scatter([], [], marker='o', s=4, label=i, color=colors[index])
 
 axs[0].set_title("Stewart M-ANEOS: Primary Impact")
-axs[2].set_title("Stewart M-ANEOS: Within 8.33 Hours")
+axs[2].set_title("Stewart M-ANEOS: Final Disk State")
 axs[1].set_title("GADGET M-ANEOS: Primary Impact")
-axs[3].set_title("GADGET M-ANEOS: Within 8.33 Hours")
+axs[3].set_title("GADGET M-ANEOS: Final Disk State")
 axs[2].set_xlabel("Pressure (GPa)")
 axs[3].set_xlabel("Pressure (GPa)")
 axs[0].set_ylabel("Entropy (J/K)")
