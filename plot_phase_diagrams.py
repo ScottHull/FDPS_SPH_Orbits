@@ -78,7 +78,7 @@ def shade_plot(s, ax):
         y2=cp,
         color=colors[-1],
         alpha=0.2,
-        label="100% Vapor"
+        # label="100% Vapor"
     )
     ax.fill_between(
         x=phase_df['entropy_sol_liq'],
@@ -86,7 +86,7 @@ def shade_plot(s, ax):
         y2=cp,
         color=colors[-2],
         alpha=0.2,
-        label="100% Liquid"
+        # label="100% Liquid"
     )
     ax.fill_between(
         x=sorted(list(phase_df['entropy_sol_liq']) + list(new_phase_df['entropy_vap'])),
@@ -94,7 +94,7 @@ def shade_plot(s, ax):
         y2=1e10,
         color=colors[-3],
         alpha=0.2,
-        label="Supercritical"
+        # label="Supercritical"
     )
     ax.fill_between(
         x=phase_df['entropy_sol_liq'],
@@ -102,7 +102,7 @@ def shade_plot(s, ax):
         color=colors[-4],
         edgecolor="none",
         alpha=0.2,
-        label="Mixed"
+        # label="Mixed"
     )
     ax.fill_between(
         x=phase_df['entropy_vap'],
@@ -160,7 +160,7 @@ def plot_phase_diagrams():
             if "high" in s:
                 label = t
             axs[to_index].scatter(
-                temp, entropy, s=1, marker=marker, alpha=0.6, color=color, label=label
+                temp, entropy, s=1, marker=marker, alpha=0.6, color=color
             )
 
 for cd in cutoff_densities:
