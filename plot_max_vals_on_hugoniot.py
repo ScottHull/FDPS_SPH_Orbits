@@ -36,9 +36,9 @@ def get_all_sims(angle, runs, high=True):
     tformat = "{}{}{}"
     names = []
     titles = []
-    n = "s"
+    n = "S"
     if runs == "old":
-        n = "n"
+        n = "N"
     if high and runs == "new" and angle == "b073":
         output_name = fformat.format(5, angle, "new") + "_high"
         names.append(output_name)
