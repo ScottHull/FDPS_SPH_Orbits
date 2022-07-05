@@ -42,7 +42,7 @@ def get_all_sims(angle, high=True):
     return names, titles
 
 
-fig, axs = plt.subplots(2, 2, figsize=(16, 9), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
+fig, axs = plt.subplots(2, 2, figsize=(16, 9))
 axs = axs.flatten()
 b073n_index, b073o_index, b075n_index, b075o_index = 0, 1, 2, 3
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
@@ -168,11 +168,18 @@ axs[1].set_title("GADGET M-ANEOS ($b=0.73$)")
 axs[2].set_title("Stewart M-ANEOS ($b=0.75$)")
 axs[3].set_title("GADGET M-ANEOS ($b=0.75$)")
 plot_phase_diagrams()
-legend = axs[0].legend(loc='lower right', fontsize=6)
-for handle in legend.legendHandles:
+plt.tight_layout()
+legend = fig.legend(loc=7, fontsize=16)
+for line in legend.get_lines():  # increase line widths in legend
     try:
-        handle.set_sizes([30.0])
+        line.set_linewidth(4.0)
     except:
         pass
+for handle in legend.legendHandles:  # increase marker sizes in legend
+    try:
+        handle.set_sizes([120.0])
+    except:
+        pass
+fig.subplots_adjust(right=0.82)
 
 plt.savefig("phase_curves.png", format='png', dpi=200)
