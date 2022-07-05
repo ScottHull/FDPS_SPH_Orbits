@@ -104,7 +104,7 @@ def plot_entropy_and_vmf_vs_time():
         cutoff_density = int(sim.split("b")[0])
         color = colors[cutoff_densities.index(cutoff_density)]
         linestyle = "-"
-        if "o" in sim:
+        if "n" in sim:
             linestyle = "--"
         if "high" in sim:
             linestyle = "dotted"
@@ -145,10 +145,11 @@ def plot_entropy_and_vmf_vs_time():
             pass
     for handle in legend.legendHandles:  # increase marker sizes in legend
         try:
-            handle.set_sizes([50.0])
+            handle.set_sizes([100.0])
         except:
             pass
     fig.subplots_adjust(right=0.82)
+    plt.tight_layout()
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
 
 
