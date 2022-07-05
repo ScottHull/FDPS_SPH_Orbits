@@ -169,6 +169,9 @@ for cd in cutoff_densities:
     axs[0].scatter(
         [], [], marker=".", s=1, alpha=0.6, color=color, label=label
     )
+axs[0].scatter(
+        [], [], marker=".", s=1, alpha=0.6, color=colors[cutoff_densities[len(cutoff_densities)]], label="5b073S-high"
+    )
 for phase, c in [("100% Vapor", colors[-1]), ("100% Liquid", colors[-2]), ("Supercritical", colors[-3]), ("Mixed", colors[-4])]:
     axs[0].fill_between(
         x=[],
