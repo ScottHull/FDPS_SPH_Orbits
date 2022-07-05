@@ -167,10 +167,10 @@ for cd in cutoff_densities:
     label = r"$\rho_c = {}$ kg/m$^3$".format(cd)
     color = colors[cutoff_densities.index(cd)]
     axs[0].scatter(
-        [], [], marker=".", s=1, alpha=0.6, color=color, label=label
+        [], [], marker=".", s=120, alpha=0.6, color=color, label=label
     )
 axs[0].scatter(
-        [], [], marker=".", s=1, alpha=0.6, color=colors[len(cutoff_densities)], label="5b073S-high"
+        [], [], marker=".", s=120, alpha=0.6, color=colors[len(cutoff_densities)], label="5b073S-high"
     )
 for phase, c in [("100% Vapor", colors[-1]), ("100% Liquid", colors[-2]), ("Supercritical", colors[-3]), ("Mixed", colors[-4])]:
     axs[0].fill_between(
@@ -200,6 +200,6 @@ for handle in legend.legendHandles:  # increase marker sizes in legend
         handle.set_sizes([120.0])
     except:
         pass
-fig.subplots_adjust(right=0.82)
+fig.subplots_adjust(right=0.81)
 
 plt.savefig("phase_curves.png", format='png', dpi=200)
