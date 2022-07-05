@@ -152,7 +152,7 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, imp
             cutoff_densities, y_new, linewidth=2.0, label=r"Stewart M-ANEOS ($N = {10^6}$)"
         )
         axs[h_index].plot(
-            cutoff_densities, y_old, linewidth=2.0, label=r"GADGET M-ANEOS ($N = {10^6}$)"
+            cutoff_densities, y_old, linewidth=2.0, label=r"N-SPH M-ANEOS ($N = {10^6}$)"
         )
         axs[-2].set_xlabel("Cutoff Density")
         axs[-1].set_xlabel("Cutoff Density")

@@ -130,9 +130,9 @@ def plot_secondary_impact_angle_with_struct():
         to_index += 1
     for cd in cutoff_densities:
         axs[0].scatter([], [], s=80, marker="s", color=colors[cutoff_densities.index(cd)], label=r"$\rho_c$ = {} kg/m$^3$".format(cd))
-    for i in ["Stewart M-ANEOS", "GADGET M-ANEOS"]:
+    for i in ["Stewart M-ANEOS", "N-SPH M-ANEOS"]:
         marker = "o"
-        if "GADGET" in i:
+        if "N-SPH" in i:
             marker = "^"
         axs[0].scatter([], [], s=80, marker=marker, color='black', label=i)
     axs[0].legend(loc='upper left')

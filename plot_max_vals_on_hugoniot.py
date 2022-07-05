@@ -19,17 +19,17 @@ base_max_val_folders_loc = "/Users/scotthull/Desktop/"
 stewart_aneos_path = "src/phase_data/forst_STS.table.txt"
 stewart_rho_u = "src/phase_data/forst_STS.rho_u.txt"
 stewart_aneos_hugoniot_path = "src/phase_data/forstSTS__hugoniot.txt"
-gadget_aneos_path = "src/phase_data/duniteN.table.txt"
-gadget_aneos_hugoniot_path = "src/phase_data/duniteN__hugoniot.txt"
-gadget_rho_u = "src/phase_data/duniteN.rho_u.txt"
+N-SPH_aneos_path = "src/phase_data/duniteN.table.txt"
+N-SPH_aneos_hugoniot_path = "src/phase_data/duniteN__hugoniot.txt"
+N-SPH_rho_u = "src/phase_data/duniteN.rho_u.txt"
 
 stewart_avg_surface_rho = 3729.72  # average surface density of the Stewart impactors acros cutoff densities
 stewart_avg_surface_u = 874952.14  # average surface internal energy of the Stewart impactors acros cutoff densities
 stewart_avg_surface_p = 548451811.03  # average surface pressure of the Stewart impactors acros cutoff densities
 
-gadget_avg_surface_rho = 3609.38  # average surface density of the GADGET impactors across cutoff densities
-gadget_avg_surface_u = 1035922.78  # average surface internal energy of the GADGET impactors acros cutoff densities
-gadget_avg_surface_p = 609283928.69  # average surface pressure of the GADGET impactors across cutoff densities
+N-SPH_avg_surface_rho = 3609.38  # average surface density of the N-SPH impactors across cutoff densities
+N-SPH_avg_surface_u = 1035922.78  # average surface internal energy of the N-SPH impactors acros cutoff densities
+N-SPH_avg_surface_p = 609283928.69  # average surface pressure of the N-SPH impactors across cutoff densities
 
 def get_all_sims(angle, runs, high=True):
     fformat = "{}_{}_{}"
@@ -64,12 +64,12 @@ colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 fig, axs = plt.subplots(2, 2, figsize=(12, 12), sharex='all', sharey='all', gridspec_kw={"hspace": 0.14, "wspace": 0.0})
 axs = list(axs.flatten())
 plotting_index = 0
-for i in ["Stewart M-ANEOS", "GADGET M-ANEOS"]:
+for i in ["Stewart M-ANEOS", "N-SPH M-ANEOS"]:
     high = False
     if angle == "b073":
         high = True
     runs = "new"
-    if i == "GADGET M-ANEOS":
+    if i == "N-SPH M-ANEOS":
         runs = "old"
     sims, titles = get_all_sims(angle, runs, high)
 
@@ -78,20 +78,20 @@ for i in ["Stewart M-ANEOS", "GADGET M-ANEOS"]:
     title_appendix = "n"
     experimental = stewart_aneos_path
     aneos = stewart_aneos_hugoniot_path
-    if i == "GADGET M-ANEOS":
+    if i == "N-SPH M-ANEOS":
         title_appendix = "o"
-        experimental = gadget_aneos_path
-        aneos = gadget_aneos_hugoniot_path
+        experimental = N-SPH_aneos_path
+        aneos = N-SPH_aneos_hugoniot_path
     h = Hugoniot()
     h.read_ANEOS(experimental)
     rho1, P1, C1, U1, S1 = h.initial_conditions_aneos(aneos)
     rho1 = stewart_avg_surface_rho
     P1 = stewart_avg_surface_p
     U1 = stewart_avg_surface_u
-    if "GADGET" in i:
-        rho1 = gadget_avg_surface_rho
-        P1 = gadget_avg_surface_p
-        U1 = gadget_avg_surface_u
+    if "N-SPH" in i:
+        rho1 = N-SPH_avg_surface_rho
+        P1 = N-SPH_avg_surface_p
+        U1 = N-SPH_avg_surface_u
     T_s, Rho_s, Us_s, Up_s, P_s, U_s, S_s = h.rankine_hugoniot_equations(rho1, P1, U1)
     P_s = np.array(P_s) / 10 ** 9
     Us_s = np.array(Us_s) / 10 ** 3
@@ -132,8 +132,8 @@ for index, i in enumerate(["5b073S-high"] + [r"$\rho_c$ = {} kg/m$^3$".format(cd
 
 axs[0].set_title("Stewart M-ANEOS: Primary Impact")
 axs[2].set_title("Stewart M-ANEOS: Final Disk State")
-axs[1].set_title("GADGET M-ANEOS: Primary Impact")
-axs[3].set_title("GADGET M-ANEOS: Final Disk State")
+axs[1].set_title("N-SPH M-ANEOS: Primary Impact")
+axs[3].set_title("N-SPH M-ANEOS: Final Disk State")
 axs[2].set_xlabel("Pressure (GPa)")
 axs[3].set_xlabel("Pressure (GPa)")
 axs[0].set_ylabel("Entropy (J/K)")
@@ -160,12 +160,12 @@ plt.savefig("{}_hugoniot_with_max_pressure_vals.png".format(angle), format='png'
 
 
 
-# for i in ["Stewart M-ANEOS", "GADGET M-ANEOS"]:
+# for i in ["Stewart M-ANEOS", "N-SPH M-ANEOS"]:
 #     high = False
 #     if angle == "b073":
 #         high = True
 #     runs = "new"
-#     if i == "GADGET M-ANEOS":
+#     if i == "N-SPH M-ANEOS":
 #         runs = "old"
 #     sims, titles = get_all_sims(angle, runs, high)
 #
@@ -175,20 +175,20 @@ plt.savefig("{}_hugoniot_with_max_pressure_vals.png".format(angle), format='png'
 #     title_appendix = "n"
 #     experimental = stewart_aneos_path
 #     aneos = stewart_aneos_hugoniot_path
-#     if i == "GADGET M-ANEOS":
+#     if i == "N-SPH M-ANEOS":
 #         title_appendix = "o"
-#         experimental = gadget_aneos_path
-#         aneos = gadget_aneos_hugoniot_path
+#         experimental = N-SPH_aneos_path
+#         aneos = N-SPH_aneos_hugoniot_path
 #     h = Hugoniot()
 #     h.read_ANEOS(experimental)
 #     rho1, P1, C1, U1, S1 = h.initial_conditions_aneos(aneos)
 #     rho1 = stewart_avg_surface_rho
 #     P1 = stewart_avg_surface_p
 #     U1 = stewart_avg_surface_u
-#     if "GADGET" in i:
-#         rho1 = gadget_avg_surface_rho
-#         P1 = gadget_avg_surface_p
-#         U1 = gadget_avg_surface_u
+#     if "N-SPH" in i:
+#         rho1 = N-SPH_avg_surface_rho
+#         P1 = N-SPH_avg_surface_p
+#         U1 = N-SPH_avg_surface_u
 #     T_s, Rho_s, Us_s, Up_s, P_s, U_s, S_s = h.rankine_hugoniot_equations(rho1, P1, U1)
 #     P_s = np.array(P_s) / 10 ** 9
 #     Us_s = np.array(Us_s) / 10 ** 3

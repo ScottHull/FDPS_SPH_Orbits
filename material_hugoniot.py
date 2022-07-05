@@ -19,7 +19,7 @@ ax.plot(
     1 / new_hugoniot["Density"], new_hugoniot["Pressure"] / 10 ** 9, linewidth=2.0, label="Stewart M-ANEOS Forsterite"
 )
 ax.plot(
-    1 / old_hugoniot["Density"], old_hugoniot["Pressure"] / 10 ** 9,  linewidth=2.0, label="GADGET M-ANEOS Forsterite"
+    1 / old_hugoniot["Density"], old_hugoniot["Pressure"] / 10 ** 9,  linewidth=2.0, label="N-SPH M-ANEOS Forsterite"
 )
 
 ax.set_xlabel(r" 1/ $\rho$ (m$^3$/kg)")

@@ -19,7 +19,7 @@ base_path = "/home/theia/scotthull/Paper1_SPH/tar-imp/"
 for i in ['new', 'old']:
     eos = "Stewart M-ANEOS"
     if i == "old":
-        eos = "GADGET M-ANEOS"
+        eos = "N-SPH M-ANEOS"
     fig, axs = plt.subplots(2, 2, figsize=(10, 10))
     axs = axs.flatten()
     for cd in cutoff_densities:

@@ -37,7 +37,7 @@ def get_all_sims(angle, high=True):
     if high:
         output_name = fformat.format(5, angle, "new") + "_high"
         names.append(output_name)
-        title_name = tformat.format(5, angle, "n") + "-high"
+        title_name = tformat.format(5, angle, "S") + "-high"
         titles.append(title_name)
     return names, titles
 
@@ -163,10 +163,27 @@ def plot_phase_diagrams():
                 temp, entropy, s=1, marker=marker, alpha=0.6, color=color, label=label
             )
 
+for cd in cutoff_densities:
+    label = r"$\rho_c = {}$ kg/m$^3$".format(cd)
+    color = colors[cutoff_densities.index(cd)]
+    axs[0].scatter(
+        [], [], marker=".", s=1, alpha=0.6, color=color, label=label
+    )
+for phase, c in [("100% Vapor", colors[-1]), ("100% Liquid", colors[-2]), ("Supercritical", colors[-3]), ("Mixed", colors[-4])]:
+    axs[0].fill_between(
+        x=[],
+        y1=0,
+        y2=0,
+        color=c,
+        alpha=0.2,
+        label=phase
+    )
+
+
 axs[0].set_title("Stewart M-ANEOS ($b=0.73$)")
-axs[1].set_title("GADGET M-ANEOS ($b=0.73$)")
+axs[1].set_title("N-SPH M-ANEOS ($b=0.73$)")
 axs[2].set_title("Stewart M-ANEOS ($b=0.75$)")
-axs[3].set_title("GADGET M-ANEOS ($b=0.75$)")
+axs[3].set_title("N-SPH M-ANEOS ($b=0.75$)")
 plot_phase_diagrams()
 plt.tight_layout()
 legend = fig.legend(loc=7, fontsize=16)

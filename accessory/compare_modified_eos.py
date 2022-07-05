@@ -26,15 +26,15 @@ ax.plot(
     N_eos_df['entropy_sol_liq'],
     N_eos_df['temperature'],
     linewidth=2.0,
-    # label="GADGET M-ANEOS Liquid",
+    # label="N-SPH M-ANEOS Liquid",
     color='#8dd3c7'
 )
 ax.plot(
     N_eos_df['entropy_vap'],
     N_eos_df['temperature'],
     linewidth=2.0,
-    # label="GADGET M-ANEOS Vapor",
-    label="GADGET M-ANEOS",
+    # label="N-SPH M-ANEOS Vapor",
+    label="N-SPH M-ANEOS",
     color='#8dd3c7'
 )
 ax.plot(

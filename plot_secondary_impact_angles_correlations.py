@@ -119,7 +119,7 @@ def plot_impact_angles_vs_time():
         ax.legend()
     axs[0].set_ylabel("Secondary Impact Angle (deg.)")
     axs[0].set_title("Stewart M-ANEOS")
-    axs[1].set_title("GADGET M-ANEOS")
+    axs[1].set_title("N-SPH M-ANEOS")
     plt.show()
 
 
@@ -144,7 +144,7 @@ def plot_moment_of_impact_vs_angle():
         ax.legend()
     axs[0].set_ylabel("Secondary Impact Angle (deg.)")
     axs[0].set_title("Stewart M-ANEOS")
-    axs[1].set_title("GADGET M-ANEOS")
+    axs[1].set_title("N-SPH M-ANEOS")
     plt.show()
 
 
@@ -210,7 +210,7 @@ def plot_vs_disk_property(r_dot_v: bool):
                 )
             axs[index].set_ylabel(rows_map[p][1:-1])
             axs[index].scatter(
-                [], [], s=80, marker="^", label="GADGET M-ANEOS"
+                [], [], s=80, marker="^", label="N-SPH M-ANEOS"
             )
             axs[index].scatter(
                 [], [], s=80, marker="o", label="Stewart M-ANEOS"
@@ -340,7 +340,7 @@ def plot_vs_disk_property_all():
         [], [], s=80, marker="o", color='black', label="Stewart M-ANEOS"
     )
     axs[0].scatter(
-        [], [], s=80, marker="^", color='black', label="GADGET M-ANEOS"
+        [], [], s=80, marker="^", color='black', label="N-SPH M-ANEOS"
     )
 
     axs[0].legend(loc='lower right', fontsize=12)

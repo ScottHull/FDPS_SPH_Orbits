@@ -326,7 +326,7 @@ def plot_entropies():
         ax.set_ylabel("Entropy")
         ax.set_xlabel("Time (hrs)")
     axs[0].set_title("Stewart M-ANEOS")
-    axs[1].set_title("GADGET M-ANEOS")
+    axs[1].set_title("N-SPH M-ANEOS")
     plt.savefig("s_no_circ.png", format='png', dpi=200)
 
 

@@ -26,7 +26,7 @@ ax.scatter(
     [p / rho for p, rho in zip(old_phase_df['pressure'], old_phase_df['density'])],
     s=2,
     c='red',
-    label="GADGET M-ANEOS"
+    label="N-SPH M-ANEOS"
 )
 ax.set_xlabel("Internal Energy")
 ax.set_ylabel(r"P/$\rho$")

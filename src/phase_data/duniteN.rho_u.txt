@@ -1,4 +1,4 @@
-#  120 120 :Grid numbers for density and internal energy, EOS: gadget EOS 
+#  120 120 :Grid numbers for density and internal energy, EOS: N-SPH EOS
 # Density (km/m3), Internal energy (kJ/kg), Temperature (K), Pressure (Pa), Sound speed (m/s), Entropy (J/K/kg) 
  1.00000000E-06  1.01000000E+00  2.00024374E+01  1.71619107E-110  1.00000000E-12 -2.94915751E+01 
  1.00000000E-06  1.20860593E+00  2.00508457E+01  1.72864818E-110  1.00000000E-12 -2.94743451E+01 
