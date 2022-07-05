@@ -36,7 +36,7 @@ secondary_impact_lims = {
         'tail_min_y': -4.1e7,
         'tail_max_y': -2.3e7,
     },
-    '5b073n-high': {
+    '5b073S-high': {
         'si_min_x': -0.65e7,
         'si_max_x': -1.35e7,
         'si_min_y': -2.4e7,

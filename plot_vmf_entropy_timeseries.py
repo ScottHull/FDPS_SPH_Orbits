@@ -125,7 +125,7 @@ def plot_entropy_and_vmf_vs_time():
     )
     if angle == "b073":
         axs[0].plot(
-            [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, linestyle="dotted", label="5b073n-high"
+            [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, linestyle="dotted", label="5b073S-high"
         )
     letters = list(string.ascii_lowercase)
     for index, ax in enumerate(axs):

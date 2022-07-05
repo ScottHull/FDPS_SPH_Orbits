@@ -75,7 +75,7 @@ def plot_iteration_mp(args):
         x, y, s=0.1,
         color=[cmap(normalizer(i)) for i in entropy], marker="."
     )
-    ax.set_title("5b073n-high ({} - {} hrs)".format(iteration, formatted_time))
+    ax.set_title("5b073S-high ({} - {} hrs)".format(iteration, formatted_time))
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
     cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
@@ -114,7 +114,7 @@ def plot_iteration_sp(args):
         x, y, s=0.1,
         color=[cmap(normalizer(i)) for i in entropy], marker="."
     )
-    ax.set_title("5b073n-high ({} - {} hrs)".format(iteration, formatted_time))
+    ax.set_title("5b073S-high ({} - {} hrs)".format(iteration, formatted_time))
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
     cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)

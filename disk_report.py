@@ -172,7 +172,7 @@ def build_report():
     pool.join()
 
 def build_report_high_res():
-    sims, titles = ['5_b073_new_high'], ['5b073n-high']
+    sims, titles = ['5_b073_new_high'], ['5b073S-high']
     __build_report_iteration_mp(args=[0, sims[0], titles])
 
 def make_report_latex_table():

@@ -54,7 +54,7 @@ secondary_impact_times = {
         'characteristic_tail_iteration': None,
         'characteristic_tail_time': None,
     },
-    '5b073n-high': {
+    '5b073S-high': {
         'iteration': 220,
         'time': 6.11,
         'primary_impact_iteration': 15,

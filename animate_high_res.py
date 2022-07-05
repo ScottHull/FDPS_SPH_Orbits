@@ -21,7 +21,7 @@ increment = 20
 square_scale = 6e7
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 to_path = "animate_high_res"
-sim, title = "5_b073_new_high", "5b073n-high"
+sim, title = "5_b073_new_high", "5b073S-high"
 
 iterations = list(np.arange(min_iteration, end_iteration + increment, increment))
 if not os.path.exists(to_path):
@@ -112,5 +112,5 @@ animate(
     interval=increment,
     path=to_path,
     fps=10,
-    filename="animate_5b073n-high.mp4",
+    filename="animate_5b073S-high.mp4",
 )

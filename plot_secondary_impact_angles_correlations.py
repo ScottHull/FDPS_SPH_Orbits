@@ -53,7 +53,7 @@ secondary_impact_times = {
         'characteristic_tail_iteration': None,
         'characteristic_tail_time': None,
     },
-    '5b073n-high': {
+    '5b073S-high': {
         'iteration': 220,
         'time': 6.11,
         'primary_impact_iteration': 15,
@@ -330,11 +330,11 @@ def plot_vs_disk_property_all():
             [], [], s=80, marker="s", color=colors[cutoff_densities.index(c)], label="{} kg/m$^3$".format(c)
         )
     # axs[0].scatter(
-    #     [], [], s=80, marker="*", color='black', label="5b073n-high"
+    #     [], [], s=80, marker="*", color='black', label="5b073S-high"
     # )
     if "high" in ",".join(str(i) for i in sims) and angle == "b073":
         axs[0].scatter(
-            [], [], s=80, marker="*", color=colors[cutoff_densities.index(5)], label="5b073n-high"
+            [], [], s=80, marker="*", color=colors[cutoff_densities.index(5)], label="5b073S-high"
         )
     axs[0].scatter(
         [], [], s=80, marker="o", color='black', label="Stewart M-ANEOS"

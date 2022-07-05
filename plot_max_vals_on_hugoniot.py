@@ -124,8 +124,8 @@ for i in ["Stewart M-ANEOS", "GADGET M-ANEOS"]:
         axs[3].plot(h.P_h / 10 ** 9, h.S_h, linewidth=4.0, color='fuchsia', label="M-ANEOS")
     plotting_index = 1
 
-for index, i in enumerate(["5b073n-high"] + [r"$\rho_c$ = {} kg/m$^3$".format(cd) for cd in cutoff_densities]):
-    if i == "5b073n-high" and angle == "b075":
+for index, i in enumerate(["5b073S-high"] + [r"$\rho_c$ = {} kg/m$^3$".format(cd) for cd in cutoff_densities]):
+    if i == "5b073S-high" and angle == "b075":
         pass
     else:
         axs[0].scatter([], [], marker='o', s=4, label=i, color=colors[index])

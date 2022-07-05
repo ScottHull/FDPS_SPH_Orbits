@@ -60,7 +60,7 @@ for iteration in np.arange(start_iteration, end_iteration + increment, increment
         x, y, s=0.1,
         color=spec_am, marker="."
     )
-    ax.set_title("5b073n-high ({} - {} hrs)".format(iteration, formatted_time))
+    ax.set_title("5b073S-high ({} - {} hrs)".format(iteration, formatted_time))
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
     cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
