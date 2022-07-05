@@ -137,6 +137,7 @@ def plot_entropy_and_vmf_vs_time():
     for ax in axs[-3:]:
         ax.set_xlabel("Time (hrs)")
 
+    plt.tight_layout()
     legend = fig.legend(loc=7, fontsize=16)
     for line in legend.get_lines():  # increase line widths in legend
         try:
@@ -149,7 +150,6 @@ def plot_entropy_and_vmf_vs_time():
         except:
             pass
     fig.subplots_adjust(right=0.82)
-    plt.tight_layout()
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
 
 
