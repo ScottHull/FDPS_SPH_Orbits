@@ -48,9 +48,9 @@ def get_all_sims(high=True):
     high_res_name = None
     high_res_title = None
     for runs in ["new", "old"]:
-        n = "n"
+        n = "s"
         if runs == "old":
-            n = "o"
+            n = "n"
         for cd in cutoff_densities:
             output_name = fformat.format(cd, angle, runs)
             title_name = tformat.format(cd, angle, n)
@@ -137,7 +137,17 @@ def plot_entropy_and_vmf_vs_time():
     for ax in axs[-3:]:
         ax.set_xlabel("Time (hrs)")
 
-    fig.legend(loc=7, fontsize=16)
+    legend = fig.legend(loc=7, fontsize=16)
+    for line in legend.get_lines():  # increase line widths in legend
+        try:
+            line.set_linewidth(4.0)
+        except:
+            pass
+    for handle in legend.legendHandles:  # increase marker sizes in legend
+        try:
+            handle.set_sizes([50.0])
+        except:
+            pass
     fig.subplots_adjust(right=0.82)
     plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
 

@@ -46,9 +46,9 @@ def get_all_sims(angle, runs: str, high=True):
     tformat = "{}{}{}"
     names = []
     titles = []
-    n = "n"
+    n = "s"
     if runs == "old":  # runs = new or old
-        n = "o"
+        n = "n"
     for cd in cutoff_densities:
         output_name = fformat.format(cd, angle, runs)
         title_name = tformat.format(cd, angle, n)
