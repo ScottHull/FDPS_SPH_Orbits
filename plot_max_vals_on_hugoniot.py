@@ -42,7 +42,7 @@ def get_all_sims(angle, runs, high=True):
     if high and runs == "new" and angle == "b073":
         output_name = fformat.format(5, angle, "new") + "_high"
         names.append(output_name)
-        title_name = tformat.format(5, angle, "n") + "-high"
+        title_name = tformat.format(5, angle, "S") + "-high"
         titles.append(title_name)
     for cd in cutoff_densities:
         output_name = fformat.format(cd, angle, runs)

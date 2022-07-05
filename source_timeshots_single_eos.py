@@ -41,24 +41,28 @@ if runs == "old":
     phase_path = old_phase_path
 
 
-def get_all_sims(angle, runs: str, high=True):
+def get_all_sims(high=True):
     fformat = "{}_{}_{}"
     tformat = "{}{}{}"
     names = []
     titles = []
-    n = "S"
-    if runs == "old":  # runs = new or old
-        n = "N"
-    for cd in cutoff_densities:
-        output_name = fformat.format(cd, angle, runs)
-        title_name = tformat.format(cd, angle, n)
-        titles.append(title_name)
-        names.append(output_name)
-        if cd == 5 and high and angle == "b073" and runs == "new":
-            output_name = fformat.format(5, angle, "new") + "_high"
-            names.append(output_name)
-            title_name = tformat.format(5, angle, "n") + "-high"
+    high_res_name = None
+    high_res_title = None
+    for runs in ["new", "old"]:
+        n = "S"
+        if runs == "old":
+            n = "N"
+        for cd in cutoff_densities:
+            output_name = fformat.format(cd, angle, runs)
+            title_name = tformat.format(cd, angle, n)
             titles.append(title_name)
+            names.append(output_name)
+            if cd == 5 and high and runs == "new":
+                high_res_name = fformat.format(cd, angle, runs) + "_high"
+                high_res_title = tformat.format(cd, angle, n) + "-high"
+    if high_res_name is not None and high_res_title is not None:
+        names.append(high_res_name)
+        titles.append(high_res_title)
     return names, titles
 
 
@@ -76,7 +80,7 @@ def get_time(f, local=True):
 
 def get_end_states(angle, high):
     endstates = {}
-    sims, titles = get_all_sims(angle, runs, high)
+    sims, titles = get_all_sims(high)
     for s, t in zip(sims, titles):
         end_state_file = base_path + "{}/circularized_{}/{}.csv".format(s, s, end_iteration)
         end_state_df = pd.read_csv(end_state_file, index_col="id")
@@ -84,7 +88,7 @@ def get_end_states(angle, high):
     return endstates
 
 
-sims, titles = get_all_sims(angle, runs, high)
+sims, titles = get_all_sims(high)
 endstates = get_end_states(angle=angle, high=high)
 figsize = (20, 25)
 if high and angle == "b073" and runs == "new":
