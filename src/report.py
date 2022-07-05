@@ -155,7 +155,7 @@ rows_map = {
         "DISK_DELTA_S_DUE_TO_ORBIT_CIRCULAR_FILTERED": "{Avg. $\Delta S_{circ}$ (J/K)}",
         "PREDICTED_MOON_MASS": "{$M_{M}$ ($M_L$)}",
         "DISK_THEIA_MASS_FRACTION": "{Disk Theia Mass Fraction ($\%$)}",
-        "MEAN_DISK_TEMPERATURE": "{Avg. Disk Temperature (K)}"
+        "MEAN_DISK_TEMPERATURE": "{Avg. $T_{disk}$ (K)}",
     }
 
 def build_latex_table_from_disk_report(run_names: list, run_titles: list, to_base_path: str, filename: str, iteration: int):
