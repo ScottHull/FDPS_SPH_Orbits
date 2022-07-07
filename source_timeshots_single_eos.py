@@ -93,7 +93,8 @@ endstates = get_end_states(angle=angle, high=high)
 figsize = (20, 25)
 if high and angle == "b073" and runs == "new":
     figsize = (25, 25)
-fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
+# fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
+fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all')
 axs = axs.flatten()
 for ax in axs:
     ax.set_xlim(-square_scale, square_scale)
@@ -103,8 +104,10 @@ for ax in axs:
     ax.axes.set_aspect('equal')
 current_index = 0
 # colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
-for iteration in iterations:
-    for s, t in zip(sims, titles):
+# for iteration in iterations:
+#     for s, t in zip(sims, titles):
+for s, t in zip(sims, titles):
+    for iteration in iterations:
         cd = cutoff_densities.index(int(s.split("_")[0]))
         p = base_path + "{}/circularized_{}".format(s, s)
         f = p + "/{}.csv".format(iteration)
