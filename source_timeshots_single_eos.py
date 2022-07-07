@@ -103,10 +103,8 @@ for ax in axs:
     ax.axes.set_aspect('equal')
 current_index = 0
 # colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
-# for iteration in iterations:
-#     for s, t in zip(sims, titles):
-for s, t in zip(sims, titles):
-    for iteration in iterations:
+for iteration in iterations:
+    for s, t in zip(sims, titles):
         cd = cutoff_densities.index(int(s.split("_")[0]))
         p = base_path + "{}/circularized_{}".format(s, s)
         f = p + "/{}.csv".format(iteration)
