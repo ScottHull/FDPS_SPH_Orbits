@@ -89,9 +89,9 @@ def get_end_states(angle, high):
 
 sims, titles = get_all_sims(high)
 endstates = get_end_states(angle=angle, high=high)
-figsize = (20, 25)
+figsize = (20, 20)
 if high and angle == "b073" and runs == "new":
-    figsize = (25, 25)
+    figsize = (25, 20)
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 axs = axs.flatten()
@@ -144,6 +144,6 @@ for handle in legend.legendHandles:
     except:
         pass
 # plt.tight_layout()
-plt.margins(0.015, tight=True)
+plt.margins(0.005, tight=True)
 
 plt.savefig("source_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
