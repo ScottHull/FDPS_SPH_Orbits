@@ -123,7 +123,7 @@ for iteration in iterations:
         )
         formatted_time = get_time(p2 + "/" + base_file)
         endstate = endstates[t]
-        df = df[df['z'] <= 0]  # slice simulation
+        # df = df[df['z'] <= 0]  # slice simulation
         end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
             endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
         planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("z"), df[
@@ -144,5 +144,6 @@ for handle in legend.legendHandles:
     except:
         pass
 # plt.tight_layout()
+plt.margins(0.015, tight=True)
 
 plt.savefig("source_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
