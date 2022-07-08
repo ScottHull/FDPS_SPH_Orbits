@@ -93,7 +93,7 @@ figsize = (20, 25)
 if high and angle == "b073" and runs == "new":
     figsize = (25, 25)
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
-fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all')
+fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 axs = axs.flatten()
 for ax in axs:
     ax.set_xlim(-square_scale, square_scale)
@@ -143,6 +143,6 @@ for handle in legend.legendHandles:
         handle.set_sizes([50.0])
     except:
         pass
-plt.tight_layout()
+# plt.tight_layout()
 
 plt.savefig("source_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
