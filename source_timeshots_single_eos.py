@@ -123,8 +123,12 @@ for iteration in iterations:
         )
         formatted_time = get_time(p2 + "/" + base_file)
         endstate = endstates[t]
-        end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
-        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())], df[df['id'].isin(end_disk.index.tolist())], df[df['id'].isin(end_escape.index.tolist())]
+        df = df[df['z'] <= 0]  # slice simulation
+        end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
+            endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
+        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("z"), df[
+            df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
+                                   df['id'].isin(end_escape.index.tolist())].sort_values("z")
         for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
             axs[current_index].scatter(
                 i['x'], i['y'], s=0.1, marker=".", alpha=1, label=label
