@@ -90,9 +90,9 @@ def get_end_states(angle, high):
 
 sims, titles = get_all_sims(high)
 endstates = get_end_states(angle=angle, high=high)
-figsize = (20, 25)
+figsize = (25, 20)
 if high and angle == "b073" and runs == "new":
-    figsize = (20, 25)
+    figsize = (25, 20)
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 # fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
@@ -155,9 +155,9 @@ fig.tight_layout()
 fig.subplots_adjust(wspace=0, hspace=0)
 for ax in axs[-5:]:
     nbins_x = len(ax.get_xticklabels())
-    ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='lower'))
+    ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
 for ax in [axs[0], axs[5], axs[10], axs[15]]:
     nbins_y = len(ax.get_yticklabels())
-    ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='lower'))
+    ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
 
 plt.savefig("source_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
