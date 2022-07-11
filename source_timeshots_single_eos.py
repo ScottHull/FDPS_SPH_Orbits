@@ -2,7 +2,7 @@
 import os
 import csv
 import shutil
-from math import pi, asin, isnan
+from math import pi, asin, isnan, exp
 import numpy as np
 import pandas as pd
 from random import randint
@@ -134,10 +134,11 @@ for iteration in iterations:
                                    df['id'].isin(end_escape.index.tolist())].sort_values("z")
         for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
             axs[current_index].scatter(
-                i['x'], i['y'], s=0.1, marker=".", alpha=1, label=label
+                i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.1, marker=".", alpha=1, label=label
             )
-        axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.3 * square_scale),
-                                "{} hrs".format(formatted_time), fontsize=16)
+        if current_index % len(iterations) == 0:
+            axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.3 * square_scale),
+                                    "{} hrs".format(formatted_time), fontsize=16)
         current_index += 1
 
 # legend = axs[0].legend(loc='upper left', fontsize=14)
