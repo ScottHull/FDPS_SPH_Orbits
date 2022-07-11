@@ -153,9 +153,10 @@ for index, t in enumerate(titles):
     axs[index].set_title(t, fontsize=16)
 fig.tight_layout()
 fig.subplots_adjust(wspace=0, hspace=0)
-for ax in axs:
+for ax in axs[-5:]:
     nbins_x = len(ax.get_xticklabels())
     ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='lower'))
+for ax in [axs[0], axs[5], axs[10], axs[15]]:
     nbins_y = len(ax.get_yticklabels())
     ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='lower'))
 
