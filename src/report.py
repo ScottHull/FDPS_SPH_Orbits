@@ -141,7 +141,7 @@ rows_map = {
         "DISK_MASS_BEYOND_ROCHE": "{Disk Mass $\geq$ $R_{Roche}$ ($M_{L}$)}",
         "NUM_PARTICLES_BEYOND_ROCHE": "{$N_{disk}$ $\geq$ $R_{Roche}$}",
         "DISK_IRON_MASS_FRACTION": "{Disk Iron Mass Fraction ($\%$)}",
-        "DISK_MASS_FRACTION_BEYOND_ROCHE": "{Disk Iron Mass Fraction $\geq$ $R_{Roche}$ ($\%$)}",
+        "DISK_IRON_MASS_FRACTION_BEYOND_ROCHE": "{Disk Iron Mass Fraction $\geq$ $R_{Roche}$ ($\%$)}",
         "AVERAGE_PLANET_DENSITY": "{Planet Avg. Density ($kg/m^3$)}",
         "PLANET_EQUATORIAL_RADIUS": "{Planet $a$ (km)}",
         "PLANET_POLAR_RADIUS": "{Planet $b$ (km)}",
