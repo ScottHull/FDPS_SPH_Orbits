@@ -29,7 +29,7 @@ angle = "b073"
 iterations = [100, 200, 500, 1800]
 cutoff_densities = [5, 500, 1000, 2000]
 high = True
-square_scale = 6e7
+square_scale = 6e7 / 10 ** 7
 min_normalize = 0
 max_normalize = 2e11
 end_iteration = 1800
@@ -136,7 +136,7 @@ for iteration in iterations:
             axs[current_index].scatter(
                 i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.1, marker=".", alpha=1, label=label
             )
-        if current_index % len(iterations) == 0:
+        if current_index % len(sims) == 0:
             axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.3 * square_scale),
                                     "{} hrs".format(formatted_time), fontsize=16)
         current_index += 1
