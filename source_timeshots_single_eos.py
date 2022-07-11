@@ -90,9 +90,9 @@ def get_end_states(angle, high):
 
 sims, titles = get_all_sims(high)
 endstates = get_end_states(angle=angle, high=high)
-figsize = (25, 20)
+figsize = (24.5, 20)
 if high and angle == "b073" and runs == "new":
-    figsize = (25, 20)
+    figsize = (24.5, 20)
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 # fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
@@ -137,7 +137,7 @@ for iteration in iterations:
                 i['x'], i['y'], s=0.1, marker=".", alpha=1, label=label
             )
         axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.3 * square_scale),
-                                "{} hrs".format(formatted_time), fontsize=14)
+                                "{} hrs".format(formatted_time), fontsize=16)
         current_index += 1
 
 # legend = axs[0].legend(loc='upper left', fontsize=14)
@@ -150,13 +150,13 @@ for iteration in iterations:
 # plt.margins(0.005, tight=True)
 
 for index, t in enumerate(titles):
-    axs[index].set_title(t, fontsize=16)
+    axs[index].set_title(t, fontsize=18)
 fig.tight_layout()
 fig.subplots_adjust(wspace=0, hspace=0)
-for ax in axs[-5:]:
+for ax in axs[-5:-1]:
     nbins_x = len(ax.get_xticklabels())
     ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
-for ax in [axs[0], axs[5], axs[10], axs[15]]:
+for ax in [axs[5], axs[10], axs[15]]:
     nbins_y = len(ax.get_yticklabels())
     ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
 
