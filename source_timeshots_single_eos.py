@@ -157,10 +157,10 @@ for index, t in enumerate(titles):
     axs[index].set_title(t, fontsize=20)
 fig.tight_layout()
 fig.subplots_adjust(wspace=0, hspace=0)
-for ax in axs[-len(sims):-1]:
+for ax in axs[-len(sims):-2]:
     nbins_x = len(ax.get_xticklabels())
     ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
-for ax in [axs[i] for i in np.arange(len(sims), len(iterations) * len(sims), len(sims))]:
+for ax in [axs[i] for i in np.arange(len(sims) * 2, len(iterations) * len(sims), len(sims))]:
     nbins_y = len(ax.get_yticklabels())
     ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
 
