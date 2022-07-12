@@ -86,7 +86,7 @@ def plot_entropy_and_vmf_vs_time():
             inc = increment_high
         elif "low" in sim:
             inc = increment_low
-        for iteration in np.arange(min_iteration, max_iteration + increment, inc):
+        for iteration in np.arange(min_iteration, max_iteration + inc, inc):
             print(sim, title, iteration)
             try:
                 path = base_path + "{}/{}_reports/".format(sim, sim)
