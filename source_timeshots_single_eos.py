@@ -60,6 +60,9 @@ def get_all_sims(high=True):
         if cd == 5 and high and runs == "new":
             high_res_name = fformat.format(cd, angle, runs) + "_high"
             high_res_title = tformat.format(cd, angle, n) + "-high"
+        if cd == 2000 and high and runs == "old":
+            high_res_name = fformat.format(cd, angle, runs) + "_low"
+            high_res_title = tformat.format(cd, angle, n) + "-low"
     if high_res_name is not None and high_res_title is not None:
         names.append(high_res_name)
         titles.append(high_res_title)
@@ -90,8 +93,8 @@ def get_end_states(angle, high):
 
 sims, titles = get_all_sims(high)
 endstates = get_end_states(angle=angle, high=high)
-figsize = (24.5, 20)
-if high and angle == "b073" and runs == "new":
+figsize = (20, 20)
+if (high and angle == "b073" and runs == "new") or (high and angle == "b075" and runs == "old"):
     figsize = (24.5, 20)
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 # fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
@@ -154,10 +157,10 @@ for index, t in enumerate(titles):
     axs[index].set_title(t, fontsize=18)
 fig.tight_layout()
 fig.subplots_adjust(wspace=0, hspace=0)
-for ax in axs[-5:-1]:
+for ax in axs[-len(sims):-1]:
     nbins_x = len(ax.get_xticklabels())
     ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
-for ax in [axs[5], axs[10], axs[15]]:
+for ax in [axs[i] for i in np.arange(len(iterations), len(iterations) * len(sims), len(iterations))]:
     nbins_y = len(ax.get_yticklabels())
     ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
 
