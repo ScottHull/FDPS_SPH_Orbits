@@ -151,6 +151,8 @@ def plot_phase_diagrams():
             color = colors[cutoff_densities.index(cd)]
             if "high" in s:
                 color = colors[cutoff_densities.index(cutoff_densities[-1]) + 1]
+            if "low" in s:
+                color = colors[cutoff_densities.index(cutoff_densities[-1]) + 2]
             if "old" in s:
                 phase_curve = old_phase_df
             to_index = 0
@@ -176,7 +178,10 @@ for cd in cutoff_densities:
         [], [], marker=".", s=120, alpha=0.6, color=color, label=label
     )
 axs[0].scatter(
-        [], [], marker=".", s=120, alpha=0.6, color=colors[len(cutoff_densities)], label="5b073S-high"
+        [], [], marker=".", s=120, alpha=0.6, color=colors[cutoff_densities.index(cutoff_densities[-1]) + 1], label="5b073S-high"
+    )
+axs[0].scatter(
+        [], [], marker=".", s=120, alpha=0.6, color=colors[cutoff_densities.index(cutoff_densities[-1]) + 2], label="2000b075N-low"
     )
 for phase, c in [("100% Vapor", colors[-1]), ("100% Liquid", colors[-2]), ("Supercritical", colors[-3]), ("Mixed", colors[-4])]:
     axs[0].fill_between(
@@ -206,6 +211,6 @@ for handle in legend.legendHandles:  # increase marker sizes in legend
         handle.set_sizes([120.0])
     except:
         pass
-fig.subplots_adjust(right=0.82)
+fig.subplots_adjust(right=0.80)
 
 plt.savefig("phase_curves.png", format='png', dpi=200)
