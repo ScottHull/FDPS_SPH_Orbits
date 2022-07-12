@@ -21,6 +21,7 @@ min_iteration = 0
 max_iteration = 1800
 increment = 50
 increment_high = 100
+increment_low = 20
 number_processes = 200
 number_processes_high = 500
 
@@ -70,7 +71,7 @@ def get_all_sims(angle, high=True):
 
 
 def plot_entropy_and_vmf_vs_time():
-    sims, titles = get_all_sims(high=True)
+    sims, titles = get_all_sims(high=True, angle=angle)
     fig, axs = plt.subplots(2, 3, figsize=(18, 9), sharex="all")
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
@@ -83,6 +84,8 @@ def plot_entropy_and_vmf_vs_time():
         inc = increment
         if "high" in sim:
             inc = increment_high
+        elif "low" in sim:
+            inc = increment_low
         for iteration in np.arange(min_iteration, max_iteration + increment, inc):
             print(sim, title, iteration)
             try:
@@ -130,6 +133,10 @@ def plot_entropy_and_vmf_vs_time():
     if angle == "b073":
         axs[0].plot(
             [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, linestyle="dotted", label="5b073S-high"
+        )
+    if angle == "b075":
+        axs[0].plot(
+            [], [], c=colors[cutoff_densities.index(2000)], linewidth=2.0, linestyle="dotted", label="2000b075N-low"
         )
     letters = list(string.ascii_lowercase)
     for index, ax in enumerate(axs):
