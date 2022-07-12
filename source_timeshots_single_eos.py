@@ -160,7 +160,7 @@ fig.subplots_adjust(wspace=0, hspace=0)
 for ax in axs[-len(sims):-1]:
     nbins_x = len(ax.get_xticklabels())
     ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
-for ax in [axs[i] for i in np.arange(len(iterations), len(iterations) * len(sims), len(iterations))]:
+for ax in [axs[i] for i in np.arange(len(sims), len(iterations) * len(sims), len(sims))]:
     nbins_y = len(ax.get_yticklabels())
     ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
 
