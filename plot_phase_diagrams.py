@@ -200,6 +200,6 @@ for handle in legend.legendHandles:  # increase marker sizes in legend
         handle.set_sizes([120.0])
     except:
         pass
-fig.subplots_adjust(right=0.81)
+fig.subplots_adjust(right=0.82)
 
 plt.savefig("phase_curves.png", format='png', dpi=200)
