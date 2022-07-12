@@ -122,7 +122,7 @@ def plot_entropy_and_vmf_vs_time():
             axs[index].set_ylabel(rows_map[h][1:-1])
     for c in cutoff_densities:
         axs[0].scatter(
-            [], [], marker="s", s=80, label="$\rho_c$ = {} kg/m$^3$".format(c)
+            [], [], marker="s", s=80, label=r"$\rho_c$ = {} kg/m$^3$".format(c)
         )
     axs[0].plot(
         [], [], c='black', linewidth=2.0, linestyle="-", label="Stewart M-ANEOS"
