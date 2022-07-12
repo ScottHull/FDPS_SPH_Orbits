@@ -137,8 +137,8 @@ for ax in [axs[1], axs[3]]:
 def plot_phase_diagrams():
     for angle in angles:
         high = True
-        if angle == "b075":
-            high = False
+        # if angle == "b075":
+        #     high = False
         sims, titles = get_all_sims(angle=angle, high=high)
         for s, t in zip(sims, titles):
             marker = "."
