@@ -141,10 +141,10 @@ for iteration in iterations:
             )
         if current_index % len(sims) == 0:
             axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.3 * square_scale),
-                                    "{} hrs".format(formatted_time), fontsize=18)
+                                    "{} hrs".format(formatted_time), fontsize=20)
         current_index += 1
 
-legend = axs[0].legend(loc='upper left', fontsize=18)
+legend = axs[0].legend(loc='upper left', fontsize=20)
 for handle in legend.legendHandles:
     try:
         handle.set_sizes([200.0])
