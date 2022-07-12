@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import string
 import matplotlib.pyplot as plt
 
 plt.rcParams.update({'font.size': 14, })
@@ -152,7 +154,7 @@ def plot_phase_diagrams():
             if "high" in s:
                 color = colors[cutoff_densities.index(cutoff_densities[-1]) + 1]
             if "low" in s:
-                color = colors[cutoff_densities.index(cutoff_densities[-1]) + 3]
+                color = colors[cutoff_densities.index(cutoff_densities[-1]) + 1]
             if "old" in s:
                 phase_curve = old_phase_df
             to_index = 0
@@ -178,11 +180,11 @@ for cd in cutoff_densities:
         [], [], marker=".", s=120, alpha=0.6, color=color, label=label
     )
 axs[0].scatter(
-        [], [], marker=".", s=120, alpha=0.6, color=colors[cutoff_densities.index(cutoff_densities[-1]) + 1], label="5b073S-high"
+        [], [], marker=".", s=120, alpha=0.6, color=colors[cutoff_densities.index(cutoff_densities[-1]) + 1], label="5b073S-high &\n2000b075N-low"
     )
-axs[0].scatter(
-        [], [], marker=".", s=120, alpha=0.6, color=colors[cutoff_densities.index(cutoff_densities[-1]) + 3], label="2000b075N-low"
-    )
+# axs[0].scatter(
+#         [], [], marker=".", s=120, alpha=0.6, color=colors[cutoff_densities.index(cutoff_densities[-1]) + 1], label="2000b075N-low"
+#     )
 for phase, c in [("100% Vapor", colors[-1]), ("100% Liquid", colors[-2]), ("Supercritical", colors[-3]), ("Mixed", colors[-4])]:
     axs[0].fill_between(
         x=[],
@@ -212,5 +214,13 @@ for handle in legend.legendHandles:  # increase marker sizes in legend
     except:
         pass
 fig.subplots_adjust(right=0.80)
+
+letters = list(string.ascii_lowercase)
+for index, ax in enumerate(axs):
+    x1, x2, y1, y2 = ax.axis()
+    x_loc = x1 + (0.02 * (x2 - x1))
+    y_loc = y2 - (0.08 * (y2 - y1))
+    ax.grid(alpha=0.4)
+    ax.text(x_loc, y_loc, letters[index], fontweight="bold")
 
 plt.savefig("phase_curves.png", format='png', dpi=200)
