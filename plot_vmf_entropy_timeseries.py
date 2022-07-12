@@ -113,7 +113,7 @@ def plot_entropy_and_vmf_vs_time():
         linestyle = "-"
         if "N" in sim:
             linestyle = "--"
-        if "high" in sim:
+        if "high" in sim or "low" in sim:
             linestyle = "dotted"
         for index, h in enumerate(list(d[sim].keys())[1:]):
             axs[index].plot(
