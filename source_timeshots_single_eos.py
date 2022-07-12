@@ -20,7 +20,7 @@ from src.animate import animate
 from src.identify import ParticleMap
 from src.combine import CombineFile
 
-plt.rcParams.update({'font.size': 10, })
+plt.rcParams.update({'font.size': 14, })
 plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
@@ -154,7 +154,7 @@ for iteration in iterations:
 # plt.margins(0.005, tight=True)
 
 for index, t in enumerate(titles):
-    axs[index].set_title(t, fontsize=18)
+    axs[index].set_title(t, fontsize=20)
 fig.tight_layout()
 fig.subplots_adjust(wspace=0, hspace=0)
 for ax in axs[-len(sims):-1]:
