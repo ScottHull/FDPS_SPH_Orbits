@@ -26,6 +26,8 @@ def get_all_sims(angle, high=True):
     names = []
     titles = []
     for runs in ["new", "old"]:
+        high_res_name = None
+        high_res_title = None
         n = "S"
         if runs == "old":
             n = "N"
@@ -34,11 +36,15 @@ def get_all_sims(angle, high=True):
             title_name = tformat.format(cd, angle, n)
             titles.append(title_name)
             names.append(output_name)
-    if high:
-        output_name = fformat.format(5, angle, "new") + "_high"
-        names.append(output_name)
-        title_name = tformat.format(5, angle, "S") + "-high"
-        titles.append(title_name)
+            if cd == 5 and high and runs == "new":
+                high_res_name = fformat.format(cd, angle, runs) + "_high"
+                high_res_title = tformat.format(cd, angle, n) + "-high"
+            if cd == 2000 and high and runs == "old":
+                high_res_name = fformat.format(cd, angle, runs) + "_low"
+                high_res_title = tformat.format(cd, angle, n) + "-low"
+        if high_res_name is not None and high_res_title is not None:
+            names.append(high_res_name)
+            titles.append(high_res_title)
     return names, titles
 
 

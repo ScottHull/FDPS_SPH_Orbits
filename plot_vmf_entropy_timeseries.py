@@ -40,14 +40,14 @@ def get_time(f, local=True):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 
-def get_all_sims(high=True):
+def get_all_sims(angle, high=True):
     fformat = "{}_{}_{}"
     tformat = "{}{}{}"
     names = []
     titles = []
-    high_res_name = None
-    high_res_title = None
     for runs in ["new", "old"]:
+        high_res_name = None
+        high_res_title = None
         n = "S"
         if runs == "old":
             n = "N"
@@ -59,10 +59,14 @@ def get_all_sims(high=True):
             if cd == 5 and high and runs == "new":
                 high_res_name = fformat.format(cd, angle, runs) + "_high"
                 high_res_title = tformat.format(cd, angle, n) + "-high"
-    if high_res_name is not None and high_res_title is not None:
-        names.append(high_res_name)
-        titles.append(high_res_title)
+            if cd == 2000 and high and runs == "old":
+                high_res_name = fformat.format(cd, angle, runs) + "_low"
+                high_res_title = tformat.format(cd, angle, n) + "-low"
+        if high_res_name is not None and high_res_title is not None:
+            names.append(high_res_name)
+            titles.append(high_res_title)
     return names, titles
+
 
 
 def plot_entropy_and_vmf_vs_time():
