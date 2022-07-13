@@ -238,7 +238,7 @@ def plot_vs_disk_property_all():
     x_label_r_dot_v = r"$\phi$"
     sims, titles = get_all_sims(high=True)
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
-    fig, axs = plt.subplots(1, 3, figsize=(20, 6), gridspec_kw={"hspace": 0.24, "wspace": 0.20})
+    fig, axs = plt.subplots(1, 3, figsize=(20, 6))
     axs = axs.flatten()
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     for s, t in zip(sims, titles):
