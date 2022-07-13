@@ -21,7 +21,7 @@ end_iteration = 1800
 cutoff_densities = [5, 500, 1000, 2000]
 
 secondary_impact_times = {
-    '5b073n': {
+    '5b073S': {
         'iteration': 220,
         'time': 6.11,
         'primary_impact_iteration': 15,
@@ -29,7 +29,7 @@ secondary_impact_times = {
         'characteristic_tail_iteration': None,
         'characteristic_tail_time': None,
     },
-    '500b073n': {
+    '500b073S': {
         'iteration': 255,
         'time': 6.94,
         'primary_impact_iteration': 15,
@@ -37,7 +37,7 @@ secondary_impact_times = {
         'characteristic_tail_iteration': None,
         'characteristic_tail_time': None,
     },
-    '1000b073n': {
+    '1000b073S': {
         'iteration': 235,
         'time': 6.53,
         'primary_impact_iteration': 15,
@@ -45,7 +45,7 @@ secondary_impact_times = {
         'characteristic_tail_iteration': None,
         'characteristic_tail_time': None,
     },
-    '2000b073n': {
+    '2000b073S': {
         'iteration': 205,
         'time': 5.69,
         'primary_impact_iteration': 15,
@@ -61,7 +61,7 @@ secondary_impact_times = {
         'characteristic_tail_iteration': None,
         'characteristic_tail_time': None,
     },
-    '5b073o': {
+    '5b073N': {
         'iteration': 235,
         'time': 6.53,
         'primary_impact_iteration': 15,
@@ -69,7 +69,7 @@ secondary_impact_times = {
         'characteristic_tail_iteration': None,
         'characteristic_tail_time': None,
     },
-    '500b073o': {
+    '500b073N': {
         'iteration': 260,
         'time': 7.22,
         'primary_impact_iteration': 15,
@@ -77,7 +77,7 @@ secondary_impact_times = {
         'characteristic_tail_iteration': None,
         'characteristic_tail_time': None,
     },
-    '1000b073o': {
+    '1000b073N': {
         'iteration': 265,
         'time': 7.36,
         'primary_impact_iteration': 15,
@@ -85,7 +85,7 @@ secondary_impact_times = {
         'characteristic_tail_iteration': None,
         'characteristic_tail_time': None,
     },
-    '2000b073o': {
+    '2000b073N': {
         'iteration': 245,
         'time': 6.81,
         'primary_impact_iteration': 15,
@@ -327,7 +327,7 @@ def plot_vs_disk_property_all():
 
     for c in cutoff_densities:
         axs[0].scatter(
-            [], [], s=80, marker="s", color=colors[cutoff_densities.index(c)], label="{} kg/m$^3$".format(c)
+            [], [], s=80, marker="s", color=colors[cutoff_densities.index(c)], label=r"$\rho_c$ = {} kg/m$^3$".format(c)
         )
     # axs[0].scatter(
     #     [], [], s=80, marker="*", color='black', label="5b073S-high"
@@ -351,6 +351,19 @@ def plot_vs_disk_property_all():
         y_loc = y2 - (0.08 * (y2 - y1))
         ax.grid(alpha=0.4)
         ax.text(x_loc, y_loc, letters[index], fontweight="bold")
+    plt.tight_layout()
+    legend = fig.legend(loc=7, fontsize=20)
+    for line in legend.get_lines():  # increase line widths in legend
+        try:
+            line.set_linewidth(4.0)
+        except:
+            pass
+    for handle in legend.legendHandles:  # increase marker sizes in legend
+        try:
+            handle.set_sizes([300.0])
+        except:
+            pass
+    fig.subplots_adjust(right=0.82)
     plt.savefig("{}_secondary_impact_vs_disk_property.png".format(angle), format='png', dpi=200)
 
 # plot_vs_disk_property(r_dot_v=False)
