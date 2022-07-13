@@ -136,7 +136,7 @@ def plot_moment_of_impact_vs_angle():
         angle = df[run][iteration]
         secondary_impact_times[run].update({'angle': angle})
         axs[to_index].scatter(
-            time, angle, s=80, label=run
+            time, angle, s=100, label=run
         )
     for ax in axs:
         ax.grid(alpha=0.4)
@@ -202,18 +202,18 @@ def plot_vs_disk_property(r_dot_v: bool):
             time = impact_point["time"] - impact_point['primary_impact_time']  # hrs after primary impact
             plot_x, plot_y = x[t][impact_point["iteration"]], float(str(report[p][0]).split(" ")[0])
             axs[index].scatter(
-                plot_x, plot_y, color=color, marker=scatter_point, s=80
+                plot_x, plot_y, color=color, marker=scatter_point, s=100
             )
             if "new" in s:
                 axs[index].scatter(
-                    [], [], s=80, marker="s", label=str(cutoff_density) + " $kg/m^3$"
+                    [], [], s=100, marker="s", label=str(cutoff_density) + " $kg/m^3$"
                 )
             axs[index].set_ylabel(rows_map[p][1:-1])
             axs[index].scatter(
-                [], [], s=80, marker="^", label="N-SPH M-ANEOS"
+                [], [], s=100, marker="^", label="N-SPH M-ANEOS"
             )
             axs[index].scatter(
-                [], [], s=80, marker="o", label="Stewart M-ANEOS"
+                [], [], s=100, marker="o", label="Stewart M-ANEOS"
             )
     for ax in axs:
         ax.grid(alpha=0.4)
@@ -238,7 +238,7 @@ def plot_vs_disk_property_all():
     x_label_r_dot_v = r"$\phi$"
     sims, titles = get_all_sims(high=True)
     points = ["DISK_MASS", "DISK_ANGULAR_MOMENTUM"]
-    fig, axs = plt.subplots(1, 3, figsize=(20, 6))
+    fig, axs = plt.subplots(1, 3, figsize=(20, 9))
     axs = axs.flatten()
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     for s, t in zip(sims, titles):
@@ -257,52 +257,52 @@ def plot_vs_disk_property_all():
         report = pd.read_csv(report_path)
         time = impact_point["time"] - impact_point['primary_impact_time']  # hrs after primary impact
         # axs[0].scatter(
-        #     impact_angle, time, color=color, marker=scatter_point, s=80
+        #     impact_angle, time, color=color, marker=scatter_point, s=100
         # )
         # axs[1].scatter(
-        #     impact_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     impact_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         # axs[2].scatter(
-        #     impact_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     impact_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         # axs[3].scatter(
-        #     impact_r_dot_v, time, color=color, marker=scatter_point, s=80
+        #     impact_r_dot_v, time, color=color, marker=scatter_point, s=100
         # )
         # axs[4].scatter(
-        #     impact_r_dot_v, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     impact_r_dot_v, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         # axs[5].scatter(
-        #     impact_r_dot_v, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     impact_r_dot_v, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         # axs[6].scatter(
-        #     time, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     time, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         # axs[7].scatter(
-        #     time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         # axs[0].scatter(
-        #     impact_angle, time, color=color, marker=scatter_point, s=80
+        #     impact_angle, time, color=color, marker=scatter_point, s=100
         # )
         # axs[1].scatter(
-        #     impact_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     impact_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         # axs[2].scatter(
-        #     impact_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     impact_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         axs[0].scatter(
-            impact_r_v_angle, time, color=color, marker=scatter_point, s=80
+            impact_r_v_angle, time, color=color, marker=scatter_point, s=100
         )
         axs[1].scatter(
-            impact_r_v_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+            impact_r_v_angle, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         )
         axs[2].scatter(
-            impact_r_v_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+            impact_r_v_angle, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         )
         # axs[6].scatter(
-        #     time, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     time, float(str(report[points[0]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         # axs[7].scatter(
-        #     time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=80
+        #     time, float(str(report[points[1]][0]).split(" ")[0]), color=color, marker=scatter_point, s=100
         # )
         
         # for ax in axs[0:3]:
@@ -327,20 +327,20 @@ def plot_vs_disk_property_all():
 
     for c in cutoff_densities:
         axs[0].scatter(
-            [], [], s=80, marker="s", color=colors[cutoff_densities.index(c)], label=r"$\rho_c$ = {} kg/m$^3$".format(c)
+            [], [], s=100, marker="s", color=colors[cutoff_densities.index(c)], label=r"$\rho_c$ = {} kg/m$^3$".format(c)
         )
     # axs[0].scatter(
-    #     [], [], s=80, marker="*", color='black', label="5b073S-high"
+    #     [], [], s=100, marker="*", color='black', label="5b073S-high"
     # )
     if "high" in ",".join(str(i) for i in sims) and angle == "b073":
         axs[0].scatter(
-            [], [], s=80, marker="*", color=colors[cutoff_densities.index(5)], label="5b073S-high"
+            [], [], s=100, marker="*", color=colors[cutoff_densities.index(5)], label="5b073S-high"
         )
     axs[0].scatter(
-        [], [], s=80, marker="o", color='black', label="Stewart M-ANEOS"
+        [], [], s=100, marker="o", color='black', label="Stewart M-ANEOS"
     )
     axs[0].scatter(
-        [], [], s=80, marker="^", color='black', label="N-SPH M-ANEOS"
+        [], [], s=100, marker="^", color='black', label="N-SPH M-ANEOS"
     )
 
     axs[0].legend(loc='lower right', fontsize=12)
@@ -363,7 +363,7 @@ def plot_vs_disk_property_all():
             handle.set_sizes([300.0])
         except:
             pass
-    fig.subplots_adjust(right=0.82)
+    fig.subplots_adjust(right=0.80)
     plt.savefig("{}_secondary_impact_vs_disk_property.png".format(angle), format='png', dpi=200)
 
 # plot_vs_disk_property(r_dot_v=False)
