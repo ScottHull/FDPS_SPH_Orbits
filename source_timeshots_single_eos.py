@@ -13,6 +13,7 @@ import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import multiprocessing as mp
 from matplotlib.ticker import MaxNLocator
+import string
 
 from src.vapor import calc_vapor_mass_fraction_from_formatted
 from src.geometry import get_impact_geometry_from_formatted, get_velocity_profile_from_formatted
@@ -163,5 +164,19 @@ for ax in axs[-len(sims):-2]:
 for ax in [axs[i] for i in np.arange(len(sims) * 2, len(iterations) * len(sims), len(sims))]:
     nbins_y = len(ax.get_yticklabels())
     ax.yaxis.set_major_locator(MaxNLocator(nbins=nbins_y, prune='upper'))
+
+letters = list(string.ascii_lowercase)
+for index, ax in enumerate(axs):
+    x1, x2, y1, y2 = ax.axis()
+    x_loc = x1 + (0.02 * (x2 - x1))
+    y_loc = y2 - (0.08 * (y2 - y1))
+    ax.grid(alpha=0.4)
+    ax.text(x_loc, y_loc, letters[index], fontweight="bold")
+
+axs[0].set_ylabel("x ($10^4$ km)", fontsize=20)
+axs[0].set_ylabel("y ($10^4$ km)", fontsize=20)
+
+axs[0].xaxis.set_label_coords(0.0, -5.8)
+axs[0].yaxis.set_label_coords(-5.8, 0.0)
 
 plt.savefig("source_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
