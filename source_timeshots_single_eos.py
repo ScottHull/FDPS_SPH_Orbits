@@ -172,10 +172,7 @@ for index, ax in enumerate(axs):
     y_loc = y2 - (0.08 * (y2 - y1))
     ax.text(x_loc, y_loc, letters[index], fontweight="bold")
 
-axs[0].set_xlabel("x ($10^4$ km)", fontsize=20)
-axs[0].set_ylabel("y ($10^4$ km)", fontsize=20)
-
-axs[0].xaxis.set_label_coords(0.0, -5.8)
-axs[0].yaxis.set_label_coords(-5.8, 0.0)
+axs[0].annotate("x ($10^4$ km)", xy=(0.0, -5.5), fontsize=16)
+axs[0].annotate("y ($10^4$ km)", xy=(-5.5, 0.0), rotation=90, fontsize=16)
 
 plt.savefig("source_scenes_{}_{}.png".format(angle, runs), format='png', dpi=200)
