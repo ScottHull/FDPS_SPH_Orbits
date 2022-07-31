@@ -145,7 +145,7 @@ for iteration in iterations:
                                     "{} hrs".format(formatted_time), fontsize=20)
         current_index += 1
 
-legend = axs[0].legend(loc='upper left', fontsize=20)
+legend = axs[0].legend(loc='upper right', fontsize=20)
 for handle in legend.legendHandles:
     try:
         handle.set_sizes([200.0])
@@ -170,10 +170,9 @@ for index, ax in enumerate(axs):
     x1, x2, y1, y2 = ax.axis()
     x_loc = x1 + (0.02 * (x2 - x1))
     y_loc = y2 - (0.08 * (y2 - y1))
-    ax.grid(alpha=0.4)
     ax.text(x_loc, y_loc, letters[index], fontweight="bold")
 
-axs[0].set_ylabel("x ($10^4$ km)", fontsize=20)
+axs[0].set_xlabel("x ($10^4$ km)", fontsize=20)
 axs[0].set_ylabel("y ($10^4$ km)", fontsize=20)
 
 axs[0].xaxis.set_label_coords(0.0, -5.8)
