@@ -129,7 +129,7 @@ for ax in axs:
 for ax in [axs[0], axs[2]]:
     ax.set_ylabel("Temperature (K)")
 for ax in [axs[2], axs[3]]:
-    ax.set_xlabel("Entropy")
+    ax.set_xlabel("Entropy (J/K)")
 for ax in [axs[0], axs[2]]:
     shade_plot(s="new", ax=ax)
 for ax in [axs[1], axs[3]]:
@@ -185,7 +185,7 @@ axs[0].scatter(
 # axs[0].scatter(
 #         [], [], marker=".", s=120, alpha=0.6, color=colors[cutoff_densities.index(cutoff_densities[-1]) + 1], label="2000b075N-low"
 #     )
-for phase, c in [("100% Vapor", colors[-1]), ("100% Liquid", colors[-2]), ("Supercritical", colors[-3]), ("Mixed", colors[-4])]:
+for phase, c in [("100% Vapor", colors[-1]), ("100% Liquid", colors[-2]), ("Supercritical", colors[-3]), ("Liquid-Vapor\nMixture", colors[-4])]:
     axs[0].fill_between(
         x=[],
         y1=0,
