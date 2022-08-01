@@ -74,7 +74,7 @@ def __run_proc(args):
     s, t = args
     endstate = get_endstate(s)
     number_processes = 200
-    if "high" in s:
+    if "high" in s and angle == "b073":
         number_processes = 500
     curr_max = {i: {'pressure': -1e99, "time": None, "iteration": None, "density": None, "entropy": None,
                     "internal energy": None} for i in endstate}
