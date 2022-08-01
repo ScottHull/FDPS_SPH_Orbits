@@ -170,7 +170,7 @@ for index, ax in enumerate(axs):
     x1, x2, y1, y2 = ax.axis()
     x_loc = x1 + (0.02 * (x2 - x1))
     y_loc = y2 - (0.08 * (y2 - y1))
-    ax.text(x_loc, y_loc, letters[index], fontweight="bold")
+    ax.text(x_loc, y_loc, letters[index], fontweight="bold", fontsize=20)
 
 axs[0].annotate("x ($10^4$ km)", xy=(0.0, -5.5), ha="center", fontsize=16)
 axs[0].annotate("y ($10^4$ km)", xy=(-5.5, 0.0), va="center", rotation=90, fontsize=16)
