@@ -30,7 +30,7 @@ run_name = "500_b073_new"
 path = "/home/theia/scotthull/Paper1_SPH/gi/{}/{}".format(run_name, run_name)
 to_path = "3D_{}".format(run_name)
 number_processes = 200
-square_scale = 1e7
+square_scale = 2e7
 
 verts = get_cube_verts(square_scale=square_scale)
 
