@@ -59,13 +59,13 @@ def plot_iteration(iteration):
     ax.scatter(
         np.array([p.position[0] for p in particles if
                   abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(
-                      p.position[2]) <= square_scale]) / 1000.0,
+                      p.position[2]) <= square_scale]),
         np.array([p.position[1] for p in particles if
                   abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(
-                      p.position[2]) <= square_scale]) / 1000.0,
+                      p.position[2]) <= square_scale]),
         np.array([p.position[2] for p in particles if
                   abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(
-                      p.position[2]) <= square_scale]) / 1000.0,
+                      p.position[2]) <= square_scale]),
         s=0.8, marker=".", alpha=1,
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if
            abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(
@@ -90,12 +90,12 @@ def plot_iteration(iteration):
         str(round(seconds_to_hours(formatted_time), 2)) + " hrs",
         c="white",
     )
-    sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
-    sm.set_array([])
-    cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
-    cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-    cbar.ax.tick_params(labelsize=6)
-    cbar.ax.set_title(parameter.title(), fontsize=6)
+    # sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+    # sm.set_array([])
+    # cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
+    # cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+    # cbar.ax.tick_params(labelsize=6)
+    # cbar.ax.set_title(parameter.title(), fontsize=6)
     ax.set_xlim(-square_scale, square_scale)
     ax.set_ylim(-square_scale, square_scale)
     ax.set_zlim(-square_scale, square_scale)
