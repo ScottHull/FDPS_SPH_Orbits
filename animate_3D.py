@@ -87,7 +87,7 @@ def plot_iteration(iteration):
     # for minor ticks
     ax.set_zticks([], minor=True)
     ax.set_title(
-        str(round(seconds_to_hours(formatted_time), 2)) + " hrs",
+        str(formatted_time) + " hrs",
         c="white",
     )
     # sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
