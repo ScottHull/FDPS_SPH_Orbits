@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from src.animate import animate
 
 min_iteration = 0
