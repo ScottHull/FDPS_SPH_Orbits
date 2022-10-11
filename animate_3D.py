@@ -105,7 +105,7 @@ def plot_iteration(iteration):
 
 ldir = os.listdir(to_path)
 pool = mp.Pool(10)
-pool.map(plot_iteration, [iteration for iteration in np.arange(min_iteration, max_iteration + increment, increment) if "{}.png".format(to_path, iteration) not in ldir])
+pool.map(plot_iteration, [iteration for iteration in np.arange(min_iteration, max_iteration + increment, increment) if "{}.png".format(iteration) not in ldir])
 pool.close()
 pool.join()
 
