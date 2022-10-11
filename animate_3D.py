@@ -103,8 +103,9 @@ def plot_iteration(iteration):
         ax.plot(i[0], i[1], i[2], c='white', linewidth=0.3)
     plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
 
+ldir = os.listdir(to_path)
 pool = mp.Pool(10)
-pool.map(plot_iteration, [iteration for iteration in np.arange(min_iteration, max_iteration + increment, increment)])
+pool.map(plot_iteration, [iteration for iteration in np.arange(min_iteration, max_iteration + increment, increment) if "{}/{}.png".format(to_path, iteration) not in ldir])
 pool.close()
 pool.join()
 
