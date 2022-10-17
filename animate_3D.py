@@ -9,6 +9,8 @@ import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.font_manager as fm
+from random import randint
+import multiprocessing as mp
 
 from src.identify import ParticleMap
 from src.combine import CombineFile
@@ -19,101 +21,99 @@ from src.plots3D import get_cube_verts
 
 min_iteration = 0
 max_iteration = 3000
-sample_interval = 1
+increment = 1
 fps = 30
-parameter = "entropy"
+parameter = "temperature"
 min_normalize_parameter = 1000
-max_normalize_parameter = 8000
-path = "/home/theia/scotthull/1M/gi_new_eos"
-to_path = "/home/theia/scotthull/FDPS_SPH_Orbits/3D_animation_side_by_side"
-number_processes = 100
-square_scale = 1e7
+max_normalize_parameter = 10000
+run_name = "500_b073_new"
+path = "/home/theia/scotthull/Paper1_SPH/gi/{}/{}".format(run_name, run_name)
+to_path = "3D_{}".format(run_name)
+number_processes = 200
+square_scale = 2e7
 
 verts = get_cube_verts(square_scale=square_scale)
 
 for i in [to_path]:
-    if os.path.exists(i):
-        shutil.rmtree(i)
-    os.mkdir(i)
+    if not os.path.exists(i):
+        os.mkdir(i)
 
-plt.style.use("seaborn-pastel")
+plt.style.use("dark_background")
 normalizer = Normalize(min_normalize_parameter, max_normalize_parameter)
 cmap = cm.get_cmap('jet')
 
-for time in np.arange(min_iteration, max_iteration + sample_interval, sample_interval):
-    particles, seconds = get_particles(path=path, number_processes=number_processes, time=time)
-    fig = plt.figure(figsize=(16, 9))
+
+def plot_iteration(iteration):
+    to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+    cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+    combined_file = cf.combine()
+    formatted_time = round(cf.sim_time * 0.000277778, 2)
+    f = os.getcwd() + "/{}".format(to_fname)
+    pm = ParticleMap(path=f, center=True, relative_velocity=False)
+    particles = pm.collect_particles(find_orbital_elements=False)
+    os.remove(to_fname)
+
+    fig = plt.figure(figsize=(10, 10))
     fig.patch.set_facecolor('xkcd:black')
-    ax1, ax2 = fig.add_subplot(121, projection='3d'), fig.add_subplot(122, projection='3d')
-    axs = [ax1, ax2]
-    ax1.scatter(
-        [p.position[0] for p in particles if
-           abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(p.position[2]) <= square_scale],
-        [p.position[1] for p in particles if
-           abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(p.position[2]) <= square_scale],
-        [p.position[2] for p in particles if
-           abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(p.position[2]) <= square_scale],
-        s=0.04,
-        marker="o",
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(
+        np.array([p.position[0] for p in particles if
+                  abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(
+                      p.position[2]) <= square_scale]),
+        np.array([p.position[1] for p in particles if
+                  abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(
+                      p.position[2]) <= square_scale]),
+        np.array([p.position[2] for p in particles if
+                  abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(
+                      p.position[2]) <= square_scale]),
+        s=0.8, marker=".", alpha=1,
         c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if
-           abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(p.position[2]) <= square_scale],
-        alpha=1
+           abs(p.position[0]) <= square_scale and abs(p.position[1]) <= square_scale and abs(
+               p.position[2]) <= square_scale],
     )
-    ax2.scatter(
-        [p.position[0] for p in particles if
-           abs(p.position[0]) <= 5 * square_scale and abs(p.position[1]) <= 5 * square_scale and abs(p.position[2]) <= 5 * square_scale],
-        [p.position[1] for p in particles if
-           abs(p.position[0]) <= 5 * square_scale and abs(p.position[1]) <= 5 * square_scale and abs(p.position[2]) <= 5 * square_scale],
-        [p.position[2] for p in particles if
-           abs(p.position[0]) <= 5 * square_scale and abs(p.position[1]) <= 5 * square_scale and abs(p.position[2]) <= 5 * square_scale],
-        s=0.5,
-        marker="o",
-        c=[cmap(normalizer(get_parameter_from_particles(particle=p, parameter=parameter))) for p in particles if
-           abs(p.position[0]) <= 5 * square_scale and abs(p.position[1]) <= 5 * square_scale and abs(p.position[2]) <= 5 * square_scale],
-        alpha=1
+
+    ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    ax._axis3don = False
+    # ax.set_box_aspect(aspect=(1, 1, 1))
+    ax.set_xticks([])
+    # for minor ticks
+    ax.set_xticks([], minor=True)
+    ax.set_yticks([])
+    # for minor ticks
+    ax.set_yticks([], minor=True)
+    ax.set_zticks([])
+    # for minor ticks
+    ax.set_zticks([], minor=True)
+    ax.set_title(
+        str(formatted_time) + " hrs",
+        c="white",
     )
-    for ax in axs:
-        ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
-        ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
-        ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
-        ax._axis3don = False
-        # ax.set_box_aspect(aspect=(1, 1, 1))
-        ax.set_xticks([])
-        # for minor ticks
-        ax.set_xticks([], minor=True)
-        ax.set_yticks([])
-        # for minor ticks
-        ax.set_yticks([], minor=True)
-        ax.set_zticks([])
-        # for minor ticks
-        ax.set_zticks([], minor=True)
-        ax.set_title(
-            str(round(seconds_to_hours(seconds), 2)) + " hrs",
-            c="black",
-        )
-        sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
-        sm.set_array([])
-        cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
-        cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-        cbar.ax.tick_params(labelsize=6)
-        cbar.ax.set_title(parameter.title(), fontsize=6)
-    ax1.set_xlim(-square_scale, square_scale)
-    ax1.set_ylim(-square_scale, square_scale)
-    ax1.set_zlim(-square_scale, square_scale)
+    # sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+    # sm.set_array([])
+    # cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
+    # cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+    # cbar.ax.tick_params(labelsize=6)
+    # cbar.ax.set_title(parameter.title(), fontsize=6)
+    ax.set_xlim(-square_scale, square_scale)
+    ax.set_ylim(-square_scale, square_scale)
+    ax.set_zlim(-square_scale, square_scale)
     for i in get_cube_verts(square_scale=square_scale):
-        ax1.plot(i[0], i[1], i[2], c='black', linewidth=0.3)
-        ax2.plot([5 * k for k in i[0]], [5 * k for k in i[1]], [5 * k for k in i[2]], c='black', linewidth=0.5)
-    ax2.set_xlim(-5 * square_scale, 5 * square_scale)
-    ax2.set_ylim(-5 * square_scale, 5 * square_scale)
-    ax2.set_zlim(-5 * square_scale, 5 * square_scale)
-    plt.savefig(to_path + "/{}.png".format(time), format='png', dpi=200)
+        ax.plot(i[0], i[1], i[2], c='white', linewidth=0.3)
+    plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
+
+ldir = os.listdir(to_path)
+pool = mp.Pool(10)
+pool.map(plot_iteration, [iteration for iteration in np.arange(min_iteration, max_iteration + increment, increment) if "{}.png".format(iteration) not in ldir])
+pool.close()
+pool.join()
 
 animate(
     start_time=min_iteration,
     end_time=max_iteration,
-    interval=sample_interval,
+    interval=increment,
     path=to_path,
     fps=fps,
-    filename="3D_impact.mp4",
+    filename="{}_impact.mp4".format(run_name),
 )
-
