@@ -43,7 +43,7 @@ for run in runs:
         iteration = file.split(".")[0]
         if int(iteration) >= min_iteration and int(iteration) <= max_iteration:
             time = get_time(f)
-            df = pd.read_csv(f, skiprows=2, sep="\t")
+            df = pd.read_csv(f, skiprows=2, sep=",")
             # get the initial conditions for the hydrodynamics
             disk = df[df['label'] == "DISK"]
             mean_vel = disk['velocity'].mean()
@@ -75,7 +75,7 @@ for run in runs:
     # get the file name of the time of impact
     file = base_path + f"/{run}/formatted_{run}/" + f"{iteration}.csv"
     # read the file
-    df = pd.read_csv(file, skiprows=2, sep="\t")
+    df = pd.read_csv(file, skiprows=2, sep=",")
     planet, disk , escape = df[df['label'] == "PLANET"], df[df['label'] == "DISK"], df[df['label'] == "ESCAPE"]
     # use dark background
     plt.style.use('dark_background')
