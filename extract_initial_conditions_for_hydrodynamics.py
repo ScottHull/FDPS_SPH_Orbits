@@ -36,7 +36,7 @@ for run in runs:
     writer.writerow(["run", "iteration", "time", "mean_velocity", "mean_density", "mean_entropy", "mean_internal_energy", "mean_pressure",
                      "mean_temperature"])
 
-    path = base_path + f"/{run}formatted_{run}"
+    path = base_path + f"/{run}/formatted_{run}"
     # loop through all files in path, where the iteration is the file name minus the extension
     for file in os.listdir(path):
         f = path + "/" + file
@@ -73,7 +73,7 @@ for run in runs:
     # get the iteration of the time of impact
     iteration = df[df['time'] == time_of_impact]['iteration'].values[0]
     # get the file name of the time of impact
-    file = base_path + f"/{run}formatted_{run}/" + f"{iteration}.csv"
+    file = base_path + f"/{run}/formatted_{run}/" + f"{iteration}.csv"
     # read the file
     df = pd.read_csv(file, skiprows=2, sep="\t")
     planet, disk , escape = df[df['label'] == "PLANET"], df[df['label'] == "DISK"], df[df['label'] == "ESCAPE"]
