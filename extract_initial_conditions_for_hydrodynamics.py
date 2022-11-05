@@ -11,7 +11,7 @@ runs = [
 min_iteration = 0
 max_iteration = 500
 
-base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
+base_path = "/home/theia/scotthull/Paper1_SPH/gi"
 to_dir = "ic_for_hydrodynamics"
 fig_dir = to_dir + "/figs"
 if not os.path.exists(to_dir):
