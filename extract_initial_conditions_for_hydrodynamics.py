@@ -4,12 +4,14 @@ import csv
 import pandas as pd
 import matplotlib.pyplot as plt
 
-runs = [
-    "500_b073_new"
-]
+runs = {
+    '500b073n': {
+        'primary_impact_iteration': 15,
+    },
+}
 
 min_iteration = 0
-max_iteration = 500
+max_iteration = 100
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi"
 to_dir = "ic_for_hydrodynamics"
@@ -33,16 +35,12 @@ def get_time(f, local=True):
 
 
 def get_ic():
+    outfile = open(to_dir + "/disk_history.csv", 'w')
+    writer = csv.writer(outfile, delimiter=",")
+    writer.writerow(
+        ["run", "iteration", "time", "mean_velocity", "mean_density", "mean_entropy", "mean_internal_energy",
+         "mean_pressure", "mean_temperature"])
     for run in runs:
-        if os.path.exists(to_dir + "/" + f"{run}.csv"):
-            os.remove(to_dir + "/" + f"{run}")
-        outfile = open(to_dir + "/" + run, 'w')
-        writer = csv.writer(outfile, delimiter=",")
-        writer.writerow(
-            ["run", "iteration", "time", "mean_velocity", "mean_density", "mean_entropy", "mean_internal_energy",
-             "mean_pressure",
-             "mean_temperature"])
-
         path = base_path + f"/{run}/formatted_{run}"
         # loop through all files in path, where the iteration is the file name minus the extension
         for file in os.listdir(path):
@@ -64,7 +62,7 @@ def get_ic():
                 writer.writerow(
                     [run, iteration, time, mean_vel, mean_density, mean_entropy, mean_internal_energy, mean_pressure,
                      mean_temperature])
-        outfile.close()
+    outfile.close()
 
 
 def consolidate_ic():
@@ -104,6 +102,26 @@ def consolidate_ic():
         plt.savefig(fig_dir + "/" + run + ".png", dpi=200)
     outfile.close()
 
+def plot_all_variables():
+    df = pd.read_csv(to_dir + "/disk_history.csv", sep=",").sort_values(by=['iteration'])
+    # need a plot with 2 rows and 3 columns
+    fig, axs = plt.subplots(2, 3, figsize=(20, 10))
+    # want to plot mean velocity, mean density, mean entropy, mean internal energy, mean pressure, and mean temperature
+    # against time
+    axs[0, 0].plot(df['time'], df['mean_velocity'])
+    axs[0, 0].set_title("mean velocity")
+    axs[0, 1].plot(df['time'], df['mean_density'])
+    axs[0, 1].set_title("mean density")
+    axs[0, 2].plot(df['time'], df['mean_entropy'])
+    axs[0, 2].set_title("mean entropy")
+    axs[1, 0].plot(df['time'], df['mean_internal_energy'])
+    axs[1, 0].set_title("mean internal energy")
+    axs[1, 1].plot(df['time'], df['mean_pressure'])
+    axs[1, 1].set_title("mean pressure")
+    axs[1, 2].plot(df['time'], df['mean_temperature'])
+    axs[1, 2].set_title("mean temperature")
+    plt.savefig(fig_dir + "/all_variables.png", dpi=200)
 
 get_ic()
+plot_all_variables()
 consolidate_ic()
