@@ -4,11 +4,7 @@ import csv
 import pandas as pd
 import matplotlib.pyplot as plt
 
-runs = {
-    '500b073n': {
-        'primary_impact_iteration': 15,
-    },
-}
+runs = ['500_b073_new']
 
 min_iteration = 0
 max_iteration = 100
