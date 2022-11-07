@@ -14,8 +14,10 @@ max_iteration = 500
 base_path = "/home/theia/scotthull/Paper1_SPH/gi"
 to_dir = "ic_for_hydrodynamics"
 fig_dir = to_dir + "/figs"
-if not os.path.exists(to_dir):
-    os.mkdir(to_dir)
+
+for d in [to_dir, fig_dir]:
+    if not os.path.exists(d):
+        os.mkdir(d)
 
 def get_time(f, local=True):
     formatted_time = None
