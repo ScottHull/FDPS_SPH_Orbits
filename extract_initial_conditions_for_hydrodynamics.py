@@ -116,6 +116,19 @@ def plot_all_variables():
     axs[1, 1].set_title("mean pressure")
     axs[1, 2].plot(df['time'], df['mean_temperature'])
     axs[1, 2].set_title("mean temperature")
+    # add a grid
+    for ax in axs.flat:
+        ax.grid()
+    # on the first subplot, annotate the time of max pressure
+    # get the max pressure
+    max_pressure = df['mean_pressure'].max()
+    # get the time of max pressure
+    time_of_max_pressure = df[df['mean_pressure'] == max_pressure]['time'].values[0]
+    # get the iteration of max pressure
+    iteration_of_max_pressure = df[df['mean_pressure'] == max_pressure]['iteration'].values[0]
+    # annotate the time of max pressure and the corresponding iteration and pressure
+    axs[0, 0].annotate(f"time of max pressure: {time_of_max_pressure} hours\niteration: {iteration_of_max_pressure}\npressure: {max_pressure / 10 ** 9} GPa", xy=(time_of_max_pressure, max_pressure),
+                          xytext=(time_of_max_pressure + 0.5, max_pressure + 0.5))
     plt.savefig(fig_dir + "/all_variables.png", dpi=200)
 
 get_ic()
