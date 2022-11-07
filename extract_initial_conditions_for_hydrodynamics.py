@@ -127,7 +127,7 @@ def plot_all_variables():
     # get the iteration of max pressure
     iteration_of_max_pressure = df[df['mean_pressure'] == max_pressure]['iteration'].values[0]
     # annotate the time of max pressure and the corresponding iteration and pressure
-    axs[1, 1].annotate(f"time of max pressure: {time_of_max_pressure} hours\niteration: {iteration_of_max_pressure}\npressure: {max_pressure / 10 ** 9} GPa", xy=(time_of_max_pressure + 0.2, max_pressure - 0.8 * 10 ** 10),
+    axs[1, 1].annotate(f"time of max pressure: {time_of_max_pressure} hours\niteration: {iteration_of_max_pressure}\npressure: {max_pressure / 10 ** 9} GPa", xy=(time_of_max_pressure + 0.2, max_pressure - 2 * 10 ** 10),
                           xytext=(time_of_max_pressure + 0.5, max_pressure + 0.5))
     plt.savefig(fig_dir + "/all_variables.png", dpi=200)
 
