@@ -62,7 +62,7 @@ def get_ic():
 
 
 def consolidate_ic():
-    # identify the max entropy of each run and write to a file, which you can use to identify the time of impact
+    # identify the max pressure of each run and write to a file, which you can use to identify the time of impact
     outfile = open(to_dir + "/time_of_impact.csv", 'w')
     writer = csv.writer(outfile, delimiter=",")
     writer.writerow(
@@ -70,8 +70,8 @@ def consolidate_ic():
          "mean_pressure", "mean_temperature"])
     for run in runs:
         df = pd.read_csv(to_dir + "/" + run, sep=",")
-        max_entropy = df['mean_entropy'].max()
-        time_of_impact = df[df['mean_entropy'] == max_entropy]['time'].values[0]
+        max_pressure = df['mean_pressure'].max()
+        time_of_impact = df[df['mean_pressure'] == max_pressure]['time'].values[0]
         # get the time of impact row as a list
         row = df[df['time'] == time_of_impact].values[0].tolist()
         # write row to file
