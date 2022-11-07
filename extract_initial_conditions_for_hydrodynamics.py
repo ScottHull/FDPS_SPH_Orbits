@@ -56,7 +56,7 @@ def get_ic():
                 mean_internal_energy = disk['internal_energy'].mean()
                 mean_pressure = disk['pressure'].mean()
                 mean_temperature = disk['temperature'].mean()
-                writer.writerow([run, time, mean_vel, mean_density, mean_entropy, mean_internal_energy, mean_pressure, mean_temperature])
+                writer.writerow([run, iteration, time, mean_vel, mean_density, mean_entropy, mean_internal_energy, mean_pressure, mean_temperature])
         outfile.close()
 
 
