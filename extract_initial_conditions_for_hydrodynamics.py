@@ -19,6 +19,7 @@ for d in [to_dir, fig_dir]:
     if not os.path.exists(d):
         os.mkdir(d)
 
+
 def get_time(f, local=True):
     formatted_time = None
     if local:  # if not reading from remote server
@@ -37,8 +38,10 @@ def get_ic():
             os.remove(to_dir + "/" + f"{run}")
         outfile = open(to_dir + "/" + run, 'w')
         writer = csv.writer(outfile, delimiter=",")
-        writer.writerow(["run", "iteration", "time", "mean_velocity", "mean_density", "mean_entropy", "mean_internal_energy", "mean_pressure",
-                         "mean_temperature"])
+        writer.writerow(
+            ["run", "iteration", "time", "mean_velocity", "mean_density", "mean_entropy", "mean_internal_energy",
+             "mean_pressure",
+             "mean_temperature"])
 
         path = base_path + f"/{run}/formatted_{run}"
         # loop through all files in path, where the iteration is the file name minus the extension
@@ -51,14 +54,16 @@ def get_ic():
                 # use vx, vy, and vz to calculate the magnitude of the velocity
                 df["velocity"] = (df["vx"] ** 2 + df["vy"] ** 2 + df["vz"] ** 2) ** 0.5
                 # get the initial conditions for the hydrodynamics
-                disk = df[df['label'] == "DISK"]
+                disk = df[df['end_label'] == "DISK"]
                 mean_vel = disk['velocity'].mean()
                 mean_density = disk['density'].mean()
                 mean_entropy = disk['entropy'].mean()
                 mean_internal_energy = disk['internal_energy'].mean()
                 mean_pressure = disk['pressure'].mean()
                 mean_temperature = disk['temperature'].mean()
-                writer.writerow([run, iteration, time, mean_vel, mean_density, mean_entropy, mean_internal_energy, mean_pressure, mean_temperature])
+                writer.writerow(
+                    [run, iteration, time, mean_vel, mean_density, mean_entropy, mean_internal_energy, mean_pressure,
+                     mean_temperature])
         outfile.close()
 
 
@@ -66,8 +71,9 @@ def consolidate_ic():
     # identify the max entropy of each run and write to a file, which you can use to identify the time of impact
     outfile = open(to_dir + "/time_of_impact.csv", 'w')
     writer = csv.writer(outfile, delimiter=",")
-    writer.writerow(["run", "iteration", "time", "mean_velocity", "mean_density", "mean_entropy", "mean_internal_energy", "mean_pressure",
-                     "mean_temperature"])
+    writer.writerow(
+        ["run", "iteration", "time", "mean_velocity", "mean_density", "mean_entropy", "mean_internal_energy",
+         "mean_pressure", "mean_temperature"])
     for run in runs:
         df = pd.read_csv(to_dir + "/" + run, sep=",")
         max_entropy = df['mean_entropy'].max()
@@ -84,11 +90,12 @@ def consolidate_ic():
         file = base_path + f"/{run}/formatted_{run}/" + f"{iteration}.csv"
         # read the file
         df = pd.read_csv(file, skiprows=2, sep=",")
-        planet, disk , escape = df[df['label'] == "PLANET"], df[df['label'] == "DISK"], df[df['label'] == "ESCAPE"]
+        planet, disk, escape = df[df['end_label'] == "PLANET"], df[df['end_label'] == "DISK"], df[
+            df['end_label'] == "ESCAPE"]
         # use dark background
         plt.style.use('dark_background')
         fig, ax = plt.subplots(figsize=(10, 10))
-        ax.scatter(planet['x'], planet['y'], s=1,  label="planet")
+        ax.scatter(planet['x'], planet['y'], s=1, label="planet")
         ax.scatter(disk['x'], disk['y'], s=1, label="disk")
         ax.scatter(escape['x'], escape['y'], s=1, label="escape")
         # title should include run, time, and iteration
