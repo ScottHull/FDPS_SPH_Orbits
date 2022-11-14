@@ -43,6 +43,9 @@ for run in runs:
             times.append(time)
             vmfs.append(vmf)
 
+    # sort the times and vmfs by time
+    times, vmfs = zip(*sorted(zip(times, vmfs)))
+
     # plot the results
     plt.plot(times, vmfs, label=run)
     plt.xlabel("Time (hours)")
