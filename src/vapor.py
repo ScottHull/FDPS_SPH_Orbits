@@ -168,12 +168,12 @@ def calc_vapor_mass_fraction_with_circularization(particles, phase_path, only_di
         return 0.0
     return vapor_mass_fraction
 
-def calc_vapor_mass_fraction_with_circularization_from_formatted(df, phase_path, only_disk=True):
+def calc_vapor_mass_fraction_with_circularization_from_formatted(df, phase_path, only_disk=True, disk_label="DISK", df_label="label"):
     phase_df = pd.read_fwf(phase_path, skiprows=1,
                            names=["temperature", "density_sol_liq", "density_vap", "pressure",
                                   "entropy_sol_liq", "entropy_vap"])
 
-    disk_particles = df[df['label'] == "DISK"]
+    disk_particles = df[df[df_label] == disk_label]
     # remove all particles on super high orbits with crazy delta s due to orbital circ.
     disk_particles = disk_particles[disk_particles['circ_entropy_delta'] < 5000]
     sil_disk_particles = disk_particles[disk_particles['tag'] % 2 == 0]
