@@ -14,16 +14,16 @@ max_iteration = 1800
 base_path = "/home/theia/scotthull/Paper1_SPH/gi"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 
-
-times, vmfs = [], []
-end_time_df = pd.read_csv(
-    os.path.join(base_path, f"{max_iteration}.csv"),
-)
-end_time_disk = end_time_df[end_time_df["label"] == "DISK"]
-end_time_particle_ids = end_time_disk["id"].values
 for run in runs:
+    times, vmfs = [], []
     path = base_path + f"/{run}/circularized_{run}"
     path2 = base_path + f"/{run}/{run}_reports"
+    end_time_df = pd.read_csv(
+        os.path.join(path, f"{max_iteration}.csv"),
+    )
+    end_time_disk = end_time_df[end_time_df["label"] == "DISK"]
+    end_time_particle_ids = end_time_disk["id"].values
+
     # loop through all files in path, where the iteration is the file name minus the extension
     for file in os.listdir(path):
         f = path + "/" + file
@@ -44,5 +44,5 @@ for run in runs:
             times.append(time)
             vmfs.append(vmf)
 
-df = pd.DataFrame({"time": times, "vmf": vmfs})
-df.to_csv("vmf_of_final_disk_particles.csv", index=False)
+    df = pd.DataFrame({"time": times, "vmf": vmfs})
+    df.to_csv("vmf_of_final_disk_particles.csv", index=False)
