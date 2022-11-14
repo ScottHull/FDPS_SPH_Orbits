@@ -14,27 +14,20 @@ max_iteration = 1800
 base_path = "/home/theia/scotthull/Paper1_SPH/gi"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 
-def get_time(f, local=True):
-    formatted_time = None
-    if local:  # if not reading from remote server
-        with open(f, 'r') as infile:
-            reader = csv.reader(infile, delimiter="\t")
-            formatted_time = float(next(reader)[0])
-        infile.close()
-    else:
-        formatted_time = float(next(f))
-    return round(formatted_time * 0.000277778, 2)  # seconds -> hours
-
 
 times, vmfs = [], []
 for run in runs:
     path = base_path + f"/{run}/circularized_{run}"
+    path2 = base_path + f"/{run}/{run}_reports"
     # loop through all files in path, where the iteration is the file name minus the extension
     for file in os.listdir(path):
         f = path + "/" + file
         iteration = file.split(".")[0]
         if int(iteration) >= min_iteration and int(iteration) <= max_iteration:
-            time = get_time(f)
+            # read the report file as a pandas df and get the time
+            f2 = path2 + "/" + iteration + ".csv"
+            df2 = pd.read_csv(f2, sep=",")
+            time = df2["time"][0]
             df = pd.read_csv(f, skiprows=2, sep=",")
             # use vx, vy, and vz to calculate the magnitude of the velocity
             df["velocity"] = (df["vx"] ** 2 + df["vy"] ** 2 + df["vz"] ** 2) ** 0.5
