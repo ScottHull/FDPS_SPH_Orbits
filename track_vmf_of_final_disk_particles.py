@@ -16,6 +16,11 @@ new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 
 
 times, vmfs = [], []
+end_time_df = pd.read_csv(
+    os.path.join(base_path, f"{max_iteration}.csv"),
+)
+end_time_disk = end_time_df[end_time_df["label"] == "DISK"]
+end_time_particle_ids = end_time_disk["id"].values
 for run in runs:
     path = base_path + f"/{run}/circularized_{run}"
     path2 = base_path + f"/{run}/{run}_reports"
@@ -32,7 +37,8 @@ for run in runs:
             # use vx, vy, and vz to calculate the magnitude of the velocity
             df["velocity"] = (df["vx"] ** 2 + df["vy"] ** 2 + df["vz"] ** 2) ** 0.5
             # get the initial conditions for the hydrodynamics
-            disk = df[df['end_label'] == "DISK"]
+            # limit df to only the particles that were in the disk at the end of the simulation
+            disk = df[df["id"].isin(end_time_particle_ids)]
             vmf = calc_vapor_mass_fraction_with_circularization_from_formatted(disk, phase_path=new_phase_path,
                                                                                df_label="end_label")
             times.append(time)
