@@ -28,7 +28,7 @@ for run in runs:
             f2 = path2 + "/" + iteration + ".csv"
             df2 = pd.read_csv(f2, sep=",")
             time = df2["TIME_HRS"][0]
-            df = pd.read_csv(f, skiprows=2, sep=",")
+            df = pd.read_csv(f, sep=",")
             # use vx, vy, and vz to calculate the magnitude of the velocity
             df["velocity"] = (df["vx"] ** 2 + df["vy"] ** 2 + df["vz"] ** 2) ** 0.5
             # get the initial conditions for the hydrodynamics
