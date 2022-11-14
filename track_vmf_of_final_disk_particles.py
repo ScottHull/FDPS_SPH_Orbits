@@ -43,5 +43,13 @@ for run in runs:
             times.append(time)
             vmfs.append(vmf)
 
+    # plot the results
+    plt.plot(times, vmfs, label=run)
+    plt.xlabel("Time (hours)")
+    plt.ylabel("Vapor Mass Fraction (%)")
+    plt.grid()
+    plt.legend()
+    plt.savefig(f"vmf_{run}_final_disk_particles.png")
+
     df = pd.DataFrame({"time": times, "vmf": vmfs})
     df.to_csv("vmf_of_final_disk_particles.csv", index=False)
