@@ -39,8 +39,7 @@ for run in runs:
             # get the initial conditions for the hydrodynamics
             # limit df to only the particles that were in the disk at the end of the simulation
             disk = df[df["id"].isin(end_time_particle_ids)]
-            vmf = calc_vapor_mass_fraction_with_circularization_from_formatted(disk, phase_path=new_phase_path,
-                                                                               df_label="end_label")
+            vmf = calc_vapor_mass_fraction_with_circularization_from_formatted(disk, phase_path=new_phase_path)
             times.append(time)
             vmfs.append(vmf)
 
