@@ -28,7 +28,7 @@ def get_time(f, local=True):
 
 times, vmfs = [], []
 for run in runs:
-    path = base_path + f"/{run}/formatted_{run}"
+    path = base_path + f"/{run}/circularized_{run}"
     # loop through all files in path, where the iteration is the file name minus the extension
     for file in os.listdir(path):
         f = path + "/" + file
