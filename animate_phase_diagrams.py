@@ -143,7 +143,7 @@ def plot_phase_diagrams(ax_no_circ, ax_circ, s, t, iteration):
 
 iterations = []
 for run, t in runs:
-    path = base_path + f"{run}"
+    path = base_path + f"{run}/circularized_{run}"
     for iteration in os.listdir(path):
         iteration = int(iteration.split(".")[0])
         iterations.append(iteration)
