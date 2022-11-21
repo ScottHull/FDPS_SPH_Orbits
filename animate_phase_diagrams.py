@@ -5,6 +5,8 @@ import numpy as np
 import string
 import matplotlib.pyplot as plt
 
+from src.animate import animate
+
 plt.rcParams.update({'font.size': 14, })
 # plt.style.use("dark_background")
 plt.style.use('seaborn-colorblind')
@@ -139,10 +141,12 @@ def plot_phase_diagrams(ax_no_circ, ax_circ, s, t, iteration):
     )
 
 
+iterations = []
 for run in runs:
     path = base_path + f"{run}"
     for iteration in os.listdir(path):
         iteration = int(iteration.split(".")[0])
+        iterations.append(iteration)
         fig, axs = plt.subplots(1, 2, figsize=(16, 9))
         axs = axs.flatten()
         for ax in axs:
@@ -161,4 +165,11 @@ for run in runs:
 
         plt.savefig(animate_phase_curves_path + f"/{iteration}.png", format='png', dpi=200)
 
-
+animate(
+    start_time=min(iterations),
+    end_time=max(iterations),
+    interval=iterations[1] - iterations[0],
+    path=animate_phase_curves_path,
+    fps=30,
+    filename="{}_impact.mp4".format(run),
+)
