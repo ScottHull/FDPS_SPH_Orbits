@@ -140,10 +140,9 @@ def plot_phase_diagrams(ax_no_circ, ax_circ, s, t, iteration):
         temp, entropy_circ, s=1, marker=marker, alpha=0.6, color=color
     )
 
-
-iterations = []
 for run, t in runs:
     path = base_path + f"{run}/circularized_{run}"
+    iterations = []
     for iteration in os.listdir(path):
         iteration = int(iteration.split(".")[0])
         iterations.append(iteration)
@@ -168,8 +167,8 @@ for run, t in runs:
     animate(
         start_time=min(iterations),
         end_time=max(iterations),
-        interval=iterations[1] - iterations[0],
+        interval=int(iterations[1] - iterations[0]),
         path=animate_phase_curves_path,
         fps=30,
-        filename="{}_impact.mp4".format(t),
+        filename="{}_animate_phase_curves.mp4".format(t),
     )
