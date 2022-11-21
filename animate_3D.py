@@ -90,12 +90,12 @@ def plot_iteration(iteration):
         str(formatted_time) + " hrs",
         c="white",
     )
-    # sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
-    # sm.set_array([])
-    # cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
-    # cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-    # cbar.ax.tick_params(labelsize=6)
-    # cbar.ax.set_title(parameter.title(), fontsize=6)
+    sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+    sm.set_array([])
+    cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
+    cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+    cbar.ax.tick_params(labelsize=6)
+    cbar.ax.set_title(parameter.title(), fontsize=6)
     ax.set_xlim(-square_scale, square_scale)
     ax.set_ylim(-square_scale, square_scale)
     ax.set_zlim(-square_scale, square_scale)
