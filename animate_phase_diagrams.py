@@ -164,6 +164,8 @@ for run, t in runs:
 
         plt.savefig(animate_phase_curves_path + f"/{iteration}.png", format='png', dpi=200)
 
+    iterations = list(sorted(iterations))
+
     animate(
         start_time=min(iterations),
         end_time=max(iterations),
