@@ -154,8 +154,8 @@ for run, t in runs:
             ax.set_xlim(1000, 12000)
             ax.set_ylim(0, 12500)
             shade_plot(s="new", ax=ax)
-        ax[0].set_label("No Circularization")
-        ax[1].set_label("Circularization")
+        axs[0].set_label("No Circularization")
+        axs[1].set_label("Circularization")
 
         plot_phase_diagrams(axs[0], axs[1], run, t, iteration)
 
