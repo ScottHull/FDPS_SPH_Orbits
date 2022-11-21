@@ -166,8 +166,12 @@ for run, t in runs:
             ax.set_xlim(1000, 12000)
             ax.set_ylim(0, 12500)
             shade_plot(s="new", ax=ax)
-        axs[0].set_title(f"No Circularization (time = {time} hours)")
-        axs[1].set_title(f"Circularization (time = {time} hours)")
+        axs[0].set_title(f"{t} - No Circularization (time = {time} hours)")
+        axs[1].set_title(f"{t} - Circularization (time = {time} hours)")
+        axs[0].set_xlabel("Entropy (J/K)")
+        axs[1].set_xlabel("Entropy (J/K)")
+        axs[0].set_ylabel("Temperature (K)")
+        axs[1].set_ylabel("Temperature (K)")
 
         plot_phase_diagrams(axs[0], axs[1], run, t, iteration)
 
