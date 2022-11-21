@@ -15,7 +15,7 @@ runs = [('500_b073_new', '500b073S')]
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
-animate_phase_curves_path = os.path.join(base_path, "animate_phase_curves")
+animate_phase_curves_path = "animate_phase_curves"
 
 new_phase_df = pd.read_fwf(new_phase_path, skiprows=1,
                            names=["temperature", "density_sol_liq", "density_vap", "pressure",
@@ -169,6 +169,6 @@ for run, t in runs:
         end_time=max(iterations),
         interval=int(iterations[1] - iterations[0]),
         path=animate_phase_curves_path,
-        fps=30,
+        fps=10,
         filename="{}_animate_phase_curves.mp4".format(t),
     )
