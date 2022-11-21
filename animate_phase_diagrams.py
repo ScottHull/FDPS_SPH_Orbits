@@ -11,7 +11,7 @@ plt.rcParams.update({'font.size': 14, })
 # plt.style.use("dark_background")
 plt.style.use('seaborn-colorblind')
 
-runs = ['500b073S']
+runs = [('500_b073_new', '500b073S')]
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
@@ -142,7 +142,7 @@ def plot_phase_diagrams(ax_no_circ, ax_circ, s, t, iteration):
 
 
 iterations = []
-for run in runs:
+for run, t in runs:
     path = base_path + f"{run}"
     for iteration in os.listdir(path):
         iteration = int(iteration.split(".")[0])
@@ -157,7 +157,7 @@ for run in runs:
         ax[0].set_label("No Circularization")
         ax[1].set_label("Circularization")
 
-        plot_phase_diagrams(axs[0], axs[1], run, run, iteration)
+        plot_phase_diagrams(axs[0], axs[1], run, t, iteration)
 
         plt.tight_layout()
 
@@ -165,11 +165,11 @@ for run in runs:
 
         plt.savefig(animate_phase_curves_path + f"/{iteration}.png", format='png', dpi=200)
 
-animate(
-    start_time=min(iterations),
-    end_time=max(iterations),
-    interval=iterations[1] - iterations[0],
-    path=animate_phase_curves_path,
-    fps=30,
-    filename="{}_impact.mp4".format(run),
-)
+    animate(
+        start_time=min(iterations),
+        end_time=max(iterations),
+        interval=iterations[1] - iterations[0],
+        path=animate_phase_curves_path,
+        fps=30,
+        filename="{}_impact.mp4".format(t),
+    )
