@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import csv
 import pandas as pd
 import numpy as np
 import string
@@ -109,6 +110,16 @@ def shade_plot(s, ax):
             label=phase
         )
 
+def get_time(f, local=True):
+    formatted_time = None
+    if local:  # if not reading from remote server
+        with open(f, 'r') as infile:
+            reader = csv.reader(infile, delimiter="\t")
+            formatted_time = float(next(reader)[0])
+        infile.close()
+    else:
+        formatted_time = float(next(f))
+    return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 def plot_phase_diagrams(ax_no_circ, ax_circ, s, t, iteration):
     marker = "."
@@ -142,8 +153,10 @@ def plot_phase_diagrams(ax_no_circ, ax_circ, s, t, iteration):
 
 for run, t in runs:
     path = base_path + f"{run}/circularized_{run}"
+    fpath = base_path + f"/{run}/formatted_{run}"
     iterations = []
     for iteration in os.listdir(path):
+        time = get_time(fpath + "/{}.csv".format(iteration))
         iteration = int(iteration.split(".")[0])
         iterations.append(iteration)
         fig, axs = plt.subplots(1, 2, figsize=(16, 9))
@@ -153,14 +166,12 @@ for run, t in runs:
             ax.set_xlim(1000, 12000)
             ax.set_ylim(0, 12500)
             shade_plot(s="new", ax=ax)
-        axs[0].set_label("No Circularization")
-        axs[1].set_label("Circularization")
+        axs[0].set_title(f"No Circularization (time = {time} hours)")
+        axs[1].set_title(f"Circularization (time = {time} hours)")
 
         plot_phase_diagrams(axs[0], axs[1], run, t, iteration)
 
         plt.tight_layout()
-
-        fig.subplots_adjust(right=0.80)
 
         plt.savefig(animate_phase_curves_path + f"/{iteration}.png", format='png', dpi=200)
 
