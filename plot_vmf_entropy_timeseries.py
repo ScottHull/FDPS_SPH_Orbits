@@ -119,7 +119,7 @@ def plot_entropy_and_vmf_vs_time():
             axs[index].plot(
                 d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color,
             )
-            axs[index].set_ylabel(rows_map[h][1:-1])
+            axs[index].set_ylabel(rows_map[h][1:-1], fontsize=16)
     for c in cutoff_densities:
         axs[0].scatter(
             [], [], marker="s", s=80, label=r"$\rho_c$ = {} kg/m$^3$".format(c)
@@ -146,7 +146,7 @@ def plot_entropy_and_vmf_vs_time():
         ax.grid(alpha=0.4)
         ax.text(x_loc, y_loc, letters[index], fontweight="bold")
     for ax in axs[-3:]:
-        ax.set_xlabel("Time (hrs)")
+        ax.set_xlabel("Time (hrs)", fontsize=16)
 
     plt.tight_layout()
     legend = fig.legend(loc=7, fontsize=16)
