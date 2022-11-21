@@ -156,9 +156,9 @@ for run, t in runs:
     fpath = base_path + f"/{run}/formatted_{run}"
     iterations = []
     for iteration in os.listdir(path):
-        time = get_time(fpath + "/{}.csv".format(iteration))
         iteration = int(iteration.split(".")[0])
         iterations.append(iteration)
+        time = get_time(fpath + "/{}.csv".format(iteration))
         fig, axs = plt.subplots(1, 2, figsize=(16, 9))
         axs = axs.flatten()
         for ax in axs:
