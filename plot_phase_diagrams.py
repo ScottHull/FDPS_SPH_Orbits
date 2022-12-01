@@ -170,7 +170,7 @@ def plot_phase_diagrams():
             if "high" in s:
                 label = t
             axs[to_index].scatter(
-                temp, entropy, s=1, marker=marker, alpha=0.6, color=color
+                entropy, temp, s=1, marker=marker, alpha=0.6, color=color
             )
 
 for cd in cutoff_densities:

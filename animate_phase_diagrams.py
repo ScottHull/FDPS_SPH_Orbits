@@ -145,10 +145,10 @@ def plot_phase_diagrams(ax_no_circ, ax_circ, s, t, iteration):
     if "high" in s:
         label = t
     ax_no_circ.scatter(
-        temp, entropy, s=1, marker=marker, alpha=0.6, color=color
+        entropy, temp, s=1, marker=marker, alpha=0.6, color=color
     )
     ax_circ.scatter(
-        temp, entropy_circ, s=1, marker=marker, alpha=0.6, color=color
+        entropy_circ, temp, s=1, marker=marker, alpha=0.6, color=color
     )
 
 for run, t in runs:
