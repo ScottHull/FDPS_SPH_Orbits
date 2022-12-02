@@ -57,7 +57,10 @@ def calc_vmf(data_df, phase_df, entropy_header):
             vmf += 1.0
             # particles['vap'].append((s, t, entropy_liq, entropy_vap))
         num_particles += 1
-    return vmf / num_particles
+    try:
+        return vmf / num_particles
+    except ZeroDivisionError:
+        return 0.0
 
 for iteration in np.arange(min_iteration, max_iteration + increment, increment):
     for run in runs:
