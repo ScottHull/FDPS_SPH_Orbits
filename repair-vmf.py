@@ -17,11 +17,12 @@ base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 new_phase_df = pd.read_fwf(new_phase_path, skiprows=1,
-                       names=["temperature", "density_sol_liq", "density_vap", "pressure",
-                              "entropy_sol_liq", "entropy_vap"])
+                           names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                  "entropy_sol_liq", "entropy_vap"])
 old_phase_df = pd.read_fwf(old_phase_path, skiprows=1,
-                       names=["temperature", "density_sol_liq", "density_vap", "pressure",
-                              "entropy_sol_liq", "entropy_vap"])
+                           names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                  "entropy_sol_liq", "entropy_vap"])
+
 
 def calc_vmf(data_df, phase_df, entropy_header):
     disk_df = data_df[data_df['label'] == "DISK"]
@@ -60,6 +61,7 @@ def calc_vmf(data_df, phase_df, entropy_header):
     except ZeroDivisionError:
         return 0.0
 
+
 def repair_vmfs():
     for run in runs:
         increment = 50
@@ -84,9 +86,17 @@ def repair_vmfs():
             except:
                 pass
 
-def pull_vmfs():
+def fetch_vmfs_and_put_in_dataframe():
+    data = {'run': [], 'iteration': [], 'vmf_w_circ': [], 'vmf_wo_circ': []}
     for run in runs:
-        report_path = base_path + f"{run}/{run}_reports2/{max_iteration}.csv"
-        report_df = pd.read_csv(report_path)
-        vmf_w_circ = report_df['DISK_VMF_W_CIRC'][0]
-        vmf_wo_circ = report_df['DISK_VMF_WITHOUT_CIRC'][0]
+        # read in the report file
+        report_path_2 = base_path + f"{run}/{run}_reports2"
+        report_df = pd.read_csv(report_path_2 + f"/{max_iteration}.csv")
+        data['run'].append(run)
+        data['iteration'].append(max_iteration)
+        data['vmf_w_circ'].append(report_df['DISK_VMF_W_CIRC'][0])
+        data['vmf_wo_circ'].append(report_df['DISK_VMF_WITHOUT_CIRC'][0])
+    # convert to dataframe and output as CSV
+    df = pd.DataFrame(data)
+    df.to_csv("vmf_data.csv", index=False)
+
