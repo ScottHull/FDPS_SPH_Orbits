@@ -13,7 +13,6 @@ runs = [
 ]
 min_iteration = 0
 max_iteration = 1800
-increment = 50
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
@@ -62,8 +61,11 @@ def calc_vmf(data_df, phase_df, entropy_header):
     except ZeroDivisionError:
         return 0.0
 
-for iteration in np.arange(min_iteration, max_iteration + increment, increment):
-    for run in runs:
+for run in runs:
+    increment = 50
+    if "high" in run:
+        increment = 100
+    for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         phase_df = new_phase_df if 'new' in run else old_phase_df
         circ_path = base_path + f"{run}/circularized_{run}/{iteration}.csv"
         report_path = base_path + f"{run}/{run}_reports/{iteration}.csv"
