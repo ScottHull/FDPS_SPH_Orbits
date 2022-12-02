@@ -101,7 +101,7 @@ def calc_vmf(data_df, phase_df):
     num_particles = 0
     particles = {'liq': [], 'vap': [], 'mix': [], 'supercritical': []}
     for s, t in zip(disk_df['entropy_w_circ'], data_df['temperature']):
-        nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=s,
+        nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=t,
                                                                     array=list(phase_df['temperature']))
         entropy_liq = phase_df['entropy_sol_liq'][nearest_temperature_index]
         entropy_vap = phase_df['entropy_vap'][nearest_temperature_index]
@@ -112,7 +112,6 @@ def calc_vmf(data_df, phase_df):
             vmf += 0.0
             particles['liq'].append((s, t, entropy_liq, entropy_vap))
         elif entropy_liq <= s <= entropy_vap:
-            print(s, entropy_liq, entropy_vap)
             vmf += (s - entropy_liq) / (entropy_vap - entropy_liq)
             particles['mix'].append((s, t, entropy_liq, entropy_vap))
         elif s > entropy_vap:
@@ -140,16 +139,16 @@ ax.scatter(
     vmf[1][0], vmf[1][1], s=100, color='black', marker='x', label="Supercritical Point"
 )
 ax.scatter(
-    [p[0] for p in vmf[2]['liq']], [p[1] for p in vmf[2]['liq']], s=1, label="Liquid"
+    [p[0] for p in vmf[2]['liq']], [p[1] for p in vmf[2]['liq']], s=8, label="Liquid"
 )
 ax.scatter(
-    [p[0] for p in vmf[2]['vap']], [p[1] for p in vmf[2]['vap']], s=1, label="Vapor"
+    [p[0] for p in vmf[2]['vap']], [p[1] for p in vmf[2]['vap']], s=8, label="Vapor"
 )
 ax.scatter(
-    [p[0] for p in vmf[2]['mix']], [p[1] for p in vmf[2]['mix']], s=1, label="Mixed"
+    [p[0] for p in vmf[2]['mix']], [p[1] for p in vmf[2]['mix']], s=8, label="Mixed"
 )
 ax.scatter(
-    [p[0] for p in vmf[2]['supercritical']], [p[1] for p in vmf[2]['supercritical']], s=1, label="Supercritical"
+    [p[0] for p in vmf[2]['supercritical']], [p[1] for p in vmf[2]['supercritical']], s=8, label="Supercritical"
 )
 # pick 3 random particles from the data set and get their phase data
 random_particles = disk_df[disk_df['entropy_w_circ'] > 5000].sample(n=3)
@@ -181,7 +180,7 @@ ax.annotate(
     verticalalignment='top',
     fontsize=16
 )
-ax.legend()
+ax.legend(loc='upper left')
 # make the dots in the legend larger
 for handle in ax.get_legend().legendHandles:
     handle._sizes = [100]
