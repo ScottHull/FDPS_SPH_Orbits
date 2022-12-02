@@ -151,7 +151,7 @@ ax.scatter(
     [p[0] for p in vmf[2]['supercritical']], [p[1] for p in vmf[2]['supercritical']], s=8, label="Supercritical"
 )
 # pick 3 random particles from the data set and get their phase data
-random_particles = disk_df[disk_df['entropy_w_circ'] > 5000].sample(n=3)
+random_particles = disk_df.sample(n=10)
 for s, t in zip(random_particles['entropy_w_circ'], random_particles['temperature']):
     entropy_liq, entropy_vap = get_phase_data_for_particle(s, t, nearest_neighbor=NearestNeighbor1D())
     # plot a line from the particle to the phase curve
