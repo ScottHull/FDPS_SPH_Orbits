@@ -7,7 +7,7 @@ from src.interpolation import NearestNeighbor1D
 
 runs = [
     '5_b073_new', '5_b073_old', '5_b073_new_high', '500_b073_new', '500_b073_old', '1000_b073_new', '1000_b073_old',
-    '2000_b073_new', '2000_b073_old' 
+    '2000_b073_new', '2000_b073_old',
     '5_b075_new', '5_b075_old', '500_b075_new', '500_b075_old',
     '1000_b075_new', '1000_b075_old', '2000_b075_new', '2000_b075_old', '2000_b075_old_low'
 ]
