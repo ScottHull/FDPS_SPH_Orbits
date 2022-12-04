@@ -79,5 +79,6 @@ for run in runs:
         s=2,
         color=c
     )
+    ax.axhline(mean([x[2] for x in d]), color=c, linestyle='--')
 
 plt.savefig("vmf_phase_curve_differences.png")
