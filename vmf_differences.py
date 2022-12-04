@@ -1,4 +1,5 @@
 import os
+from statistics import mean
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -49,6 +50,8 @@ for ax in [ax_new, ax_old]:
     ax.set_xlabel("Entropy")
     ax.set_ylabel("s - s_liq / (s_vap - s_liq)")
     ax.grid(True)
+    ax.set_xlim(1000, 9000)
+    ax.set_ylim(0, 1)
 for cd in cutoff_densities:
     c = colors[cutoff_densities.index(cd)]
     ax_old.scatter(
