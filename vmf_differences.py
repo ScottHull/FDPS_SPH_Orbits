@@ -46,6 +46,8 @@ def get_phase_data_for_particle(s, t, nearest_neighbor, phase_df):
 fig = plt.figure(figsize=(12, 16))
 ax_new = fig.add_subplot(2, 1, 1)
 ax_old = fig.add_subplot(2, 1, 2)
+ax_new.set_title("Stewart M-ANEOS")
+ax_old.set_title("N-SPH M-ANEOS")
 for ax in [ax_new, ax_old]:
     ax.set_xlabel("Entropy")
     ax.set_ylabel("s - s_liq / (s_vap - s_liq)")
@@ -81,4 +83,5 @@ for run in runs:
     )
     ax.axhline(mean([x[2] for x in d]), color=c, linestyle='--')
 
+ax_new.legend()
 plt.savefig("vmf_phase_curve_differences.png")
