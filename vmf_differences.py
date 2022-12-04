@@ -58,7 +58,7 @@ for run in runs:
     cd = int(run.split('_')[0])
     c = colors[cutoff_densities.index(cd)]
     if "high" in run or "low" in run:
-        c = len(cutoff_densities)
+        c = colors[len(cutoff_densities)]
     phase_df = new_phase_df if 'new' in run else old_phase_df
     ax = ax_new if 'new' in run else ax_old
     circ_path = base_path + f"{run}/circularized_{run}/{max_iteration}.csv"
