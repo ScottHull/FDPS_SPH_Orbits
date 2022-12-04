@@ -72,7 +72,7 @@ for run in runs:
 
     ax.scatter(
         [x[0] for x in d],
-        [x[3] for x in d],
+        [x[2] for x in d],
         s=2,
         color=c
     )
