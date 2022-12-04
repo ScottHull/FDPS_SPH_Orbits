@@ -10,10 +10,10 @@ plt.style.use('seaborn-colorblind')
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 runs = [
-    '5_b073_new', '5_b073_old', '5_b073_new_high', '500_b073_new', '500_b073_old', '1000_b073_new', '1000_b073_old',
+    '5_b073_new', '5_b073_old', '500_b073_new', '500_b073_old', '1000_b073_new', '1000_b073_old',
     '2000_b073_new', '2000_b073_old',
     '5_b075_new', '5_b075_old', '500_b075_new', '500_b075_old',
-    '1000_b075_new', '1000_b075_old', '2000_b075_new', '2000_b075_old', '2000_b075_old_low'
+    '1000_b075_new', '1000_b075_old', '2000_b075_new', '2000_b075_old'
 ]
 cutoff_densities = [5, 500, 1000, 2000]
 max_iteration = 1800
@@ -83,5 +83,5 @@ for run in runs:
     )
     ax.axhline(mean([x[2] for x in d]), color=c, linestyle='--')
 
-ax_new.legend()
+ax_old.legend()
 plt.savefig("vmf_phase_curve_differences.png")
