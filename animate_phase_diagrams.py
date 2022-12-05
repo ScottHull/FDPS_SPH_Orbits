@@ -165,7 +165,7 @@ for run, t in runs:
             ax.grid(alpha=0.4)
             ax.set_xlim(1000, 12000)
             ax.set_ylim(0, 12500)
-            shade_plot(s="new", ax=ax)
+            shade_plot(s=run, ax=ax)
         axs[0].set_title(f"{t} - No Circularization (time = {time} hours)")
         axs[1].set_title(f"{t} - Circularization (time = {time} hours)")
         axs[0].set_xlabel("Entropy (J/K)")

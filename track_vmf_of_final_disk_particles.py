@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import csv
+from statistics import mean
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -48,9 +49,9 @@ for run in runs:
                 vmf_w_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(disk, phase_path=phase_path, restrict_df=False)
                 vmf_wo_circ = calc_vapor_mass_fraction_without_circularization_from_formatted(disk, phase_path=phase_path, restrict_df=False)
                 times.append(time)
-                entropies.append(disk['entropy'])
-                entropies_w_circ.append(disk['entropy'] + disk['circ_entropy_delta'])
-                temperatures.append(disk['temperature'])
+                entropies.append(mean(disk['entropy']))
+                entropies_w_circ.append(mean(disk['entropy'] + disk['circ_entropy_delta']))
+                temperatures.append(mean(disk['temperature']))
                 vmfs_w_circ.append(vmf_w_circ * 100)
                 vmfs_wo_circ.append(vmf_wo_circ * 100)
             except:
@@ -73,15 +74,15 @@ for run in runs:
     axs[1].plot(times, entropies, label="without circularization")
     axs[1].plot(times, entropies_w_circ, label="with circularization")
     axs[1].set_xlabel("Time (hrs)")
-    axs[1].set_ylabel("Entropy (J/K)")
+    axs[1].set_ylabel("Avg. Disk Entropy (J/K)")
     axs[1].set_title(f"Entropy - {run}")
 
     axs[2].plot(times, temperatures)
     axs[2].set_xlabel("Time (hrs)")
     axs[2].set_ylabel("Temperature (K)")
-    axs[2].set_title(f"Temperature - {run}")
+    axs[2].set_title(f"Avg. Disk Temperature - {run}")
 
-    for ax in axs.flatten():
+    for ax in axs:
         ax.legend()
         ax.grid()
 
