@@ -28,7 +28,7 @@ for run in runs:
         os.path.join(path, f"{max_iteration}.csv"),
     )
     end_time_disk = end_time_df[end_time_df["label"] == "DISK"]
-    end_time_disk = end_time_disk[end_time_disk["circ_entropy_delta"] <= 0]
+    end_time_disk = end_time_disk[end_time_disk["circ_entropy_delta"] <= 5000]
     end_time_particle_ids = end_time_disk["id"].values
 
     # loop through all files in path, where the iteration is the file name minus the extension
