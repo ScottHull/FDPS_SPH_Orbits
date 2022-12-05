@@ -42,13 +42,13 @@ for run in runs:
                 df2 = pd.read_csv(f2, sep=",")
                 time = df2["TIME_HRS"][0]
                 df = pd.read_csv(f, sep=",")
+                df["entropy_w_circ"] = df["entropy"] + df["circ_entropy_delta"]
                 # use vx, vy, and vz to calculate the magnitude of the velocity
                 df["velocity"] = (df["vx"] ** 2 + df["vy"] ** 2 + df["vz"] ** 2) ** 0.5
                 # get the initial conditions for the hydrodynamics
                 # limit df to only the particles that were in the disk at the end of the simulation
                 disk = df[df["id"].isin(end_time_particle_ids)]
                 filtered_disk = disk[disk['circ_entropy_delta'] <= 5000]
-                filtered_disk['entropy_w_circ'] = filtered_disk['entropy'] + filtered_disk['circ_entropy_delta']
                 vmf_w_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(filtered_disk, phase_path=phase_path, restrict_df=False)
                 vmf_wo_circ = calc_vapor_mass_fraction_without_circularization_from_formatted(disk, phase_path=phase_path, restrict_df=False)
                 times.append(time)
