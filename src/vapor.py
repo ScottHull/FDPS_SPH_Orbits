@@ -184,9 +184,6 @@ def calc_vapor_mass_fraction_with_circularization_from_formatted(df, phase_path,
     nearest_neighbor = NearestNeighbor1D()
     supercritical = max(phase_df['temperature'])
     # get the location of the phase curve that corresponds to the supercritical point
-    supercritical_idx = phase_df[phase_df['temperature'] == supercritical].index[0]
-    # get the entropy values for the supercritical point
-    supercritical_entropy = phase_df.iloc[supercritical_idx]['entropy_sol_liq']
     vmf = 0.0
     num_particles = 0
     # particles = {'liq': [], 'vap': [], 'mix': [], 'supercritical': []}
@@ -228,10 +225,6 @@ def calc_vapor_mass_fraction_without_circularization_from_formatted(df, phase_pa
 
     nearest_neighbor = NearestNeighbor1D()
     supercritical = max(phase_df['temperature'])
-    # get the location of the phase curve that corresponds to the supercritical point
-    supercritical_idx = phase_df[phase_df['temperature'] == supercritical].index[0]
-    # get the entropy values for the supercritical point
-    supercritical_entropy = phase_df.iloc[supercritical_idx]['entropy_sol_liq']
     vmf = 0.0
     num_particles = 0
     # particles = {'liq': [], 'vap': [], 'mix': [], 'supercritical': []}
