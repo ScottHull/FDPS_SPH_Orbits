@@ -52,9 +52,9 @@ for run in runs:
                 vmf_w_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(filtered_disk, phase_path=phase_path, restrict_df=False)
                 vmf_wo_circ = calc_vapor_mass_fraction_without_circularization_from_formatted(disk, phase_path=phase_path, restrict_df=False)
                 times.append(time)
-                entropies.append(mean(disk['entropy'].tolist()))
-                entropies_w_circ.append(mean(filtered_disk['entropy_w_circ'].tolist()))
-                temperatures.append(mean(disk['temperature'].tolist()))
+                entropies.append(disk['entropy'].mean())
+                entropies_w_circ.append(filtered_disk['entropy_w_circ'].mean())
+                temperatures.append(disk['temperature'].mean())
                 vmfs_w_circ.append(vmf_w_circ * 100)
                 vmfs_wo_circ.append(vmf_wo_circ * 100)
             except:
