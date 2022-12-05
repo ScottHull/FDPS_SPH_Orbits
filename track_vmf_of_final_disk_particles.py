@@ -63,22 +63,23 @@ for run in runs:
 
     # plot the results
     fig, axs = plt.subplots(1, 3, figsize=(16, 9))
-    axs[0, 0].plot(times, vmfs_w_circ, label="with circularization")
-    axs[0, 0].plot(times, vmfs_wo_circ, label="without circularization")
-    axs[0, 0].set_xlabel("Time (hrs)")
-    axs[0, 0].set_ylabel("Vapor Mass Fraction (%)")
-    axs[0, 0].set_title(f"Vapor Mass Fraction - {run}")
+    axs = axs.flatten()
+    axs[0].plot(times, vmfs_w_circ, label="with circularization")
+    axs[0].plot(times, vmfs_wo_circ, label="without circularization")
+    axs[0].set_xlabel("Time (hrs)")
+    axs[0].set_ylabel("Vapor Mass Fraction (%)")
+    axs[0].set_title(f"Vapor Mass Fraction - {run}")
 
-    axs[0, 1].plot(times, entropies, label="without circularization")
-    axs[0, 1].plot(times, entropies_w_circ, label="with circularization")
-    axs[0, 1].set_xlabel("Time (hrs)")
-    axs[0, 1].set_ylabel("Entropy (J/K)")
-    axs[0, 1].set_title(f"Entropy - {run}")
+    axs[1].plot(times, entropies, label="without circularization")
+    axs[1].plot(times, entropies_w_circ, label="with circularization")
+    axs[1].set_xlabel("Time (hrs)")
+    axs[1].set_ylabel("Entropy (J/K)")
+    axs[1].set_title(f"Entropy - {run}")
 
-    axs[0, 2].plot(times, temperatures)
-    axs[0, 2].set_xlabel("Time (hrs)")
-    axs[0, 2].set_ylabel("Temperature (K)")
-    axs[0, 2].set_title(f"Temperature - {run}")
+    axs[2].plot(times, temperatures)
+    axs[2].set_xlabel("Time (hrs)")
+    axs[2].set_ylabel("Temperature (K)")
+    axs[2].set_title(f"Temperature - {run}")
 
     for ax in axs.flatten():
         ax.legend()
