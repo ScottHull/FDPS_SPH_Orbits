@@ -79,7 +79,10 @@ for run in runs:
     d = [(s, t, get_phase_data_for_particle(s, t, NearestNeighbor1D(), phase_df)) for s, t in zip(circ_df['entropy_w_circ'], circ_df['temperature'])]
     d = [x for x in d if x[2] is not None]
 
-    all_vals = all_vals + [x[2] for x in d]
+    if "new" in run:
+        all_vals_new = all_vals + [x[2] for x in d]
+    else:
+        all_vals_old = all_vals + [x[2] for x in d]
 
     ax.scatter(
         [x[0] for x in d],
