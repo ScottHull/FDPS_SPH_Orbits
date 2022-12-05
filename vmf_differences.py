@@ -53,12 +53,14 @@ for ax in [ax_new, ax_old]:
     ax.set_ylabel("s - s_liq / (s_vap - s_liq)")
     ax.grid(True)
     ax.set_xlim(1000, 9000)
-    ax.set_ylim(0, 1)
+    ax.set_ylim(0, 1.1)
 for cd in cutoff_densities:
     c = colors[cutoff_densities.index(cd)]
     ax_old.scatter(
         [], [], c=c, label="{} kg/m^3".format(cd)
     )
+
+all_vals = []
 for run in runs:
     cd = int(run.split('_')[0])
     c = colors[cutoff_densities.index(cd)]
@@ -75,13 +77,17 @@ for run in runs:
     d = [(s, t, get_phase_data_for_particle(s, t, NearestNeighbor1D(), phase_df)) for s, t in zip(circ_df['entropy_w_circ'], circ_df['temperature'])]
     d = [x for x in d if x[2] is not None]
 
+    all_vals = all_vals + [x[2] for x in d]
+
     ax.scatter(
         [x[0] for x in d],
         [x[2] for x in d],
         s=2,
         color=c
     )
-    ax.axhline(mean([x[2] for x in d]), color=c, linestyle='--')
+    # ax.axhline(mean([x[2] for x in d]), color=c, linestyle='--')
+
+ax.axhline(mean(all_vals), color='black', linewidth=2.0, linestyle='--', label="Average")
 
 ax_old.legend()
 plt.savefig("vmf_phase_curve_differences.png")
