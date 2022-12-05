@@ -48,12 +48,13 @@ for run in runs:
                 # limit df to only the particles that were in the disk at the end of the simulation
                 disk = df[df["id"].isin(end_time_particle_ids)]
                 filtered_disk = disk[disk['circ_entropy_delta'] <= 5000]
+                filtered_disk['entropy_w_circ'] = filtered_disk['entropy'] + filtered_disk['circ_entropy_delta']
                 vmf_w_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(filtered_disk, phase_path=phase_path, restrict_df=False)
                 vmf_wo_circ = calc_vapor_mass_fraction_without_circularization_from_formatted(disk, phase_path=phase_path, restrict_df=False)
                 times.append(time)
-                entropies.append(mean(disk['entropy']))
-                entropies_w_circ.append(mean(filtered_disk['entropy'] + filtered_disk['circ_entropy_delta']))
-                temperatures.append(mean(disk['temperature']))
+                entropies.append(mean(disk['entropy'].tolist()))
+                entropies_w_circ.append(mean(filtered_disk['entropy_w_circ'].tolist()))
+                temperatures.append(mean(disk['temperature'].tolist()))
                 vmfs_w_circ.append(vmf_w_circ * 100)
                 vmfs_wo_circ.append(vmf_wo_circ * 100)
             except:
