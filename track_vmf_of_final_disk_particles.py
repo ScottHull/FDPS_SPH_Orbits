@@ -4,7 +4,10 @@ import csv
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from src.vapor import calc_vapor_mass_fraction_with_circularization_from_formatted
+from src.vapor import calc_vapor_mass_fraction_with_circularization_from_formatted, calc_vapor_mass_fraction_without_circularization_from_formatted
+
+# use seaborn colorblind palette
+plt.style.use('seaborn-colorblind')
 
 runs = ['500_b073_new']
 
@@ -13,9 +16,11 @@ max_iteration = 1800
 
 base_path = "/home/theia/scotthull/Paper1_SPH/gi"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
+old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 for run in runs:
-    times, vmfs = [], []
+    phase_path = new_phase_path if 'new' in run else old_phase_path
+    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures = [], [], [], [], [], []
     path = base_path + f"/{run}/circularized_{run}"
     path2 = base_path + f"/{run}/{run}_reports"
     end_time_df = pd.read_csv(
@@ -39,20 +44,41 @@ for run in runs:
             # get the initial conditions for the hydrodynamics
             # limit df to only the particles that were in the disk at the end of the simulation
             disk = df[df["id"].isin(end_time_particle_ids)]
-            vmf = calc_vapor_mass_fraction_with_circularization_from_formatted(disk, phase_path=new_phase_path)
+            vmf_w_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(disk, phase_path=phase_path, restrict_df=False)
+            vmf_wo_circ = calc_vapor_mass_fraction_without_circularization_from_formatted(disk, phase_path=phase_path, restrict_df=False)
             times.append(time)
-            vmfs.append(vmf)
+            entropies.append(disk['entropy'])
+            entropies_w_circ.append(disk['entropy'] + disk['circ_entropy_delta'])
+            temperatures.append(disk['temperature'])
+            vmfs_w_circ.append(vmf_w_circ * 100)
+            vmfs_wo_circ.append(vmf_wo_circ * 100)
+
+
 
     # sort the times and vmfs by time
-    times, vmfs = zip(*sorted(zip(times, vmfs)))
+    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures = zip(*sorted(zip(times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures)))
 
     # plot the results
-    plt.plot(times, vmfs, label=run)
-    plt.xlabel("Time (hours)")
-    plt.ylabel("Vapor Mass Fraction (%)")
-    plt.grid()
-    plt.legend()
-    plt.savefig(f"vmf_{run}_final_disk_particles.png")
+    fig, axs = plt.subplots(1, 3, figsize=(16, 9))
+    axs[0, 0].plot(times, vmfs_w_circ, label="with circularization")
+    axs[0, 0].plot(times, vmfs_wo_circ, label="without circularization")
+    axs[0, 0].set_xlabel("Time (hrs)")
+    axs[0, 0].set_ylabel("Vapor Mass Fraction (%)")
+    axs[0, 0].set_title(f"Vapor Mass Fraction - {run}")
 
-    df = pd.DataFrame({"time": times, "vmf": vmfs})
-    df.to_csv("vmf_of_final_disk_particles.csv", index=False)
+    axs[0, 1].plot(times, entropies, label="without circularization")
+    axs[0, 1].plot(times, entropies_w_circ, label="with circularization")
+    axs[0, 1].set_xlabel("Time (hrs)")
+    axs[0, 1].set_ylabel("Entropy (J/K)")
+    axs[0, 1].set_title(f"Entropy - {run}")
+
+    axs[0, 2].plot(times, temperatures)
+    axs[0, 2].set_xlabel("Time (hrs)")
+    axs[0, 2].set_ylabel("Temperature (K)")
+    axs[0, 2].set_title(f"Temperature - {run}")
+
+    for ax in axs.flatten():
+        ax.legend()
+        ax.grid()
+
+    plt.savefig(f"vmf_{run}_final_disk_particles.png")

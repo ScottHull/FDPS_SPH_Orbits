@@ -168,43 +168,95 @@ def calc_vapor_mass_fraction_with_circularization(particles, phase_path, only_di
         return 0.0
     return vapor_mass_fraction
 
-def calc_vapor_mass_fraction_with_circularization_from_formatted(df, phase_path, only_disk=True, disk_label="DISK", df_label="label"):
+def calc_vapor_mass_fraction_with_circularization_from_formatted(df, phase_path, restrict_df=True):
     phase_df = pd.read_fwf(phase_path, skiprows=1,
                            names=["temperature", "density_sol_liq", "density_vap", "pressure",
                                   "entropy_sol_liq", "entropy_vap"])
 
-    disk_particles = df[df[df_label] == disk_label]
-    # remove all particles on super high orbits with crazy delta s due to orbital circ.
-    disk_particles = disk_particles[disk_particles['circ_entropy_delta'] < 5000]
-    sil_disk_particles = disk_particles[disk_particles['tag'] % 2 == 0]
-    s_t_delta_s_circ = zip(sil_disk_particles['entropy'], sil_disk_particles['temperature'],
-                           sil_disk_particles['circ_entropy_delta'])
-    supercritical = max(phase_df['entropy_sol_liq'] + phase_df['entropy_vap'])
+    if restrict_df:
+        disk_df = df[df['label'] == "DISK"]
+        disk_df = disk_df[disk_df['tag'] % 2 == 0]
+        disk_df = disk_df[disk_df['circ_entropy_delta'] < 5000]
+    else:
+        disk_df = df
+    disk_df['entropy_w_circ'] = disk_df['entropy'] + disk_df['circ_entropy_delta']
+
     nearest_neighbor = NearestNeighbor1D()
+    supercritical = max(phase_df['temperature'])
+    # get the location of the phase curve that corresponds to the supercritical point
+    supercritical_idx = phase_df[phase_df['temperature'] == supercritical].index[0]
+    # get the entropy values for the supercritical point
+    supercritical_entropy = phase_df.iloc[supercritical_idx]['entropy_sol_liq']
+    vmf = 0.0
     num_particles = 0
-    vapor_mass_fraction = 0
-    for s, t, c in s_t_delta_s_circ:
-        num_particles += 1
-        entropy_i = s + c
-        temperature_i = t
-        nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=temperature_i,
+    # particles = {'liq': [], 'vap': [], 'mix': [], 'supercritical': []}
+    for s, t in zip(disk_df['entropy_w_circ'], disk_df['temperature']):
+        nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=t,
                                                                     array=list(phase_df['temperature']))
         entropy_liq = phase_df['entropy_sol_liq'][nearest_temperature_index]
         entropy_vap = phase_df['entropy_vap'][nearest_temperature_index]
-        if entropy_i > supercritical:
-            return 1.0
-        elif entropy_i < entropy_liq:
-            vapor_mass_fraction += 0.0
-        elif entropy_liq <= entropy_i <= entropy_vap:
-            vapor_mass_fraction += (entropy_i - entropy_liq) / (entropy_vap - entropy_liq)
-        elif entropy_i > entropy_vap:
-            vapor_mass_fraction += 1.0
-
+        if t >= supercritical:
+            vmf += 1.0
+            # particles['supercritical'].append((s, t, entropy_liq, entropy_vap))
+        elif s < entropy_liq:
+            vmf += 0.0
+            # particles['liq'].append((s, t, entropy_liq, entropy_vap))
+        elif entropy_liq <= s <= entropy_vap:
+            vmf += (s - entropy_liq) / (entropy_vap - entropy_liq)
+            # particles['mix'].append((s, t, entropy_liq, entropy_vap))
+        elif s > entropy_vap:
+            vmf += 1.0
+            # particles['vap'].append((s, t, entropy_liq, entropy_vap))
+        num_particles += 1
     try:
-        vapor_mass_fraction = vapor_mass_fraction / num_particles
-    except Exception as e:  # likely if there are no disk particles
+        return vmf / num_particles
+    except ZeroDivisionError:
         return 0.0
-    return vapor_mass_fraction
+
+def calc_vapor_mass_fraction_without_circularization_from_formatted(df, phase_path, restrict_df=True):
+    phase_df = pd.read_fwf(phase_path, skiprows=1,
+                           names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                  "entropy_sol_liq", "entropy_vap"])
+
+    if restrict_df:
+        disk_df = df[df['label'] == "DISK"]
+        disk_df = disk_df[disk_df['tag'] % 2 == 0]
+        disk_df = disk_df[disk_df['circ_entropy_delta'] < 5000]
+    else:
+        disk_df = df
+    disk_df['entropy_w_circ'] = disk_df['entropy'] + disk_df['circ_entropy_delta']
+
+    nearest_neighbor = NearestNeighbor1D()
+    supercritical = max(phase_df['temperature'])
+    # get the location of the phase curve that corresponds to the supercritical point
+    supercritical_idx = phase_df[phase_df['temperature'] == supercritical].index[0]
+    # get the entropy values for the supercritical point
+    supercritical_entropy = phase_df.iloc[supercritical_idx]['entropy_sol_liq']
+    vmf = 0.0
+    num_particles = 0
+    # particles = {'liq': [], 'vap': [], 'mix': [], 'supercritical': []}
+    for s, t in zip(disk_df['entropy'], disk_df['temperature']):
+        nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=t,
+                                                                    array=list(phase_df['temperature']))
+        entropy_liq = phase_df['entropy_sol_liq'][nearest_temperature_index]
+        entropy_vap = phase_df['entropy_vap'][nearest_temperature_index]
+        if t >= supercritical:
+            vmf += 1.0
+            # particles['supercritical'].append((s, t, entropy_liq, entropy_vap))
+        elif s < entropy_liq:
+            vmf += 0.0
+            # particles['liq'].append((s, t, entropy_liq, entropy_vap))
+        elif entropy_liq <= s <= entropy_vap:
+            vmf += (s - entropy_liq) / (entropy_vap - entropy_liq)
+            # particles['mix'].append((s, t, entropy_liq, entropy_vap))
+        elif s > entropy_vap:
+            vmf += 1.0
+            # particles['vap'].append((s, t, entropy_liq, entropy_vap))
+        num_particles += 1
+    try:
+        return vmf / num_particles
+    except ZeroDivisionError:
+        return 0.0
 
 
 def plot_disk_entropy(particles, phase_path="src/phase_data/duniteS_vapour_curve.txt"):
