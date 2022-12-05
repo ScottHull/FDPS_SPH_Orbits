@@ -60,13 +60,15 @@ for cd in cutoff_densities:
         [], [], c=c, label="{} kg/m^3".format(cd)
     )
 
-all_vals = []
+all_vals_new = []
+all_vals_old = []
 for run in runs:
     cd = int(run.split('_')[0])
     c = colors[cutoff_densities.index(cd)]
     if "high" in run or "low" in run:
         c = colors[len(cutoff_densities)]
     phase_df = new_phase_df if 'new' in run else old_phase_df
+    all_vals = all_vals_new if 'new' in run else all_vals_old
     ax = ax_new if 'new' in run else ax_old
     circ_path = base_path + f"{run}/circularized_{run}/{max_iteration}.csv"
     circ_df = pd.read_csv(circ_path)
@@ -87,7 +89,8 @@ for run in runs:
     )
     # ax.axhline(mean([x[2] for x in d]), color=c, linestyle='--')
 
-ax.axhline(mean(all_vals), color='black', linewidth=2.0, linestyle='--', label="Average")
+ax_new.axhline(mean(all_vals_new), color='black', linewidth=2.0, linestyle='--', label="Average")
+ax_old.axhline(mean(all_vals_old), color='black', linewidth=2.0, linestyle='--', label="Average")
 
 ax_old.legend()
 plt.savefig("vmf_phase_curve_differences.png")
