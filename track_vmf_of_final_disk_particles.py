@@ -5,7 +5,8 @@ from statistics import mean
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from src.vapor import calc_vapor_mass_fraction_with_circularization_from_formatted, calc_vapor_mass_fraction_without_circularization_from_formatted
+from src.vapor import calc_vapor_mass_fraction_with_circularization_from_formatted, \
+    calc_vapor_mass_fraction_without_circularization_from_formatted
 
 # use seaborn colorblind palette
 plt.style.use('seaborn-colorblind')
@@ -21,7 +22,7 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 for run in runs:
     phase_path = new_phase_path if 'new' in run else old_phase_path
-    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures = [], [], [], [], [], []
+    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures = [], [], [], [], [], [], []
     path = base_path + f"/{run}/circularized_{run}"
     path2 = base_path + f"/{run}/{run}_reports"
     end_time_df = pd.read_csv(
@@ -49,8 +50,12 @@ for run in runs:
                 # limit df to only the particles that were in the disk at the end of the simulation
                 disk = df[df["id"].isin(end_time_particle_ids)]
                 filtered_disk = disk[disk['circ_entropy_delta'] <= 5000]
-                vmf_w_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(filtered_disk, phase_path=phase_path, restrict_df=False)
-                vmf_wo_circ = calc_vapor_mass_fraction_without_circularization_from_formatted(disk, phase_path=phase_path, restrict_df=False)
+                vmf_w_circ = calc_vapor_mass_fraction_with_circularization_from_formatted(filtered_disk,
+                                                                                          phase_path=phase_path,
+                                                                                          restrict_df=False)
+                vmf_wo_circ = calc_vapor_mass_fraction_without_circularization_from_formatted(disk,
+                                                                                              phase_path=phase_path,
+                                                                                              restrict_df=False)
                 times.append(time)
                 entropies.append(disk['entropy'].mean())
                 entropies_w_circ.append(filtered_disk['entropy_w_circ'].mean())
@@ -60,10 +65,19 @@ for run in runs:
             except:
                 pass
 
-
-
     # sort the times and vmfs by time
-    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures = zip(*sorted(zip(times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures)))
+    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures = zip(
+        *sorted(zip(times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures)))
+
+    # get each value associated with the maximum pressure (time of impact)
+    max_pressure = max(pressures)
+    max_pressure_index = pressures.index(max_pressure)
+    max_pressure_time = times[max_pressure_index]
+    max_pressure_vmf_w_circ = vmfs_w_circ[max_pressure_index]
+    max_pressure_vmf_wo_circ = vmfs_wo_circ[max_pressure_index]
+    max_pressure_entropy = entropies[max_pressure_index]
+    max_pressure_entropy_w_circ = entropies_w_circ[max_pressure_index]
+    max_pressure_temperature = temperatures[max_pressure_index]
 
     # plot the results
     fig, axs = plt.subplots(1, 3, figsize=(16, 9))
@@ -84,6 +98,15 @@ for run in runs:
     axs[2].set_xlabel("Time (hrs)")
     axs[2].set_ylabel("Temperature (K)")
     axs[2].set_title(f"Avg. Disk Temperature - {run}")
+
+    # annotate at the top right of the plot
+    axs[0].annotate(f"Time of impact: {max_pressure_time:.2f} hrs\nP: {max_pressure / 10 ** 9} GPa\n"
+                    f"S_wo_circ: {max_pressure_entropy}\n"
+                    f"S_w_circ: {max_pressure_entropy_w_circ}\nVMF_w_circ: {max_pressure_vmf_w_circ}\n"
+                    f"VMF_wo_circ: {max_pressure_vmf_wo_circ}\nT: {max_pressure_temperature}",
+                    xy=(max_pressure_time, max_pressure_vmf_w_circ),
+                    xytext=(max_pressure_time, max_pressure_vmf_w_circ + 0.5),
+                    arrowprops=dict(facecolor='black', shrink=0.05))
 
     for ax in axs:
         ax.legend()
