@@ -104,7 +104,7 @@ for run in runs:
     axs[0].annotate(f"Time of impact: {max_pressure_time:.2f} hrs\nP: {max_pressure / 10 ** 9} GPa\n"
                     f"S_wo_circ: {max_pressure_entropy}\n"
                     f"S_w_circ: {max_pressure_entropy_w_circ}\nVMF_w_circ: {max_pressure_vmf_w_circ}\n"
-                    f"VMF_wo_circ: {max_pressure_vmf_wo_circ}\nT: {max_pressure_temperature}", xy=(0.95, 0.95),
+                    f"VMF_wo_circ: {max_pressure_vmf_wo_circ}\nT: {max_pressure_temperature}", xy=(0.95, 0.75),
                     xycoords='axes fraction', horizontalalignment='right', verticalalignment='top')
 
     for ax in axs:
