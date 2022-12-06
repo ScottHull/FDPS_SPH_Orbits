@@ -100,14 +100,12 @@ for run in runs:
     axs[2].set_ylabel("Temperature (K)")
     axs[2].set_title(f"Avg. Disk Temperature - {run}")
 
-    # annotate at the top right of the plot
+    # annotate in upper-right corner of the first plot
     axs[0].annotate(f"Time of impact: {max_pressure_time:.2f} hrs\nP: {max_pressure / 10 ** 9} GPa\n"
                     f"S_wo_circ: {max_pressure_entropy}\n"
                     f"S_w_circ: {max_pressure_entropy_w_circ}\nVMF_w_circ: {max_pressure_vmf_w_circ}\n"
-                    f"VMF_wo_circ: {max_pressure_vmf_wo_circ}\nT: {max_pressure_temperature}",
-                    xy=(max_pressure_time, max_pressure_vmf_w_circ),
-                    xytext=(max_pressure_time, max_pressure_vmf_w_circ + 0.5),
-                    arrowprops=dict(facecolor='black', shrink=0.05))
+                    f"VMF_wo_circ: {max_pressure_vmf_wo_circ}\nT: {max_pressure_temperature}", xy=(0.95, 0.95),
+                    xycoords='axes fraction', horizontalalignment='right', verticalalignment='top')
 
     for ax in axs:
         ax.legend()
