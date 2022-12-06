@@ -177,9 +177,9 @@ def calc_vapor_mass_fraction_with_circularization_from_formatted(df, phase_path,
         disk_df = df[df['label'] == "DISK"]
         disk_df = disk_df[disk_df['tag'] % 2 == 0]
         disk_df = disk_df[disk_df['circ_entropy_delta'] < 5000]
+        disk_df['entropy_w_circ'] = disk_df['entropy'] + disk_df['circ_entropy_delta']
     else:
         disk_df = df
-    disk_df['entropy_w_circ'] = disk_df['entropy'] + disk_df['circ_entropy_delta']
 
     nearest_neighbor = NearestNeighbor1D()
     supercritical = max(phase_df['temperature'])
@@ -219,9 +219,9 @@ def calc_vapor_mass_fraction_without_circularization_from_formatted(df, phase_pa
         disk_df = df[df['label'] == "DISK"]
         disk_df = disk_df[disk_df['tag'] % 2 == 0]
         disk_df = disk_df[disk_df['circ_entropy_delta'] < 5000]
+        disk_df['entropy_w_circ'] = disk_df['entropy'] + disk_df['circ_entropy_delta']
     else:
         disk_df = df
-    disk_df['entropy_w_circ'] = disk_df['entropy'] + disk_df['circ_entropy_delta']
 
     nearest_neighbor = NearestNeighbor1D()
     supercritical = max(phase_df['temperature'])

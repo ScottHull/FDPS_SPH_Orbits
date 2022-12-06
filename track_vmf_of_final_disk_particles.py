@@ -2,6 +2,7 @@
 import os
 import csv
 from statistics import mean
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -99,6 +100,11 @@ for run in runs:
     axs[2].set_xlabel("Time (hrs)")
     axs[2].set_ylabel("Temperature (K)")
     axs[2].set_title(f"Avg. Disk Temperature - {run}")
+
+    axs[2].plot(times, np.array(pressures) / 10 ** 9)
+    axs[2].set_xlabel("Time (hrs)")
+    axs[2].set_ylabel("Temperature (K)")
+    axs[2].set_title(f"Avg. Disk Pressure - {run}")
 
     # annotate in upper-right corner of the first plot
     axs[0].annotate(f"Time of impact: {max_pressure_time:.2f} hrs\nP: {max_pressure / 10 ** 9} GPa\n"
