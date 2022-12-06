@@ -82,7 +82,7 @@ for run in runs:
     max_pressure_temperature = temperatures[max_pressure_index]
 
     # plot the results
-    fig, axs = plt.subplots(1, 3, figsize=(16, 9))
+    fig, axs = plt.subplots(1, 4, figsize=(20, 8))
     axs = axs.flatten()
     axs[0].plot(times, vmfs_w_circ, label="with circularization")
     axs[0].plot(times, vmfs_wo_circ, label="without circularization")
@@ -101,10 +101,10 @@ for run in runs:
     axs[2].set_ylabel("Temperature (K)")
     axs[2].set_title(f"Avg. Disk Temperature - {run}")
 
-    axs[2].plot(times, np.array(pressures) / 10 ** 9)
-    axs[2].set_xlabel("Time (hrs)")
-    axs[2].set_ylabel("Temperature (K)")
-    axs[2].set_title(f"Avg. Disk Pressure - {run}")
+    axs[3].plot(times, np.array(pressures) / 10 ** 9)
+    axs[3].set_xlabel("Time (hrs)")
+    axs[3].set_ylabel("Temperature (K)")
+    axs[3].set_title(f"Avg. Disk Pressure - {run}")
 
     # annotate in upper-right corner of the first plot
     axs[0].annotate(f"Time of impact: {max_pressure_time:.2f} hrs\nP: {max_pressure / 10 ** 9} GPa\n"
