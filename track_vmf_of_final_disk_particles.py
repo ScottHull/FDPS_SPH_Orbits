@@ -60,6 +60,7 @@ for run in runs:
                 entropies.append(disk['entropy'].mean())
                 entropies_w_circ.append(filtered_disk['entropy_w_circ'].mean())
                 temperatures.append(disk['temperature'].mean())
+                pressures.append(disk['pressure'].mean())
                 vmfs_w_circ.append(vmf_w_circ * 100)
                 vmfs_wo_circ.append(vmf_wo_circ * 100)
             except:
