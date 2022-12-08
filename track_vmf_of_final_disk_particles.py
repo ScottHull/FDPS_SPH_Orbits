@@ -140,9 +140,13 @@ for run in runs:
     final_planet = end_time_df[end_time_df['label'] == 'PLANET']
     final_disk = end_time_df[end_time_df['label'] == 'DISK']
     final_escape = end_time_df[end_time_df['label'] == 'ESCAPE']
-    ax.scatter(df[df['id'].isin(final_planet['id'])].dropna()['x'], df[df['id'].isin(final_planet)].dropna()['y'], s=2, label='PLANET')
-    ax.scatter(df[df['id'].isin(final_disk)].dropna()['x'], df[df['id'].isin(final_disk)].dropna()['y'], s=2, label='DISK')
-    ax.scatter(df[df['id'].isin(final_escape)].dropna()['x'], df[df['id'].isin(final_escape)].dropna()['y'], s=2, label='ESCAPE')
+    # scatter particles in df whose id is in final_planet['id']
+    ax.scatter(df[df['id'].isin(final_planet['id'])]['x'], df[df['id'].isin(final_planet['id'])]['y'], s=1, label='planet')
+    # scatter particles in df whose id is in final_disk['id']
+    ax.scatter(df[df['id'].isin(final_disk['id'])]['x'], df[df['id'].isin(final_disk['id'])]['y'], s=1, label='disk')
+    # scatter particles in df whose id is in final_escape['id']
+    ax.scatter(df[df['id'].isin(final_escape['id'])]['x'], df[df['id'].isin(final_escape['id'])]['y'], s=1, label='escape')
+
     ax.set_title(f"Final Disk Particles - {run} - {min_velocity_iteration} ({min_velocity_time:.2f} hrs)")
 
     # annotate in upper-right corner of the first plot that this is colored based on the final iteration
