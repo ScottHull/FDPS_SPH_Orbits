@@ -123,5 +123,6 @@ for run in runs:
     for ax in axs:
         ax.legend()
         ax.grid()
+        ax.axvline(x=max_pressure_time, color="red", linestyle="--", linewidth=2, label="impact time")
 
     plt.savefig(f"vmf_{run}_final_disk_particles.png")
