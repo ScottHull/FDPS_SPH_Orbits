@@ -83,7 +83,7 @@ for run in runs:
     max_pressure_temperature = temperatures[max_pressure_index]
 
     # plot the results
-    fig, axs = plt.subplots(1, 4, figsize=(24, 8))
+    fig, axs = plt.subplots(1, 5, figsize=(24, 8))
     axs = axs.flatten()
     axs[0].plot(times, vmfs_w_circ, label="with circularization")
     axs[0].plot(times, vmfs_wo_circ, label="without circularization")
