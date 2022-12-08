@@ -133,7 +133,7 @@ for run in runs:
     # use dark background color palette
     plt.style.use('dark_background')
     # get the final iteration file and load into a DataFrame
-    df = pd.read_csv(f"{run}/formatted/iteration_{min_velocity_iteration}.csv", sep=",")
+    df = pd.read_csv(base_path + f"/{run}/circularized_{run}" + f"/{min_velocity_iteration}.csv")
     # scatter the iteration according to when the label is PLANET, DISK, or ESCAPE at the final iteration
     fig = plt.figure(figsize=(12, 12))
     ax = fig.add_subplot(111)
