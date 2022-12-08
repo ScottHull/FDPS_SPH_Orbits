@@ -23,7 +23,7 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 for run in runs:
     phase_path = new_phase_path if 'new' in run else old_phase_path
-    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures = [], [], [], [], [], [], []
+    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities = [], [], [], [], [], [], [], []
     path = base_path + f"/{run}/circularized_{run}"
     path2 = base_path + f"/{run}/{run}_reports"
     end_time_df = pd.read_csv(
@@ -64,12 +64,13 @@ for run in runs:
                 pressures.append(disk['pressure'].mean())
                 vmfs_w_circ.append(vmf_w_circ * 100)
                 vmfs_wo_circ.append(vmf_wo_circ * 100)
+                velocities.append(disk['velocity'].mean())
             except:
                 pass
 
     # sort the times and vmfs by time
-    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures = zip(
-        *sorted(zip(times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures)))
+    times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities = zip(
+        *sorted(zip(times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities)))
 
     # get each value associated with the maximum pressure (time of impact)
     max_pressure = max(pressures)
@@ -82,7 +83,7 @@ for run in runs:
     max_pressure_temperature = temperatures[max_pressure_index]
 
     # plot the results
-    fig, axs = plt.subplots(1, 4, figsize=(20, 8))
+    fig, axs = plt.subplots(1, 4, figsize=(24, 8))
     axs = axs.flatten()
     axs[0].plot(times, vmfs_w_circ, label="with circularization")
     axs[0].plot(times, vmfs_wo_circ, label="without circularization")
@@ -105,6 +106,11 @@ for run in runs:
     axs[3].set_xlabel("Time (hrs)")
     axs[3].set_ylabel("Temperature (K)")
     axs[3].set_title(f"Avg. Disk Pressure - {run}")
+
+    axs[4].plot(times, np.array(velocities) / 1000)
+    axs[4].set_xlabel("Time (hrs)")
+    axs[4].set_ylabel("Velocity (km/s)")
+    axs[4].set_title(f"Avg. Disk Velocity - {run}")
 
     # annotate in upper-right corner of the first plot
     axs[0].annotate(f"Time of impact: {max_pressure_time:.2f} hrs\nP: {max_pressure / 10 ** 9} GPa\n"
