@@ -73,7 +73,7 @@ for run in runs:
         *sorted(zip(times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities)))
 
     # get each value associated with the maximum pressure (time of impact)
-    max_pressure = max(pressures)
+    max_pressure = max(pressures[0:5])
     max_pressure_index = pressures.index(max_pressure)
     max_pressure_time = times[max_pressure_index]
     max_pressure_vmf_w_circ = vmfs_w_circ[max_pressure_index]
