@@ -73,14 +73,15 @@ for run in runs:
         *sorted(zip(times, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities)))
 
     # get each value associated with the maximum pressure (time of impact)
-    max_pressure = max(pressures[0:5])
-    max_pressure_index = pressures.index(max_pressure)
-    max_pressure_time = times[max_pressure_index]
-    max_pressure_vmf_w_circ = vmfs_w_circ[max_pressure_index]
-    max_pressure_vmf_wo_circ = vmfs_wo_circ[max_pressure_index]
-    max_pressure_entropy = entropies[max_pressure_index]
-    max_pressure_entropy_w_circ = entropies_w_circ[max_pressure_index]
-    max_pressure_temperature = temperatures[max_pressure_index]
+    min_velocity = min(velocities[0:5])
+    min_velocity_index = velocities.index(min_velocity)
+    max_pressure = pressures[min_velocity_index]
+    max_pressure_time = times[min_velocity_index]
+    max_pressure_vmf_w_circ = vmfs_w_circ[min_velocity_index]
+    max_pressure_vmf_wo_circ = vmfs_wo_circ[min_velocity_index]
+    max_pressure_entropy = entropies[min_velocity_index]
+    max_pressure_entropy_w_circ = entropies_w_circ[min_velocity_index]
+    max_pressure_temperature = temperatures[min_velocity_index]
 
     # plot the results
     fig, axs = plt.subplots(1, 5, figsize=(24, 8))
