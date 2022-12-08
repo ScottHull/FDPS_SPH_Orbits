@@ -24,7 +24,7 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 for run in runs:
     plt.style.use('seaborn-colorblind')
     phase_path = new_phase_path if 'new' in run else old_phase_path
-    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities = [], [] [], [], [], [], [], [], []
+    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities = [], [], [], [], [], [], [], [], []
     path = base_path + f"/{run}/circularized_{run}"
     path2 = base_path + f"/{run}/{run}_reports"
     end_time_df = pd.read_csv(
