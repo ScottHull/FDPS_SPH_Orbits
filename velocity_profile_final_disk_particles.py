@@ -56,6 +56,8 @@ for run in runs:
 
         time.append(formatted_time)
         mean_disk_vel.append(velocity.mean())
+        mean_disk_entropy.append(entropy_disk.mean())
+        mean_disk_temperature.append(temperature_disk.mean())
 
         fig, ax = plt.subplots(1, 2, figsize=(10, 5))
         axs = ax.flatten()
