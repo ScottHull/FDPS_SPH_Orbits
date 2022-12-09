@@ -136,5 +136,12 @@ for run in runs:
 
     plt.savefig(f"{run}_vel_profile_all_iterations.png")
 
+    # output to a CSV file
+    with open(f"{run}_vel_profile.csv", "w") as f:
+        f.write("Time (hours),Iteration,Mean Disk Velocity (km/s),Mean Disk Entropy (J/K),Mean Disk Temperature (K)\n")
+        for i in range(len(time)):
+            f.write(f"{time[i]},{iterations[i]},{mean_disk_vel[i] / 1000},{mean_disk_entropy[i]},{mean_disk_temperature[i]}\n")
+    f.close()
+
     animate(min_iteration, max_iteration, increment, f"{run}_vel_profile", filename=f"{run}_disk_vel_profile.mp4",
             fps=10)
