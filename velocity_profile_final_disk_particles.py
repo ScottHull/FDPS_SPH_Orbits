@@ -32,6 +32,7 @@ for run in runs:
     end_time_particle_ids = end_time_disk["id"].values
     time, iterations, mean_disk_vel = [], [], []
     for iteration in np.arange(min_iteration, max_vel_profile_iteration, increment):
+        iterations.append(iteration)
         path = base_path + f"{run}/{run}"
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
         cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
