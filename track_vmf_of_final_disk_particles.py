@@ -138,6 +138,9 @@ for run in runs:
 
     plt.savefig(f"vmf_{run}_final_disk_particles.png")
 
+    # clear the figure
+    plt.clf()
+
     # use dark background color palette
     plt.style.use('dark_background')
     # get the final iteration file and load into a DataFrame
