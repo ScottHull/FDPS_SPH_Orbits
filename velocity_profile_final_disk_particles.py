@@ -19,7 +19,7 @@ max_vel_profile_iteration = 100
 increment = 1
 number_processes = 200
 square_scale = 2e7 / 1000
-base_path = "/home/theia/scotthull/Paper1_SPH/gi"
+base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 
 for run in runs:
     if not os.path.exists(f"{run}_vel_profile"):
@@ -35,12 +35,14 @@ for run in runs:
         path = base_path + f"{run}/{run}"
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
         cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
-        combined_file = cf.combine()
+        c = cf.combine()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
 
+        combined_file = pd.read_csv(to_fname, skiprows=2, header=None, delimiter="\t")
+
         os.remove(to_fname)
-        
-        final_disk_particles = combined_file[combined_file['id'].isin(end_time_particle_ids)]
+
+        final_disk_particles = combined_file[combined_file[0].isin(end_time_particle_ids)]
 
         id, x, y, z, vx, vy, vz = combined_file[0], combined_file[3], combined_file[4], combined_file[5], combined_file[6], combined_file[7], combined_file[8]
         id_disk, x_disk, y_disk, z_disk, vx_disk, vy_disk, vz_disk = final_disk_particles[0], final_disk_particles[3], final_disk_particles[4], final_disk_particles[5], final_disk_particles[6], final_disk_particles[7], final_disk_particles[8]
