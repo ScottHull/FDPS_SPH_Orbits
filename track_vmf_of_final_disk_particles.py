@@ -9,9 +9,6 @@ import matplotlib.pyplot as plt
 from src.vapor import calc_vapor_mass_fraction_with_circularization_from_formatted, \
     calc_vapor_mass_fraction_without_circularization_from_formatted
 
-# use seaborn colorblind palette
-plt.style.use('seaborn-colorblind')
-
 runs = ['500_b073_new', '500_b073_old', '1000_b073_new', '1000_b073_old', '2000_b073_new', '2000_b073_old']
 
 min_iteration = 0
@@ -88,6 +85,9 @@ for run in runs:
     max_pressure_velocity = velocities[max_pressure_index]
 
     # plot the results
+    # use seaborn colorblind palette
+    plt.style.use('seaborn-colorblind')
+
     fig, axs = plt.subplots(1, 5, figsize=(24, 8))
     axs = axs.flatten()
     axs[0].plot(times, vmfs_w_circ, label="with circularization")
