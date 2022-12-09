@@ -62,7 +62,7 @@ for run in runs:
         )
         axs[0].set_xlabel("x")
         axs[0].set_ylabel("y")
-        axs[0].set_title(f"Time: {formatted_time} hours (iteration {iteration})")
+        axs[0].set_title(f"{run} - Time: {formatted_time} hours (iteration {iteration})")
         axs[1].plot(
             iterations, np.array(mean_disk_vel) / 1000, c="k", alpha=1
         )
@@ -72,7 +72,7 @@ for run in runs:
         axs[1].set_ylim(0, 10000)
         axs[1].set_xlabel("Iteration")
         axs[1].set_ylabel("Mean Final Disk Particle Velocity (km/s)")
-        axs[1].set_title(f"Final Disk Particles - Time: {formatted_time} hours (iteration {iteration})")
+        axs[1].set_title(f"{run} Final Disk Particles - Time: {formatted_time} hours (iteration {iteration})")
         axs[1].grid(alpha=0.4)
 
         # in the upper right corner of axs[1], annotate the mean velocity
