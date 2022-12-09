@@ -37,6 +37,8 @@ for run in runs:
         cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
         combined_file = cf.combine()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
+
+        os.remove(to_fname)
         
         final_disk_particles = combined_file[combined_file['id'].isin(end_time_particle_ids)]
 
@@ -77,8 +79,6 @@ for run in runs:
         )
 
         plt.savefig(f"{run}_vel_profile/{iteration}.png")
-
-        os.remove(to_fname)
 
     animate(min_iteration, max_iteration, increment, f"{run}_vel_profile", filename=f"{run}_disk_vel_profile.mp4", fps=10)
 
