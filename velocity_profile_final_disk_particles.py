@@ -78,6 +78,8 @@ for run in runs:
 
         plt.savefig(f"{run}_vel_profile/{iteration}.png")
 
+        os.remove(to_fname)
+
     animate(min_iteration, max_iteration, increment, f"{run}_vel_profile", filename=f"{run}_disk_vel_profile.mp4", fps=10)
 
 
