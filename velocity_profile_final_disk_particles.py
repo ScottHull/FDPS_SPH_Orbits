@@ -66,6 +66,7 @@ for run in runs:
             time, mean_disk_vel, c="k", alpha=1
         )
         axs[0].set_xlim(-square_scale, square_scale)
+        axs[0].set_ylim(-square_scale, square_scale)
         axs[1].set_xlim(min_iteration, max_vel_profile_iteration)
         axs[1].set_xlabel("Time (hours)")
         axs[1].set_ylabel("Mean Final Disk Particle Velocity (km/s)")
