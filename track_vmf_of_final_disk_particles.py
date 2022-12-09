@@ -24,7 +24,7 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 for run in runs:
     plt.style.use('seaborn-colorblind')
     phase_path = new_phase_path if 'new' in run else old_phase_path
-    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities = [], [], [], [], [], [], [], [], []
+    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities, max_pressure_all_particles = [], [], [], [], [], [], [], [], [], []
     path = base_path + f"/{run}/circularized_{run}"
     path2 = base_path + f"/{run}/{run}_reports"
     end_time_df = pd.read_csv(
@@ -67,24 +67,26 @@ for run in runs:
                 vmfs_w_circ.append(vmf_w_circ * 100)
                 vmfs_wo_circ.append(vmf_wo_circ * 100)
                 velocities.append(disk['velocity'].mean())
+                max_pressure_all_particles.append(df['pressure'].max())
             except:
                 pass
 
     # sort the times and vmfs by time
-    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities = zip(
-        *sorted(zip(times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities)))
+    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities, max_pressure_all_particles = zip(
+        *sorted(zip(times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities, max_pressure_all_particles)))
 
     # get each value associated with the maximum pressure (time of impact)
-    min_velocity = min(velocities[0:5])
-    min_velocity_index = velocities.index(min_velocity)
-    min_velocity_pressure = pressures[min_velocity_index]
-    min_velocity_time = times[min_velocity_index]
-    min_velocity_iteration = iterations[min_velocity_index]
-    min_velocity_vmf_w_circ = vmfs_w_circ[min_velocity_index]
-    min_velocity_vmf_wo_circ = vmfs_wo_circ[min_velocity_index]
-    min_velocity_entropy = entropies[min_velocity_index]
-    min_velocity_entropy_w_circ = entropies_w_circ[min_velocity_index]
-    min_velocity_temperature = temperatures[min_velocity_index]
+    max_pressure = max(max_pressure_all_particles[0:5])
+    max_pressure_index = max_pressure_all_particles.index(max_pressure)
+    max_pressure_pressure = pressures[max_pressure_index]
+    max_pressure_time = times[max_pressure_index]
+    max_pressure_iteration = iterations[max_pressure_index]
+    max_pressure_vmf_w_circ = vmfs_w_circ[max_pressure_index]
+    max_pressure_vmf_wo_circ = vmfs_wo_circ[max_pressure_index]
+    max_pressure_entropy = entropies[max_pressure_index]
+    max_pressure_entropy_w_circ = entropies_w_circ[max_pressure_index]
+    max_pressure_temperature = temperatures[max_pressure_index]
+    max_pressure_velocity = velocities[max_pressure_index]
 
     # plot the results
     fig, axs = plt.subplots(1, 5, figsize=(24, 8))
@@ -117,23 +119,23 @@ for run in runs:
     axs[4].set_title(f"Avg. Disk Velocity - {run}")
 
     # annotate in upper-right corner of the first plot
-    axs[0].annotate(f"Time of impact: {min_velocity_time:.2f} hrs\nP: {min_velocity_pressure / 10 ** 9} GPa\n"
-                    f"S_wo_circ: {min_velocity_entropy}\n"
-                    f"S_w_circ: {min_velocity_entropy_w_circ}\nVMF_w_circ: {min_velocity_vmf_w_circ}\n"
-                    f"VMF_wo_circ: {min_velocity_vmf_wo_circ}\nT: {min_velocity_temperature}\nvel: {min_velocity} km/s",
+    axs[0].annotate(f"Time of impact: {max_pressure_time:.2f} hrs\nP: {max_pressure_pressure / 10 ** 9} GPa\n"
+                    f"S_wo_circ: {max_pressure_entropy}\n"
+                    f"S_w_circ: {max_pressure_entropy_w_circ}\nVMF_w_circ: {max_pressure_vmf_w_circ}\n"
+                    f"VMF_wo_circ: {max_pressure_vmf_wo_circ}\nT: {max_pressure_temperature}\nvel: {max_pressure_velocity} km/s",
                     xy=(0.95, 0.75), xycoords='axes fraction', horizontalalignment='right', verticalalignment='top')
 
     for ax in axs:
         ax.legend()
         ax.grid()
-        ax.axvline(x=min_velocity_time, color="red", linestyle="--", linewidth=2, label="impact time")
+        ax.axvline(x=max_pressure_time, color="red", linestyle="--", linewidth=2, label="impact time")
 
     plt.savefig(f"vmf_{run}_final_disk_particles.png")
 
     # use dark background color palette
     plt.style.use('dark_background')
     # get the final iteration file and load into a DataFrame
-    df = pd.read_csv(base_path + f"/{run}/circularized_{run}" + f"/{min_velocity_iteration}.csv")
+    df = pd.read_csv(base_path + f"/{run}/circularized_{run}" + f"/{max_pressure_iteration}.csv")
     # scatter the iteration according to when the label is PLANET, DISK, or ESCAPE at the final iteration
     fig = plt.figure(figsize=(12, 12))
     ax = fig.add_subplot(111)
@@ -147,7 +149,7 @@ for run in runs:
     # scatter particles in df whose id is in final_escape['id']
     ax.scatter(df[df['id'].isin(final_escape['id'])]['x'], df[df['id'].isin(final_escape['id'])]['y'], s=1, label='escape')
 
-    ax.set_title(f"Final Disk Particles - {run} - {min_velocity_iteration} ({min_velocity_time:.2f} hrs)")
+    ax.set_title(f"Final Disk Particles - {run} - {max_pressure_iteration} ({max_pressure_time:.2f} hrs)")
 
     # annotate in upper-right corner of the first plot that this is colored based on the final iteration
     ax.annotate("Color coded based on final iteration",
