@@ -68,6 +68,7 @@ for run in runs:
         axs[0].set_xlim(-square_scale, square_scale)
         axs[0].set_ylim(-square_scale, square_scale)
         axs[1].set_xlim(min_iteration, max_vel_profile_iteration)
+        axs[1].set_ylim(0, 10000)
         axs[1].set_xlabel("Iteration")
         axs[1].set_ylabel("Mean Final Disk Particle Velocity (km/s)")
         axs[1].set_title(f"Time: {formatted_time} hours (iteration {iteration})")
