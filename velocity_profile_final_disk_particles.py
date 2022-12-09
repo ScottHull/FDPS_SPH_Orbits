@@ -30,7 +30,7 @@ for run in runs:
     )
     end_time_disk = end_time_df[end_time_df["label"] == "DISK"]
     end_time_particle_ids = end_time_disk["id"].values
-    time, mean_disk_vel = [], []
+    time, iterations, mean_disk_vel = [], [], []
     for iteration in np.arange(min_iteration, max_vel_profile_iteration, increment):
         path = base_path + f"{run}/{run}"
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -57,18 +57,18 @@ for run in runs:
             np.array(x) / 1000, np.array(y) / 1000, s=0.1, c="k", alpha=1
         )
         axs[0].scatter(
-            x_disk, y_disk, s=0.1, c="r", alpha=1
+            np.array(x_disk) / 1000, np.array(y_disk) / 1000, s=0.1, c="r", alpha=1
         )
         axs[0].set_xlabel("x")
         axs[0].set_ylabel("y")
         axs[0].set_title(f"Time: {formatted_time} hours (iteration {iteration})")
         axs[1].plot(
-            time, mean_disk_vel, c="k", alpha=1
+            iterations, mean_disk_vel, c="k", alpha=1
         )
         axs[0].set_xlim(-square_scale, square_scale)
         axs[0].set_ylim(-square_scale, square_scale)
         axs[1].set_xlim(min_iteration, max_vel_profile_iteration)
-        axs[1].set_xlabel("Time (hours)")
+        axs[1].set_xlabel("Iteration")
         axs[1].set_ylabel("Mean Final Disk Particle Velocity (km/s)")
         axs[1].set_title(f"Time: {formatted_time} hours (iteration {iteration})")
 
