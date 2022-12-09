@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 from src.combine import CombineFile
 from src.animate import animate
 
-
 runs = ['500_b073_new', '500_b073_old', '1000_b073_new', '1000_b073_old', '2000_b073_new', '2000_b073_old']
 
 min_iteration = 0
@@ -30,7 +29,7 @@ for run in runs:
     )
     end_time_disk = end_time_df[end_time_df["label"] == "DISK"]
     end_time_particle_ids = end_time_disk["id"].values
-    time, iterations, mean_disk_vel = [], [], []
+    time, iterations, mean_disk_vel, mean_disk_entropy, mean_disk_temperature = [], [], [], [], []
     for iteration in np.arange(min_iteration, max_vel_profile_iteration, increment):
         iterations.append(iteration)
         path = base_path + f"{run}/{run}"
@@ -45,13 +44,19 @@ for run in runs:
 
         final_disk_particles = combined_file[combined_file[0].isin(end_time_particle_ids)]
 
-        id, x, y, z, vx, vy, vz = combined_file[0], combined_file[3], combined_file[4], combined_file[5], combined_file[6], combined_file[7], combined_file[8]
-        id_disk, x_disk, y_disk, z_disk, vx_disk, vy_disk, vz_disk = final_disk_particles[0], final_disk_particles[3], final_disk_particles[4], final_disk_particles[5], final_disk_particles[6], final_disk_particles[7], final_disk_particles[8]
-        velocity = np.sqrt(vx_disk**2 + vy_disk**2 + vz_disk**2)
+        id, x, y, z, vx, vy, vz, entropy, temperature = combined_file[0], combined_file[3], combined_file[4], \
+        combined_file[5], combined_file[6], combined_file[7], combined_file[8], combined_file[13], combined_file[14]
+
+        id_disk, x_disk, y_disk, z_disk, vx_disk, vy_disk, vz_disk, entropy_disk, temperature_disk = \
+        final_disk_particles[0], final_disk_particles[3], final_disk_particles[4], final_disk_particles[5], \
+        final_disk_particles[6], final_disk_particles[7], final_disk_particles[8], final_disk_particles[13], \
+        final_disk_particles[14]
+
+        velocity = np.sqrt(vx_disk ** 2 + vy_disk ** 2 + vz_disk ** 2)
 
         time.append(formatted_time)
         mean_disk_vel.append(velocity.mean())
-        
+
         fig, ax = plt.subplots(1, 2, figsize=(10, 5))
         axs = ax.flatten()
         axs[0].scatter(
@@ -86,6 +91,50 @@ for run in runs:
 
         plt.savefig(f"{run}_vel_profile/{iteration}.png")
 
-    animate(min_iteration, max_iteration, increment, f"{run}_vel_profile", filename=f"{run}_disk_vel_profile.mp4", fps=10)
+    fig, axs = plt.subplots(3, 1, figsize=(15, 5))
+    axs = axs.flatten()
+    axs[0].plot(
+        time, np.array(mean_disk_vel) / 1000, c="k", alpha=1
+    )
+    axs[0].set_xlabel("Time (hours)")
+    axs[0].set_ylabel("Velocity (km/s)")
+    axs[0].set_title(f"{run} Final Disk Particles - Mean Velocity vs Time")
+    axs[0].grid(alpha=0.4)
+    axs[1].plot(
+        time, np.array(mean_disk_entropy), c="k", alpha=1
+    )
+    axs[1].set_xlabel("Time (hours)")
+    axs[1].set_ylabel("Entropy (J/K)")
+    axs[1].set_title(f"{run} Final Disk Particles - Mean Entropy vs Time")
+    axs[1].grid(alpha=0.4)
+    axs[2].plot(
+        time, np.array(mean_disk_temperature), c="k", alpha=1
+    )
+    axs[2].set_xlabel("Time (hours)")
+    axs[2].set_ylabel("Temperature (K)")
+    axs[2].set_title(f"{run} Final Disk Particles - Mean Temperature vs Time")
+    axs[2].grid(alpha=0.4)
 
+    for ax in axs:
+        # plot a vertical line at the time of max velocity on each plot
+        ax.axvline(
+            time[mean_disk_vel.index(max(mean_disk_vel))],
+            linewidth=2.0,
+            linestyle="--",
+        )
+        # annotate each plot with the max velocity and the y value at the time of max velocity
+    axs[0].annotate(
+        f"Max Velocity: {round(max(mean_disk_vel) / 1000, 2)} km/s\nMax Velocity Time: "
+        f"{round(time[mean_disk_vel.index(max(mean_disk_vel))], 2)} hours\nEntropy at Max Velocity: "
+        f"{round(mean_disk_entropy[mean_disk_vel.index(max(mean_disk_vel))], 2)} J/K\nTemperature at Max Velocity: "
+        f"{round(mean_disk_temperature[mean_disk_vel.index(max(mean_disk_vel))], 2)} K\nFinal Entropy: {mean_disk_entropy[-1]} J/K\nFinal Temperature: {mean_disk_temperature[-1]} K",
+        xy=(0.95, 0.75),
+        xycoords="axes fraction",
+        horizontalalignment="right",
+        verticalalignment="top",
+    )
 
+    plt.savefig(f"{run}_vel_profile_all_iterations.png")
+
+    animate(min_iteration, max_iteration, increment, f"{run}_vel_profile", filename=f"{run}_disk_vel_profile.mp4",
+            fps=10)
