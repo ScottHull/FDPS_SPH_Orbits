@@ -24,7 +24,7 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 for run in runs:
     plt.style.use('seaborn-colorblind')
     phase_path = new_phase_path if 'new' in run else old_phase_path
-    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities, max_pressure_all_particles = [], [], [], [], [], [], [], [], [], []
+    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities, max_pressure_ = [], [], [], [], [], [], [], [], [], []
     path = base_path + f"/{run}/circularized_{run}"
     path2 = base_path + f"/{run}/{run}_reports"
     end_time_df = pd.read_csv(
@@ -67,18 +67,17 @@ for run in runs:
                 vmfs_w_circ.append(vmf_w_circ * 100)
                 vmfs_wo_circ.append(vmf_wo_circ * 100)
                 velocities.append(disk['velocity'].mean())
-                max_pressure_all_particles.append(df['pressure'].max())
+                max_pressure_.append(df['pressure'].max())
             except:
                 pass
 
     # sort the times and vmfs by time
-    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities, max_pressure_all_particles = zip(
-        *sorted(zip(times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities, max_pressure_all_particles)))
+    times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities, max_pressure_ = zip(
+        *sorted(zip(times, iterations, vmfs_w_circ, vmfs_wo_circ, entropies, entropies_w_circ, temperatures, pressures, velocities, max_pressure_)))
 
     # get each value associated with the maximum pressure (time of impact)
-    max_pressure = max(max_pressure_all_particles[0:5])
-    max_pressure_index = max_pressure_all_particles.index(max_pressure)
-    max_pressure_pressure = pressures[max_pressure_index]
+    max_pressure = max(max_pressure_[0:5])
+    max_pressure_index = max_pressure_.index(max_pressure)
     max_pressure_time = times[max_pressure_index]
     max_pressure_iteration = iterations[max_pressure_index]
     max_pressure_vmf_w_circ = vmfs_w_circ[max_pressure_index]
@@ -110,7 +109,7 @@ for run in runs:
 
     axs[3].plot(times, np.array(pressures) / 10 ** 9)
     axs[3].set_xlabel("Time (hrs)")
-    axs[3].set_ylabel("Temperature (K)")
+    axs[3].set_ylabel("Pressure (GPa)")
     axs[3].set_title(f"Avg. Disk Pressure - {run}")
 
     axs[4].plot(times, np.array(velocities) / 1000)
@@ -119,11 +118,18 @@ for run in runs:
     axs[4].set_title(f"Avg. Disk Velocity - {run}")
 
     # annotate in upper-right corner of the first plot
-    axs[0].annotate(f"Time of impact: {max_pressure_time:.2f} hrs\nP: {max_pressure_pressure / 10 ** 9} GPa\n"
+    axs[0].annotate(f"Time of impact: {max_pressure_time:.2f} hrs\nP: {max_pressure / 10 ** 9} GPa\n"
                     f"S_wo_circ: {max_pressure_entropy}\n"
                     f"S_w_circ: {max_pressure_entropy_w_circ}\nVMF_w_circ: {max_pressure_vmf_w_circ}\n"
                     f"VMF_wo_circ: {max_pressure_vmf_wo_circ}\nT: {max_pressure_temperature}\nvel: {max_pressure_velocity} km/s",
                     xy=(0.95, 0.75), xycoords='axes fraction', horizontalalignment='right', verticalalignment='top')
+
+    # annotate the last plot with the final values in each list
+    axs[-1].annotate(f"Final values:\nTime: {times[-1]:.2f} hrs\nP: {pressures[-1] / 10 ** 9} GPa\n"
+                        f"S_wo_circ: {entropies[-1]}\n"
+                        f"S_w_circ: {entropies_w_circ[-1]}\nVMF_w_circ: {vmfs_w_circ[-1]}\n"
+                        f"VMF_wo_circ: {vmfs_wo_circ[-1]}\nT: {temperatures[-1]}\nvel: {velocities[-1]} km/s",
+                        xy=(0.95, 0.75), xycoords='axes fraction', horizontalalignment='right', verticalalignment='top')
 
     for ax in axs:
         ax.legend()
