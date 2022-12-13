@@ -62,10 +62,10 @@ for run in runs:
         fig, ax = plt.subplots(1, 2, figsize=(10, 5))
         axs = ax.flatten()
         axs[0].scatter(
-            np.array(x) / 10 ** 6, np.array(y) / 1000, s=0.1, c="k", alpha=1
+            np.array(x) / 10 ** 6, np.array(y) / 10 ** 6, s=0.1, c="k", alpha=1
         )
         axs[0].scatter(
-            np.array(x_disk) / 10 ** 6, np.array(y_disk) / 1000, s=0.1, c="r", alpha=1
+            np.array(x_disk) / 10 ** 6, np.array(y_disk) / 10 ** 6, s=0.1, c="r", alpha=1
         )
         axs[0].set_xlabel("x (1000 km)")
         axs[0].set_ylabel("y (1000 km)")
