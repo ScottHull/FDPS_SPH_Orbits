@@ -79,7 +79,7 @@ for run in runs:
         axs[1].set_ylim(0, 20)
         axs[1].set_xlabel("Iteration")
         axs[1].set_ylabel("Mean Final Disk Particle Velocity (km/s)")
-        axs[1].set_title(f"{run} Final Disk Particles - Time: {formatted_time} hours (iteration {iteration})")
+        axs[1].set_title(f"{run} Final Disk Particles\nTime: {formatted_time} hours (iteration {iteration})")
         axs[1].grid(alpha=0.4)
 
         # in the upper right corner of axs[1], annotate the mean velocity
