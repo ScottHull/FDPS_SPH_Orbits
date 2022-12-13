@@ -17,7 +17,7 @@ max_iteration = 1800
 max_vel_profile_iteration = 100
 increment = 1
 number_processes = 200
-square_scale = 2e7 / 1000
+square_scale = 2e7 / 10 ** 6
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 
 for run in runs:
