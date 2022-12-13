@@ -77,7 +77,7 @@ for run in runs:
         axs[0].set_ylim(-square_scale, square_scale)
         axs[1].set_xlim(min_iteration, max_vel_profile_iteration)
         axs[1].set_ylim(0, 20)
-        axs[1].set_xlabel("Iteration")
+        axs[1].set_xlabel("Time (hrs)")
         axs[1].set_ylabel("Mean Final Disk Particle Velocity (km/s)")
         axs[1].set_title(f"{run} Final Disk Particles\nTime: {formatted_time} hours (iteration {iteration})")
         axs[1].grid(alpha=0.4)
@@ -93,7 +93,7 @@ for run in runs:
 
         plt.savefig(f"{run}_vel_profile/{iteration}.png")
 
-    fig, axs = plt.subplots(3, 1, figsize=(15, 5))
+    fig, axs = plt.subplots(1, 3, figsize=(15, 5))
     axs = axs.flatten()
     axs[0].plot(
         time, np.array(mean_disk_vel) / 1000, c="k", alpha=1
