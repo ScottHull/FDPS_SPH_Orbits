@@ -62,13 +62,13 @@ for run in runs:
         fig, ax = plt.subplots(1, 2, figsize=(10, 5))
         axs = ax.flatten()
         axs[0].scatter(
-            np.array(x) / 1000, np.array(y) / 1000, s=0.1, c="k", alpha=1
+            np.array(x) / 10 ** 6, np.array(y) / 1000, s=0.1, c="k", alpha=1
         )
         axs[0].scatter(
-            np.array(x_disk) / 1000, np.array(y_disk) / 1000, s=0.1, c="r", alpha=1
+            np.array(x_disk) / 10 ** 6, np.array(y_disk) / 1000, s=0.1, c="r", alpha=1
         )
-        axs[0].set_xlabel("x")
-        axs[0].set_ylabel("y")
+        axs[0].set_xlabel("x (1000 km)")
+        axs[0].set_ylabel("y (1000 km)")
         axs[0].set_title(f"{run} - Time: {formatted_time} hours (iteration {iteration})")
         axs[1].plot(
             iterations, np.array(mean_disk_vel) / 1000, c="k", alpha=1, label="Mean Disk Velocity"
@@ -77,7 +77,7 @@ for run in runs:
         axs[0].set_ylim(-square_scale, square_scale)
         axs[1].set_xlim(min_iteration, max_vel_profile_iteration)
         # plot the temperature on the right y-axis
-        ax1_2 = axs[1].twiny()
+        ax1_2 = axs[1].twinx()
         ax1_2.plot(iterations, np.array(mean_disk_temperature), c="r", alpha=1, label="Mean Disk Temperature")
         axs[1].set_ylim(0, 20)
         ax1_2.set_ylim(1000, 6000)
