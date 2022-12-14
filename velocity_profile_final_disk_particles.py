@@ -87,11 +87,11 @@ for run in runs:
         ax1_2.set_ylabel("Mean Final Disk Particle Temperature (K)")
         axs[1].set_title(f"{run} Final Disk Particles\nTime: {formatted_time} hours (iteration {iteration})")
         axs[1].grid(alpha=0.4)
-        axs[1].legend(loc="upper left")
+        axs[1].legend(loc="lower right")
 
         # in the upper right corner of axs[1], annotate the mean velocity
         axs[1].annotate(
-            f"Mean Velocity: {round(mean_disk_vel[-1] / 1000, 2)} km/s",
+            f"Mean Velocity: {round(mean_disk_vel[-1] / 1000, 2)} km/s\nMean Temperature: {round(mean_disk_temperature[-1], 2)} K",
             xy=(0.95, 0.95),
             xycoords="axes fraction",
             horizontalalignment="right",
