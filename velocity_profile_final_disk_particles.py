@@ -93,7 +93,7 @@ for run in runs:
 
         # in the upper right corner of axs[1], annotate the mean velocity
         axs[1].annotate(
-            f"Mean Velocity: {round(mean_disk_vel[-1] / 1000, 2)} km/s\nMean Temperature: {round(mean_disk_temperature[-1], 2)} K",
+            f"Mean Velocity: {round(mean_disk_vel[-1] / 1000, 2)} km/s\nMean Temperature: {round(mean_disk_temperature[-1], 2)} K\nMean Entropy: {round(mean_disk_entropy[-1], 2)} (J/K)",
             xy=(0.95, 0.95),
             xycoords="axes fraction",
             horizontalalignment="right",
