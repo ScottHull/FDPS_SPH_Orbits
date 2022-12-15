@@ -22,13 +22,13 @@ for run in runs:
     filtered_planet = end_time_df[end_time_df['radius'] < 1e7]
     filtered_planet = filtered_planet[filtered_planet['tag'] % 2 == 0]  # only silicate particles
     plotting_index = 0
-    if "new" in runs and "b073" in runs:
+    if "new" in runs and "b073" in run:
         plotting_index = 0
-    elif "old" in runs and "b073" in runs:
+    elif "old" in runs and "b073" in run:
         plotting_index = 1
-    elif "new" in runs and "b075" in runs:
+    elif "new" in runs and "b075" in run:
         plotting_index = 2
-    elif "old" in runs and "b075" in runs:
+    elif "old" in runs and "b075" in run:
         plotting_index = 3
 
     axs[plotting_index].scatter(filtered_planet['radius'] / 1000, filtered_planet['entropy'], s=2, label=run)
