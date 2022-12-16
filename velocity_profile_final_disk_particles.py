@@ -102,7 +102,7 @@ for run in runs:
         axs[1].plot([], [], c="r", alpha=1, label="Mean Disk Temperature")
         axs[1].plot([], [], c="green", alpha=1, label="Mean Disk Entropy")
         axs[1].set_ylim(0, 20)
-        ax1_2.set_ylim(1000, 6000)
+        ax1_2.set_ylim(1, 6)
         axs[1].set_xlabel("Time (hrs)")
         axs[1].set_ylabel("Mean Final Disk Particle Velocity (km/s)")
         ax1_2.set_ylabel("Mean Final Disk Particle Temperature/Entropy (/1000)")
@@ -123,6 +123,9 @@ for run in runs:
         axs[2].set_title(f"{run} Final Disk Particles\nTime: {formatted_time} hours (iteration {iteration})")
         axs[2].grid(alpha=0.4)
         axs[2].legend(loc="lower right")
+
+        # increase subplot spacing
+        fig.subplots_adjust(wspace=0.4)
 
         # in the upper right corner of axs[1], annotate the mean velocity
         axs[1].annotate(
