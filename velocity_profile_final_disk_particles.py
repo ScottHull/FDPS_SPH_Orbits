@@ -70,10 +70,10 @@ for run in runs:
         combined_file.columns = final_disk_particles.columns
 
         vmf_final_disk = calc_vapor_mass_fraction_without_circularization_from_formatted(
-            final_disk_particles[final_disk_particles[1] % 2 == 0], phase_path, restrict_df=False
+            final_disk_particles[final_disk_particles['tag'] % 2 == 0], phase_path, restrict_df=False
         ) * 100
         vmf_all_silicate = calc_vapor_mass_fraction_without_circularization_from_formatted(
-            combined_file[combined_file[1] % 2 == 0], phase_path, restrict_df=False) * 100
+            combined_file[combined_file['tag'] % 2 == 0], phase_path, restrict_df=False) * 100
         final_disk_vmf.append(vmf_final_disk)
         all_silicate_vmf.append(vmf_all_silicate)
 
