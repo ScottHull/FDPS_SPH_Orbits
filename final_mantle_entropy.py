@@ -22,9 +22,9 @@ for run in runs:
     filtered_planet = end_time_df[end_time_df['radius'] < 1e7]
     filtered_planet = filtered_planet[filtered_planet['tag'] % 2 == 0]  # only silicate particles
     plotting_index = 0
-    if "new" in run and "b073" in run and "5" in run:
+    if "new" in run and "b073" in run and "5" in run and 'high' not in run:
         plotting_index = 0
-    elif "old" in run and "b073" in run and "5" in run:
+    elif "old" in run and "b073" in run and "5" in run and 'high' not in run:
         plotting_index = 1
     elif "new" in run and "b073" in run and "500" in run:
         plotting_index = 2
@@ -34,9 +34,9 @@ for run in runs:
         plotting_index = 4
     elif "old" in run and "b073" in run and "1000" in run:
         plotting_index = 5
-    elif "new" in run and "b073" in run and "2000" in run:
+    elif "new" in run and "b073" in run and "2000" in run and "low" not in run:
         plotting_index = 6
-    elif "old" in run and "b073" in run and "2000" in run:
+    elif "old" in run and "b073" in run and "2000" in run and "low" not in run:
         plotting_index = 7
     else:
         plotting_index = None
