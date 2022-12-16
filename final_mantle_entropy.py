@@ -37,8 +37,8 @@ for run in runs:
         axs[plotting_index].scatter(filtered_planet['radius'] / 1000, filtered_planet['entropy'], s=2, label=run)
 
 axs[0].set_title("Stewart M-ANEOS, b = 0.73")
-axs[1].set_title("Stewart M-ANEOS, b = 0.73")
-axs[2].set_title("N-SPH M-ANEOS, b = 0.75")
+axs[1].set_title("N-SPH M-ANEOS, b = 0.73")
+axs[2].set_title("Stewart M-ANEOS, b = 0.75")
 axs[3].set_title("N-SPH M-ANEOS, b = 0.75")
 
 for ax in axs:
