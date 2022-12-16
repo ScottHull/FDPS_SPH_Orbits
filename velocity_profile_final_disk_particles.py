@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 from src.animate import animate
+from src.vapor import calc_vapor_mass_fraction_without_circularization_from_formatted
 
 runs = ['500_b073_new', '500_b073_old', '1000_b073_new', '1000_b073_old', '2000_b073_new', '2000_b073_old']
 
@@ -19,6 +20,8 @@ increment = 1
 number_processes = 200
 square_scale = 2e7 / 10 ** 6
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
+new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
+old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 for run in runs:
     if not os.path.exists(f"{run}_vel_profile"):
@@ -29,7 +32,8 @@ for run in runs:
     )
     end_time_disk = end_time_df[end_time_df["label"] == "DISK"]
     end_time_particle_ids = end_time_disk["id"].values
-    time, iterations, mean_disk_vel, mean_disk_entropy, mean_disk_temperature = [], [], [], [], []
+    time, iterations, mean_disk_vel, mean_disk_entropy, mean_disk_temperature, final_disk_vmf, all_silicate_vmf = [], [], [], [], [], [], []
+    phase_path = new_phase_path if "new" in run else old_phase_path
     for iteration in np.arange(min_iteration, max_vel_profile_iteration, increment):
         iterations.append(iteration)
         path = base_path + f"{run}/{run}"
@@ -59,7 +63,22 @@ for run in runs:
         mean_disk_entropy.append(entropy_disk.mean())
         mean_disk_temperature.append(temperature_disk.mean())
 
-        fig, ax = plt.subplots(1, 2, figsize=(10, 5))
+        # replace final_disk_particles headers with the correct headers
+        final_disk_particles.columns = [
+            'id', 'tag', 'mass', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'density', 'internal_energy', 'pressure', 'potential_energy', 'entropy', 'temperature'
+        ]
+        combined_file.columns = final_disk_particles.columns
+
+        vmf_final_disk = calc_vapor_mass_fraction_without_circularization_from_formatted(
+            final_disk_particles[final_disk_particles[1] % 2 == 0], phase_path, restrict_df=False
+        ) * 100
+        vmf_all_silicate = calc_vapor_mass_fraction_without_circularization_from_formatted(
+            combined_file[combined_file[1] % 2 == 0], phase_path, restrict_df=False) * 100
+        final_disk_vmf.append(vmf_final_disk)
+        all_silicate_vmf.append(vmf_all_silicate)
+
+
+        fig, ax = plt.subplots(1, 3, figsize=(15, 5))
         axs = ax.flatten()
         axs[0].scatter(
             np.array(x) / 10 ** 6, np.array(y) / 10 ** 6, s=0.1, c="k", alpha=1
@@ -91,9 +110,26 @@ for run in runs:
         axs[1].grid(alpha=0.4)
         axs[1].legend(loc="lower right")
 
+        axs[2].plot(
+            iterations, np.array(final_disk_vmf), c="k", alpha=1, label="Final Disk VMF"
+        )
+        axs[2].plot(
+            iterations, np.array(all_silicate_vmf), c="r", alpha=1, label="All Silicate VMF"
+        )
+        axs[2].set_xlim(min_iteration, max_vel_profile_iteration)
+        axs[2].set_ylim(0, 100)
+        axs[2].set_xlabel("Time (hrs)")
+        axs[2].set_ylabel("Vapor Mass Fraction (%)")
+        axs[2].set_title(f"{run} Final Disk Particles\nTime: {formatted_time} hours (iteration {iteration})")
+        axs[2].grid(alpha=0.4)
+        axs[2].legend(loc="lower right")
+
         # in the upper right corner of axs[1], annotate the mean velocity
         axs[1].annotate(
-            f"Mean Velocity: {round(mean_disk_vel[-1] / 1000, 2)} km/s\nMean Temperature: {round(mean_disk_temperature[-1], 2)} K\nMean Entropy: {round(mean_disk_entropy[-1], 2)} (J/K)",
+            f"Mean Velocity: {round(mean_disk_vel[-1] / 1000, 2)} km/s\nMean Temperature: "
+            f"{round(mean_disk_temperature[-1], 2)} K\nMean Entropy: {round(mean_disk_entropy[-1], 2)} "
+            f"(J/K)\nFinal Disk VMF: {round(final_disk_vmf[-1], 2)} %\n"
+            f"All Silicate VMF: {round(all_silicate_vmf[-1], 2)} %",
             xy=(0.95, 0.95),
             xycoords="axes fraction",
             horizontalalignment="right",
