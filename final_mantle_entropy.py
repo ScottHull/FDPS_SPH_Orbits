@@ -62,6 +62,4 @@ for ax in axs:
         handle.set_sizes([30.0])
     ax.grid()
 
-plt.tight_layout()
-
 plt.savefig("final_mantle_entropy.png", dpi=300)
