@@ -30,8 +30,11 @@ for run in runs:
         plotting_index = 2
     elif "old" in run and "b075" in run:
         plotting_index = 3
+    else:
+        plotting_index = None
 
-    axs[plotting_index].scatter(filtered_planet['radius'] / 1000, filtered_planet['entropy'], s=2, label=run)
+    if plotting_index is not None:
+        axs[plotting_index].scatter(filtered_planet['radius'] / 1000, filtered_planet['entropy'], s=2, label=run)
 
 axs[0].set_title("Stewart M-ANEOS, b = 0.73")
 axs[1].set_title("Stewart M-ANEOS, b = 0.73")
