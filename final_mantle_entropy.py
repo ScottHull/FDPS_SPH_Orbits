@@ -25,6 +25,9 @@ for run in runs:
     filtered_planet = filtered_planet[filtered_planet['tag'] % 2 == 0]  # only silicate particles
     corresponding_start_time = start_time_df[start_time_df["id"].isin(filtered_planet["id"].values)]
     # calculate the fraction of particles where the entropy has increased from the start time to end time by at least 500
+    # sort the dataframes by id so that the rows are in the same order
+    filtered_planet = filtered_planet.sort_values(by="id")
+    corresponding_start_time = corresponding_start_time.sort_values(by="id")
     entropy_increase = filtered_planet["entropy"] - corresponding_start_time["entropy"]
     entropy_increase = entropy_increase[entropy_increase > 500]
     entropy_increase_fraction = entropy_increase.count() / filtered_planet["entropy"].count()
