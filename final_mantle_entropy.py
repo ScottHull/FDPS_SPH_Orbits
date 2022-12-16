@@ -45,6 +45,9 @@ for ax in axs:
     ax.set_xlabel("Radius (km)")
     ax.set_ylabel("Entropy (J/K)")
     ax.legend()
+    # make the points on the legend larger
+    for handle in ax.get_legend().legendHandles:
+        handle.set_sizes([30.0])
     ax.grid()
 
 plt.tight_layout()
