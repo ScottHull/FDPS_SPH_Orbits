@@ -78,7 +78,7 @@ for run in runs:
         all_silicate_vmf.append(vmf_all_silicate)
 
 
-        fig, ax = plt.subplots(1, 3, figsize=(15, 5))
+        fig, ax = plt.subplots(1, 3, figsize=(16, 5))
         axs = ax.flatten()
         axs[0].scatter(
             np.array(x) / 10 ** 6, np.array(y) / 10 ** 6, s=0.1, c="k", alpha=1
