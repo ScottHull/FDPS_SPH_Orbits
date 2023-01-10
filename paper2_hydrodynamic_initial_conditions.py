@@ -110,6 +110,10 @@ for index, (run, verbose_run_name) in enumerate(runs):
     formatted_time = round(cf.sim_time * 0.000277778, 2)
     ic_file = pd.read_csv(to_fname, skiprows=2, header=None, delimiter="\t")
     os.remove(to_fname)
+    ic_file.columns = [
+        'id', 'tag', 'mass', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'density', 'internal_energy', 'pressure',
+        'potential_energy', 'entropy', 'temperature'
+    ]
 
     # get the file with the initial condition
     # scatter the simulation at the time of the initial condition
