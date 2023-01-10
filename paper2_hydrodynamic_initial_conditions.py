@@ -127,7 +127,7 @@ for index, (run, verbose_run_name) in enumerate(runs):
     axs[gi_index].set_ylabel("y (km)")
     # annotate the upper left corner with the run name
     axs[gi_index].annotate(
-        verbose_run_name, xy=(0.05, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top"
+        verbose_run_name, xy=(0.05, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=18
     )
     # axs[gi_index].set_xlim(-square_scale, square_scale)
 
