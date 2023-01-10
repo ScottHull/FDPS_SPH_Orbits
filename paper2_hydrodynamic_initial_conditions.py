@@ -67,12 +67,12 @@ for index, (run, verbose_run_name) in enumerate(runs):
         final_disk_particles = combined_file[combined_file[0].isin(end_time_particle_ids)]
 
         id, x, y, z, vx, vy, vz, entropy, temperature = combined_file[0], combined_file[3], combined_file[4], \
-        combined_file[5], combined_file[6], combined_file[7], combined_file[8], combined_file[13], combined_file[14]
+            combined_file[5], combined_file[6], combined_file[7], combined_file[8], combined_file[13], combined_file[14]
 
         id_disk, x_disk, y_disk, z_disk, vx_disk, vy_disk, vz_disk, entropy_disk, temperature_disk = \
-        final_disk_particles[0], final_disk_particles[3], final_disk_particles[4], final_disk_particles[5], \
-        final_disk_particles[6], final_disk_particles[7], final_disk_particles[8], final_disk_particles[13], \
-        final_disk_particles[14]
+            final_disk_particles[0], final_disk_particles[3], final_disk_particles[4], final_disk_particles[5], \
+                final_disk_particles[6], final_disk_particles[7], final_disk_particles[8], final_disk_particles[13], \
+                final_disk_particles[14]
 
         velocity = np.sqrt(vx_disk ** 2 + vy_disk ** 2 + vz_disk ** 2)
 
@@ -83,7 +83,8 @@ for index, (run, verbose_run_name) in enumerate(runs):
 
         # replace final_disk_particles headers with the correct headers
         final_disk_particles.columns = [
-            'id', 'tag', 'mass', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'density', 'internal_energy', 'pressure', 'potential_energy', 'entropy', 'temperature'
+            'id', 'tag', 'mass', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'density', 'internal_energy', 'pressure',
+            'potential_energy', 'entropy', 'temperature'
         ]
         combined_file.columns = final_disk_particles.columns
 
@@ -95,17 +96,22 @@ for index, (run, verbose_run_name) in enumerate(runs):
         final_disk_vmf.append(vmf_final_disk)
         all_silicate_vmf.append(vmf_all_silicate)
 
-
     gi_index = 0 + (index * len(runs))
     velocity_index = 1 + (index * len(runs))
     t_s_index = 2 + (index * len(runs))
     ic_iteration, ic_time = iterations[max(enumerate(mean_disk_vel), key=lambda x: x[1])[0]], \
         time[max(enumerate(mean_disk_vel), key=lambda x: x[1])[0]]
 
+    # get the file corresponding to the initial condition
+    to_fname = "merged_{}_{}.dat".format(ic_iteration, randint(0, 100000))
+    cf = CombineFile(num_processes=number_processes, time=ic_iteration,
+                     output_path=base_path + f'{run_name}/{run_name}', to_fname=to_fname)
+    c = cf.combine()
+    formatted_time = round(cf.sim_time * 0.000277778, 2)
+    ic_file = pd.read_csv(to_fname, skiprows=2, header=None, delimiter="\t")
+    os.remove(to_fname)
+
     # get the file with the initial condition
-    ic_file = pd.read_csv(
-        os.path.join(circ_path, f"{iterations[max(enumerate(mean_disk_vel), key=lambda x: x[1])[0]]}.csv"),
-    )
     # scatter the simulation at the time of the initial condition
     # get subset of the data with particle ids that are not in the final disk
     not_disk_bound = ic_file[~ic_file["id"].isin(end_time_particle_ids)]
