@@ -12,7 +12,7 @@ from src.animate import animate
 from src.vapor import calc_vapor_mass_fraction_without_circularization_from_formatted
 
 # use colorblind-friendly colors from seaborn
-plt.style.use('seaborn-colorblind')
+# plt.style.use('seaborn-colorblind')
 
 runs = [('/home/theia/scotthull/Paper1_SPH/gi/500_b073_new', 'Canonical'), ('', 'Half-Earths'), ('', 'Mars')]
 
@@ -21,7 +21,7 @@ max_iteration = 1800
 max_vel_profile_iteration = 60
 increment = 1
 number_processes = 200
-square_scale = 2e7 / 10 ** 6
+square_scale = 2e7 / 1000
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
@@ -31,9 +31,6 @@ axs = axs.flatten()
 
 for ax in axs:
     ax.grid(True)
-
-# make font bigger
-plt.rcParams.update({'font.size': 18})
 
 for index, (run, verbose_run_name) in enumerate(runs):
     # if len(run) == 0, then skip this part of the loop
@@ -121,43 +118,46 @@ for index, (run, verbose_run_name) in enumerate(runs):
     not_disk_bound = ic_file[~ic_file["id"].isin(end_time_particle_ids)]
     disk_bound = ic_file[ic_file["id"].isin(end_time_particle_ids)]
     axs[gi_index].scatter(
-        not_disk_bound["x"] / 1000, not_disk_bound["y"] / 1000, s=4, alpha=1, label="Not Disk Bound"
+        not_disk_bound["x"] / 1000, not_disk_bound["y"] / 1000, s=2, alpha=1, color='black', marker='.', label="Not Disk Bound"
     )
     axs[gi_index].scatter(
-        disk_bound["x"] / 1000, disk_bound["y"] / 1000, s=4, alpha=1, label="Disk Bound"
+        disk_bound["x"] / 1000, disk_bound["y"] / 1000, s=2, alpha=1, color='red', marker='.', label="Disk Bound"
     )
     # set axis labels
-    axs[gi_index].set_xlabel("x (km)")
     axs[gi_index].set_ylabel("y (km)")
     # annotate the upper left corner with the run name
     axs[gi_index].annotate(
         verbose_run_name, xy=(0.05, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top"
     )
+    # axs[gi_index].set_xlim(-square_scale, square_scale)
 
     # plot the velocity profile
     axs[velocity_index].plot(
-        time, np.array(mean_disk_vel) / 1000, linewidth=3, label="Mean Disk Velocity"
+        time, np.array(mean_disk_vel) / 1000, linewidth=3, color='black', label="Mean Disk Velocity"
     )
     # set vertical line at the time of the initial condition
     axs[velocity_index].axvline(x=ic_time, color="black", linestyle="--", linewidth=2, label="Initial Condition")
     # set axis labels
-    axs[velocity_index].set_xlabel("Time (hrs.)")
     axs[velocity_index].set_ylabel("Velocity (km/s)")
 
     # plot the temperature profile
     axs[t_s_index].plot(
-        time, mean_disk_temperature, linewidth=3, label="Mean Disk Temperature"
+        time, mean_disk_temperature, linewidth=3, color='blue', label="Mean Disk Temperature"
     )
     # twin the x-axis and plot entropy
     axs[t_s_index].twinx().plot(
-        time, mean_disk_entropy, linewidth=3, label="Mean Disk Entropy"
+        time, mean_disk_entropy, linewidth=3, color='red', label="Mean Disk Entropy"
     )
     # set vertical line at the time of the initial condition
     axs[t_s_index].axvline(x=ic_time, color="black", linestyle="--", linewidth=2, label="Initial Condition")
     # set axis labels
-    axs[t_s_index].set_xlabel("Time (hrs.)")
     axs[t_s_index].set_ylabel("Temperature (K)")
     axs[t_s_index].twinx().set_ylabel("Entropy (J/K)")
 
-plt.tight_layout()
+    axs[-3].set_xlabel("x (km)")
+    axs[-2].set_xlabel("Time (hrs.)")
+    axs[-1].set_xlabel("Time (hrs.)")
+
+# make tight layout with no hspace
+plt.tight_layout(h_pad=0)
 plt.savefig("paper2_hydrodynamic_initial_condition", dpi=300)
