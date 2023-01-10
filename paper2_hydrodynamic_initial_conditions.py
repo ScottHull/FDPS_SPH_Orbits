@@ -18,7 +18,7 @@ runs = [('/home/theia/scotthull/Paper1_SPH/gi/500_b073_new', 'Canonical'), ('', 
 
 min_iteration = 0
 max_iteration = 1800
-max_vel_profile_iteration = 100
+max_vel_profile_iteration = 60
 increment = 1
 number_processes = 200
 square_scale = 2e7 / 10 ** 6
@@ -40,7 +40,7 @@ for index, (run, verbose_run_name) in enumerate(runs):
     if len(run) == 0:
         continue
     run_name = run.split('/')[-1]
-    base_path = run.split(f"/{run_name}")[0]
+    base_path = run.split(f"/{run_name}")[0] + "/"
     run = run_name
     if not os.path.exists(f"{run}_vel_profile"):
         os.mkdir(f"{run}_vel_profile")
