@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import csv
+import string
 from random import randint
 from statistics import mean
 import numpy as np
@@ -127,7 +128,7 @@ for index, (run, verbose_run_name) in enumerate(runs):
     axs[gi_index].set_ylabel("y (km)")
     # annotate the upper left corner with the run name
     axs[gi_index].annotate(
-        verbose_run_name, xy=(0.05, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=18
+        verbose_run_name, xy=(0.95, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=18
     )
     # axs[gi_index].set_xlim(-square_scale, square_scale)
 
@@ -163,6 +164,13 @@ for index, (run, verbose_run_name) in enumerate(runs):
     axs[-3].set_xlabel("x (km)")
     axs[-2].set_xlabel("Time (hrs.)")
     axs[-1].set_xlabel("Time (hrs.)")
+
+# label each subplot with a letter in the upper-left corner
+letters = list(string.ascii_lowercase)
+for i, ax in enumerate(axs):
+    ax.annotate(
+        letters[i], xy=(0.05, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=18
+    )
 
 # make tight layout with no hspace
 plt.tight_layout(h_pad=0)
