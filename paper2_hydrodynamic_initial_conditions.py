@@ -139,6 +139,11 @@ for index, (run, verbose_run_name) in enumerate(runs):
     axs[velocity_index].axvline(x=ic_time, color="black", linestyle="--", linewidth=2, label="Initial Condition")
     # set axis labels
     axs[velocity_index].set_ylabel("Velocity (km/s)")
+    # annotate the initial condition time in the upper right corner
+    axs[velocity_index].annotate(
+        r"$t_{ic}$" + " = {} hrs.".format(ic_time), xy=(0.95, 0.95), xycoords="axes fraction", horizontalalignment="right",
+        verticalalignment="top", fontweight="bold", fontsize=18,
+    )
 
     # plot the temperature profile
     axs[t_s_index].plot(
