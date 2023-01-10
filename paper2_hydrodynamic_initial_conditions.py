@@ -145,14 +145,15 @@ for index, (run, verbose_run_name) in enumerate(runs):
         time, mean_disk_temperature, linewidth=3, color='blue', label="Mean Disk Temperature"
     )
     # twin the x-axis and plot entropy
-    axs[t_s_index].twinx().plot(
-        time, mean_disk_entropy, linewidth=3, color='red', label="Mean Disk Entropy"
+    ax2 = axs[t_s_index].twinx()
+    ax2.plot(
+        time, final_disk_vmf, linewidth=3, color='red', label="Disk-Bound VMF"
     )
     # set vertical line at the time of the initial condition
     axs[t_s_index].axvline(x=ic_time, color="black", linestyle="--", linewidth=2, label="Initial Condition")
     # set axis labels
     axs[t_s_index].set_ylabel("Temperature (K)")
-    axs[t_s_index].twinx().set_ylabel("Entropy (J/K)")
+    ax2.set_ylabel("VMF (%)")
 
     axs[-3].set_xlabel("x (km)")
     axs[-2].set_xlabel("Time (hrs.)")
