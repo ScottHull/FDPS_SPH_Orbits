@@ -15,7 +15,7 @@ runs = ['500_b073_new', '500_b073_old', '1000_b073_new', '1000_b073_old', '2000_
 
 min_iteration = 0
 max_iteration = 1800
-max_vel_profile_iteration = 100
+max_vel_profile_iteration = 60
 increment = 1
 number_processes = 200
 square_scale = 2e7 / 10 ** 6
@@ -104,14 +104,14 @@ for run in runs:
         axs[1].set_ylim(0, 20)
         ax1_2.set_ylim(1, 6)
         axs[1].set_xlabel("Time (hrs)")
-        axs[1].set_ylabel("Mean Final Disk Particle Velocity (km/s)")
-        ax1_2.set_ylabel("Mean Final Disk Particle Temperature/Entropy (/1000)")
-        axs[1].set_title(f"{run} Final Disk Particles\nTime: {formatted_time} hours (iteration {iteration})")
+        axs[1].set_ylabel("Mean Disk-Bound Particle Velocity (km/s)")
+        ax1_2.set_ylabel("Mean Disk-Bound Particle Temperature/Entropy (/1000)")
+        axs[1].set_title(f"{run} Disk-Bound Particles\nTime: {formatted_time} hours (iteration {iteration})")
         axs[1].grid(alpha=0.4)
         axs[1].legend(loc="lower right")
 
         axs[2].plot(
-            iterations, np.array(final_disk_vmf), c="k", alpha=1, label="Final Disk VMF"
+            iterations, np.array(final_disk_vmf), c="k", alpha=1, label="Disk-Bound VMF"
         )
         axs[2].plot(
             iterations, np.array(all_silicate_vmf), c="r", alpha=1, label="All Silicate VMF"
@@ -120,7 +120,7 @@ for run in runs:
         axs[2].set_ylim(0, 30)
         axs[2].set_xlabel("Time (hrs)")
         axs[2].set_ylabel("Vapor Mass Fraction (%)")
-        axs[2].set_title(f"{run} Final Disk Particles\nTime: {formatted_time} hours (iteration {iteration})")
+        axs[2].set_title(f"{run} Disk-Bound Particles\nTime: {formatted_time} hours (iteration {iteration})")
         axs[2].grid(alpha=0.4)
         axs[2].legend(loc="lower right")
 
@@ -131,7 +131,7 @@ for run in runs:
         axs[1].annotate(
             f"Mean Velocity: {round(mean_disk_vel[-1] / 1000, 2)} km/s\nMean Temperature: "
             f"{round(mean_disk_temperature[-1], 2)} K\nMean Entropy: {round(mean_disk_entropy[-1], 2)} "
-            f"(J/K)\nFinal Disk VMF: {round(final_disk_vmf[-1], 2)} %\n"
+            f"(J/K)\nDisk-Bound VMF: {round(final_disk_vmf[-1], 2)} %\n"
             f"All Silicate VMF: {round(all_silicate_vmf[-1], 2)} %",
             xy=(0.95, 0.95),
             xycoords="axes fraction",
@@ -148,21 +148,21 @@ for run in runs:
     )
     axs[0].set_xlabel("Time (hours)")
     axs[0].set_ylabel("Velocity (km/s)")
-    axs[0].set_title(f"{run} Final Disk Particles - Mean Velocity vs Time")
+    axs[0].set_title(f"{run} Disk-Bound Particles - Mean Velocity vs Time")
     axs[0].grid(alpha=0.4)
     axs[1].plot(
         time, np.array(mean_disk_entropy), c="k", alpha=1
     )
     axs[1].set_xlabel("Time (hours)")
     axs[1].set_ylabel("Entropy (J/K)")
-    axs[1].set_title(f"{run} Final Disk Particles - Mean Entropy vs Time")
+    axs[1].set_title(f"{run} Disk-Bound Particles - Mean Entropy vs Time")
     axs[1].grid(alpha=0.4)
     axs[2].plot(
         time, np.array(mean_disk_temperature), c="k", alpha=1
     )
     axs[2].set_xlabel("Time (hours)")
     axs[2].set_ylabel("Temperature (K)")
-    axs[2].set_title(f"{run} Final Disk Particles - Mean Temperature vs Time")
+    axs[2].set_title(f"{run} Disk-Bound Particles - Mean Temperature vs Time")
     axs[2].grid(alpha=0.4)
 
     for ax in axs:
@@ -188,7 +188,7 @@ for run in runs:
 
     # output to a CSV file
     with open(f"{run}_vel_profile.csv", "w") as f:
-        f.write("Time (hours),Iteration,Mean Disk Velocity (km/s),Mean Disk Entropy (J/K),Mean Disk Temperature (K),All Silicates VMF (%),Final Disk Particles VMF (%)\n")
+        f.write("Time (hours),Iteration,Mean Disk Velocity (km/s),Mean Disk Entropy (J/K),Mean Disk Temperature (K),All Silicates VMF (%),Disk-Bound Particles VMF (%)\n")
         for i in range(len(time)):
             f.write(f"{time[i]},{iterations[i]},{mean_disk_vel[i] / 1000},{mean_disk_entropy[i]},{mean_disk_temperature[i]},{all_silicate_vmf[i]},{final_disk_vmf[i]}\n")
     f.close()
