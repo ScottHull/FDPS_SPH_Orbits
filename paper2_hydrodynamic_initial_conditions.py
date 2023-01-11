@@ -128,7 +128,7 @@ for index, (run, verbose_run_name) in enumerate(runs):
     axs[gi_index].set_ylabel("y (km)")
     # annotate the upper left corner with the run name
     axs[gi_index].annotate(
-        verbose_run_name, xy=(0.95, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=12
+        verbose_run_name, xy=(0.80, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=12
     )
     # axs[gi_index].set_xlim(-square_scale, square_scale)
 
@@ -142,8 +142,8 @@ for index, (run, verbose_run_name) in enumerate(runs):
     axs[velocity_index].set_ylabel("Velocity (km/s)")
     # annotate the initial condition time in the upper right corner
     axs[velocity_index].annotate(
-        r"$t_{ic}$" + " = {} hrs.".format(ic_time), xy=(0.95, 0.95), xycoords="axes fraction", horizontalalignment="right",
-        verticalalignment="top", fontweight="bold", fontsize=18,
+        r"$t_{ic}$" + " = {} hrs.".format(ic_time), xy=(0.80, 0.95), xycoords="axes fraction", horizontalalignment="right",
+        verticalalignment="top", fontsize=12,
     )
 
     # plot the temperature profile
