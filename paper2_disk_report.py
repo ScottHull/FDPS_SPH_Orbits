@@ -14,10 +14,8 @@ from src.combine import CombineFile
 from src.identify import ParticleMap
 from src.report import get_sim_report, write_report_at_time, build_latex_table_from_disk_report, rows_map
 
-base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
-sim = ("500_half_earths", "Half-Earths")
-angle = "b073"
-cutoff_densities = [5, 500, 1000, 2000]
+base_path = "/home/theia/scotthull/Paper2_SPH/gi/"
+sim = ["500_half_earths", "Half-Earths"]
 min_iteration = 0
 max_iteration = 1800
 increment = 50
