@@ -35,7 +35,7 @@ def get_time(f, local=True):
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
 def get_all_sims(**kwargs):
-    return list(sim[0]), list(sim[1])
+    return [sim[0]], [sim[1]]
 
 
 def __build_report(args):
