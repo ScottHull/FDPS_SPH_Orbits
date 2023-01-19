@@ -88,7 +88,7 @@ def plot_entropy_and_vmf_vs_time():
             linestyle = "dotted"
         for index, h in enumerate(list(d[sim].keys())[1:]):
             axs[index].plot(
-                d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color, label=title
+                d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color, label=sim
             )
             axs[index].set_ylabel(rows_map[h][1:-1], fontsize=16)
     letters = list(string.ascii_lowercase)
@@ -114,7 +114,7 @@ def plot_entropy_and_vmf_vs_time():
         except:
             pass
     fig.subplots_adjust(right=0.82)
-    plt.savefig("{}_disk_entropy_and_vmf.png".format(angle), format='png', dpi=200)
+    plt.savefig("paper2_disk_entropy_and_vmf.png", format='png', dpi=300)
 
 
 plot_entropy_and_vmf_vs_time()
