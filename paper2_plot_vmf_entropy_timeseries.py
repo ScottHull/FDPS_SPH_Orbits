@@ -83,9 +83,11 @@ def plot_entropy_and_vmf_vs_time():
             linestyle = "dotted"
         for index, h in enumerate(list(d[sim].keys())[1:]):
             axs[index].plot(
-                d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color, label=sim
+                d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color
             )
             axs[index].set_ylabel(rows_map[h][1:-1], fontsize=16)
+    for index, title in enumerate(titles):
+        axs[0].plot([], [], linewidth=2.0, linestyle="-", color=colors[index], label=title)
     letters = list(string.ascii_lowercase)
     for index, ax in enumerate(axs):
         x1, x2, y1, y2 = ax.axis()
