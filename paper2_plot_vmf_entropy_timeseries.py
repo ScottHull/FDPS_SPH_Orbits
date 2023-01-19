@@ -49,19 +49,14 @@ def plot_entropy_and_vmf_vs_time():
     axs = axs.flatten()
     d = {}
     for sim, title in zip(sims, titles):
+        s = sim.split("/")[-2]
         if title not in d.keys():
             d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_W_CIRC': [], 'MEAN_DISK_TEMPERATURE': [],
                               'DISK_VMF_W_CIRC': [], "DISK_MASS": [],
                               "DISK_ANGULAR_MOMENTUM": [], 'DISK_THEIA_MASS_FRACTION': []}})
-        inc = increment
-        if "high" in sim:
-            inc = increment_high
-        elif "low" in sim:
-            inc = increment_low
-        for iteration in np.arange(min_iteration, max_iteration + inc, inc):
-            print(sim, title, iteration)
+        for iteration in np.arange(min_iteration, max_iteration + increment, increment):
             try:
-                path = base_path + "{}/{}_reports/".format(sim, sim)
+                path = sim + "{}_reports/".format(s)
                 df = pd.read_csv(path + "{}.csv".format(iteration))
                 time, avg_disk_entropy, disk_temperature, disk_vmf, disk_mass, disk_am, theia_mass_frac = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY_W_CIRC'][0], \
                                                                        df['MEAN_DISK_TEMPERATURE'][0], df['DISK_VMF_W_CIRC'][0], df['DISK_MASS'][0], \
