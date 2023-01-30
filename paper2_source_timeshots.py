@@ -137,4 +137,4 @@ for index, ax in enumerate(axs):
 axs[0].annotate("x ($10^4$ km)", xy=(0.0, -5.5), ha="center", fontsize=16, weight='bold')
 axs[0].annotate("y ($10^4$ km)", xy=(-5.5, 0.0), va="center", rotation=90, fontsize=16, weight='bold')
 
-plt.savefig("paper2_source_scenes.png", format='png', dpi=200)
+plt.savefig("paper2_source_scenes.png", format='png', dpi=300)
