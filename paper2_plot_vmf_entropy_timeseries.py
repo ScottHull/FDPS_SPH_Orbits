@@ -126,7 +126,7 @@ def plot_entropy_and_vmf_vs_time():
             handle.set_sizes([120.0])
         except:
             pass
-    fig.subplots_adjust(right=0.62)
+    fig.subplots_adjust(right=0.92)
     plt.savefig("paper2_disk_entropy_and_vmf.png", format='png', dpi=300)
 
 
