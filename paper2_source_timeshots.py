@@ -27,11 +27,11 @@ plt.style.use("dark_background")
 
 base_path = "/home/theia/scotthull/"
 runs = [
-    [base_path + f"Paper1_SPH/gi/500_b073_new/", "Canonical", 200],
-    [base_path + f"Paper2_SPH/gi/500_half_earths/", "Half-Earths", 200],
-    [base_path + f"Paper2_SPH/gi/mars/", "Mars", 200],
+    [base_path + f"Paper1_SPH/gi/500_b073_new", "Canonical", 200],
+    [base_path + f"Paper2_SPH/gi/500_half_earths", "Half-Earths", 200],
+    [base_path + f"Paper2_SPH/gi/mars", "Mars", 200],
 ]
-iterations = [100, 200, 500, 1800]
+iterations = [50, 200, 500, 1800]
 
 square_scale = 6e7 / 10 ** 7
 min_normalize = 0
