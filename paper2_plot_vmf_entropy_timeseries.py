@@ -82,6 +82,9 @@ def plot_entropy_and_vmf_vs_time():
     for i in d.keys():
         for j in d[i].keys():
             d[i][j] = [float(str(k).split(" ")[0]) for k in d[i][j]]
+    for i in d_wo_circ.keys():
+        for j in d[i].keys():
+            d[i][j] = [float(str(k).split(" ")[0]) for k in d[i][j]]
     for index, sim in enumerate(list(d.keys())):
         color = colors[index]
         if "high" in sim or "low" in sim:
