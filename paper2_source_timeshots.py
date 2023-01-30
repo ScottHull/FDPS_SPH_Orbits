@@ -55,7 +55,8 @@ def get_time(f, local=True):
 def get_end_states():
     endstates = {}
     for s, t, i in runs:
-        end_state_file = base_path + "{}/circularized_{}/{}.csv".format(s, s, end_iteration)
+        run_name = s.split("/")[-1]
+        end_state_file = s + "/circularized_{}/{}.csv".format(s, end_iteration)
         end_state_df = pd.read_csv(end_state_file, index_col="id")
         endstates.update({t: end_state_df})
     return endstates
