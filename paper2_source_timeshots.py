@@ -29,7 +29,7 @@ base_path = "/home/theia/scotthull/"
 runs = [
     [base_path + f"Paper1_SPH/gi/500_b073_new", "Canonical", 200],
     [base_path + f"Paper2_SPH/gi/500_half_earths", "Half-Earths", 200],
-    [base_path + f"Paper2_SPH/gi/mars", "Mars", 200],
+    # [base_path + f"Paper2_SPH/gi/mars", "Mars", 200],
 ]
 iterations = [50, 200, 500, 1800]
 
@@ -55,13 +55,10 @@ def get_time(f, local=True):
 def get_end_states():
     endstates = {}
     for s, t, i in runs:
-        try:
-            run_name = s.split("/")[-1]
-            end_state_file = s + "/circularized_{}/{}.csv".format(run_name, end_iteration)
-            end_state_df = pd.read_csv(end_state_file, index_col="id")
-            endstates.update({t: end_state_df})
-        except:
-            pass
+        run_name = s.split("/")[-1]
+        end_state_file = s + "/circularized_{}/{}.csv".format(run_name, end_iteration)
+        end_state_df = pd.read_csv(end_state_file, index_col="id")
+        endstates.update({t: end_state_df})
     return endstates
 
 endstates = get_end_states()
@@ -82,35 +79,32 @@ current_index = 0
 for iteration in iterations:
     for s, t, number_processes in runs:
         run_name = s.split("/")[-1]
-        try:
-            p = s + "/circularized_{}".format(run_name)
-            f = p + "/{}.csv".format(iteration)
-            df = pd.read_csv(f)
-            path = base_path + "{}/{}".format(s, s)
-            file_format = "results.{}_{}_{}.dat"
-            p2 = base_path + "{}/{}".format(s, s)
-            base_file = file_format.format(
-                str(iteration).zfill(5),
-                str(number_processes).zfill(5),
-                str(0).zfill(5)
+        p = s + "/circularized_{}".format(run_name)
+        f = p + "/{}.csv".format(iteration)
+        df = pd.read_csv(f)
+        path = base_path + "{}/{}".format(s, s)
+        file_format = "results.{}_{}_{}.dat"
+        p2 = base_path + "{}/{}".format(s, s)
+        base_file = file_format.format(
+            str(iteration).zfill(5),
+            str(number_processes).zfill(5),
+            str(0).zfill(5)
+        )
+        formatted_time = get_time(p2 + "/" + base_file)
+        endstate = endstates[t]
+        # df = df[df['z'] <= 0]  # slice simulation
+        end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
+            endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
+        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("z"), df[
+            df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
+                                   df['id'].isin(end_escape.index.tolist())].sort_values("z")
+        for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
+            axs[current_index].scatter(
+                i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, label=label
             )
-            formatted_time = get_time(p2 + "/" + base_file)
-            endstate = endstates[t]
-            # df = df[df['z'] <= 0]  # slice simulation
-            end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
-                endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
-            planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("z"), df[
-                df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
-                                       df['id'].isin(end_escape.index.tolist())].sort_values("z")
-            for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
-                axs[current_index].scatter(
-                    i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, label=label
-                )
-            if current_index % len(runs) == 0:
-                axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.3 * square_scale),
-                                        "{} hrs".format(formatted_time), fontsize=20)
-        except:
-            pass
+        if current_index % len(runs) == 0:
+            axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.3 * square_scale),
+                                    "{} hrs".format(formatted_time), fontsize=20)
         current_index += 1
 
 legend = axs[0].legend(loc='upper right', fontsize=20)
