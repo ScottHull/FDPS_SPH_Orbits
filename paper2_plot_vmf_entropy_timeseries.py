@@ -90,13 +90,13 @@ def plot_entropy_and_vmf_vs_time():
             axs[index].set_ylabel(rows_map[h][1:-1], fontsize=16)
             if h == "MEAN_DISK_ENTROPY_W_CIRC":
                 axs[index].plot(
-                    d_wo_circ[sim]['TIME_HRS'], d_wo_circ[sim]['MEAN_DISK_ENTROPY_WO_CIRC'], linewidth=2.0,
+                    d_wo_circ[sim]['TIME_HRS'], d_wo_circ[sim]['MEAN_DISK_ENTROPY_WITHOUT_CIRC'], linewidth=2.0,
                     linestyle="--", color=color
                 )
                 axs[index].set_ylabel("Avg. Disk Entropy (J/K)", fontsize=16)
             elif h == "DISK_VMF_W_CIRC":
                 axs[index].plot(
-                    d_wo_circ[sim]['TIME_HRS'], d_wo_circ[sim]['DISK_VMF_WO_CIRC'], linewidth=2.0,
+                    d_wo_circ[sim]['TIME_HRS'], d_wo_circ[sim]['DISK_VMF_WITHOUT_CIRC'], linewidth=2.0,
                     linestyle="--", color=color
                 )
     for index, title in enumerate(titles):
