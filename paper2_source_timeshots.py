@@ -82,9 +82,9 @@ for iteration in iterations:
         p = s + "/circularized_{}".format(run_name)
         f = p + "/{}.csv".format(iteration)
         df = pd.read_csv(f)
-        path = base_path + "{}/{}".format(s, s)
+        path = s + "/{}".format(run_name)
         file_format = "results.{}_{}_{}.dat"
-        p2 = base_path + "{}/{}".format(s, s)
+        p2 = s + "/{}".format(run_name)
         base_file = file_format.format(
             str(iteration).zfill(5),
             str(number_processes).zfill(5),
