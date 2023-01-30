@@ -48,15 +48,20 @@ def plot_entropy_and_vmf_vs_time():
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     axs = axs.flatten()
     d = {}
+    d_wo_circ = {}
     for sim, title in zip(sims, titles):
         s = sim.split("/")[-2]
         if title not in d.keys():
             d.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_W_CIRC': [], 'MEAN_DISK_TEMPERATURE': [],
                               'DISK_VMF_W_CIRC': [], "DISK_MASS": [],
                               "DISK_ANGULAR_MOMENTUM": [], 'DISK_THEIA_MASS_FRACTION': []}})
+            d_wo_circ.update({title: {'TIME_HRS': [], 'MEAN_DISK_ENTROPY_WITHOUT_CIRC': [], 'DISK_VMF_WITHOUT_CIRC': []}})
         for iteration in np.arange(min_iteration, max_iteration + increment, increment):
             try:
-                path = sim + "{}_reports/".format(s)
+                if not "Paper1" in sim:
+                    path = sim + "{}_reports/".format(s)
+                else:
+                    path = sim + "{}_reports2/".format(s)
                 df = pd.read_csv(path + "{}.csv".format(iteration))
                 time, avg_disk_entropy, disk_temperature, disk_vmf, disk_mass, disk_am, theia_mass_frac = df['TIME_HRS'][0], df['MEAN_DISK_ENTROPY_W_CIRC'][0], \
                                                                        df['MEAN_DISK_TEMPERATURE'][0], df['DISK_VMF_W_CIRC'][0], df['DISK_MASS'][0], \
@@ -76,16 +81,24 @@ def plot_entropy_and_vmf_vs_time():
             d[i][j] = [float(str(k).split(" ")[0]) for k in d[i][j]]
     for index, sim in enumerate(list(d.keys())):
         color = colors[index]
-        linestyle = "-"
-        if "N" in sim:
-            linestyle = "--"
         if "high" in sim or "low" in sim:
             linestyle = "dotted"
         for index, h in enumerate(list(d[sim].keys())[1:]):
             axs[index].plot(
-                d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, linestyle=linestyle, color=color
+                d[sim]['TIME_HRS'], d[sim][h], linewidth=2.0, color=color
             )
             axs[index].set_ylabel(rows_map[h][1:-1], fontsize=16)
+            if h == "MEAN_DISK_ENTROPY_W_CIRC":
+                axs[index].plot(
+                    d_wo_circ[sim]['TIME_HRS'], d_wo_circ[sim]['MEAN_DISK_ENTROPY_WO_CIRC'], linewidth=2.0,
+                    linestyle="--", color=color
+                )
+                axs[index].set_ylabel("Avg. Disk Entropy (J/K)", fontsize=16)
+            elif h == "DISK_VMF_W_CIRC":
+                axs[index].plot(
+                    d_wo_circ[sim]['TIME_HRS'], d_wo_circ[sim]['DISK_VMF_WO_CIRC'], linewidth=2.0,
+                    linestyle="--", color=color
+                )
     for index, title in enumerate(titles):
         axs[0].plot([], [], linewidth=2.0, linestyle="-", color=colors[index], label=title)
     letters = list(string.ascii_lowercase)
