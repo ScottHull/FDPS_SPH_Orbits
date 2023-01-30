@@ -56,7 +56,7 @@ def get_end_states():
     endstates = {}
     for s, t, i in runs:
         run_name = s.split("/")[-1]
-        end_state_file = s + "/circularized_{}/{}.csv".format(s, end_iteration)
+        end_state_file = s + "/circularized_{}/{}.csv".format(run_name, end_iteration)
         end_state_df = pd.read_csv(end_state_file, index_col="id")
         endstates.update({t: end_state_df})
     return endstates
