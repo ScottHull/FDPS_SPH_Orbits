@@ -64,7 +64,7 @@ endstates = get_end_states()
 figsize = (20, 20)
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 # fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
-fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
+fig, axs = plt.subplots(len(iterations), len(runs), figsize=figsize, sharex='all', sharey='all')
 
 axs = axs.flatten()
 for ax in axs:
@@ -77,8 +77,9 @@ current_index = 0
 # colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for iteration in iterations:
     for s, t, number_processes in runs:
+        run_name = s.split("/")[-1]
         try:
-            p = base_path + "{}/circularized_{}".format(s, s)
+            p = s + "/circularized_{}".format(run_name)
             f = p + "/{}.csv".format(iteration)
             df = pd.read_csv(f)
             path = base_path + "{}/{}".format(s, s)
