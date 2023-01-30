@@ -73,6 +73,9 @@ def plot_entropy_and_vmf_vs_time():
                 d[title]['DISK_ANGULAR_MOMENTUM'].append(disk_am)
                 d[title]['MEAN_DISK_TEMPERATURE'].append(disk_temperature)
                 d[title]['DISK_THEIA_MASS_FRACTION'].append(theia_mass_frac)
+                d_wo_circ[title]['TIME_HRS'].append(time)
+                d_wo_circ[title]['MEAN_DISK_ENTROPY_WITHOUT_CIRC'].append(df['MEAN_DISK_ENTROPY_WITHOUT_CIRC'][0])
+                d_wo_circ[title]['DISK_VMF_WITHOUT_CIRC'].append(df['DISK_VMF_WITHOUT_CIRC'][0])
             except Exception as e:
                 print(e)
                 pass
@@ -123,7 +126,7 @@ def plot_entropy_and_vmf_vs_time():
             handle.set_sizes([120.0])
         except:
             pass
-    fig.subplots_adjust(right=0.82)
+    fig.subplots_adjust(right=0.62)
     plt.savefig("paper2_disk_entropy_and_vmf.png", format='png', dpi=300)
 
 
