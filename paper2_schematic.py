@@ -24,7 +24,7 @@ os.remove(f)
 
 # get a reds color map
 normalizer = Normalize(2000, 10000)
-cmap = cm.get_cmap('reds')
+cmap = cm.get_cmap('Reds')
 # scatter the points with x and y as the axes, and the color mapped to temperature
 fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(111, aspect='equal')
