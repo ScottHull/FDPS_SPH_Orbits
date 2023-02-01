@@ -7,8 +7,11 @@ import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 
+# use the dark background style
+plt.style.use("dark_background")
+
 path = "/home/theia/scotthull/Paper1_SPH/gi/500_b073_new/500_b073_new"
-iteration = 20
+iteration = 30
 number_processes = 200
 square_scale = 2e7
 
@@ -20,6 +23,8 @@ f = os.getcwd() + "/{}".format(to_fname)
 df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t",
                  names=["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                         "potential energy", "entropy", "temperature"])
+# sort the df by z
+df = df.sort_values(by=['z'])
 os.remove(f)
 
 # get a reds color map
