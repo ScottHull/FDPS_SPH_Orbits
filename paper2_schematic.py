@@ -7,11 +7,10 @@ import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 
-path = "/home/theia/scothull/Paper1_SPH/gi/500_b073_new/500_b073_new"
+path = "/home/theia/scotthull/Paper1_SPH/gi/500_b073_new/500_b073_new"
 iteration = 20
 number_processes = 200
 square_scale = 2e7
-file_format = "results.{}_{}_{}.dat"
 
 to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
 cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
