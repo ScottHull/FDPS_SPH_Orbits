@@ -29,12 +29,12 @@ os.remove(f)
 
 # get a reds color map
 normalizer = Normalize(2000, 10000)
-cmap = reversed(cm.get_cmap('Reds'))
+cmap = cm.get_cmap('Reds')
 # scatter the points with x and y as the axes, and the color mapped to temperature
 fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(111)
 ax.scatter(df['x'], df['y'], c=df['temperature'], cmap=cmap, norm=normalizer, alpha=1, s=0.3)
-ax.set_xlim(-square_scale * 2, square_scale)
+ax.set_xlim(-square_scale, square_scale)
 # get rid of the axes
 ax.set_axis_off()
 # get rid of the border
