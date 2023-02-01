@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 
-path = "/home/theia/scothull/Paper1_SPH/gi/500_b073_new/500_b073_new/"
+path = "/home/theia/scothull/Paper1_SPH/gi/500_b073_new/500_b073_new"
 iteration = 20
 number_processes = 200
 square_scale = 2e7
