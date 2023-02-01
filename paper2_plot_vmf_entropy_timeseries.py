@@ -82,6 +82,9 @@ def plot_entropy_and_vmf_vs_time():
     for i in d.keys():
         for j in d[i].keys():
             d[i][j] = [float(str(k).split(" ")[0]) for k in d[i][j]]
+    for i in d_wo_circ.keys():
+        for j in d_wo_circ[i].keys():
+            d_wo_circ[i][j] = [float(str(k).split(" ")[0]) for k in d_wo_circ[i][j]]
     for index, sim in enumerate(list(d.keys())):
         color = colors[index]
         if "high" in sim or "low" in sim:
@@ -115,7 +118,7 @@ def plot_entropy_and_vmf_vs_time():
         ax.set_xlabel("Time (hrs)", fontsize=16)
 
     plt.tight_layout()
-    legend = fig.legend(loc=7, fontsize=16)
+    legend = axs[0].legend(loc='lower right', fontsize=16)
     for line in legend.get_lines():  # increase line widths in legend
         try:
             line.set_linewidth(4.0)
@@ -126,7 +129,7 @@ def plot_entropy_and_vmf_vs_time():
             handle.set_sizes([120.0])
         except:
             pass
-    fig.subplots_adjust(right=0.92)
+    # fig.subplots_adjust(right=0.92)
     plt.savefig("paper2_disk_entropy_and_vmf.png", format='png', dpi=300)
 
 
