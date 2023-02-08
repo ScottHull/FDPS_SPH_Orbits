@@ -68,13 +68,13 @@ axs[7].set_title(r"N-SPH M-ANEOS, $\rho_c=2000 kg/m^3$")
 
 for ax in axs:
     ax.set_xlabel("Radius (km)")
-    ax.set_ylabel("temperature (J/K)")
+    ax.set_ylabel("Temperature (J/K)")
+    ax.grid()
 
 for ax in [axs[0]]:
     ax.legend()
     # make the points on the legend larger
     for handle in ax.get_legend().legendHandles:
         handle.set_sizes([30.0])
-    ax.grid()
 
 plt.savefig("final_mantle_temperature.png", dpi=300)
