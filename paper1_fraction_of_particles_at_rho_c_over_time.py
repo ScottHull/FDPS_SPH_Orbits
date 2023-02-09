@@ -110,7 +110,7 @@ for s, t in zip(sims, titles):
         df = pd.read_csv(to_fname, skiprows=2, header=None, delimiter="\t")
         os.remove(to_fname)
         df.columns = output_columns
-        disk_particles = combined_file[combined_file[0].isin(endstate['id'])]
+        disk_particles = df[df['id'].isin(endstate.index)]
         fraction_of_particles_at_rho_cutoff = len(disk_particles[disk_particles['density'] == int(cd)]) / len(disk_particles)
         data[t][formatted_time] = fraction_of_particles_at_rho_cutoff
 
