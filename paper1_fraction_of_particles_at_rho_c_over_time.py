@@ -130,16 +130,43 @@ for t in data.keys():
     if "b075" in t:
         index = 1
     axs[index].plot(
-        list(data[t].keys()), list(data[t].values()), linewidth=2.0, color=colors[cd], linestyle=linestyle, label=t
+        list(data[t].keys()), list(data[t].values()), linewidth=2.0, color=colors[cd], linestyle=linestyle
+    )
+
+    for c in cutoff_densities:
+        axs[0].scatter(
+            [], [], marker="s", s=80, label=r"$\rho_c$ = {} kg/m$^3$".format(c)
+        )
+    axs[0].plot(
+        [], [], c='black', linewidth=2.0, linestyle="-", label="Stewart M-ANEOS"
+    )
+    axs[0].plot(
+        [], [], c='black', linewidth=2.0, linestyle="--", label="N-SPH M-ANEOS"
+    )
+    axs[0].plot(
+        [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, linestyle="dotted", label="5b073S-high or\n2000b075N-low"
     )
 
 for ax in axs:
     ax.set_xlabel("Time (hours)")
     ax.grid(alpha=0.8)
-    ax.legend()
 
 axs[0].set_ylabel(r"Particle Fraction at $\rho_c$")
 axs[0].set_title(r"b = 0.73")
 axs[1].set_title(r"b = 0.75")
+
+plt.tight_layout()
+legend = fig.legend(loc=7, fontsize=16)
+for line in legend.get_lines():  # increase line widths in legend
+    try:
+        line.set_linewidth(4.0)
+    except:
+        pass
+for handle in legend.legendHandles:  # increase marker sizes in legend
+    try:
+        handle.set_sizes([120.0])
+    except:
+        pass
+fig.subplots_adjust(right=0.82)
 
 plt.savefig("particle_fraction_at_rho_cutoff.png", dpi=300)
