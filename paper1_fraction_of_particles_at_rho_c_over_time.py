@@ -102,7 +102,7 @@ for s, t in zip(sims, titles):
         cd = cutoff_densities.index(int(s.split("_")[0]))
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
-        cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+        cf = CombineFile(num_processes=num_proc, time=iteration, output_path=path, to_fname=to_fname)
         combined_file = cf.combine()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
         data[t][formatted_time] = 0.0
