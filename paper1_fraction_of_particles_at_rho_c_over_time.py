@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import csv
+import json
 import shutil
 from math import pi, asin, isnan, exp
 import numpy as np
@@ -34,6 +35,7 @@ end_iteration = 1800
 increment = 50
 number_processes = 200
 number_processes_high = 500
+new_run = False
 
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
@@ -89,31 +91,41 @@ def get_end_states(s, end_iteration):
     return pd.read_csv(end_state_file, index_col="id")
 
 
-data = {}
-sims, titles = get_all_sims()
-# colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
-for s, t in zip(sims, titles):
-    data[t] = {}
-    num_proc = number_processes
-    if "high" in s:
-        num_proc = number_processes_high
-    endstate = get_end_states(s, end_iteration)
-    for iteration in np.arange(min_iteration, max_iteration + increment, increment):
-        cd = cutoff_densities.index(int(s.split("_")[0]))
-        path = base_path + "{}/{}".format(s, s)
-        to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
-        cf = CombineFile(num_processes=num_proc, time=iteration, output_path=path, to_fname=to_fname)
-        combined_file = cf.combine()
-        formatted_time = round(cf.sim_time * 0.000277778, 2)
-        data[t][formatted_time] = 0.0
-        f = os.getcwd() + "/{}".format(to_fname)
-        df = pd.read_csv(to_fname, skiprows=2, header=None, delimiter="\t")
-        os.remove(to_fname)
-        df.columns = output_columns
-        disk_particles = df[df['id'].isin(endstate.index)]
-        fraction_of_particles_at_rho_cutoff = len(disk_particles[disk_particles['density'] == int(cd)]) / len(disk_particles)
-        data[t][formatted_time] = fraction_of_particles_at_rho_cutoff
+if new_run:
+    data = {}
+    sims, titles = get_all_sims()
+    # colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+    for s, t in zip(sims, titles):
+        data[t] = {}
+        num_proc = number_processes
+        if "high" in s:
+            num_proc = number_processes_high
+        endstate = get_end_states(s, end_iteration)
+        for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+            cd = cutoff_densities.index(int(s.split("_")[0]))
+            path = base_path + "{}/{}".format(s, s)
+            to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+            cf = CombineFile(num_processes=num_proc, time=iteration, output_path=path, to_fname=to_fname)
+            combined_file = cf.combine()
+            formatted_time = round(cf.sim_time * 0.000277778, 2)
+            data[t][formatted_time] = 0.0
+            f = os.getcwd() + "/{}".format(to_fname)
+            df = pd.read_csv(to_fname, skiprows=2, header=None, delimiter="\t")
+            os.remove(to_fname)
+            df.columns = output_columns
+            disk_particles = df[df['id'].isin(endstate.index)]
+            fraction_of_particles_at_rho_cutoff = len(disk_particles[disk_particles['density'] == int(cd)]) / len(disk_particles)
+            data[t][formatted_time] = fraction_of_particles_at_rho_cutoff
 
+    # write data to file
+    if os.path.exists("paper1_rho_c_fraction_data.json"):
+        os.remove("paper1_rho_c_fraction_data.json")
+    with open("paper1_rho_c_fraction_data.json", "w") as outfile:
+        outfile.write(str({k: v for k, v in data.items()}))
+else:
+    # read data from file
+    with open("paper1_rho_c_fraction_data.json", "r") as infile:
+        data = eval(infile.read())
 
 fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex="all", sharey="all")
 axs = axs.flatten()
@@ -133,19 +145,19 @@ for t in data.keys():
         list(data[t].keys()), list(data[t].values()), linewidth=2.0, color=colors[cd], linestyle=linestyle
     )
 
-    for c in cutoff_densities:
-        axs[0].scatter(
-            [], [], marker="s", s=80, label=r"$\rho_c$ = {} kg/m$^3$".format(c)
-        )
-    axs[0].plot(
-        [], [], c='black', linewidth=2.0, linestyle="-", label="Stewart M-ANEOS"
+for c in cutoff_densities:
+    axs[0].scatter(
+        [], [], marker="s", s=80, label=r"$\rho_c$ = {} kg/m$^3$".format(c)
     )
-    axs[0].plot(
-        [], [], c='black', linewidth=2.0, linestyle="--", label="N-SPH M-ANEOS"
-    )
-    axs[0].plot(
-        [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, linestyle="dotted", label="5b073S-high or\n2000b075N-low"
-    )
+axs[0].plot(
+    [], [], c='black', linewidth=2.0, linestyle="-", label="Stewart M-ANEOS"
+)
+axs[0].plot(
+    [], [], c='black', linewidth=2.0, linestyle="--", label="N-SPH M-ANEOS"
+)
+axs[0].plot(
+    [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, linestyle="dotted", label="5b073S-high or\n2000b075N-low"
+)
 
 for ax in axs:
     ax.set_xlabel("Time (hours)")
