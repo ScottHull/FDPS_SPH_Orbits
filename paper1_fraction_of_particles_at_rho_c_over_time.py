@@ -114,7 +114,8 @@ if new_run:
             os.remove(to_fname)
             df.columns = output_columns
             disk_particles = df[df['id'].isin(endstate.index)]
-            fraction_of_particles_at_rho_cutoff = len(disk_particles[disk_particles['density'] == int(cd)]) / len(disk_particles)
+            fraction_of_particles_at_rho_cutoff = len(disk_particles[disk_particles['density'] ==
+                                                                     int(s.split("_")[0])]) / len(disk_particles)
             data[t][formatted_time] = fraction_of_particles_at_rho_cutoff
 
     # write data to file
