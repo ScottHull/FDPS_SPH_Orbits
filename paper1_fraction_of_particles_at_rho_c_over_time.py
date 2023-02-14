@@ -157,7 +157,7 @@ axs[0].plot(
     [], [], c='black', linewidth=2.0, linestyle="--", label="N-SPH M-ANEOS"
 )
 axs[0].plot(
-    [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, color='black',
+    [], [], linewidth=2.0, color='black',
     linestyle="dotted", label="5b073S-high or\n2000b075N-low"
 )
 
