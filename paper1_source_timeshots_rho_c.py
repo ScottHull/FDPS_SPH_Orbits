@@ -138,6 +138,7 @@ for iteration in iterations:
             df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
                                    df['id'].isin(end_escape.index.tolist())].sort_values("z")
         disk_at_rho_cutoff = disk[disk['density'] == cutoff_densities[cd]]
+        print(t, len(disk_at_rho_cutoff) / len(disk), len(disk_at_rho_cutoff), len(disk))
         for i, label in zip([planet, disk, escape, disk_at_rho_cutoff], ["Planet", "Disk", "Escape", r"Disk At $\rho_c$"]):
             axs[current_index].scatter(
                 i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, label=label

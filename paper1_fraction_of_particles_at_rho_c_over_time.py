@@ -113,7 +113,8 @@ if new_run:
             df = pd.read_csv(to_fname, skiprows=2, header=None, delimiter="\t")
             os.remove(to_fname)
             df.columns = output_columns
-            disk_particles = df[df['id'].isin(endstate.index)]
+            endstate_disk = endstate[endstate['label'] == "DISK"]
+            disk_particles = df[df['id'].isin(endstate_disk.index.values)]
             fraction_of_particles_at_rho_cutoff = len(disk_particles[disk_particles['density'] ==
                                                                      int(s.split("_")[0])]) / len(disk_particles)
             data[t][formatted_time] = fraction_of_particles_at_rho_cutoff
