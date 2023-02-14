@@ -138,17 +138,18 @@ for iteration in iterations:
         disk_at_rho_cutoff = disk[disk['density'] == cutoff_densities[cd]]
         fraction_of_paraticles_at_rho_cutoff = len(disk_at_rho_cutoff) / len(disk)
         axs[current_index].scatter(
-            disk['density'], disk['pressure'], s=0.8, marker=".", alpha=1, color='black'
+            disk['pressure'], disk[other] s=0.8, marker=".", alpha=1, color='black'
         )
         # annotate with fraction of particles at rho cutoff
         axs[current_index].annotate(
-            f"{round(fraction_of_paraticles_at_rho_cutoff * 100, 2)} %" + "\ndisk particles at " + r"$rho_{\rm c}$", xy=(0.95, 0.90), xycoords="axes fraction",
-            horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=20)
+            f"{round(fraction_of_paraticles_at_rho_cutoff * 100, 2)} %" + "\ndisk particles at " + r"$\rho_{\rm c}$",
+            xy=(0.95, 0.90), xycoords="axes fraction",
+            horizontalalignment="right", verticalalignment="top", fontweight="bold", fontsize=20)
         if current_index % len(sims) == 0:
             # label time in upper right corner
             axs[current_index].annotate(
                 f"{formatted_time} hrs.", xy=(0.95, 0.95), xycoords="axes fraction",
-                horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=20
+                horizontalalignment="right", verticalalignment="top", fontweight="bold", fontsize=20
             )
         current_index += 1
 
@@ -156,7 +157,7 @@ for iteration in iterations:
 for index, t in enumerate(titles):
     axs[index].set_title(t, fontsize=20)
 fig.tight_layout()
-fig.subplots_adjust(wspace=0, hspace=0)
+fig.subplots_adjust(wspace=0, hspace=0.02)
 for ax in axs[-len(sims):-2]:
     nbins_x = len(ax.get_xticklabels())
     ax.xaxis.set_major_locator(MaxNLocator(nbins=nbins_x, prune='upper'))
@@ -171,7 +172,11 @@ for index, ax in enumerate(axs):
     y_loc = y2 - (0.08 * (y2 - y1))
     ax.text(x_loc, y_loc, letters[index], fontweight="bold", fontsize=20)
 
-axs[0].annotate(r"Density (kg/m$^3$)", xy=(0.0, -5.5), ha="center", fontsize=16, weight='bold')
-axs[0].annotate(f"{other} ({units})", xy=(-5.5, 0.0), va="center", rotation=90, fontsize=16, weight='bold')
+axs[0].annotate(f"{other.capitalize()} ({units})", xy=(0.5, 0.1), xycoords="axes fraction", rotation=90,
+                horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=20
+            )
+axs[0].annotate(r"Density (kg/m$^3$)", xy=(0.1, 0.5), xycoords="axes fraction",
+                horizontalalignment="center", verticalalignment="center", fontweight="bold", fontsize=20
+            )
 
 plt.savefig("density_vs_{}_{}_{}.png".format(other, angle, runs), format='png', dpi=300)
