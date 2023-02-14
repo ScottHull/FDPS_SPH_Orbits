@@ -138,7 +138,7 @@ for iteration in iterations:
         disk_at_rho_cutoff = disk[disk['density'] == cutoff_densities[cd]]
         fraction_of_paraticles_at_rho_cutoff = len(disk_at_rho_cutoff) / len(disk)
         axs[current_index].scatter(
-            disk['pressure'], disk[other] s=0.8, marker=".", alpha=1, color='black'
+            disk['pressure'], disk[other], s=0.8, marker=".", alpha=1, color='black'
         )
         # annotate with fraction of particles at rho cutoff
         axs[current_index].annotate(
