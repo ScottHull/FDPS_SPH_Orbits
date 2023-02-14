@@ -143,7 +143,7 @@ for iteration in iterations:
         # annotate with fraction of particles at rho cutoff
         axs[current_index].annotate(
             f"{round(fraction_of_paraticles_at_rho_cutoff * 100, 2)} %" + "\ndisk particles at " + r"$rho_{\rm c}$", xy=(0.95, 0.90), xycoords="axes fraction",
-            horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=20
+            horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=20)
         if current_index % len(sims) == 0:
             # label time in upper right corner
             axs[current_index].annotate(
