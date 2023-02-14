@@ -101,8 +101,7 @@ endstates = get_end_states(angle=angle, high=high)
 figsize = (20, 20)
 if (high and angle == "b073" and runs == "new") or (high and angle == "b075" and runs == "old"):
     figsize = (24.5, 20)
-# fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
-# fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
+
 fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 
 axs = axs.flatten()
@@ -113,9 +112,6 @@ colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for iteration in iterations:
     for s, t in zip(sims, titles):
         cd = cutoff_densities.index(int(s.split("_")[0]))
-        # color = colors[cd]
-        # if "high" in s or "low" in s:
-        #     color = colors[-1]
         p = base_path + "{}/circularized_{}".format(s, s)
         f = p + "/{}.csv".format(iteration)
         df = pd.read_csv(f)
@@ -140,10 +136,14 @@ for iteration in iterations:
             df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
                                    df['id'].isin(end_escape.index.tolist())].sort_values("z")
         disk_at_rho_cutoff = disk[disk['density'] == cutoff_densities[cd]]
-        for i, label in zip([planet, disk, escape, disk_at_rho_cutoff], ["Planet", "Disk", "Escape", r"Disk At $\rho_c$"]):
-            axs[current_index].scatter(
-                i['density'], i['pressure'], s=0.8, marker=".", alpha=1, color='black', label=label
-            )
+        fraction_of_paraticles_at_rho_cutoff = len(disk_at_rho_cutoff) / len(disk)
+        axs[current_index].scatter(
+            disk['density'], disk['pressure'], s=0.8, marker=".", alpha=1, color='black'
+        )
+        # annotate with fraction of particles at rho cutoff
+        axs[current_index].annotate(
+            f"{round(fraction_of_paraticles_at_rho_cutoff * 100, 2)} %" + "\ndisk particles at " + r"$rho_{\rm c}$", xy=(0.95, 0.90), xycoords="axes fraction",
+            horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=20
         if current_index % len(sims) == 0:
             # label time in upper right corner
             axs[current_index].annotate(
@@ -152,14 +152,6 @@ for iteration in iterations:
             )
         current_index += 1
 
-legend = axs[0].legend(loc='upper right', fontsize=20)
-for handle in legend.legendHandles:
-    try:
-        handle.set_sizes([200.0])
-    except:
-        pass
-# plt.tight_layout()
-# plt.margins(0.005, tight=True)
 
 for index, t in enumerate(titles):
     axs[index].set_title(t, fontsize=20)
