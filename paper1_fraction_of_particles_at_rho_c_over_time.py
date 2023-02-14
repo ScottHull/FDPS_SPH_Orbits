@@ -157,7 +157,8 @@ axs[0].plot(
     [], [], c='black', linewidth=2.0, linestyle="--", label="N-SPH M-ANEOS"
 )
 axs[0].plot(
-    [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, linestyle="dotted", label="5b073S-high or\n2000b075N-low"
+    [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, color='black',
+    linestyle="dotted", label="5b073S-high or\n2000b075N-low"
 )
 
 for ax in axs:
@@ -180,6 +181,6 @@ for handle in legend.legendHandles:  # increase marker sizes in legend
         handle.set_sizes([120.0])
     except:
         pass
-fig.subplots_adjust(right=0.82)
+fig.subplots_adjust(right=0.80)
 
 plt.savefig("particle_fraction_at_rho_cutoff.png", dpi=300)
