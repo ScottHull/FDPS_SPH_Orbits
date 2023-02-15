@@ -138,13 +138,13 @@ for iteration in iterations:
             df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
                                    df['id'].isin(end_escape.index.tolist())].sort_values("z")
         disk_at_rho_cutoff = disk[disk['density'] == cutoff_densities[cd]]
-        fraction_at_rho_c = round(len(disk_at_rho_cutoff) / len(disk), 2)
+        fraction_at_rho_c = round(len(disk_at_rho_cutoff) / len(disk) * 100, 2)
         for i, label in zip([planet, disk, escape, disk_at_rho_cutoff], ["Planet", "Disk", "Escape", r"Disk At $\rho_c$"]):
             axs[current_index].scatter(
                 i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, label=label
             )
         if current_index % len(sims) == 0:
-            axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.35 * square_scale),
+            axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.40 * square_scale),
                                     "{} hrs".format(formatted_time), fontsize=20)
         axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.30 * square_scale),
                                 "{} %".format(fraction_at_rho_c), fontsize=20)
