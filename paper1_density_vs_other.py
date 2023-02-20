@@ -31,6 +31,7 @@ other = "pressure"
 units = r"Pa"
 # other = "temperature"
 # units = r"K"
+other_normalizer = 1e9
 iterations = [100, 200, 500, 1800]
 cutoff_densities = [5, 500, 1000, 2000]
 high = True
@@ -138,7 +139,7 @@ for iteration in iterations:
         disk_at_rho_cutoff = disk[disk['density'] == cutoff_densities[cd]]
         fraction_of_paraticles_at_rho_cutoff = len(disk_at_rho_cutoff) / len(disk)
         axs[current_index].scatter(
-            disk[other], disk["density"], s=0.8, marker=".", alpha=1, color='black'
+            disk[other] / other_normalizer, disk["density"], s=0.8, marker=".", alpha=1, color='black'
         )
         # annotate with fraction of particles at rho cutoff
         axs[current_index].annotate(
@@ -173,10 +174,10 @@ for index, ax in enumerate(axs):
     ax.text(x_loc, y_loc, letters[index], fontweight="bold", fontsize=20)
 
 axs[0].annotate(f"{other.capitalize()} ({units})", xy=(0.5, 0.1), xycoords="axes fraction",
-                horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=20
+                horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=8
             )
-axs[0].annotate(r"Density (kg/m$^3$)", xy=(0.1, 0.5), xycoords="axes fraction", rotation=90,
-                horizontalalignment="center", verticalalignment="center", fontweight="bold", fontsize=20
+axs[0].annotate(r"Density (kg/m$^3$)", xy=(0.9, 0.5), xycoords="axes fraction", rotation=90,
+                horizontalalignment="center", verticalalignment="center", fontweight="bold", fontsize=8
             )
 
 plt.savefig("density_vs_{}_{}_{}.png".format(other, angle, runs), format='png', dpi=300)
