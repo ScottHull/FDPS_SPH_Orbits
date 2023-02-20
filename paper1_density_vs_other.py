@@ -103,7 +103,7 @@ figsize = (20, 20)
 if (high and angle == "b073" and runs == "new") or (high and angle == "b075" and runs == "old"):
     figsize = (24.5, 20)
 
-fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize)
+fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 
 axs = axs.flatten()
 for ax in axs:
