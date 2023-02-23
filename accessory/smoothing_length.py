@@ -41,16 +41,18 @@ ax = fig.add_subplot(111)
 ax.set_xlabel("Density (kg/m$^3$)")
 ax.set_ylabel("$h$ (km)")
 # ax.set_title("Smoothing Length for Particle Counts (N)")
-print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1.1e6), 5) / 1000)
-print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1.1e6), 2000) / 1000)
+# print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1.1e6), 5) / 1000)
+# print(get_smth_length(get_particle_mass(target_mass + impactor_mass, 1.1e6), 2000) / 1000)
 for n in particle_counts:
     m = get_particle_mass(target_mass + impactor_mass, n)
     smth = [get_smth_length(m, rho) / 1000 for rho in densities]
+    # create a string where the resolution is a base 10 exponent
     ax.plot(
-        densities, smth, linewidth=2.0, label="N = %.1E" % n
+        densities, smth, linewidth=2.0, label=r"$10^{%d}$ particles" % int(log10(n))
     )
     ax.grid(alpha=0.4)
 ax.legend()
+ax.set_yscale("log")
 
 # plt.show()
 plt.savefig("smth_length.png", format='png', dpi=200)
