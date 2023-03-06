@@ -9,12 +9,12 @@ from ast import literal_eval
 import string
 from src.interpolation import GenericTrilinearInterpolation
 
-plt.rcParams.update({'font.size': 12, })
+plt.rcParams.update({'font.size': 14, })
 plt.style.use('seaborn-colorblind')
 
-angle = 'b075'
+angle = 'b073'
 cutoff_densities = [5, 500, 1000, 2000]
-base_max_val_folders_loc = "/Users/scotthull/Desktop/"
+base_max_val_folders_loc = "C:/Users/Scott/OneDrive/Desktop/figures-selected/"
 # base_max_val_folders_loc = "C:/Users/Scott/Desktop/"
 
 stewart_aneos_path = "src/phase_data/forst_STS.table.txt"
@@ -117,19 +117,24 @@ for i in ["Stewart M-ANEOS", "N-SPH M-ANEOS"]:
             if "high" in title or "low" in title:
                 color_index = len(cutoff_densities)
             axs[plotting_index].scatter(x, y, marker='o', s=4, color=colors[color_index])
+            # min_rho_particles = [
+            #     i for i in max_vals.keys() if max_vals[i]['density'] == cd
+            # ]
+            # x, y = [max_vals[p]['pressure'] / 10 ** 9 for p in min_rho_particles], [max_vals[p]['entropy'] for p in min_rho_particles]
+            # axs[plotting_index].scatter(x, y, marker='o', s=4, color='red')
         if plotting_index < 3:
             plotting_index += 2
 
     if "Stewart" in i:
-        axs[0].plot(P_s, S_s, linewidth=4.0, color='dodgerblue', label="Calculated")
-        axs[0].plot(h.P_h / 10 ** 9, h.S_h, linewidth=4.0, color='fuchsia', label="M-ANEOS")
-        axs[2].plot(P_s, S_s, linewidth=4.0, color='dodgerblue', label="Calculated")
-        axs[2].plot(h.P_h / 10 ** 9, h.S_h, linewidth=4.0, color='fuchsia', label="M-ANEOS")
+        axs[0].plot(P_s, S_s, linewidth=4.0, color='black', label="Calculated")
+        axs[0].plot(h.P_h / 10 ** 9, h.S_h, linewidth=4.0, color='black', linestyle="--", label="M-ANEOS")
+        axs[2].plot(P_s, S_s, linewidth=4.0, color='black', label="Calculated")
+        axs[2].plot(h.P_h / 10 ** 9, h.S_h, linewidth=4.0, color='black', linestyle="--", label="M-ANEOS")
     else:
-        axs[1].plot(P_s, S_s, linewidth=4.0, color='dodgerblue', label="Calculated")
-        axs[1].plot(h.P_h / 10 ** 9, h.S_h, linewidth=4.0, color='fuchsia', label="M-ANEOS")
-        axs[3].plot(P_s, S_s, linewidth=4.0, color='dodgerblue', label="Calculated")
-        axs[3].plot(h.P_h / 10 ** 9, h.S_h, linewidth=4.0, color='fuchsia', label="M-ANEOS")
+        axs[1].plot(P_s, S_s, linewidth=4.0, color='black', label="Calculated")
+        axs[1].plot(h.P_h / 10 ** 9, h.S_h, linewidth=4.0, color='black', linestyle="--", label="M-ANEOS")
+        axs[3].plot(P_s, S_s, linewidth=4.0, color='black', label="Calculated")
+        axs[3].plot(h.P_h / 10 ** 9, h.S_h, linewidth=4.0, color='black', linestyle="--", label="M-ANEOS")
     plotting_index = 1
 
 if angle == "b073":
@@ -160,10 +165,12 @@ for index, ax in enumerate(axs):
     ax.set_xscale("log")
     ax.set_xlim(0, 10 ** 4)
     ax.set_ylim(0, 10000)
-    x1, x2, y1, y2 = ax.axis()
-    # x_loc = x2 - (2 * (x2 - x1))
-    y_loc = y2 - (0.08 * (y2 - y1))
-    ax.text(10 ** 3.5, y_loc, letters[index], fontweight="bold")
+    # x1, x2, y1, y2 = ax.axis()
+    # # x_loc = x2 - (2 * (x2 - x1))
+    # y_loc = y2 - (0.08 * (y2 - y1))
+    # ax.text(10 ** 3.5, y_loc, letters[index], fontweight="bold")
+    # annotate the letter in the upper right-hand corner
+    ax.annotate(letters[index], xy=(0.95, 0.95), xycoords='axes fraction', fontsize=18, fontweight='bold')
 legend = axs[0].legend(loc='upper left')
 for handle in legend.legendHandles:
     try:
@@ -172,6 +179,7 @@ for handle in legend.legendHandles:
         pass
 
 plt.tight_layout()
+plt.show()
 plt.savefig("{}_hugoniot_with_max_pressure_vals.png".format(angle), format='png', dpi=200)
 
 
