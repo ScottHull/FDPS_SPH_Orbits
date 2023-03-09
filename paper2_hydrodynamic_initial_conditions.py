@@ -15,7 +15,11 @@ from src.vapor import calc_vapor_mass_fraction_without_circularization_from_form
 # use colorblind-friendly colors from seaborn
 # plt.style.use('seaborn-colorblind')
 
-runs = [('/home/theia/scotthull/Paper1_SPH/gi/500_b073_new', 'Canonical'), ('', 'Half-Earths'), ('', 'Mars')]
+runs = [
+    ('/home/theia/scotthull/Paper1_SPH/gi/500_b073_new', 'Canonical'),
+    ('/home/theia/scotthull/Paper2_SPH/gi/500_half_earths', 'Half-Earths'),
+    ('', 'Mars')
+]
 
 min_iteration = 0
 max_iteration = 1800
@@ -164,6 +168,23 @@ for index, (run, verbose_run_name) in enumerate(runs):
     axs[-3].set_xlabel("x (km)")
     axs[-2].set_xlabel("Time (hrs.)")
     axs[-1].set_xlabel("Time (hrs.)")
+
+    # output the initial conditions for each run to a file
+    for run, title in runs:
+        fname = f"{title}_hydrodynamic_initial_conditions.txt"
+        if os.path.exists(fname):
+            os.remove(fname)
+        with open(fname, "w") as f:
+            f.write(
+                f"Run: {title}\nPath: {run}\n"
+                f"Initial Condition Time: {ic_time} hrs.\n"
+                f"Initial Condition Iteration: {ic_iteration}\n"
+                f"Velocity: {mean_disk_vel[ic_iteration]} m/s\n"
+                f"Temperature: {mean_disk_temperature[ic_iteration]} K\n"
+                f"VMF w/o circ.: {final_disk_vmf[ic_iteration]} %\n"
+                f"Entropy w/o circ.: {mean_disk_entropy[ic_iteration]}\n"
+            )
+        f.close()
 
 # label each subplot with a letter in the upper-left corner
 letters = list(string.ascii_lowercase)
