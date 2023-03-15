@@ -89,7 +89,7 @@ for cd in [5, 2000]:
     else:
         linestyle = "--"
     for n in particle_counts:
-        particle_distances = [10**0, 10**1, 10**2, 10**3, 10**4, 10**5, 10**6, 10**7, 10**8, 10**9, 10**10]
+        particle_distances = [10**i for i in np.arange(0, 10, 0.05)]
         m = get_particle_mass(target_mass + impactor_mass, n)
         smth = get_smth_length(m, cd)
         wendland = [wendland_c6(r_i_minus_r_j, smth) for r_i_minus_r_j in particle_distances]
@@ -98,9 +98,10 @@ for cd in [5, 2000]:
         )
         ax.grid(alpha=0.4)
 for n in particle_counts:
-    ax.scatter([], [], marker='s', s=80, color=colors[particle_counts.index(n)], label="N = %.1E" % n)
+    ax.scatter([], [], marker='s', s=80, color=colors[particle_counts.index(n)], label=r"$10^{%d}$ particles" % int(log10(n)))
 ax.plot([], [], linewidth=2.0, linestyle="-", color='black', label=r"${\rho}_{c}$ = 5 kg/m$^3$")
 ax.plot([], [], linewidth=2.0, linestyle="--", color='black', label=r"${\rho}_{c}$ = 2000 kg/m$^3$")
+ax.set_xlim(1, 10**4.5)
 ax.set_xscale('log')
 ax.set_yscale('log')
 ax.legend()
