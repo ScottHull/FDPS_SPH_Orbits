@@ -18,8 +18,7 @@ base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 angle = "b073"
 cutoff_densities = [5, 100, 500, 1000, 2000]
 additional = [
-    "5_b073_new_h_max",
-    "5b073-h-max",
+    ("5_b073_new_h_max", "5b073-h-max"),
 ]
 min_iteration = 0
 max_iteration = 1800
