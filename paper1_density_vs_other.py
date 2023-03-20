@@ -12,7 +12,7 @@ angles = ['b073', 'b075']
 other = "pressure"
 other_normalizer = 1e9
 other_label = "Pressure (GPa)"
-other_ylim = (0, 5)
+other_ylim = (None, None)
 cutoff_densities = [5, 500, 1000, 2000]
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
@@ -75,6 +75,9 @@ def plot_phase_diagrams(other_name, other_norm):
             disk = df[df['label'] == "DISK"]
             disk_filtered = disk[disk['circ_entropy_delta'] < 5000]
             other, density = disk_filtered[other_name] / other_norm, disk_filtered['density']
+            min_density = min(density)
+            # get the number of particles at min density
+            min_density_count = len(disk_filtered[disk_filtered['density'] == min_density])
             cd = int(s.split("_")[0])
             color = colors[cutoff_densities.index(cd)]
             if "high" in s:
@@ -95,8 +98,11 @@ def plot_phase_diagrams(other_name, other_norm):
             label = r"$\rho_c = {}$ kg/m$^3$".format(cd)
             if "high" in s:
                 label = t
+            # axs[to_index].scatter(
+            #     density, other, s=1, marker=marker, alpha=0.6, color=color
+            # )
             axs[to_index].scatter(
-                density, other, s=1, marker=marker, alpha=0.6, color=color
+                min_density, min_density_count, s=50, marker=marker, alpha=1, color=color
             )
 
 for cd in cutoff_densities:
@@ -119,7 +125,8 @@ for ax in [axs[2], axs[3]]:
 for ax in [axs[0], axs[2]]:
     ax.set_ylabel(other_label)
 for ax in axs:
-    ax.set_ylim(other_ylim[0], other_ylim[1])
+    if None not in other_ylim:
+        ax.set_ylim(other_ylim[0], other_ylim[1])
 legend = fig.legend(loc=7, fontsize=16)
 for line in legend.get_lines():  # increase line widths in legend
     try:
