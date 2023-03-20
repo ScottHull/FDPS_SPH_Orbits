@@ -118,6 +118,8 @@ for ax in [axs[2], axs[3]]:
     ax.set_xlabel("Density (kg/m$^3$)")
 for ax in [axs[0], axs[2]]:
     ax.set_ylabel(other_label)
+for ax in axs:
+    ax.set_ylim(other_ylim[0], other_ylim[1])
 legend = fig.legend(loc=7, fontsize=16)
 for line in legend.get_lines():  # increase line widths in legend
     try:
