@@ -130,6 +130,7 @@ for ax in [axs[0], axs[2]]:
 for ax in axs:
     if None not in other_ylim:
         ax.set_ylim(other_ylim[0], other_ylim[1])
+    ax.set_yscale("log")
 legend = fig.legend(loc=7, fontsize=16)
 for line in legend.get_lines():  # increase line widths in legend
     try:
