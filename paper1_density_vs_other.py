@@ -145,11 +145,16 @@ for handle in legend.legendHandles:  # increase marker sizes in legend
 fig.subplots_adjust(right=0.80)
 
 letters = list(string.ascii_lowercase)
-for index, ax in enumerate(axs):
-    x1, x2, y1, y2 = ax.axis()
-    x_loc = x1 + (0.02 * (x2 - x1))
-    y_loc = y2 - (0.08 * (y2 - y1))
-    ax.grid(alpha=0.4)
-    ax.text(x_loc, y_loc, letters[index], fontweight="bold")
+# annotate with letters in the upper left corner
+for i, ax in enumerate(axs):
+    ax.text(
+        0.05,
+        0.95,
+        letters[i],
+        transform=ax.transAxes,
+        fontsize=16,
+        fontweight="bold",
+        va="top",
+    )
 
 plt.savefig("paper1_density_vs_other.png", format='png', dpi=200)
