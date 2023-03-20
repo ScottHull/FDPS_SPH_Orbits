@@ -75,7 +75,8 @@ def plot_phase_diagrams(other_name, other_norm):
             disk = df[df['label'] == "DISK"]
             disk_filtered = disk[disk['circ_entropy_delta'] < 5000]
             other, density = disk_filtered[other_name], disk_filtered['density']
-            min_other = min(other)
+            # get min other that is not 0
+            min_other = min(other[other != 0])
             # get the number of particles at min density
             min_other_count = len(disk_filtered[disk_filtered[other_name] == min_other])
             cd = int(s.split("_")[0])
