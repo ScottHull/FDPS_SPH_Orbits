@@ -128,6 +128,7 @@ for ax in [axs[0], axs[2]]:
     # ax.set_ylabel("Num. Disk Particles At Min. Pressure")
     ax.set_ylabel(other_label)
 for ax in axs:
+    ax.grid(alpha=0.4)
     if None not in other_ylim:
         ax.set_ylim(other_ylim[0], other_ylim[1])
     ax.set_yscale("log")
