@@ -61,7 +61,7 @@ colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 critical_point_new = max(new_phase_df['temperature'])
 critical_point_old = max(old_phase_df['temperature'])
 
-def plot_phase_diagrams():
+def plot_phase_diagrams(other_name, other_norm):
     for angle in angles:
         high = True
         # if angle == "b075":
@@ -73,7 +73,7 @@ def plot_phase_diagrams():
             df = pd.read_csv(to_path)
             disk = df[df['label'] == "DISK"]
             disk_filtered = disk[disk['circ_entropy_delta'] < 5000]
-            other, density = disk_filtered[other] / other_normalizer, disk_filtered['density']
+            other, density = disk_filtered[other_name] / other_norm, disk_filtered['density']
             cd = int(s.split("_")[0])
             color = colors[cutoff_densities.index(cd)]
             if "high" in s:
@@ -112,8 +112,11 @@ axs[0].set_title("Stewart M-ANEOS ($b=0.73$)")
 axs[1].set_title("N-SPH M-ANEOS ($b=0.73$)")
 axs[2].set_title("Stewart M-ANEOS ($b=0.75$)")
 axs[3].set_title("N-SPH M-ANEOS ($b=0.75$)")
-plot_phase_diagrams()
-plt.tight_layout()
+plot_phase_diagrams(other, other_normalizer)
+for ax in axs[:-2]:
+    ax.set_xlabel("Density (kg/m$^3$)")
+for ax in [axs[0], axs[2]]:
+    ax.set_ylabel("Temperature (K)")
 legend = fig.legend(loc=7, fontsize=16)
 for line in legend.get_lines():  # increase line widths in legend
     try:
