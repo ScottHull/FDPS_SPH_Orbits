@@ -12,7 +12,7 @@ from src.interpolation import GenericTrilinearInterpolation
 plt.rcParams.update({'font.size': 14, })
 plt.style.use('seaborn-colorblind')
 
-angle = 'b075'
+angle = 'b073'
 cutoff_densities = [5, 500, 1000, 2000]
 base_max_val_folders_loc = "C:/Users/Scott/OneDrive/Desktop/figures-selected/"
 # base_max_val_folders_loc = "C:/Users/Scott/Desktop/"
