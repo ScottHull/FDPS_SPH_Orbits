@@ -100,7 +100,7 @@ def plot_phase_diagrams(other_name, other_norm):
             if "high" in s:
                 label = t
             # axs[to_index].scatter(
-            #     density, other, s=1, marker=marker, alpha=0.6, color=color
+            #     density, other, s=1, marker=marker, alpha=1, color=color
             # )
             axs[to_index].scatter(
                 min_other / other_norm, min_other_count, s=400, marker=marker, alpha=1, color=color
@@ -110,10 +110,10 @@ for cd in cutoff_densities:
     label = r"$\rho_c = {}$ kg/m$^3$".format(cd)
     color = colors[cutoff_densities.index(cd)]
     axs[0].scatter(
-        [], [], marker=".", s=120, alpha=0.6, color=color, label=label
+        [], [], marker=".", s=120, alpha=1, color=color, label=label
     )
 axs[0].scatter(
-        [], [], marker=".", s=120, alpha=0.6, color=colors[cutoff_densities.index(cutoff_densities[-1]) + 1], label="5b073S-high &\n2000b075N-low"
+        [], [], marker=".", s=120, alpha=1, color=colors[cutoff_densities.index(cutoff_densities[-1]) + 1], label="5b073S-high &\n2000b075N-low"
     )
 
 axs[0].set_title("Stewart M-ANEOS ($b=0.73$)")
