@@ -99,12 +99,12 @@ def plot_phase_diagrams(other_name, other_norm):
             label = r"$\rho_c = {}$ kg/m$^3$".format(cd)
             if "high" in s:
                 label = t
-            # axs[to_index].scatter(
-            #     density, other, s=1, marker=marker, alpha=1, color=color
-            # )
             axs[to_index].scatter(
-                min_other / other_norm, min_other_count, s=400, marker=marker, alpha=1, color=color
+                density, other, s=1, marker=marker, alpha=1, color=color
             )
+            # axs[to_index].scatter(
+            #     min_other / other_norm, min_other_count, s=400, marker=marker, alpha=1, color=color
+            # )
 
 for cd in cutoff_densities:
     label = r"$\rho_c = {}$ kg/m$^3$".format(cd)
@@ -122,9 +122,11 @@ axs[2].set_title("Stewart M-ANEOS ($b=0.75$)")
 axs[3].set_title("N-SPH M-ANEOS ($b=0.75$)")
 plot_phase_diagrams(other, other_normalizer)
 for ax in [axs[2], axs[3]]:
-    ax.set_xlabel("Min. Pressure (GPa)")
+    # ax.set_xlabel("Min. Pressure (GPa)")
+    ax.set_xlabel("Density (kg/m$^3$)")
 for ax in [axs[0], axs[2]]:
-    ax.set_ylabel("Num. Disk Particles At Min. Pressure")
+    # ax.set_ylabel("Num. Disk Particles At Min. Pressure")
+    ax.set_ylabel(other_label)
 for ax in axs:
     if None not in other_ylim:
         ax.set_ylim(other_ylim[0], other_ylim[1])
