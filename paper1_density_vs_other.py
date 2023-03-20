@@ -75,9 +75,9 @@ def plot_phase_diagrams(other_name, other_norm):
             disk = df[df['label'] == "DISK"]
             disk_filtered = disk[disk['circ_entropy_delta'] < 5000]
             other, density = disk_filtered[other_name] / other_norm, disk_filtered['density']
-            min_density = min(density)
+            min_other = min(other)
             # get the number of particles at min density
-            min_density_count = len(disk_filtered[disk_filtered['density'] == min_density])
+            min_other_count = len(disk_filtered[disk_filtered[other_name] == min_other])
             cd = int(s.split("_")[0])
             color = colors[cutoff_densities.index(cd)]
             if "high" in s:
@@ -102,7 +102,7 @@ def plot_phase_diagrams(other_name, other_norm):
             #     density, other, s=1, marker=marker, alpha=0.6, color=color
             # )
             axs[to_index].scatter(
-                min_density, min_density_count, s=50, marker=marker, alpha=1, color=color
+                min_other / other_norm, min_other_count, s=400, marker=marker, alpha=1, color=color
             )
 
 for cd in cutoff_densities:
@@ -121,9 +121,9 @@ axs[2].set_title("Stewart M-ANEOS ($b=0.75$)")
 axs[3].set_title("N-SPH M-ANEOS ($b=0.75$)")
 plot_phase_diagrams(other, other_normalizer)
 for ax in [axs[2], axs[3]]:
-    ax.set_xlabel("Density (kg/m$^3$)")
+    ax.set_xlabel("Min. Pressure (GPa)")
 for ax in [axs[0], axs[2]]:
-    ax.set_ylabel(other_label)
+    ax.set_ylabel("Num. Disk Particles At Min. Pressure")
 for ax in axs:
     if None not in other_ylim:
         ax.set_ylim(other_ylim[0], other_ylim[1])
