@@ -12,7 +12,7 @@ from src.interpolation import GenericTrilinearInterpolation
 plt.rcParams.update({'font.size': 14, })
 plt.style.use('seaborn-colorblind')
 
-angle = 'b073'
+angle = 'b075'
 cutoff_densities = [5, 500, 1000, 2000]
 base_max_val_folders_loc = "C:/Users/Scott/OneDrive/Desktop/figures-selected/"
 # base_max_val_folders_loc = "C:/Users/Scott/Desktop/"
@@ -157,8 +157,8 @@ axs[1].set_title("N-SPH M-ANEOS: Primary Impact")
 axs[3].set_title("N-SPH M-ANEOS: Final Disk State")
 axs[2].set_xlabel("Pressure (GPa)")
 axs[3].set_xlabel("Pressure (GPa)")
-axs[0].set_ylabel("Entropy (J/K)")
-axs[2].set_ylabel("Entropy (J/K)")
+axs[0].set_ylabel("Entropy (J/kg/K)")
+axs[2].set_ylabel("Entropy (J/kg/K)")
 letters = list(string.ascii_lowercase)
 for index, ax in enumerate(axs):
     ax.grid(alpha=0.6)
@@ -179,7 +179,7 @@ for handle in legend.legendHandles:
         pass
 
 plt.tight_layout()
-plt.show()
+# plt.show()
 plt.savefig("{}_hugoniot_with_max_pressure_vals.png".format(angle), format='png', dpi=200)
 
 

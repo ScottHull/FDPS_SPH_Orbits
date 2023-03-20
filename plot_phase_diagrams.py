@@ -129,7 +129,7 @@ for ax in axs:
 for ax in [axs[0], axs[2]]:
     ax.set_ylabel("Temperature (K)")
 for ax in [axs[2], axs[3]]:
-    ax.set_xlabel("Entropy (J/K)")
+    ax.set_xlabel("Entropy (J/kg/K)")
 for ax in [axs[0], axs[2]]:
     shade_plot(s="new", ax=ax)
 for ax in [axs[1], axs[3]]:
