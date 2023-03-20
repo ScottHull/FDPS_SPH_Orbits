@@ -12,6 +12,7 @@ angles = ['b073', 'b075']
 other = "pressure"
 other_normalizer = 1e9
 other_label = "Pressure (GPa)"
+other_ylim = (0, 5)
 cutoff_densities = [5, 500, 1000, 2000]
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
@@ -113,10 +114,10 @@ axs[1].set_title("N-SPH M-ANEOS ($b=0.73$)")
 axs[2].set_title("Stewart M-ANEOS ($b=0.75$)")
 axs[3].set_title("N-SPH M-ANEOS ($b=0.75$)")
 plot_phase_diagrams(other, other_normalizer)
-for ax in axs[:-2]:
+for ax in [axs[2], axs[3]]:
     ax.set_xlabel("Density (kg/m$^3$)")
 for ax in [axs[0], axs[2]]:
-    ax.set_ylabel("Temperature (K)")
+    ax.set_ylabel(other_label)
 legend = fig.legend(loc=7, fontsize=16)
 for line in legend.get_lines():  # increase line widths in legend
     try:
