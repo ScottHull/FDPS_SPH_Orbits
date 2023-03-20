@@ -100,7 +100,7 @@ def plot_phase_diagrams(other_name, other_norm):
             if "high" in s:
                 label = t
             axs[to_index].scatter(
-                density, other, s=1, marker=marker, alpha=1, color=color
+                density, other / other_norm, s=1, marker=marker, alpha=1, color=color
             )
             # axs[to_index].scatter(
             #     min_other / other_norm, min_other_count, s=400, marker=marker, alpha=1, color=color
