@@ -55,11 +55,21 @@ for particle in df_ejected.index.tolist():
 fig, axs = plt.subplots(2, 2, figsize=(10, 5))
 axs = axs.flatten()
 for index, header in enumerate(['density', 'internal energy', 'entropy', 'temperature']):
+    # scatter the particles and color by 'tag' column
     axs[index].scatter(
-        df['radius'] / 1000, df[header], s=2, alpha=0.5, label="All Particles"
+        df[df['tag'] % 2 == 0]['radius'] / 1000, df[df['tag'] % 2 == 0][header], s=2, alpha=0.5, color='red', label="Silicate Particles"
     )
+    axs[index].scatter(
+        df[df['tag'] % 2 == 1]['radius'] / 1000, df[df['tag'] % 2 == 1][header], s=2, alpha=0.5, color='blue', label="Iron Particles"
+    )
+    # axs[index].scatter(
+    #     df['radius'] / 1000, df[header], s=2, alpha=0.5, label="All Particles"
+    # )
+    # plot the radius of the planet
+    axs[index].axvline(radius_planet / 1000, color='k', linestyle='--', label="Planet Radius")
     # axs[index].set_title(header)
     axs[index].set_ylabel(header)
+axs[0].legend(loc='upper right')
 for ax in axs:
     ax.grid()
 
