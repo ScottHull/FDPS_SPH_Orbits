@@ -17,7 +17,7 @@ interp_functions = {
 }
 
 # get all particles outside the planet
-df_ejected = df_silicate[df_silicate['x'] > radius_planet]
+df_ejected = df_silicate[df_silicate['radius'] > radius_planet]
 num_particles_to_fix = len(df_ejected)
 print(f"there are {num_particles_to_fix} particles outside the planet)")
 
@@ -51,6 +51,8 @@ for particle in df_ejected.index.tolist():
         f = interp_functions[header]
         df.at[particle, header] = f(radius)
 
+# get all particles in df whose ids are in df_ejected
+df_fixed = df[df.index.isin(df_ejected.index.tolist())]
 # plot to check
 fig, axs = plt.subplots(2, 2, figsize=(10, 5))
 axs = axs.flatten()
@@ -61,6 +63,9 @@ for index, header in enumerate(['density', 'internal energy', 'entropy', 'temper
     )
     axs[index].scatter(
         df[df['tag'] % 2 == 1]['radius'] / 1000, df[df['tag'] % 2 == 1][header], s=2, alpha=0.5, color='blue', label="Iron Particles"
+    )
+    axs[index].scatter(
+        df_fixed['radius'] / 1000, df_fixed[header], s=2, alpha=0.5, color='green', label="Fixed Particles"
     )
     # axs[index].scatter(
     #     df['radius'] / 1000, df[header], s=2, alpha=0.5, label="All Particles"
