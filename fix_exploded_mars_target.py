@@ -3,7 +3,7 @@ import numpy as np
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 
-fname = "/home/theia/scotthull/FDPS_SPH_Orbits/merged_142.dat"
+fname = "/home/theia/scotthull/examine_fdps_sph_outputs/merged_142.dat"
 radius_planet = 3400 * 1000
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
@@ -11,6 +11,10 @@ headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "int
 df = pd.read_csv(fname, skiprows=2, header=None, delimiter="\t", names=headers, index_col='id')
 df['radius'] = [np.sqrt(i[0]**2 + i[1]**2 + i[2]**2) for i in zip(df['x'], df['y'], df['z'])]
 df_silicate = df[df['tag'] % 2 == 0]
+
+interp_functions = {
+    header: interp1d(df_silicate['radius'], df_silicate[header]) for header in headers[9:]
+}
 
 # get all particles outside the planet
 df_ejected = df_silicate[df_silicate['x'] > radius_planet]
@@ -32,6 +36,8 @@ for particle in df_ejected.index.tolist():
     x = radius * np.sin(phi) * np.cos(theta)
     y = radius * np.sin(phi) * np.sin(theta)
     z = radius * np.cos(phi)
+    print(f"old position: {df.at[particle, 'x']}, {df.at[particle, 'y']}, {df.at[particle, 'z']}")
+    print(f"new position: {x}, {y}, {z}")
     # update dataframe
     df.at[particle, 'x'] = x
     df.at[particle, 'y'] = y
@@ -41,7 +47,8 @@ for particle in df_ejected.index.tolist():
     df.at[particle, 'vz'] = 0
     # interpolate the rest of the headrs as a function of radius
     for header in headers[9:]:
-        f = interp1d(df_silicate['radius'], df_silicate[header])
+        print(f'interpolating {header}')
+        f = interp_functions[header]
         df.at[particle, header] = f(radius)
 
 # plot to check
