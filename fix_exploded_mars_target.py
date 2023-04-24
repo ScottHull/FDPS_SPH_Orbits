@@ -4,7 +4,7 @@ from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 
 fname = "/home/theia/scotthull/examine_fdps_sph_outputs/merged_142.dat"
-radius_planet = 3400 * 1000
+radius_planet = 3800 * 1000
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature", "smoothing length"]
@@ -42,6 +42,7 @@ for particle in df_ejected.index.tolist():
     df.at[particle, 'x'] = x
     df.at[particle, 'y'] = y
     df.at[particle, 'z'] = z
+    df.at[particle, 'radius'] = radius
     df.at[particle, 'vx'] = 0
     df.at[particle, 'vy'] = 0
     df.at[particle, 'vz'] = 0
