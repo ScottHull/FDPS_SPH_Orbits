@@ -3,12 +3,12 @@ import numpy as np
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 
-fname = "merged_142.dat"
-radius_planet = 1000
+fname = "/home/theia/scotthull/FDPS_SPH_Orbits/merged_142.dat"
+radius_planet = 3400 * 1000
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature", "smoothing length"]
-df = pd.read_csv(fname, skiprows=2, header=None, delimiter="\t", names=headers)
+df = pd.read_csv(fname, skiprows=2, header=None, delimiter="\t", names=headers, index_col='id')
 df['radius'] = [np.sqrt(i[0]**2 + i[1]**2 + i[2]**2) for i in zip(df['x'], df['y'], df['z'])]
 df_silicate = df[df['tag'] % 2 == 0]
 
