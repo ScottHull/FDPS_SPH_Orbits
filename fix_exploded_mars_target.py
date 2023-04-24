@@ -27,7 +27,7 @@ for particle in df_ejected.index.tolist():
     count += 1
     print(f"particle {count} of {num_particles_to_fix}")
     # get random radius within planet
-    radius = np.random.uniform(min(df_silicate['radius']), radius_planet)
+    radius = np.random.uniform(min(df_silicate['radius']), radius_planet - (800 * 1000))
     # get random theta
     theta = np.random.uniform(0, 2 * np.pi)
     # get random phi
