@@ -14,11 +14,16 @@ df_silicate = df[df['tag'] % 2 == 0]
 
 # get all particles outside the planet
 df_ejected = df_silicate[df_silicate['x'] > radius_planet]
+num_particles_to_fix = len(df_ejected)
+print(f"there are {num_particles_to_fix} particles outside the planet)")
 
+count = 0
 # place these particles in random locations within the planet
 for particle in df_ejected.index.tolist():
+    count += 1
+    print(f"particle {count} of {num_particles_to_fix}")
     # get random radius within planet
-    radius = np.random.uniform(0, radius_planet)
+    radius = np.random.uniform(min(df_silicate['radius']), radius_planet)
     # get random theta
     theta = np.random.uniform(0, 2 * np.pi)
     # get random phi
