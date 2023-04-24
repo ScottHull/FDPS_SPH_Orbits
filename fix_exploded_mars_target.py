@@ -36,8 +36,8 @@ for particle in df_ejected.index.tolist():
     x = radius * np.sin(phi) * np.cos(theta)
     y = radius * np.sin(phi) * np.sin(theta)
     z = radius * np.cos(phi)
-    print(f"old position: {df.at[particle, 'x']}, {df.at[particle, 'y']}, {df.at[particle, 'z']}")
-    print(f"new position: {x}, {y}, {z}")
+    print(f"old position: {df.at[particle, 'x']}, {df.at[particle, 'y']}, {df.at[particle, 'z']}...radius: {df.at[particle, 'radius']}")
+    print(f"new position: {x}, {y}, {z}...radius: {radius}")
     # update dataframe
     df.at[particle, 'x'] = x
     df.at[particle, 'y'] = y
@@ -47,7 +47,7 @@ for particle in df_ejected.index.tolist():
     df.at[particle, 'vz'] = 0
     # interpolate the rest of the headrs as a function of radius
     for header in headers[9:]:
-        print(f'interpolating {header}')
+        # print(f'interpolating {header}')
         f = interp_functions[header]
         df.at[particle, header] = f(radius)
 
