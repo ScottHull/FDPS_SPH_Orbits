@@ -47,7 +47,7 @@ for particle in df_ejected.index.tolist():
     df.at[particle, 'vy'] = 0
     df.at[particle, 'vz'] = 0
     # interpolate the rest of the headrs as a function of radius
-    for header in headers[9:]:
+    for header in headers[9:-1]:
         # print(f'interpolating {header}')
         f = interp_functions[header]
         df.at[particle, header] = f(radius)
@@ -79,4 +79,8 @@ axs[0].legend(loc='upper right')
 for ax in axs:
     ax.grid()
 
+# remove the smoothing length column
+df = df.drop(columns=['smoothing length'])
+# save the dataframe
+df.to_csv('body.dat', sep='\t', index=True, header=False)
 plt.savefig('test.png', format='png')
