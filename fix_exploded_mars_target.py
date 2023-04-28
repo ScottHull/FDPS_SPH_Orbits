@@ -25,7 +25,7 @@ count = 0
 # place these particles in random locations within the planet
 for particle in df_ejected.index.tolist():
     count += 1
-    print(f"particle {count} of {num_particles_to_fix} (particle id: {index})")
+    print(f"particle {count} of {num_particles_to_fix} (particle id: {particle})")
     # get random radius within planet
     radius = np.random.uniform(min(df_silicate['radius']), radius_planet - (800 * 1000))
     # get random theta
