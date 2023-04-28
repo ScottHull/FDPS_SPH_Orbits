@@ -94,6 +94,8 @@ if len(nan_values) > 0:
     print(nan_values.index.tolist())
     # print the corresponding rows
     print(df.loc[nan_values.index.tolist()])
+    # delete these rows
+    df = df.drop(nan_values.index.tolist())
 # save the dataframe
 df.to_csv('body.dat', sep='\t', index=True, header=False)
 # plt.savefig('test.png', format='png')
