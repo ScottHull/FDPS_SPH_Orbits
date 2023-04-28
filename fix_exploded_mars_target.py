@@ -25,7 +25,7 @@ count = 0
 # place these particles in random locations within the planet
 for particle in df_ejected.index.tolist():
     count += 1
-    print(f"particle {count} of {num_particles_to_fix}")
+    print(f"particle {count} of {num_particles_to_fix} (particle id: {particle['id']})")
     # get random radius within planet
     radius = np.random.uniform(min(df_silicate['radius']), radius_planet - (800 * 1000))
     # get random theta
@@ -80,7 +80,7 @@ for ax in axs:
     ax.grid()
 
 # remove the smoothing length column
-df = df.drop(columns=['smoothing length'])
+df = df.drop(columns=['smoothing length', 'radius'])
 # save the dataframe
 df.to_csv('body.dat', sep='\t', index=True, header=False)
 plt.savefig('test.png', format='png')
