@@ -52,12 +52,6 @@ for particle in df_ejected.index.tolist():
         f = interp_functions[header]
         df.at[particle, header] = f(radius)
 
-# check for nan values in the dataframe and print out their ids if they exist
-nan_values = df[df.isna().any(axis=1)]
-if len(nan_values) > 0:
-    print("there are nan values in the dataframe")
-    print(nan_values.index.tolist())
-
 
 
 
@@ -93,6 +87,11 @@ if len(nan_values) > 0:
 
 # remove the smoothing length column
 df = df.drop(columns=['smoothing length', 'radius'])
+# check for nan values in the dataframe and print out their ids if they exist
+nan_values = df[df.isna().any(axis=1)]
+if len(nan_values) > 0:
+    print("there are nan values in the dataframe")
+    print(nan_values.index.tolist())
 # save the dataframe
 df.to_csv('body.dat', sep='\t', index=True, header=False)
 # plt.savefig('test.png', format='png')
