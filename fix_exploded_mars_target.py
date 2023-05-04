@@ -24,33 +24,36 @@ print(f"there are {num_particles_to_fix} particles outside the planet)")
 count = 0
 # place these particles in random locations within the planet
 for particle in df_ejected.index.tolist():
-    count += 1
-    print(f"particle {count} of {num_particles_to_fix} (particle id: {particle})")
-    # get random radius within planet
-    radius = np.random.uniform(min(df_silicate['radius']), radius_planet - (800 * 1000))
-    # get random theta
-    theta = np.random.uniform(0, 2 * np.pi)
-    # get random phi
-    phi = np.random.uniform(0, np.pi)
-    # convert to cartesian
-    x = radius * np.sin(phi) * np.cos(theta)
-    y = radius * np.sin(phi) * np.sin(theta)
-    z = radius * np.cos(phi)
-    print(f"old position: {df.at[particle, 'x']}, {df.at[particle, 'y']}, {df.at[particle, 'z']}...radius: {df.at[particle, 'radius'] / 1000} km")
-    print(f"new position: {x}, {y}, {z}...radius: {radius / 1000} km")
-    # update dataframe
-    df.at[particle, 'x'] = x
-    df.at[particle, 'y'] = y
-    df.at[particle, 'z'] = z
-    df.at[particle, 'radius'] = radius
-    df.at[particle, 'vx'] = 0
-    df.at[particle, 'vy'] = 0
-    df.at[particle, 'vz'] = 0
-    # interpolate the rest of the headrs as a function of radius
-    for header in headers[9:-1]:
-        # print(f'interpolating {header}')
-        f = interp_functions[header]
-        df.at[particle, header] = f(radius)
+    # delete the particle
+    df = df.drop(particle)
+
+    # count += 1
+    # print(f"particle {count} of {num_particles_to_fix} (particle id: {particle})")
+    # # get random radius within planet
+    # radius = np.random.uniform(min(df_silicate['radius']), radius_planet - (800 * 1000))
+    # # get random theta
+    # theta = np.random.uniform(0, 2 * np.pi)
+    # # get random phi
+    # phi = np.random.uniform(0, np.pi)
+    # # convert to cartesian
+    # x = radius * np.sin(phi) * np.cos(theta)
+    # y = radius * np.sin(phi) * np.sin(theta)
+    # z = radius * np.cos(phi)
+    # print(f"old position: {df.at[particle, 'x']}, {df.at[particle, 'y']}, {df.at[particle, 'z']}...radius: {df.at[particle, 'radius'] / 1000} km")
+    # print(f"new position: {x}, {y}, {z}...radius: {radius / 1000} km")
+    # # update dataframe
+    # df.at[particle, 'x'] = x
+    # df.at[particle, 'y'] = y
+    # df.at[particle, 'z'] = z
+    # df.at[particle, 'radius'] = radius
+    # df.at[particle, 'vx'] = 0
+    # df.at[particle, 'vy'] = 0
+    # df.at[particle, 'vz'] = 0
+    # # interpolate the rest of the headrs as a function of radius
+    # for header in headers[9:-1]:
+    #     # print(f'interpolating {header}')
+    #     f = interp_functions[header]
+    #     df.at[particle, header] = f(radius)
 
 
 
