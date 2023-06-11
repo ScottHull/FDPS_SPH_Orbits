@@ -28,7 +28,8 @@ rt = ReverseTime(
     impactor_file_path=impactor_path,
     impact_parameter=b,
     dt=-dt,
-    center_target=True
+    center_target=True,
+    v_esc_multiple=v_esc_multiple
 )
 
 v_esc = v_esc_multiple * sqrt(2.0 * rt.G * (rt.target_mass + rt.impactor_mass) / (rt.radius_target + rt.radius_impactor))
