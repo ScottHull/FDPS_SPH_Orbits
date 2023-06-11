@@ -12,7 +12,8 @@ class ReverseTime:
     Reversing the initial position of the impactor backwards in time.
     """
 
-    def __init__(self, target_file_path, impactor_file_path, impact_parameter, dt=-0.1, center_target=False):
+    def __init__(self, target_file_path, impactor_file_path, impact_parameter, dt=-0.1, center_target=False,
+                 v_esc_multiple=1.0):
         self.G = 6.674 * 10 ** -11
         self.target_df = pd.read_csv(target_file_path, sep='\t', skiprows=2, header=None)
         self.impactor_df = pd.read_csv(impactor_file_path, sep='\t', skiprows=2, header=None)
@@ -48,7 +49,7 @@ class ReverseTime:
         self.radius_target = self.radius_body(centered_coords=self.target_centered)
         self.radius_impactor = self.radius_body(centered_coords=self.impactor_centered)
 
-        self.v_esc = sqrt((2 * self.G * self.total_mass) / (self.radius_target + self.radius_impactor))
+        self.v_esc = v_esc_multiple * sqrt((2 * self.G * self.total_mass) / (self.radius_target + self.radius_impactor))
         self.v_target_x = (self.impactor_mass / self.total_mass) * self.v_esc
         self.v_impactor_x = - (self.target_mass / self.total_mass) * self.v_esc
         self.v_target_y = 0.0

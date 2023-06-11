@@ -16,6 +16,7 @@ target_path = "/home/shull4/Paper1/{}/FDPS_SPH/input/tar.dat".format(name)
 impactor_path = "/home/shull4/Paper1/{}/FDPS_SPH/input/imp.dat".format(name)
 b = 0.73
 dt = 5
+v_esc_multiple = 1.0
 output_path = "/scratch/shull4/{}_{}_reversed_outputs".format(name, b)
 
 if os.path.exists(output_path):
@@ -30,7 +31,7 @@ rt = ReverseTime(
     center_target=True
 )
 
-v_esc = sqrt(2.0 * rt.G * (rt.target_mass + rt.impactor_mass) / (rt.radius_target + rt.radius_impactor))
+v_esc = v_esc_multiple * sqrt(2.0 * rt.G * (rt.target_mass + rt.impactor_mass) / (rt.radius_target + rt.radius_impactor))
 
 loop = 0
 plotted = 0
