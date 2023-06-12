@@ -22,18 +22,8 @@ class ReverseTime:
         self.impactor_mass = sum([float(i) for i in self.impactor_df[2]])
         self.total_mass = self.target_mass + self.impactor_mass
         self.imp_total_mass_ratio = self.impactor_mass / self.total_mass
-        self.com_target = center_of_mass(
-            x_coords=self.target_df[3],
-            y_coords=self.target_df[4],
-            z_coords=self.target_df[5],
-            masses=self.target_df[2]
-        )
-        self.com_impactor = center_of_mass(
-            x_coords=self.impactor_df[3],
-            y_coords=self.impactor_df[4],
-            z_coords=self.impactor_df[5],
-            masses=self.impactor_df[2]
-        )
+        self.com_target = self.center_of_mass(self.target_df)
+        self.com_impactor = self.center_of_mass(self.impactor_df)
         self.target_centered = self.center_body(
             x=self.target_df[3],
             y=self.target_df[4],
@@ -83,6 +73,14 @@ class ReverseTime:
         self.position_target_history = [self.com_target]
         self.position_impactor_history = [self.com_impactor]
         self.time_history = [0]
+
+
+    def center_of_mass(self, df):
+        total_mass = sum(df[2])
+        x = sum(df[2] * df[3]) / total_mass
+        y = sum(df[2] * df[4]) / total_mass
+        z = sum(df[2] * df[5]) / total_mass
+        return x, y, z
 
     def center_body(self, x, y, z, com):
         x = [i - com[0] for i in x]
