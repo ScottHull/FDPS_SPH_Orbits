@@ -54,7 +54,7 @@ def plot_iteration(iteration):
     ax = fig.add_subplot(111, projection='3d')
     for i in [target, impactor]:
         ax.scatter(
-            i[3], i[4], i[5], s=5, c=i[1]
+            i[3], i[4], i[5], s=5
         )
 
     ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
