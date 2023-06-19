@@ -35,7 +35,7 @@ target_entropy = []
 delta_s = []
 target_silicate_initial = None
 
-for index, iteration in np.arange(start_iteration, end_iteration + increment, increment):
+for index, iteration in enumerate(np.arange(start_iteration, end_iteration + increment, increment)):
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
     cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
     combined_file = cf.combine()
