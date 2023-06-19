@@ -64,7 +64,7 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
     target_silicate = df[df[1] % 2 == 0]
     # sort the target silicate
     target_silicate = target_silicate.sort_values(by=0)
-    target_silicate['delta S'] = target_silicate['entropy'] - target_silicate_initial['entropy']
+    target_silicate['delta S'] = target_silicate[9] - target_silicate_initial[9]
     # calculate the number of particles with delta S > 500 divided by the total number of particles
     delta_s.append(len(target_silicate[target_silicate['delta S'] > 500]) / len(target_silicate))
 
