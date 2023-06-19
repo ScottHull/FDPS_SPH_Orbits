@@ -28,6 +28,7 @@ path = "/home/theia/scotthull/Paper2_SPH/gi/{}/{}".format(run_name, run_name)
 number_processes = 600
 
 iterations = []
+times = []
 target_velocity = []
 impactor_velocity = []
 tar_imp_velocity_ratio = []
@@ -47,6 +48,7 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
 
     # get the mean velocity of the target and impactor
     iterations.append(iteration)
+    times.append(formatted_time)
     target['velocity'] = np.sqrt(target[6]**2 + target[7]**2 + target[8]**2)
     impactor['velocity'] = np.sqrt(impactor[6]**2 + impactor[7]**2 + impactor[8]**2)
     target_velocity.append(target['velocity'].mean())
@@ -80,8 +82,8 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
 
 fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(111)
-ax.plot(iterations, target_velocity / 1000, label="Target Velocity")
-ax.plot(iterations, impactor_velocity / 1000, label="Impactor Velocity")
+ax.plot(times, np.array(target_velocity) / 1000, label="Target Velocity")
+ax.plot(times, np.array(impactor_velocity) / 1000, label="Impactor Velocity")
 ax.set_xlabel("Iteration")
 ax.set_ylabel("Velocity (km/s)")
 ax.set_title("Velocity vs Iteration")
@@ -91,7 +93,7 @@ plt.savefig("velocity_vs_iteration.png", dpi=300)
 
 fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(111)
-ax.plot(iterations, tar_imp_velocity_ratio, label="Target / Impactor Velocity")
+ax.plot(times, tar_imp_velocity_ratio, label="Target / Impactor Velocity")
 ax.set_xlabel("Iteration")
 ax.set_ylabel("Velocity Ratio")
 ax.set_title("Velocity Ratio vs Iteration")
