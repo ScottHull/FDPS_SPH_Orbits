@@ -64,7 +64,7 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
     target_silicate = df[df[1] % 2 == 0]
     # sort the target silicate
     target_silicate = target_silicate.sort_values(by=0)
-    target_silicate['delta S'] = target_silicate[9] - target_silicate_initial[9]
+    target_silicate['delta S'] = target_silicate[13] - target_silicate_initial[13]
     # calculate the number of particles with delta S > 500 divided by the total number of particles
     delta_s.append(len(target_silicate[target_silicate['delta S'] > 500]) / len(target_silicate))
 
@@ -100,3 +100,13 @@ ax.set_title("Velocity Ratio vs Iteration")
 ax.legend()
 ax.grid()
 plt.savefig("velocity_ratio_vs_iteration.png", dpi=300)
+
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(111)
+ax.plot(times, delta_s, label="Delta S > 500")
+ax.set_xlabel("Iteration")
+ax.set_ylabel("Fraction of Particles w/ Delta S > 500")
+ax.set_title("Fraction of Particles w/ Delta S > 500 vs Iteration")
+ax.legend()
+ax.grid()
+plt.savefig("delta_s_frac_vs_iteration.png", dpi=300)
