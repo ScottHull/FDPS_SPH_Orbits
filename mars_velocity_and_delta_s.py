@@ -69,7 +69,7 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
     delta_s.append(len(target_silicate[target_silicate['delta S'] > 500]) / len(target_silicate))
 
     # if this is the last iteration, scatter all delta S
-    if index == end_iteration:
+    if iteration == end_iteration:
         target_silicate['radius'] = np.sqrt(target_silicate[3]**2 + target_silicate[4]**2 + target_silicate[5]**2)
         fig = plt.figure(figsize=(10, 10))
         ax = fig.add_subplot(111)
