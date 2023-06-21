@@ -95,7 +95,7 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
     ax.set_zlim(-square_scale, square_scale)
     for i in get_cube_verts(square_scale=square_scale):
         ax.plot(i[0], i[1], i[2], c='white', linewidth=0.3)
-    plt.savefig(f"{path_3d}/{iteration}.png".format(iteration), format='png', dpi=200)
+    plt.savefig(f"{path_3d}/{iteration}.png", format='png', dpi=200)
 
     # get the mean velocity of the target and impactor
     iterations.append(iteration)
