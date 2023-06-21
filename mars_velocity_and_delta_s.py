@@ -28,7 +28,7 @@ path = "/home/theia/scotthull/Paper2_SPH/gi/{}/{}".format(run_name, run_name)
 number_processes = 600
 min_normalize_parameter = 0
 max_normalize_parameter = 1000
-square_scale = 2e7
+square_scale = 8e6
 path_3d = "3D_{}".format(run_name)
 if os.path.exists(path_3d):
     shutil.rmtree(path_3d)
