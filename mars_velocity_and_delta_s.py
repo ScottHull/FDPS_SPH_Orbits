@@ -84,7 +84,8 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
     fig.patch.set_facecolor('xkcd:black')
     ax = fig.add_subplot(111, projection='3d')
     ax.scatter(
-        target[3], target[4], target[5], s=5, c=target['delta S'], cmap=cmap, norm=normalizer, alpha=1
+        target_silicate[3], target_silicate[4], target_silicate[5], s=5,
+        c=target_silicate['delta S'], cmap=cmap, norm=normalizer, alpha=1
     )
     ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
     ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
