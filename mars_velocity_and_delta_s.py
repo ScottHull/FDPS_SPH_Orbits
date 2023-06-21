@@ -48,9 +48,6 @@ delta_s = []
 target_silicate_initial = None
 
 for index, iteration in enumerate(np.arange(start_iteration, end_iteration + increment, increment)):
-    fig = plt.figure(figsize=(10, 10))
-    fig.patch.set_facecolor('xkcd:black')
-    ax = fig.add_subplot(111, projection='3d')
 
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
     cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
@@ -61,10 +58,34 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
     impactor = df[df[1] > 1]
     os.remove(to_fname)
 
-    ax.scatter(
-        target[3], target[4], target[5], s=5, c=target[13], cmap=cmap, norm=normalizer, alpha=1
-    )
+    # get the mean velocity of the target and impactor
+    iterations.append(iteration)
+    times.append(formatted_time)
+    target['velocity'] = np.sqrt(target[6]**2 + target[7]**2 + target[8]**2)
+    impactor['velocity'] = np.sqrt(impactor[6]**2 + impactor[7]**2 + impactor[8]**2)
+    target_velocity.append(target['velocity'].mean())
+    impactor_velocity.append(impactor['velocity'].mean())
+    tar_imp_velocity_ratio.append(target['velocity'].mean() / impactor['velocity'].mean())
 
+    # if the iteration is the first iteration, get the initial entropy of the target silicate
+    if index == 0:
+        target_silicate_initial = target[target[1] % 2 == 0]
+        # sort the target silicate initial by column 0
+        target_silicate_initial = target_silicate_initial.sort_values(by=0)
+
+    target_silicate = df[df[1] % 2 == 0]
+    # sort the target silicate
+    target_silicate = target_silicate.sort_values(by=0)
+    target_silicate['delta S'] = target_silicate[13] - target_silicate_initial[13]
+    # calculate the number of particles with delta S > 500 divided by the total number of particles
+    delta_s.append(len(target_silicate[target_silicate['delta S'] > 500]) / len(target_silicate))
+
+    fig = plt.figure(figsize=(10, 10))
+    fig.patch.set_facecolor('xkcd:black')
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(
+        target[3], target[4], target[5], s=5, c=target['delta S'], cmap=cmap, norm=normalizer, alpha=1
+    )
     ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
     ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
     ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
@@ -96,28 +117,6 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
     for i in get_cube_verts(square_scale=square_scale):
         ax.plot(i[0], i[1], i[2], c='white', linewidth=0.3)
     plt.savefig(f"{path_3d}/{iteration}.png", format='png', dpi=200)
-
-    # get the mean velocity of the target and impactor
-    iterations.append(iteration)
-    times.append(formatted_time)
-    target['velocity'] = np.sqrt(target[6]**2 + target[7]**2 + target[8]**2)
-    impactor['velocity'] = np.sqrt(impactor[6]**2 + impactor[7]**2 + impactor[8]**2)
-    target_velocity.append(target['velocity'].mean())
-    impactor_velocity.append(impactor['velocity'].mean())
-    tar_imp_velocity_ratio.append(target['velocity'].mean() / impactor['velocity'].mean())
-
-    # if the iteration is the first iteration, get the initial entropy of the target silicate
-    if index == 0:
-        target_silicate_initial = target[target[1] % 2 == 0]
-        # sort the target silicate initial by column 0
-        target_silicate_initial = target_silicate_initial.sort_values(by=0)
-
-    target_silicate = df[df[1] % 2 == 0]
-    # sort the target silicate
-    target_silicate = target_silicate.sort_values(by=0)
-    target_silicate['delta S'] = target_silicate[13] - target_silicate_initial[13]
-    # calculate the number of particles with delta S > 500 divided by the total number of particles
-    delta_s.append(len(target_silicate[target_silicate['delta S'] > 500]) / len(target_silicate))
 
     # if this is the last iteration, scatter all delta S
     if iteration == end_iteration:
