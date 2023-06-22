@@ -69,11 +69,11 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
 
     # if the iteration is the first iteration, get the initial entropy of the target silicate
     if index == 0:
-        target_silicate_initial = target[target[1] % 2 == 0]
+        target_silicate_initial = target[target[1] == 0]
         # sort the target silicate initial by column 0
         target_silicate_initial = target_silicate_initial.sort_values(by=0)
 
-    target_silicate = df[df[1] % 2 == 0]
+    target_silicate = df[df[1] == 0]
     # sort the target silicate
     target_silicate = target_silicate.sort_values(by=0)
     target_silicate['delta S'] = target_silicate[13] - target_silicate_initial[13]
@@ -105,6 +105,7 @@ for index, iteration in enumerate(np.arange(start_iteration, end_iteration + inc
         str(formatted_time) + " hrs",
         c="white",
     )
+    ax.view_init(elev=-140., azim=-60)
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
     cbaxes = inset_axes(ax, width="30%", height="3%", loc=2, borderpad=1.8)
