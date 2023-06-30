@@ -21,6 +21,11 @@ max_iteration = 1800
 increment = 50
 number_processes = 200
 
+# MASS_EARTH = 5.972e24  # kg
+# RADIUS_EARTH = 6.371e6  # m
+MASS_MARS = 6.39e23  # kg
+RADIUS_MARS = 3.389e6  # m
+
 phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 
 def get_time(f, local=True):

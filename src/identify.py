@@ -12,7 +12,8 @@ from src import elements, centering, classify, vapor
 class ParticleMap:
 
     def __init__(self, path, center, relative_velocity=False, centering_resolution=1e5,
-                 centering_delta=1e7, a=(12713.6 / 2.0) * 1000.0, b=(12756.2 / 2.0) * 1000.0, formatted=False):
+                 centering_delta=1e7, a=(12713.6 / 2.0) * 1000.0, b=(12756.2 / 2.0) * 1000.0, formatted=False,
+                 mass_protoplanet=5.972e24, initial_equatorial_radius=1.099e7):
         self.path = path
         self.time = None
         self.formatted = formatted
@@ -24,10 +25,10 @@ class ParticleMap:
         else:
             self.output = pd.read_csv(self.path, skiprows=2, delimiter=",")
         # self.a = a  # present-day equatorial radius of the Earth in m
-        self.a = 1.099e7
-        self.b = b  # present-day polar radius of the Earth in m
+        self.a = initial_equatorial_radius
+        self.b = initial_equatorial_radius
         # self.mass_protoearth = classify.calc_mass_protoearth(a=self.a, b=self.b)
-        self.mass_protoearth = 5.972e24
+        self.mass_protoearth = mass_protoplanet
         self.center = center
         self.centering_resolution = centering_resolution
         self.centering_delta = centering_delta
@@ -53,7 +54,7 @@ class ParticleMap:
                     target_iron=True
                 )  # COM of the target iron
         self.relative_velocity = relative_velocity
-        self.EARTH_MASS = 5.972 * 10 ** 24
+        self.EARTH_MASS = mass_protoplanet
         self.LUNAR_MASS = 7.34767309 * 10 ** 22
         self.L_EM = 3.5 * 10 ** 34
         self.targets = {
