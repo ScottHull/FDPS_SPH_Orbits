@@ -21,10 +21,14 @@ max_iteration = 1800
 increment = 50
 number_processes = 200
 
-# MASS_EARTH = 5.972e24  # kg
-# RADIUS_EARTH = 6.371e6  # m
+MASS_EARTH = 5.972e24  # kg
+RADIUS_EARTH = 6.371e6  # m
 MASS_MARS = 6.39e23  # kg
 RADIUS_MARS = 3.389e6  # m
+
+# CHANGE THESE
+MASS_PROTOPLANET = MASS_MARS
+RADIUS_PROTOPLANET = RADIUS_MARS
 
 phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 
@@ -55,7 +59,8 @@ def __build_report(args):
     combined_file = cf.combine()
     formatted_time = round(cf.sim_time * 0.000277778, 2)
     f = os.getcwd() + "/{}".format(to_fname)
-    pm = ParticleMap(path=f, center=True, relative_velocity=False)
+    pm = ParticleMap(path=f, center=True, relative_velocity=False, mass_protoplanet=MASS_PROTOPLANET,
+                     initial_equatorial_radius=RADIUS_PROTOPLANET)
     particles = pm.collect_particles(find_orbital_elements=True)
     os.remove(to_fname)
     pm.solve(particles=particles, phase_path=phase_path, report_name="{}-report.txt".format(output_name),
