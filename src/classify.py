@@ -144,19 +144,17 @@ def average_density(planet_mass, a):
     return planet_mass / vol_sphere
 
 
-def get_roche_radius():
-    radius_earth = 6371 * 1000
-    return 2.9 * radius_earth
+def get_roche_radius(radius_planet=6371 * 1000):
+    return 2.9 * radius_planet
 
 
-def predicted_satellite_mass(disk_angular_momentum, mass_target, mass_disk, mass_escape):
+def predicted_satellite_mass(disk_angular_momentum, mass_target, mass_disk, mass_escape,
+                             radius_earth = 6371 * 1000, mass_planet = 5.972e24):
     # Canup 2004 equation 1
     G = 6.67 * 10 ** -11
-    radius_earth = 6371 * 1000
-    mass_earth = 5.972e24
     roche_radius = get_roche_radius()
     mass_escape = 0.05 * mass_disk  # assumption based on Canup 2004 for more centrally condensed disks than Ida 1997
-    a1 = 1.9 * disk_angular_momentum / sqrt(G * mass_earth * roche_radius)
+    a1 = 1.9 * disk_angular_momentum / sqrt(G * mass_planet * roche_radius)
     a2 = 1.1 * mass_disk
     a3 = 1.9 * mass_escape
     return a1 - a2 - a3
