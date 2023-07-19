@@ -54,7 +54,7 @@ def get_all_sims(angle, high=True):
     return names, titles
 
 
-fig, axs = plt.subplots(2, 2, figsize=(16, 9))
+fig, axs = plt.subplots(2, 2, figsize=(16, 9), sharex='all', sharey='all')
 axs = axs.flatten()
 b073n_index, b073o_index, b075n_index, b075o_index = 0, 1, 2, 3
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
