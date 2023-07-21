@@ -51,8 +51,8 @@ def get_endstate(s):
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
-ax.set_xlabel("Time (hours)", fontdict=16)
-ax.set_ylabel("Entropy (J/kg/K)", fontdict=16)
+ax.set_xlabel("Time (hours)", fontsize=16)
+ax.set_ylabel("Entropy (J/kg/K)", fontsize=16)
 ax.grid()
 
 for s, t in get_all_sims():
