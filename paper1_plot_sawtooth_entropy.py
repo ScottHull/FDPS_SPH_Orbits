@@ -24,10 +24,7 @@ min_iteration = 0
 max_iteration = 1800
 endstate = max_iteration
 increment = 1
-increment_high = 100
-increment_low = 20
 number_processes = 200
-number_processes_high = 500
 
 def get_all_sims(high=True):
     fformat = "{}_{}_{}"
