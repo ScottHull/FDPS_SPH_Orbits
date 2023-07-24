@@ -22,7 +22,7 @@ angle = "b073"
 cutoff_densities = [5]
 min_iteration = 0
 max_iteration = 1800
-endstate = max_iteration
+endstate_iteration = max_iteration
 increment = 1
 number_processes = 200
 
@@ -45,7 +45,7 @@ def get_all_sims(high=True):
 
 def get_endstate(s):
     path = base_path + "{}/circularized_{}".format(s, s)
-    df = pd.read_csv(path + "/{}.csv".format(endstate))
+    df = pd.read_csv(path + "/{}.csv".format(endstate_iteration))
     return df[df['label'] == "DISK"]
 
 
