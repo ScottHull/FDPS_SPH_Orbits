@@ -55,7 +55,8 @@ ax.set_xlabel("Time (hours)", fontsize=16)
 ax.set_ylabel("Entropy (J/kg/K)", fontsize=16)
 ax.grid()
 
-for s, t in get_all_sims():
+names, titles = get_all_sims()
+for s, t in zip(names, titles):
     linestyle = "-"
     if "old" in s:
         linestyle = "--"
