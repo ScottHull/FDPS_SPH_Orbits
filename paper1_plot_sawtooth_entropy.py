@@ -51,8 +51,10 @@ def get_endstate(s):
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
+ax2 = ax.twinx()
 ax.set_xlabel("Time (hours)", fontsize=16)
 ax.set_ylabel("Entropy (J/kg/K)", fontsize=16)
+ax2.set_ylabel("Internal Energy (kJ)", fontsize=16)
 ax.grid()
 
 names, titles = get_all_sims()
@@ -67,6 +69,7 @@ for s, t in zip(names, titles):
     endstate = endstate_target_particles.sample(n=5)['id'].tolist()
     time = {i: [] for i in endstate}
     entropy = {i: [] for i in endstate}
+    internal_energy = {i: [] for i in endstate}
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -82,9 +85,11 @@ for s, t in zip(names, titles):
         for i in endstate:
             time[i].append(formatted_time)
             entropy[i].append(disk[disk['id'] == i]['entropy'].values[0])
+            internal_energy[i].append(disk[disk['id'] == i]['internal energy'].values[0])
 
     for i in endstate:
         ax.plot(time[i], entropy[i], linestyle=linestyle)
+        ax2.plot(time[i], np.array(internal_energy[i]) * 0.001, linestyle=linestyle)
 
 ax.plot(
     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
