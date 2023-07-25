@@ -49,13 +49,15 @@ def get_endstate(s):
     return df[df['label'] == "DISK"]
 
 
-fig = plt.figure(figsize=(16, 9))
-ax = fig.add_subplot(111)
-ax2 = ax.twinx()
-ax.set_xlabel("Time (hours)", fontsize=16)
-ax.set_ylabel("Entropy (J/kg/K)", fontsize=16)
-ax2.set_ylabel("Internal Energy (kJ)", fontsize=16)
-ax.grid()
+# make a 3 column plot of density, entropy, internal energy
+fig, axs = plt.subplots(3, 1, figsize=(16, 9), sharex=True)
+axs = axs.flatten()
+for ax in axs:
+    ax.grid()
+    ax.set_xlabel("Time (hours)", fontsize=16)
+ylabels = [r'Density ($kg/m^3$)', r'Entropy ($J/kg/K$)', r'Internal Energy ($kJ$)']
+for ax, y in zip(axs, ylabels):
+    ax.set_ylabel(y, fontsize=16)
 
 names, titles = get_all_sims()
 for s, t in zip(names, titles):
@@ -70,6 +72,7 @@ for s, t in zip(names, titles):
     time = {i: [] for i in endstate}
     entropy = {i: [] for i in endstate}
     internal_energy = {i: [] for i in endstate}
+    density = {i: [] for i in endstate}
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -86,19 +89,20 @@ for s, t in zip(names, titles):
             time[i].append(formatted_time)
             entropy[i].append(disk[disk['id'] == i]['entropy'].values[0])
             internal_energy[i].append(disk[disk['id'] == i]['internal energy'].values[0])
+            density[i].append(disk[disk['id'] == i]['density'].values[0])
 
-    for i in endstate:
-        ax.plot(time[i], entropy[i], linestyle=linestyle)
-        ax2.plot(time[i], np.array(internal_energy[i]) * 0.001, linestyle=linestyle)
+    for ax, i in zip(axs, [density, entropy, internal_energy]):
+        for j in endstate:
+            ax.plot(time[j], i[j], linestyle=linestyle)
 
-ax.plot(
+axs[-1].plot(
     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
 )
-ax.plot(
+axs[-1].plot(
     [], [], linestyle="--", label="N-SPH M-ANEOS", color="black"
 )
 
-ax.legend(fontsize=14)
+axs[-1].legend(fontsize=14)
 plt.tight_layout()
 plt.savefig("sawtooth_entropy.png", dpi=300)
 
