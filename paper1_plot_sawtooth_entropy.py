@@ -50,12 +50,12 @@ def get_endstate(s):
 
 
 # make a 3 column plot of density, entropy, internal energy
-fig, axs = plt.subplots(3, 1, figsize=(16, 9), sharex=True)
+fig, axs = plt.subplots(1, 3, figsize=(16, 9), sharex=True)
 axs = axs.flatten()
 for ax in axs:
     ax.grid()
     ax.set_xlabel("Time (hours)", fontsize=16)
-ylabels = [r'Density ($kg/m^3$)', r'Entropy ($J/kg/K$)', r'Internal Energy ($kJ$)']
+ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
 for ax, y in zip(axs, ylabels):
     ax.set_ylabel(y, fontsize=16)
 
