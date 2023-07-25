@@ -69,6 +69,8 @@ for s, t in zip(names, titles):
     endstate_target_particles = endstate[endstate['entropy'] > 9000]
     # get 5 random particle ids from the endstate df
     endstate = endstate_target_particles.sample(n=5)['id'].tolist()
+    # get the color cycle
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     time = {i: [] for i in endstate}
     entropy = {i: [] for i in endstate}
     internal_energy = {i: [] for i in endstate}
@@ -92,8 +94,8 @@ for s, t in zip(names, titles):
             density[i].append(disk[disk['id'] == i]['density'].values[0])
 
     for ax, i in zip(axs, [density, entropy, internal_energy]):
-        for j in endstate:
-            ax.plot(time[j], i[j], linestyle=linestyle)
+        for index, j in enumerate(endstate):
+            ax.plot(time[j], i[j], linestyle=linestyle, color=colors[index])
 
 axs[-1].plot(
     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
