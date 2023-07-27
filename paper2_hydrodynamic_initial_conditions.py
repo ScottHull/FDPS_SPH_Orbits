@@ -31,7 +31,7 @@ new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 # make a plot with 3 columns and n rows
-fig, axs = plt.subplots(len(runs), 3, figsize=(12, 8))
+fig, axs = plt.subplots(len(runs), 3, figsize=(18, 12))
 axs = axs.flatten()
 
 for ax in axs:
@@ -98,9 +98,18 @@ for index, (run, verbose_run_name) in enumerate(runs):
         final_disk_vmf.append(vmf_final_disk)
         all_silicate_vmf.append(vmf_all_silicate)
 
-    gi_index = 0 + (index * len(runs))
-    velocity_index = 1 + (index * len(runs))
-    t_s_index = 2 + (index * len(runs))
+    if index == 0:
+        gi_index = 0
+        velocity_index = 1
+        t_s_index = 2
+    else:
+        gi_index = 3
+        velocity_index = 4
+        t_s_index = 5
+
+    # gi_index = 0 + (index * len(runs))
+    # velocity_index = 1 + (index * len(runs))
+    # t_s_index = 2 + (index * len(runs))
     ic_iteration, ic_time = iterations[max(enumerate(mean_disk_vel), key=lambda x: x[1])[0]], \
         time[max(enumerate(mean_disk_vel), key=lambda x: x[1])[0]]
 
