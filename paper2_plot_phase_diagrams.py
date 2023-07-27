@@ -134,7 +134,7 @@ axs[0].set_title("Canonical Impact")
 axs[1].set_title("Half-Earths Impact")
 plot_phase_diagrams()
 plt.tight_layout()
-legend = axs[-1].legend(fontsize=16)
+legend = axs[-1].legend(fontsize=14)
 for line in legend.get_lines():  # increase line widths in legend
     try:
         line.set_linewidth(4.0)
