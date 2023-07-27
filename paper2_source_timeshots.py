@@ -31,7 +31,7 @@ runs = [
     [base_path + f"Paper2_SPH/gi/500_half_earths", "Half-Earths", 200],
     # [base_path + f"Paper2_SPH/gi/mars", "Mars", 200],
 ]
-iterations = [50, 200, 500, 1800]
+iterations = [50, 100, 200, 500, 1800]
 
 square_scale = 6e7 / 10 ** 7
 min_normalize = 0
@@ -62,10 +62,9 @@ def get_end_states():
     return endstates
 
 endstates = get_end_states()
-figsize = (20, 20)
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 # fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
-fig, axs = plt.subplots(len(iterations), len(runs), figsize=figsize, sharex='all', sharey='all')
+fig, axs = plt.subplots(len(iterations), len(runs), figsize=(10, 20), sharex='all', sharey='all')
 
 axs = axs.flatten()
 for ax in axs:
@@ -137,4 +136,5 @@ for index, ax in enumerate(axs):
 axs[0].annotate("x ($10^4$ km)", xy=(0.0, -5.5), ha="center", fontsize=16, weight='bold')
 axs[0].annotate("y ($10^4$ km)", xy=(-5.5, 0.0), va="center", rotation=90, fontsize=16, weight='bold')
 
+plt.tight_layout()
 plt.savefig("paper2_source_scenes.png", format='png', dpi=300)
