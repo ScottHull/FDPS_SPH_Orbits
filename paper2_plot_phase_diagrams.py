@@ -25,7 +25,7 @@ old_phase_df = pd.read_fwf(old_phase_path, skiprows=1,
                                   "entropy_sol_liq", "entropy_vap"])
 
 
-fig, axs = plt.subplots(2, 1, figsize=(16, 9), sharex='all', sharey='all')
+fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all')
 axs = axs.flatten()
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
@@ -134,7 +134,7 @@ axs[0].set_title("Canonical Impact")
 axs[1].set_title("Half-Earths Impact")
 plot_phase_diagrams()
 plt.tight_layout()
-legend = fig.legend(loc=7, fontsize=16)
+legend = axs[-1].legend(fontsize=16)
 for line in legend.get_lines():  # increase line widths in legend
     try:
         line.set_linewidth(4.0)
@@ -145,7 +145,6 @@ for handle in legend.legendHandles:  # increase marker sizes in legend
         handle.set_sizes([300.0])
     except:
         pass
-fig.subplots_adjust(right=0.80)
 
 letters = list(string.ascii_lowercase)
 for index, ax in enumerate(axs):
