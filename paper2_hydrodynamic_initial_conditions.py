@@ -18,7 +18,7 @@ from src.vapor import calc_vapor_mass_fraction_without_circularization_from_form
 runs = [
     ('/home/theia/scotthull/Paper1_SPH/gi/500_b073_new', 'Canonical'),
     ('/home/theia/scotthull/Paper2_SPH/gi/500_half_earths', 'Half-Earths'),
-    ('', 'Mars')
+    # ('', 'Mars')
 ]
 
 min_iteration = 0
