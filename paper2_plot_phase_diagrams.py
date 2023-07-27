@@ -25,7 +25,7 @@ old_phase_df = pd.read_fwf(old_phase_path, skiprows=1,
                                   "entropy_sol_liq", "entropy_vap"])
 
 
-fig, axs = plt.subplots(1, 2, figsize=(16, 9), sharex='all', sharey='all')
+fig, axs = plt.subplots(1, 2, figsize=(12, 6), sharex='all', sharey='all')
 axs = axs.flatten()
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
@@ -120,7 +120,7 @@ def plot_phase_diagrams():
             )
 
 for phase, c in [("100% Vapor", colors[-1]), ("100% Liquid", colors[-2]), ("Supercritical", colors[-3]), ("Liquid-Vapor\nMixture", colors[-4])]:
-    axs[0].fill_between(
+    axs[-1].fill_between(
         x=[],
         y1=0,
         y2=0,
