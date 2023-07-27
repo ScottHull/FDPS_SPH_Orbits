@@ -102,7 +102,7 @@ for iteration in iterations:
                 i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, label=label
             )
         if current_index % len(runs) == 0:
-            axs[current_index].text(square_scale - (0.66 * square_scale), -square_scale + (0.3 * square_scale),
+            axs[current_index].text(square_scale - (0.75 * square_scale), -square_scale + (0.3 * square_scale),
                                     "{} hrs".format(formatted_time), fontsize=20)
         current_index += 1
 
