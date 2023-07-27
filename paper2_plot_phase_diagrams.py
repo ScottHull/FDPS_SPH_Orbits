@@ -25,7 +25,7 @@ old_phase_df = pd.read_fwf(old_phase_path, skiprows=1,
                                   "entropy_sol_liq", "entropy_vap"])
 
 
-fig, axs = plt.subplots(2, 1, figsize=(16, 9))
+fig, axs = plt.subplots(2, 1, figsize=(16, 9), sharex='True', sharey='True')
 axs = axs.flatten()
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
@@ -98,14 +98,11 @@ for ax in axs:
     ax.set_xlim(1800, 12000)
     ax.set_ylim(0, 12500)
 
-for ax in [axs[0], axs[2]]:
+for ax in [axs[0]]:
     ax.set_ylabel("Temperature (K)")
-for ax in [axs[2], axs[3]]:
+for ax in axs:
     ax.set_xlabel("Entropy (J/kg/K)")
-for ax in [axs[0], axs[2]]:
     shade_plot(s="new", ax=ax)
-for ax in [axs[1], axs[3]]:
-    shade_plot(s="old", ax=ax)
 
 
 def plot_phase_diagrams():
