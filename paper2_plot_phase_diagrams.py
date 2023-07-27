@@ -111,7 +111,7 @@ def plot_phase_diagrams():
         #     high = False
         for index, (path, t) in enumerate(runs):
             marker = "."
-            df = pd.read_csv(path + f"{iteration}.csv")
+            df = pd.read_csv(path + f"/{iteration}.csv")
             disk = df[df['label'] == "DISK"]
             disk_filtered = disk[disk['circ_entropy_delta'] < 5000]
             temp, entropy = disk_filtered['temperature'], disk_filtered['entropy'] + disk_filtered['circ_entropy_delta']
