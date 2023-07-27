@@ -104,7 +104,7 @@ axs[-1].plot(
     [], [], linestyle="--", label="N-SPH M-ANEOS", color="black"
 )
 
-axs[0].set_ylim(upper=20)
+axs[0].set_ylim(top=20)
 
 axs[-1].legend(fontsize=14)
 plt.tight_layout()
