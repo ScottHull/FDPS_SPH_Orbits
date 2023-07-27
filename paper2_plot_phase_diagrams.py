@@ -25,7 +25,7 @@ old_phase_df = pd.read_fwf(old_phase_path, skiprows=1,
                                   "entropy_sol_liq", "entropy_vap"])
 
 
-fig, axs = plt.subplots(2, 1, figsize=(16, 9), sharex='True', sharey='True')
+fig, axs = plt.subplots(2, 1, figsize=(16, 9), sharex='all', sharey='all')
 axs = axs.flatten()
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
