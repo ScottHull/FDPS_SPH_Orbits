@@ -138,10 +138,10 @@ for index, (run, verbose_run_name) in enumerate(runs):
         disk_bound["x"] / 1000, disk_bound["y"] / 1000, s=2, alpha=1, color='red', marker='.', label="Disk Bound"
     )
     # set axis labels
-    axs[gi_index].set_ylabel("y (km)")
+    axs[gi_index].set_ylabel("y (km)", fontsize=16)
     # annotate the upper left corner with the run name
     axs[gi_index].annotate(
-        verbose_run_name, xy=(0.60, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=12
+        verbose_run_name, xy=(0.60, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=14
     )
     # axs[gi_index].set_xlim(-square_scale, square_scale)
 
@@ -152,11 +152,11 @@ for index, (run, verbose_run_name) in enumerate(runs):
     # set vertical line at the time of the initial condition
     axs[velocity_index].axvline(x=ic_time, color="black", linestyle="--", linewidth=2, label="Initial Condition")
     # set axis labels
-    axs[velocity_index].set_ylabel("Velocity (km/s)")
+    axs[velocity_index].set_ylabel("Velocity (km/s)", fontsize=16)
     # annotate the initial condition time in the upper right corner
     axs[velocity_index].annotate(
         r"$t_{ic}$" + " = {} hrs.".format(ic_time), xy=(0.60, 0.95), xycoords="axes fraction", horizontalalignment="left",
-        verticalalignment="top", fontsize=12,
+        verticalalignment="top", fontsize=14,
     )
 
     # plot the temperature profile
@@ -171,12 +171,12 @@ for index, (run, verbose_run_name) in enumerate(runs):
     # set vertical line at the time of the initial condition
     axs[t_s_index].axvline(x=ic_time, color="black", linestyle="--", linewidth=2, label="Initial Condition")
     # set axis labels
-    axs[t_s_index].set_ylabel("Temperature (K)")
-    ax2.set_ylabel("VMF (%)")
+    axs[t_s_index].set_ylabel("Temperature (K)", fontsize=16)
+    ax2.set_ylabel("VMF (%)", fontsize=16)
 
-    axs[-3].set_xlabel("x (km)")
-    axs[-2].set_xlabel("Time (hrs.)")
-    axs[-1].set_xlabel("Time (hrs.)")
+    axs[-3].set_xlabel("x (km)", fontsize=16)
+    axs[-2].set_xlabel("Time (hrs.)", fontsize=1)
+    axs[-1].set_xlabel("Time (hrs.)", fontsize=1)
 
     # output the initial conditions for each run to a file
     for run, title in runs:
@@ -199,8 +199,12 @@ for index, (run, verbose_run_name) in enumerate(runs):
 letters = list(string.ascii_lowercase)
 for i, ax in enumerate(axs):
     ax.annotate(
-        letters[i], xy=(0.05, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=12
+        letters[i], xy=(0.05, 0.95), xycoords="axes fraction", horizontalalignment="left", verticalalignment="top", fontweight="bold", fontsize=14
     )
+
+# increase font size of all axes
+for ax in axs:
+    ax.tick_params(axis='both', which='major', labelsize=14)
 
 # make tight layout with no hspace
 plt.tight_layout(h_pad=0)
