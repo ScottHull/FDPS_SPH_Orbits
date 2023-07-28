@@ -31,7 +31,7 @@ runs = [
     [base_path + f"Paper2_SPH/gi/500_half_earths", "Half-Earths", 200],
     # [base_path + f"Paper2_SPH/gi/mars", "Mars", 200],
 ]
-iterations = [50, 100, 200, 500, 1800]
+iterations = [50, 100, 200, 300, 1800]
 
 square_scale = 6e7 / 10 ** 7
 min_normalize = 0
@@ -116,7 +116,7 @@ for handle in legend.legendHandles:
 # plt.margins(0.005, tight=True)
 
 for index, t in enumerate([i[1] for i in runs]):
-    axs[index].set_title(t, fontsize=20)
+    axs[index].set_title(t, fontsize=22)
 fig.tight_layout()
 fig.subplots_adjust(wspace=0, hspace=0)
 for ax in axs[-len(runs):-2]:
