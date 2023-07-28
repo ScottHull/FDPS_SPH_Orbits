@@ -99,7 +99,7 @@ def plot_entropy_and_vmf_vs_time():
                     d_wo_circ[sim]['TIME_HRS'], d_wo_circ[sim]['MEAN_DISK_ENTROPY_WITHOUT_CIRC'], linewidth=2.0,
                     linestyle="--", color=color
                 )
-                axs[index].set_ylabel("Avg. Disk Entropy (J/K)", fontsize=16)
+                axs[index].set_ylabel("Avg. Disk Entropy (J/kg/K)", fontsize=16)
             elif h == "DISK_VMF_W_CIRC":
                 axs[index].plot(
                     d_wo_circ[sim]['TIME_HRS'], d_wo_circ[sim]['DISK_VMF_WITHOUT_CIRC'], linewidth=2.0,
