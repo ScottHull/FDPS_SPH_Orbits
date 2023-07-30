@@ -140,7 +140,7 @@ for index, (run, verbose_run_name) in enumerate(runs):
         (not_disk_bound["x"] - com_x) / 1000, (not_disk_bound["y"] - com_y) / 1000, s=2, alpha=1, color='black', marker='.', label="Not Disk Bound"
     )
     axs[gi_index].scatter(
-        (not_disk_bound["x"] - com_x) / 1000, (not_disk_bound["y"] - com_y) / 1000, s=2, alpha=1, color='red', marker='.', label="Disk Bound"
+        (disk_bound["x"] - com_x) / 1000, (disk_bound["y"] - com_y) / 1000, s=2, alpha=1, color='red', marker='.', label="Disk Bound"
     )
     # set axis labels
     axs[gi_index].set_ylabel("y (km)", fontsize=16)
