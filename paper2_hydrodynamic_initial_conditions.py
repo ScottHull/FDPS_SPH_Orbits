@@ -126,16 +126,21 @@ for index, (run, verbose_run_name) in enumerate(runs):
         'potential_energy', 'entropy', 'temperature'
     ]
 
+    # get the center of mass
+    com_x = ic_file['x'] * ic_file['mass'] / ic_file['mass'].sum()
+    com_y = ic_file['y'] * ic_file['mass'] / ic_file['mass'].sum()
+    com_z = ic_file['z'] * ic_file['mass'] / ic_file['mass'].sum()
+
     # get the file with the initial condition
     # scatter the simulation at the time of the initial condition
     # get subset of the data with particle ids that are not in the final disk
     not_disk_bound = ic_file[~ic_file["id"].isin(end_time_particle_ids)]
     disk_bound = ic_file[ic_file["id"].isin(end_time_particle_ids)]
     axs[gi_index].scatter(
-        not_disk_bound["x"] / 1000, not_disk_bound["y"] / 1000, s=2, alpha=1, color='black', marker='.', label="Not Disk Bound"
+        (not_disk_bound["x"] - com_x) / 1000, (not_disk_bound["y"] - com_y) / 1000, s=2, alpha=1, color='black', marker='.', label="Not Disk Bound"
     )
     axs[gi_index].scatter(
-        disk_bound["x"] / 1000, disk_bound["y"] / 1000, s=2, alpha=1, color='red', marker='.', label="Disk Bound"
+        (not_disk_bound["x"] - com_x) / 1000, (not_disk_bound["y"] - com_y) / 1000, s=2, alpha=1, color='red', marker='.', label="Disk Bound"
     )
     # set axis labels
     axs[gi_index].set_ylabel("y (km)", fontsize=16)
@@ -173,10 +178,11 @@ for index, (run, verbose_run_name) in enumerate(runs):
     # set axis labels
     axs[t_s_index].set_ylabel("Temperature (K)", fontsize=16)
     ax2.set_ylabel("VMF (%)", fontsize=16)
+    ax2.tick_params(axis='both', which='major', labelsize=14)
 
     axs[-3].set_xlabel("x (km)", fontsize=16)
-    axs[-2].set_xlabel("Time (hrs.)", fontsize=1)
-    axs[-1].set_xlabel("Time (hrs.)", fontsize=1)
+    axs[-2].set_xlabel("Time (hrs.)", fontsize=16)
+    axs[-1].set_xlabel("Time (hrs.)", fontsize=16)
 
     # output the initial conditions for each run to a file
     for run, title in runs:
