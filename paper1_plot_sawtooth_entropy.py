@@ -52,34 +52,28 @@ def get_endstate(s):
 
 
 # make a 3 column plot of density, entropy, internal energy
-fig, axs = plt.subplots(1, 3, figsize=(18, 6), sharex=True)
-axs = axs.flatten()
-for ax in axs:
-    ax.grid()
-    ax.set_xlabel("Time (hours)", fontsize=16)
 ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
-for ax, y in zip(axs, ylabels):
-    ax.set_ylabel(y, fontsize=16)
 
+time = {}
+entropy = {}
+internal_energy = {}
+density = {}
 names, titles = get_all_sims()
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for s, t in zip(names, titles):
     if os.path.exists(f"paper1_sawtooth_{s}"):
         shutil.rmtree(f"paper1_sawtooth_{s}")
     os.mkdir(f"paper1_sawtooth_{s}")
-    linestyle = "-"
-    if "old" in s:
-        linestyle = "--"
     # get the endstate df
     endstate = get_endstate(s)
     endstate_target_particles = endstate[endstate['entropy'] > 9000]
     # get 5 random particle ids from the endstate df
     endstate = endstate_target_particles.sample(n=5)['id'].tolist()
     # get the color cycle
-    time = {i: [] for i in endstate}
-    entropy = {i: [] for i in endstate}
-    internal_energy = {i: [] for i in endstate}
-    density = {i: [] for i in endstate}
+    time = {s: {i: [] for i in endstate}}
+    entropy = {s: {i: [] for i in endstate}}
+    internal_energy = {s: {i: [] for i in endstate}}
+    density = {s: {i: [] for i in endstate}}
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -93,14 +87,14 @@ for s, t in zip(names, titles):
         disk = df[df['id'].isin(endstate)]
         os.remove(f)
         for i in endstate:
-            time[i].append(formatted_time)
-            entropy[i].append(disk[disk['id'] == i]['entropy'].values[0])
-            internal_energy[i].append(disk[disk['id'] == i]['internal energy'].values[0])
-            density[i].append(disk[disk['id'] == i]['density'].values[0])
+            time[s][i].append(formatted_time)
+            entropy[s][i].append(disk[disk['id'] == i]['entropy'].values[0])
+            internal_energy[s][i].append(disk[disk['id'] == i]['internal energy'].values[0])
+            density[s][i].append(disk[disk['id'] == i]['density'].values[0])
 
         # make a 3 column plot of density, entropy, internal energy
-        fig2, axs2 = plt.subplots(1, 2, figsize=(12, 6), sharex=True)
-        axs2 = axs.flatten()
+        fig2, axs2 = plt.subplots(1, 2, figsize=(12, 6), sharex='all')
+        axs2 = axs2.flatten()
         for ax in axs2:
             ax.grid()
             ax.set_xlabel(r"Density (kg/m$^3$", fontsize=16)
@@ -116,20 +110,15 @@ for s, t in zip(names, titles):
         axs2[1].scatter(
             disk['density'], disk['internal energy'] / 1000, marker="."
         )
-        axs[-1].scatter(
+        axs2[-1].scatter(
             [], [], label="Stewart M-ANEOS"
         )
-        axs[-1].scatter(
+        axs2[-1].scatter(
             [], [], label="N-SPH M-ANEOS"
         )
         axs2[-1].legend(fontsize=14, loc='lower right')
         plt.tight_layout()
         plt.savefig("paper1_sawtooth_{}/{}.png".format(s, iteration), dpi=200)
-
-
-    for ax, i in zip(axs, [density, entropy, internal_energy]):
-        for index, j in enumerate(endstate):
-            ax.plot(time[j], i[j], linestyle=linestyle, color=colors[index])
 
     animate(
         start_time=min_iteration,
@@ -139,6 +128,23 @@ for s, t in zip(names, titles):
         fps=20,
         filename="{}_sawtooth.mp4".format(s),
     )
+
+
+fig, axs = plt.subplots(1, 3, figsize=(18, 6), sharex='all')
+axs = axs.flatten()
+for ax in axs:
+    ax.grid()
+    ax.set_xlabel("Time (hours)", fontsize=16)
+for ax, y in zip(axs, ylabels):
+    ax.set_ylabel(y, fontsize=16)
+
+for s in density.keys():
+    linestyle = "-"
+    if "old" in s:
+        linestyle = "--"
+    for ax, i in zip(axs, [density[s], entropy[s], internal_energy[s]]):
+        for index, j in enumerate(density[s].keys()):
+            ax.plot(time[j], i[j], linestyle=linestyle, color=colors[index])
 
 axs[-1].plot(
     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
