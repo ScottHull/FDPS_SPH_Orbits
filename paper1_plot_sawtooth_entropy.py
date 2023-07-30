@@ -64,7 +64,7 @@ for ax, y in zip(axs, ylabels):
 names, titles = get_all_sims()
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for s, t in zip(names, titles):
-    if not os.path.exists(f"paper1_sawtooth_{s}"):
+    if os.path.exists(f"paper1_sawtooth_{s}"):
         shutil.rmtree(f"paper1_sawtooth_{s}")
     os.mkdir(f"paper1_sawtooth_{s}")
     linestyle = "-"
