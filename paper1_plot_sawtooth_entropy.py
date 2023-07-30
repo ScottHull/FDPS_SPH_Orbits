@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import shutil
 import csv
 import pandas as pd
 import numpy as np
@@ -8,6 +9,7 @@ from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
 
+from src.animate import animate
 from src.combine import CombineFile
 from src.identify import ParticleMap
 from src.report import get_sim_report, write_report_at_time, build_latex_table_from_disk_report, rows_map
@@ -60,7 +62,11 @@ for ax, y in zip(axs, ylabels):
     ax.set_ylabel(y, fontsize=16)
 
 names, titles = get_all_sims()
+colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for s, t in zip(names, titles):
+    if not os.path.exists(f"paper1_sawtooth_{s}"):
+        shutil.rmtree(f"paper1_sawtooth_{s}")
+    os.mkdir(f"paper1_sawtooth_{s}")
     linestyle = "-"
     if "old" in s:
         linestyle = "--"
@@ -70,7 +76,6 @@ for s, t in zip(names, titles):
     # get 5 random particle ids from the endstate df
     endstate = endstate_target_particles.sample(n=5)['id'].tolist()
     # get the color cycle
-    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     time = {i: [] for i in endstate}
     entropy = {i: [] for i in endstate}
     internal_energy = {i: [] for i in endstate}
@@ -93,9 +98,47 @@ for s, t in zip(names, titles):
             internal_energy[i].append(disk[disk['id'] == i]['internal energy'].values[0])
             density[i].append(disk[disk['id'] == i]['density'].values[0])
 
+        # make a 3 column plot of density, entropy, internal energy
+        fig2, axs2 = plt.subplots(1, 2, figsize=(12, 6), sharex=True)
+        axs2 = axs.flatten()
+        for ax in axs2:
+            ax.grid()
+            ax.set_xlabel(r"Density (kg/m$^3$", fontsize=16)
+        axs2[0].set_ylabel(r'Entropy (J/kg/K)', fontsize=16)
+        axs2[1].set_ylabel(r'Internal Energy (kJ)', fontsize=16)
+        axs2[0].set_xlim(bottom=0, top=50)
+        ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
+        for ax, y in zip(axs2, ylabels):
+            ax.set_ylabel(y, fontsize=16)
+        axs2[0].scatter(
+            disk['density'], disk['entropy'], marker=".", s=2
+        )
+        axs2[1].scatter(
+            disk['density'], disk['internal energy'] / 1000, marker="."
+        )
+        axs[-1].scatter(
+            [], [], label="Stewart M-ANEOS"
+        )
+        axs[-1].scatter(
+            [], [], label="N-SPH M-ANEOS"
+        )
+        axs2[-1].legend(fontsize=14, loc='lower right')
+        plt.tight_layout()
+        plt.savefig("paper1_sawtooth_{}/{}.png".format(s, iteration), dpi=200)
+
+
     for ax, i in zip(axs, [density, entropy, internal_energy]):
         for index, j in enumerate(endstate):
             ax.plot(time[j], i[j], linestyle=linestyle, color=colors[index])
+
+    animate(
+        start_time=min_iteration,
+        end_time=max_iteration,
+        interval=increment,
+        path="paper1_sawtooth_{}".format(s),
+        fps=20,
+        filename="{}_sawtooth.mp4".format(s),
+    )
 
 axs[-1].plot(
     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
@@ -104,9 +147,9 @@ axs[-1].plot(
     [], [], linestyle="--", label="N-SPH M-ANEOS", color="black"
 )
 
-axs[0].set_ylim(bottom=0, top=20)
+axs[0].set_ylim(bottom=0, top=50)
 
-axs[-1].legend(fontsize=14)
+axs[-1].legend(fontsize=14, loc='lower right')
 plt.tight_layout()
 plt.savefig("sawtooth_entropy.png", dpi=300)
 
