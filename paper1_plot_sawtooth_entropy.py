@@ -106,7 +106,7 @@ for s, t in zip(names, titles):
             ax.set_xlabel(r"Density (kg/m$^3$", fontsize=16)
         axs2[0].set_ylabel(r'Entropy (J/kg/K)', fontsize=16)
         axs2[1].set_ylabel(r'Internal Energy (kJ)', fontsize=16)
-        axs2[0].set_xlim(bottom=0, top=50)
+        axs2[0].set_xlim(0, 50)
         ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
         for ax, y in zip(axs2, ylabels):
             ax.set_ylabel(y, fontsize=16)
