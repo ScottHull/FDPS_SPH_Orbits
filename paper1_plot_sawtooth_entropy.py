@@ -144,7 +144,7 @@ for s in density.keys():
         linestyle = "--"
     for ax, i in zip(axs, [density[s], entropy[s], internal_energy[s]]):
         for index, j in enumerate(density[s].keys()):
-            ax.plot(time[s][j], i[s][j], linestyle=linestyle, color=colors[index])
+            ax.plot(time[s][j], i[j], linestyle=linestyle, color=colors[index])
 
 axs[-1].plot(
     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
