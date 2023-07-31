@@ -70,10 +70,10 @@ for s, t in zip(names, titles):
     # get 5 random particle ids from the endstate df
     endstate = endstate_target_particles.sample(n=5)['id'].tolist()
     # get the color cycle
-    time = {s: {i: [] for i in endstate}}
-    entropy = {s: {i: [] for i in endstate}}
-    internal_energy = {s: {i: [] for i in endstate}}
-    density = {s: {i: [] for i in endstate}}
+    time.update({s: {i: [] for i in endstate}})
+    entropy.update({s: {i: [] for i in endstate}})
+    internal_energy.update({s: {i: [] for i in endstate}})
+    density.update({s: {i: [] for i in endstate}})
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -101,6 +101,9 @@ for s, t in zip(names, titles):
         axs2[0].set_ylabel(r'Entropy (J/kg/K)', fontsize=16)
         axs2[1].set_ylabel(r'Internal Energy (kJ)', fontsize=16)
         axs2[0].set_xlim(0, 50)
+        axs2[1].set_xlim(0, 50)
+        axs2[0].set_ylim(0, 10000)
+        axs2[1].set_ylim(0, 5e7)
         ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
         for ax, y in zip(axs2, ylabels):
             ax.set_ylabel(y, fontsize=16)
