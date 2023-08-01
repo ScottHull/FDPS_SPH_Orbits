@@ -66,6 +66,7 @@ for s, t in zip(names, titles):
     os.mkdir(f"paper1_sawtooth_{s}")
     # get the endstate df
     endstate = get_endstate(s)
+    endstate_whole_disk = endstate
     endstate_target_particles = endstate[endstate['entropy'] > 9000]
     # get 5 random particle ids from the endstate df
     endstate = endstate_target_particles.sample(n=5)['id'].tolist()
@@ -108,10 +109,10 @@ for s, t in zip(names, titles):
         for ax, y in zip(axs2, ylabels):
             ax.set_ylabel(y, fontsize=16)
         axs2[0].scatter(
-            disk['density'], disk['entropy'], marker=".", s=2
+            endstate_whole_disk['density'], endstate_whole_disk['entropy'], marker=".", s=5
         )
         axs2[1].scatter(
-            disk['density'], disk['internal energy'] / 1000, marker="."
+            endstate_whole_disk['density'], endstate_whole_disk['internal energy'] / 1000, marker=".", s=5
         )
         axs2[-1].scatter(
             [], [], label="Stewart M-ANEOS"
