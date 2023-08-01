@@ -112,7 +112,7 @@ for s, t in zip(names, titles):
             endstate_whole_disk['density'], endstate_whole_disk['entropy'], marker=".", s=5
         )
         axs2[1].scatter(
-            endstate_whole_disk['density'], endstate_whole_disk['internal energy'] / 1000, marker=".", s=5
+            endstate_whole_disk['density'], endstate_whole_disk['internal_energy'] / 1000, marker=".", s=5
         )
         axs2[-1].scatter(
             [], [], label="Stewart M-ANEOS"
