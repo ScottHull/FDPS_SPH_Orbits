@@ -66,7 +66,7 @@ for s, t in zip(names, titles):
     os.mkdir(f"paper1_sawtooth_{s}")
     # get the endstate df
     endstate = get_endstate(s)
-    endstate_whole_disk = endstate
+    endstate_whole_disk = endstate['id'].tolist()
     endstate_target_particles = endstate[endstate['entropy'] > 9000]
     # get 5 random particle ids from the endstate df
     endstate = endstate_target_particles.sample(n=5)['id'].tolist()
@@ -86,6 +86,7 @@ for s, t in zip(names, titles):
                    "potential energy", "entropy", "temperature"]
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
         disk = df[df['id'].isin(endstate)]
+        whole_disk = df[df['id'].isin(endstate_whole_disk)]
         os.remove(f)
         for i in endstate:
             time[s][i].append(formatted_time)
@@ -109,10 +110,10 @@ for s, t in zip(names, titles):
         for ax, y in zip(axs2, ylabels):
             ax.set_ylabel(y, fontsize=16)
         axs2[0].scatter(
-            endstate_whole_disk['density'], endstate_whole_disk['entropy'], marker=".", s=5
+            whole_disk['density'], whole_disk['entropy'], marker=".", s=5
         )
         axs2[1].scatter(
-            endstate_whole_disk['density'], endstate_whole_disk['internal_energy'] / 1000, marker=".", s=5
+            whole_disk['density'], whole_disk['internal energy'] / 1000, marker=".", s=5
         )
         axs2[-1].scatter(
             [], [], label="Stewart M-ANEOS"
