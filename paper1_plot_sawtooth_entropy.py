@@ -105,10 +105,7 @@ for s, t in zip(names, titles):
         axs2[0].set_xlim(0, 50)
         axs2[1].set_xlim(0, 50)
         axs2[0].set_ylim(0, 10000)
-        axs2[1].set_ylim(0, 5e7)
-        ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
-        for ax, y in zip(axs2, ylabels):
-            ax.set_ylabel(y, fontsize=16)
+        # axs2[1].set_ylim(0, 5e7)
         axs2[0].scatter(
             whole_disk['density'], whole_disk['entropy'], marker=".", s=5
         )
@@ -140,6 +137,7 @@ axs = axs.flatten()
 for ax in axs:
     ax.grid()
     ax.set_xlabel("Time (hours)", fontsize=16)
+ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
 for ax, y in zip(axs, ylabels):
     ax.set_ylabel(y, fontsize=16)
 
