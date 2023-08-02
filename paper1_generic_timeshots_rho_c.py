@@ -35,14 +35,14 @@ cutoff_densities = [5, 500, 1000, 2000]
 high = True
 square_scale = 6e7 / 10 ** 7
 min_normalize = 10 ** -6
-max_normalize = 10 ** 2
+max_normalize = 10 ** 0
 end_iteration = 1800
 
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 normalizer = Normalize(min_normalize, max_normalize)
-cmap = cm.get_cmap('jet')
+cmap = cm.get_cmap('cool')
 
 phase_path = new_phase_path
 if runs == "old":
