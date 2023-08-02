@@ -145,7 +145,7 @@ for iteration in iterations:
         disk_at_rho_cutoff = disk[disk['density'] == cutoff_densities[cd]]
         disk_not_at_rho_cutoff = disk[disk['density'] != cutoff_densities[cd]]
         fraction_at_rho_c = round(len(disk_at_rho_cutoff) / len(disk) * 100, 2)
-        for i, label in zip([planet, disk, escape, disk_at_rho_cutoff], ["Disk"]):
+        for i, label in zip([disk], ["Disk"]):
             axs[current_index].scatter(
                 i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
                 c=cmap(normalizer(i[target_param] / target_param_norm)), label=label
