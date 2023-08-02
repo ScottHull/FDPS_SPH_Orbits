@@ -8,7 +8,7 @@ import pandas as pd
 from random import randint
 from statistics import mean
 import matplotlib.pyplot as plt
-from matplotlib.colors import Normalize
+from matplotlib.colors import Normalize, LogNorm
 import matplotlib.cm as cm
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import multiprocessing as mp
@@ -41,7 +41,7 @@ end_iteration = 1800
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
-normalizer = Normalize(min_normalize, max_normalize)
+normalizer = LogNorm(min_normalize, max_normalize)
 cmap = cm.get_cmap('cool')
 
 phase_path = new_phase_path
@@ -160,7 +160,7 @@ for iteration in iterations:
 
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
-cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=1, borderpad=1.8)
+cbaxes = inset_axes(axs[0], width="40%", height="5%", loc=1, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
 cbar.ax.tick_params(labelsize=8)
 cbar.ax.set_title(target_param.title(), fontsize=8)
