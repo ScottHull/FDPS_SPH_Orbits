@@ -58,6 +58,7 @@ time = {}
 entropy = {}
 internal_energy = {}
 density = {}
+temperature = {}
 names, titles = get_all_sims()
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for s, t in zip(names, titles):
@@ -75,6 +76,7 @@ for s, t in zip(names, titles):
     entropy.update({s: {i: [] for i in endstate}})
     internal_energy.update({s: {i: [] for i in endstate}})
     density.update({s: {i: [] for i in endstate}})
+    temperature.update({s: {i: [] for i in endstate}})
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -93,24 +95,50 @@ for s, t in zip(names, titles):
             entropy[s][i].append(disk[disk['id'] == i]['entropy'].values[0])
             internal_energy[s][i].append(disk[disk['id'] == i]['internal energy'].values[0])
             density[s][i].append(disk[disk['id'] == i]['density'].values[0])
+            temperature[s][i].append(disk[disk['id'] == i]['temperature'].values[0])
 
         # make a 3 column plot of density, entropy, internal energy
-        fig2, axs2 = plt.subplots(1, 2, figsize=(12, 6), sharex='all')
+        fig2, axs2 = plt.subplots(1, 3, figsize=(18, 6), sharex='all')
         axs2 = axs2.flatten()
         for ax in axs2:
+            ax.set_xlim(0, 50)
             ax.grid()
             ax.set_xlabel(r"Density (kg/m$^3$", fontsize=16)
+            ax.set_title(f"{formatted_time} hrs.")
         axs2[0].set_ylabel(r'Entropy (J/kg/K)', fontsize=16)
         axs2[1].set_ylabel(r'Internal Energy (kJ)', fontsize=16)
-        axs2[0].set_xlim(0, 50)
-        axs2[1].set_xlim(0, 50)
-        axs2[0].set_ylim(0, 10000)
+        axs2[2].set_ylabel(r'Temperature (K)', fontsize=16)
+        axs2[0].set_ylim(0, 15000)
+        axs2[1].set_ylim(0, 100000)
+        axs2[2].set_ylim(0, 10000)
         # axs2[1].set_ylim(0, 5e7)
         axs2[0].scatter(
             whole_disk['density'], whole_disk['entropy'], marker=".", s=5
         )
         axs2[1].scatter(
             whole_disk['density'], whole_disk['internal energy'] / 1000, marker=".", s=5
+        )
+        # annotate the average y value in the upper right corner
+        axs2[0].annotate(
+            "Average Entropy: {:.2f}".format(np.mean(whole_disk['entropy'])),
+            xy=(0.65, 0.9),
+            xycoords='axes fraction',
+            fontsize=14,
+        )
+        axs2[1].annotate(
+            "Average Internal Energy: {:.2f}".format(np.mean(whole_disk['internal energy'])),
+            xy=(0.65, 0.9),
+            xycoords='axes fraction',
+            fontsize=14,
+        )
+        axs2[2].scatter(
+            whole_disk['density'], whole_disk['temperature'], marker=".", s=5
+        )
+        axs2[2].annotate(
+            "Average Temperature: {:.2f}".format(np.mean(whole_disk['temperature'])),
+            xy=(0.65, 0.9),
+            xycoords='axes fraction',
+            fontsize=14,
         )
         axs2[-1].scatter(
             [], [], label="Stewart M-ANEOS"
@@ -132,12 +160,12 @@ for s, t in zip(names, titles):
     )
 
 
-fig, axs = plt.subplots(1, 3, figsize=(18, 6), sharex='all')
+fig, axs = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
 axs = axs.flatten()
 for ax in axs:
     ax.grid()
     ax.set_xlabel("Time (hours)", fontsize=16)
-ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
+ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)', r'Temperature (K)']
 for ax, y in zip(axs, ylabels):
     ax.set_ylabel(y, fontsize=16)
 
@@ -145,7 +173,7 @@ for s in density.keys():
     linestyle = "-"
     if "old" in s:
         linestyle = "--"
-    for ax, i in zip(axs, [density[s], entropy[s], internal_energy[s]]):
+    for ax, i in zip(axs, [density[s], entropy[s], internal_energy[s], temperature[s]]):
         for index, j in enumerate(density[s].keys()):
             ax.plot(time[s][j], i[j], linestyle=linestyle, color=colors[index])
 
