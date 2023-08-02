@@ -116,8 +116,14 @@ for s, t in zip(names, titles):
         axs2[0].scatter(
             whole_disk['density'], whole_disk['entropy'], marker=".", s=5
         )
+        axs2[0].scatter(
+            disk['density'], disk['entropy'], marker=".", s=20, c='r'
+        )
         axs2[1].scatter(
             whole_disk['density'], whole_disk['internal energy'] / 1000, marker=".", s=5
+        )
+        axs2[1].scatter(
+            disk['density'], disk['internal energy'] / 1000, marker=".", s=20, c='r'
         )
         # annotate the average y value in the upper right corner
         axs2[0].annotate(
@@ -134,6 +140,9 @@ for s, t in zip(names, titles):
         )
         axs2[2].scatter(
             whole_disk['density'], whole_disk['temperature'], marker=".", s=5
+        )
+        axs2[2].scatter(
+            disk['density'], disk['temperature'], marker=".", s=20, c='r'
         )
         axs2[2].annotate(
             "Average\nTemperature:\n{:.2f}".format(np.mean(whole_disk['temperature'])),
