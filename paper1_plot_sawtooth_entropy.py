@@ -69,6 +69,7 @@ for s, t in zip(names, titles):
     endstate = get_endstate(s)
     endstate_whole_disk = endstate['id'].tolist()
     endstate_target_particles = endstate[endstate['entropy'] > 9000]
+    endstate_target_particles = endstate_target_particles[endstate_target_particles['density'] == cutoff_densities[0]]
     # get 5 random particle ids from the endstate df
     endstate = endstate_target_particles.sample(n=5)['id'].tolist()
     # get the color cycle
