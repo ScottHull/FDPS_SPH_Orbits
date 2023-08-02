@@ -152,10 +152,10 @@ for iteration in iterations:
                 c=cmap(normalizer(i[target_param] / target_param_norm)), label=label
             )
         if current_index % len(sims) == 0:
-            axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.44 * square_scale),
+            axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.40 * square_scale),
                                     "{} hrs".format(formatted_time), fontsize=20)
-        axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.30 * square_scale),
-                                "{} %".format(fraction_at_rho_c), fontsize=20)
+        # axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.30 * square_scale),
+        #                         "{} %".format(fraction_at_rho_c), fontsize=20)
         current_index += 1
 
 
