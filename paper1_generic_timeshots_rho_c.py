@@ -146,7 +146,7 @@ for iteration in iterations:
         fraction_at_rho_c = round(len(disk_at_rho_cutoff) / len(disk) * 100, 2)
         for i, label in zip([planet, disk, escape, disk_at_rho_cutoff], ["Disk"]):
             axs[current_index].scatter(
-                i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, c=cmap(normalizer(df[target_param])), label=label
+                i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, c=cmap(normalizer(i[target_param])), label=label
             )
         if current_index % len(sims) == 0:
             axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.44 * square_scale),
