@@ -29,6 +29,7 @@ base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 runs = "new"
 angle = "b073"
 target_param = 'pressure'
+target_param_norm = 10 ** 9
 iterations = [100, 200, 500, 1800]
 cutoff_densities = [5, 500, 1000, 2000]
 high = True
@@ -146,7 +147,8 @@ for iteration in iterations:
         fraction_at_rho_c = round(len(disk_at_rho_cutoff) / len(disk) * 100, 2)
         for i, label in zip([planet, disk, escape, disk_at_rho_cutoff], ["Disk"]):
             axs[current_index].scatter(
-                i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, c=cmap(normalizer(i[target_param])), label=label
+                i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
+                c=cmap(normalizer(i[target_param] / target_param_norm)), label=label
             )
         if current_index % len(sims) == 0:
             axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.44 * square_scale),
@@ -158,10 +160,10 @@ for iteration in iterations:
 
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
-cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=2, borderpad=1.8)
+cbaxes = inset_axes(axs[0], width="30%", height="3%", loc=1, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-cbar.ax.tick_params(labelsize=6)
-cbar.ax.set_title(target_param.title(), fontsize=6)
+cbar.ax.tick_params(labelsize=8)
+cbar.ax.set_title(target_param.title(), fontsize=8)
 
 for index, t in enumerate(titles):
     axs[index].set_title(t, fontsize=20)
