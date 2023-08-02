@@ -163,8 +163,8 @@ sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
 sm.set_array([])
 cbaxes = inset_axes(axs[0], width="40%", height="5%", loc=1, borderpad=1.8)
 cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-cbar.ax.tick_params(labelsize=8)
-cbar.ax.set_title(target_param.title() + f" ({units})", fontsize=8)
+cbar.ax.tick_params(labelsize=10)
+cbar.ax.set_title(target_param.title() + f" ({units})", fontsize=12)
 
 for index, t in enumerate(titles):
     axs[index].set_title(t, fontsize=20)
