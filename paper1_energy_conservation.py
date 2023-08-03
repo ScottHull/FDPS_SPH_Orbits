@@ -124,4 +124,4 @@ for handle in legend.legendHandles:  # increase marker sizes in legend
     except:
         pass
 fig.subplots_adjust(right=0.82)
-plt.savefig("plots/energy_conservation_{}.png".format(angle), dpi=300)
+plt.savefig("energy_conservation_{}.png".format(angle), dpi=300)
