@@ -80,9 +80,11 @@ axs = axs.flatten()
 for ax in axs:
     ax.grid()
     ax.set_xlabel("Time (hrs.)")
-axs[0].set_ylabel(r"Disk Mass ($M_{\oplus}$)")
-axs[1].set_ylabel(r"Disk Energy (kJ/kg)")
-axs[2].set_ylabel(r"Total Energy (kJ/kg)")
+    # make all axis tick font size larger
+    ax.tick_params(axis='both', which='major', labelsize=14)
+axs[0].set_ylabel(r"Disk Mass ($M_{\oplus}$)", fontsize=16)
+axs[1].set_ylabel(r"Disk Energy (kJ/kg)", fontsize=16)
+axs[2].set_ylabel(r"Total Energy (kJ/kg)", fontsize=16)
 
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 d = {}
