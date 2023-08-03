@@ -102,8 +102,8 @@ for sim, title in zip(sims, titles):
         df = pd.read_csv(path + "/{}.csv".format(iteration))
         df['velocity'] = np.sqrt(df['vx']**2 + df['vy']**2 + df['vz']**2)
         disk = df[df['label'] == 'Disk']
-        specific_energy_total = sum(df['internal energy']) + sum(df['potential energy']) + sum((0.5 * df['velocity']**2)) / 1000
-        specific_energy_disk = sum(disk['internal energy']) + sum(disk['potential energy']) + sum((0.5 * df['disk']**2)) / 1000
+        specific_energy_total = sum(df['internal_energy']) + sum(df['potential_energy']) + sum((0.5 * df['velocity']**2)) / 1000
+        specific_energy_disk = sum(disk['internal_energy']) + sum(disk['potential_energy']) + sum((0.5 * df['disk']**2)) / 1000
 
         times.append(time)
         disk_mass.append(df['DISK_MASS'][0])
