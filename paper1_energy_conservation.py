@@ -117,9 +117,9 @@ for sim, title in zip(sims, titles):
         disk_energy.append(specific_energy_disk)
         total_energy.append(specific_energy_total)
 
-axs[0].plot(times, disk_mass, label=title, color=color, linestyle=linestyle)
-axs[1].plot(times, disk_energy, label=title, color=color, linestyle=linestyle)
-axs[2].plot(times, total_energy, label=title, color=color, linestyle=linestyle)
+    axs[0].plot(times, disk_mass, label=title, color=color, linestyle=linestyle)
+    axs[1].plot(times, disk_energy, label=title, color=color, linestyle=linestyle)
+    axs[2].plot(times, total_energy, label=title, color=color, linestyle=linestyle)
 
 for c in cutoff_densities:
     axs[0].scatter(
