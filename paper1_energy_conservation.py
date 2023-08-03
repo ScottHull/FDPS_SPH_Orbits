@@ -87,7 +87,7 @@ axs[2].set_ylabel(r"Total Energy (kJ/kg)")
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 d = {}
 for sim, title in zip(sims, titles):
-    cutoff_density = int(sim.split("b")[0])
+    cutoff_density = int(title.split("b")[0])
     color = colors[cutoff_densities.index(cutoff_density)]
     linestyle = "-"
     if "N" in sim:
