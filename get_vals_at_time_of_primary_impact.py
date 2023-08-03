@@ -105,6 +105,7 @@ def run():
     pool.map(__run_proc, [[s, t, iteration, 'at_time_of_primary_impact'] for s, t in zip(sims, titles)])
     pool.close()
     pool.join()
+    pool = mp.Pool(10)
     pool.map(__run_proc, [[s, t, end_state_iteration, 'at_endstate'] for s, t in zip(sims, titles)])
     pool.close()
     pool.join()
