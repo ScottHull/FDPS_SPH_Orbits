@@ -150,13 +150,13 @@ for s, t in zip(names, titles):
             xycoords='axes fraction',
             fontsize=10,
         )
-        axs2[-1].scatter(
-            [], [], label="Stewart M-ANEOS"
-        )
-        axs2[-1].scatter(
-            [], [], label="N-SPH M-ANEOS"
-        )
-        axs2[-1].legend(fontsize=14, loc='lower right')
+        # axs2[-1].scatter(
+        #     [], [], label="Stewart M-ANEOS"
+        # )
+        # axs2[-1].scatter(
+        #     [], [], label="N-SPH M-ANEOS"
+        # )
+        # axs2[-1].legend(fontsize=14, loc='lower right')
         plt.tight_layout()
         plt.savefig("paper1_sawtooth_{}/{}.png".format(s, iteration), dpi=200)
 
