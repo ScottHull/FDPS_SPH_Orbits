@@ -114,15 +114,15 @@ for sim, title in zip(sims, titles):
             specific_energy_disk = sum(disk['internal_energy']) + sum(disk['potential_energy']) + sum((0.5 * disk['velocity']**2)) / 1000
 
             times.append(time)
-            disk_mass.append(report_df['DISK_MASS'][0])
+            disk_mass.append(float(report_df['DISK_MASS'][0].split(" ")[0]))
             disk_energy.append(specific_energy_disk)
             total_energy.append(specific_energy_total)
         except:
             pass
 
-    axs[0].plot(times, disk_mass, label=title, color=color, linestyle=linestyle)
-    axs[1].plot(times, disk_energy, label=title, color=color, linestyle=linestyle)
-    axs[2].plot(times, total_energy, label=title, color=color, linestyle=linestyle)
+    axs[0].plot(times, disk_mass, color=color, linestyle=linestyle)
+    axs[1].plot(times, disk_energy, color=color, linestyle=linestyle)
+    axs[2].plot(times, total_energy, color=color, linestyle=linestyle)
 
 for c in cutoff_densities:
     axs[0].scatter(
