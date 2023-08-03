@@ -164,7 +164,7 @@ for s, t in zip(names, titles):
                 disk['density'], delta_s_d.values(), marker=".", s=20, c='r'
             )
             axs2[3].annotate(
-                "Average\nDelta Entropy:\n{:.2f}".format(np.mean(delta_s_wd.values())),
+                "Average\nDelta Entropy:\n{:.2f}".format(np.mean(list(delta_s_wd.values()))),
                 xy=(0.50, 0.9),
                 xycoords='axes fraction',
                 fontsize=10,
