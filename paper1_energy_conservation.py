@@ -95,7 +95,7 @@ for sim, title in zip(sims, titles):
     if "high" in sim or "low" in sim:
         linestyle = "dotted"
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
-        path = base_path + "{}/circularized_{}".format(sim, sim)
+        path = base_path + "{}/circularized_{}/".format(sim, sim)
         report_path = base_path + "{}/{}_reports/".format(sim, sim)
         report_df = pd.read_csv(path + "{}.csv".format(iteration))
         time = report_df['TIME_HRS'][0]
