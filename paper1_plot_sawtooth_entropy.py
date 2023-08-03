@@ -179,8 +179,7 @@ for s, t in zip(names, titles):
         plt.tight_layout()
         plt.savefig("paper1_sawtooth_{}/{}.png".format(s, iteration), dpi=200)
 
-        if iteration > min_iteration:
-            prev_entropy = zip(whole_disk['id'], whole_disk['entropy'])
+        prev_entropy = zip(whole_disk['id'], whole_disk['entropy'])
 
     animate(
         start_time=min_iteration,
