@@ -69,6 +69,7 @@ for s, t in zip(names, titles):
     endstate = get_endstate(s)
     endstate_whole_disk = endstate['id'].tolist()
     endstate_target_particles = endstate[endstate['entropy'] > 9000]
+    endstate_target_particles = endstate_target_particles[endstate_target_particles['density'] == cutoff_densities[0]]
     # get 5 random particle ids from the endstate df
     endstate = endstate_target_particles.sample(n=5)['id'].tolist()
     # get the color cycle
@@ -110,35 +111,44 @@ for s, t in zip(names, titles):
         axs2[2].set_ylabel(r'Temperature (K)', fontsize=16)
         axs2[0].set_ylim(0, 15000)
         axs2[1].set_ylim(0, 100000)
-        axs2[2].set_ylim(0, 10000)
+        axs2[2].set_ylim(0, 15000)
         # axs2[1].set_ylim(0, 5e7)
         axs2[0].scatter(
             whole_disk['density'], whole_disk['entropy'], marker=".", s=5
         )
+        axs2[0].scatter(
+            disk['density'], disk['entropy'], marker=".", s=20, c='r'
+        )
         axs2[1].scatter(
             whole_disk['density'], whole_disk['internal energy'] / 1000, marker=".", s=5
         )
+        axs2[1].scatter(
+            disk['density'], disk['internal energy'] / 1000, marker=".", s=20, c='r'
+        )
         # annotate the average y value in the upper right corner
         axs2[0].annotate(
-            "Average Entropy: {:.2f}".format(np.mean(whole_disk['entropy'])),
+            "Average Entropy:\n{:.2f}".format(np.mean(whole_disk['entropy'])),
             xy=(0.65, 0.9),
             xycoords='axes fraction',
-            fontsize=14,
+            fontsize=10,
         )
         axs2[1].annotate(
-            "Average Internal Energy: {:.2f}".format(np.mean(whole_disk['internal energy'])),
+            "Average\nInternal Energy: \n{:.2f}".format(np.mean(whole_disk['internal energy']) / 1000),
             xy=(0.65, 0.9),
             xycoords='axes fraction',
-            fontsize=14,
+            fontsize=10,
         )
         axs2[2].scatter(
             whole_disk['density'], whole_disk['temperature'], marker=".", s=5
         )
+        axs2[2].scatter(
+            disk['density'], disk['temperature'], marker=".", s=20, c='r'
+        )
         axs2[2].annotate(
-            "Average Temperature: {:.2f}".format(np.mean(whole_disk['temperature'])),
-            xy=(0.65, 0.9),
+            "Average\nTemperature:\n{:.2f}".format(np.mean(whole_disk['temperature'])),
+            xy=(0.50, 0.9),
             xycoords='axes fraction',
-            fontsize=14,
+            fontsize=10,
         )
         axs2[-1].scatter(
             [], [], label="Stewart M-ANEOS"
