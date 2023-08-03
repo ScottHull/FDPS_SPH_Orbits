@@ -101,7 +101,7 @@ for sim, title in zip(sims, titles):
         linestyle = "--"
     if "high" in sim or "low" in sim:
         linestyle = "dotted"
-    for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+    for iteration in np.arange(min_iteration, max_iteration + to_increment, to_increment):
         path = base_path + "{}/circularized_{}/".format(sim, sim)
         report_path = base_path + "{}/{}_reports/".format(sim, sim)
         report_df = pd.read_csv(report_path + "{}.csv".format(iteration))
