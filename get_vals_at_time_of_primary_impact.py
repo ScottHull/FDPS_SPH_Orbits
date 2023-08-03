@@ -62,6 +62,7 @@ def find_max(df, title, curr_maxes, iteration, time):
         if df['pressure'][row] > curr_maxes[df['id'][row]]['pressure']:
             curr_maxes[df['id'][row]]['pressure'] = df['pressure'][row]
             curr_maxes[df['id'][row]]['time'] = time
+            curr_maxes[df['id'][row]]['tag'] = df['tag'][row]
             curr_maxes[df['id'][row]]['iteration'] = iteration
             curr_maxes[df['id'][row]]['density'] = df['density'][row]
             curr_maxes[df['id'][row]]['entropy'] = df['entropy'][row]
@@ -71,16 +72,16 @@ def find_max(df, title, curr_maxes, iteration, time):
 
 
 def __run_proc(args):
-    s, t = args
+    s, t, target_iter, name = args
     endstate = get_endstate(s)
     number_processes = 200
     if "high" in s and angle == "b073":
         number_processes = 500
     curr_max = {i: {'pressure': -1e99, "time": None, "iteration": None, "density": None, "entropy": None,
-                    "internal energy": None} for i in endstate}
+                    "internal energy": None, 'tag': None} for i in endstate}
     path = base_path + "{}/{}".format(s, s)
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
-    cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+    cf = CombineFile(num_processes=number_processes, time=target_iter, output_path=path, to_fname=to_fname)
     combined_file = cf.combine()
     formatted_time = round(cf.sim_time * 0.000277778, 2)
     f = os.getcwd() + "/{}".format(to_fname)
@@ -91,7 +92,7 @@ def __run_proc(args):
     os.remove(f)
     curr_max = find_max(disk, t, curr_max, iteration, formatted_time)
     max_vals[t] = curr_max
-    f = "{}_{}_max_vals.csv".format(t, angle)
+    f = "{}_{}_max_vals_{}.csv".format(t, angle, name)
     if os.path.exists(f):
         os.remove(f)
     with open(f, 'w') as infile:
@@ -101,15 +102,18 @@ def __run_proc(args):
 
 def run():
     pool = mp.Pool(10)
-    pool.map(__run_proc, [[s, t] for s, t in zip(sims, titles)])
+    pool.map(__run_proc, [[s, t, iteration, 'at_time_of_primary_impact'] for s, t in zip(sims, titles)])
     pool.close()
     pool.join()
-    fname = "{}_max_vals.csv".format(angle)
-    if os.path.exists(fname):
-        os.remove(fname)
-    with open(fname, "w") as f:
-        f.write(str(max_vals))
-    f.close()
+    pool.map(__run_proc, [[s, t, end_state_iteration, 'at_endstate'] for s, t in zip(sims, titles)])
+    pool.close()
+    pool.join()
+    # fname = "{}_max_vals.csv".format(angle)
+    # if os.path.exists(fname):
+    #     os.remove(fname)
+    # with open(fname, "w") as f:
+    #     f.write(str(max_vals))
+    # f.close()
 
 
 run()
