@@ -147,6 +147,7 @@ def plot_phase_diagrams():
             to_path = base_path + "{}/circularized_{}/{}.csv".format(s, s, iteration)
             df = pd.read_csv(to_path)
             disk = df[df['label'] == "DISK"]
+            disk = disk[disk['tag'] % 2 == 0]
             disk_filtered = disk[disk['circ_entropy_delta'] < 5000]
             temp, entropy = disk_filtered['temperature'], disk_filtered['entropy'] + disk_filtered['circ_entropy_delta']
             cd = int(s.split("_")[0])
