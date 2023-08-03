@@ -106,7 +106,7 @@ for sim, title in zip(sims, titles):
         specific_energy_disk = sum(disk['internal_energy']) + sum(disk['potential_energy']) + sum((0.5 * disk['velocity']**2)) / 1000
 
         times.append(time)
-        disk_mass.append(df['DISK_MASS'][0])
+        disk_mass.append(report_df['DISK_MASS'][0])
         disk_energy.append(specific_energy_disk)
         total_energy.append(specific_energy_total)
 
