@@ -110,6 +110,35 @@ for sim, title in zip(sims, titles):
         disk_energy.append(specific_energy_disk)
         total_energy.append(specific_energy_total)
 
+axs[0].plot(times, disk_mass, label=title, color=color, linestyle=linestyle)
+axs[1].plot(times, disk_energy, label=title, color=color, linestyle=linestyle)
+axs[2].plot(times, total_energy, label=title, color=color, linestyle=linestyle)
+
+for c in cutoff_densities:
+    axs[0].scatter(
+        [], [], marker="s", s=80, label=r"$\rho_c$ = {} kg/m$^3$".format(c)
+    )
+axs[0].plot(
+    [], [], c='black', linewidth=2.0, linestyle="-", label="Stewart M-ANEOS"
+)
+axs[0].plot(
+    [], [], c='black', linewidth=2.0, linestyle="--", label="N-SPH M-ANEOS"
+)
+if angle == "b073":
+    axs[0].plot(
+        [], [], c=colors[cutoff_densities.index(5)], linewidth=2.0, linestyle="dotted", label="5b073S-high"
+    )
+if angle == "b075":
+    axs[0].plot(
+        [], [], c=colors[cutoff_densities.index(2000)], linewidth=2.0, linestyle="dotted", label="2000b075N-low"
+    )
+letters = list(string.ascii_lowercase)
+for index, ax in enumerate(axs):
+    x1, x2, y1, y2 = ax.axis()
+    x_loc = x1 + (0.02 * (x2 - x1))
+    y_loc = y2 - (0.08 * (y2 - y1))
+    ax.grid(alpha=0.4)
+    ax.text(x_loc, y_loc, letters[index], fontweight="bold")
 
 plt.tight_layout()
 legend = fig.legend(loc=7, fontsize=16)
