@@ -158,10 +158,10 @@ for s, t in zip(names, titles):
             delta_s_d = {i: prev_entropy[i] - s_curr for i, s_curr in zip(disk['id'], disk['entropy'])}
 
             axs2[3].scatter(
-                whole_disk['density'], delta_s_wd, marker=".", s=5
+                whole_disk['density'], delta_s_wd.values(), marker=".", s=5
             )
             axs2[3].scatter(
-                disk['density'], delta_s_d, marker=".", s=20, c='r'
+                disk['density'], delta_s_d.values(), marker=".", s=20, c='r'
             )
             axs2[3].annotate(
                 "Average\nDelta Entropy:\n{:.2f}".format(np.mean(delta_s.values())),
