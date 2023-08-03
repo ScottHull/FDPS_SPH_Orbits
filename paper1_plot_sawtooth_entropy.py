@@ -78,6 +78,7 @@ for s, t in zip(names, titles):
     internal_energy.update({s: {i: [] for i in endstate}})
     density.update({s: {i: [] for i in endstate}})
     temperature.update({s: {i: [] for i in endstate}})
+    prev_entropy = {}
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -99,7 +100,7 @@ for s, t in zip(names, titles):
             temperature[s][i].append(disk[disk['id'] == i]['temperature'].values[0])
 
         # make a 3 column plot of density, entropy, internal energy
-        fig2, axs2 = plt.subplots(1, 3, figsize=(18, 6), sharex='all')
+        fig2, axs2 = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
         axs2 = axs2.flatten()
         for ax in axs2:
             ax.set_xlim(0, 50)
@@ -109,9 +110,11 @@ for s, t in zip(names, titles):
         axs2[0].set_ylabel(r'Entropy (J/kg/K)', fontsize=16)
         axs2[1].set_ylabel(r'Internal Energy (kJ)', fontsize=16)
         axs2[2].set_ylabel(r'Temperature (K)', fontsize=16)
+        axs2[3].set_ylabel(r'Delta Entropy (J/kg/K)', fontsize=16)
         axs2[0].set_ylim(0, 15000)
         axs2[1].set_ylim(0, 100000)
         axs2[2].set_ylim(0, 15000)
+        axs2[3].set_ylim(0, 1000)
         # axs2[1].set_ylim(0, 5e7)
         axs2[0].scatter(
             whole_disk['density'], whole_disk['entropy'], marker=".", s=5
@@ -150,6 +153,20 @@ for s, t in zip(names, titles):
             xycoords='axes fraction',
             fontsize=10,
         )
+        if iteration > min_iteration:
+            delta_s = {i: prev_entropy[i] - s_curr for i, s_prev, s_curr in zip(whole_disk['id'], whole_disk['entropy'])}
+            axs2[3].scatter(
+                whole_disk['density'], delta_s, marker=".", s=5
+            )
+            axs2[3].scatter(
+                disk['density'], delta_s, marker=".", s=20, c='r'
+            )
+            axs2[3].annotate(
+                "Average\nDelta Entropy:\n{:.2f}".format(np.mean(delta_s.values())),
+                xy=(0.50, 0.9),
+                xycoords='axes fraction',
+                fontsize=10,
+            )
         # axs2[-1].scatter(
         #     [], [], label="Stewart M-ANEOS"
         # )
@@ -159,6 +176,9 @@ for s, t in zip(names, titles):
         # axs2[-1].legend(fontsize=14, loc='lower right')
         plt.tight_layout()
         plt.savefig("paper1_sawtooth_{}/{}.png".format(s, iteration), dpi=200)
+
+        if iteration > min_iteration:
+            prev_entropy = zip(whole_disk['id'], whole_disk['entropy'])
 
     animate(
         start_time=min_iteration,
