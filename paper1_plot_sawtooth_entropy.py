@@ -114,19 +114,19 @@ for s, t in zip(names, titles):
         axs2[0].set_ylim(0, 15000)
         axs2[1].set_ylim(0, 100000)
         axs2[2].set_ylim(0, 15000)
-        axs2[3].set_ylim(0, 1000)
+        axs2[3].set_ylim(0, 200)
         # axs2[1].set_ylim(0, 5e7)
         axs2[0].scatter(
             whole_disk['density'], whole_disk['entropy'], marker=".", s=5
         )
         axs2[0].scatter(
-            disk['density'], disk['entropy'], marker=".", s=20, c='r'
+            disk['density'], disk['entropy'], marker=".", s=80, c='r'
         )
         axs2[1].scatter(
             whole_disk['density'], whole_disk['internal energy'] / 1000, marker=".", s=5
         )
         axs2[1].scatter(
-            disk['density'], disk['internal energy'] / 1000, marker=".", s=20, c='r'
+            disk['density'], disk['internal energy'] / 1000, marker=".", s=80, c='r'
         )
         # annotate the average y value in the upper right corner
         axs2[0].annotate(
@@ -145,7 +145,7 @@ for s, t in zip(names, titles):
             whole_disk['density'], whole_disk['temperature'], marker=".", s=5
         )
         axs2[2].scatter(
-            disk['density'], disk['temperature'], marker=".", s=20, c='r'
+            disk['density'], disk['temperature'], marker=".", s=80, c='r'
         )
         axs2[2].annotate(
             "Average\nTemperature:\n{:.2f}".format(np.mean(whole_disk['temperature'])),
@@ -161,7 +161,7 @@ for s, t in zip(names, titles):
                 whole_disk['density'], delta_s_wd.values(), marker=".", s=5
             )
             axs2[3].scatter(
-                disk['density'], delta_s_d.values(), marker=".", s=20, c='r'
+                disk['density'], delta_s_d.values(), marker=".", s=80, c='r'
             )
             axs2[3].annotate(
                 "Average\nDelta Entropy:\n{:.2f}".format(np.mean(list(delta_s_wd.values()))),
@@ -186,7 +186,7 @@ for s, t in zip(names, titles):
         end_time=max_iteration,
         interval=increment,
         path="paper1_sawtooth_{}".format(s),
-        fps=20,
+        fps=80,
         filename="{}_sawtooth.mp4".format(s),
     )
 
