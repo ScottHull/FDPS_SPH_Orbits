@@ -66,12 +66,6 @@ def get_all_sims(angle, high=True):
             titles.append(high_res_title)
     return names, titles
 
-
-times = []
-disk_mass = []
-disk_energy = []
-total_energy = []
-
 sims, titles = get_all_sims(high=True, angle=angle)
 # make a 2 column 1 row plot
 fig, axs = plt.subplots(1, 3, figsize=(18, 6))
@@ -89,6 +83,10 @@ axs[2].set_ylabel(r"Total Energy (kJ/kg)", fontsize=16)
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 d = {}
 for sim, title in zip(sims, titles):
+    times = []
+    disk_mass = []
+    disk_energy = []
+    total_energy = []
     cutoff_density = int(title.split("b")[0])
     color = colors[cutoff_densities.index(cutoff_density)]
     linestyle = "-"
