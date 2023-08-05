@@ -108,8 +108,12 @@ for sim, title in zip(sims, titles):
             df = pd.read_csv(path + "/{}.csv".format(iteration))
             df['velocity'] = np.sqrt(df['vx']**2 + df['vy']**2 + df['vz']**2)
             disk = df[df['label'] == 'DISK']
-            specific_energy_total = sum(df['internal_energy']) + sum(df['potential_energy']) + sum((0.5 * df['velocity']**2)) / 1000
-            specific_energy_disk = sum(disk['internal_energy']) + sum(disk['potential_energy']) + sum((0.5 * disk['velocity']**2)) / 1000
+            specific_internal_energy = [df['internal_energy'][i] / df['mass'][i] for i in range(len(df['internal_energy']))]
+            specific_potential_energy = [df['potential_energy'][i] / df['mass'][i] for i in range(len(df['potential_energy']))]
+            disk_specific_internal_energy = [disk['internal_energy'][i] / disk['mass'][i] for i in range(len(disk['internal_energy']))]
+            disk_specific_potential_energy = [disk['potential_energy'][i] / disk['mass'][i] for i in range(len(disk['potential_energy']))]
+            specific_energy_total = specific_internal_energy + specific_potential_energy + sum((0.5 * df['velocity']**2)) / 1000
+            specific_energy_disk = disk_specific_internal_energy + disk_specific_potential_energy + sum((0.5 * disk['velocity']**2)) / 1000
 
             times.append(time)
             disk_mass.append(float(report_df['DISK_MASS'][0].split(" ")[0]))
