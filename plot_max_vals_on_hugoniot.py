@@ -14,8 +14,9 @@ plt.style.use('seaborn-colorblind')
 
 angle = 'b073'
 cutoff_densities = [5, 500, 1000, 2000]
-base_max_val_folders_loc = "C:/Users/Scott/OneDrive/Desktop/figures-selected/"
+# base_max_val_folders_loc = "C:/Users/Scott/OneDrive/Desktop/figures-selected/"
 # base_max_val_folders_loc = "C:/Users/Scott/Desktop/"
+base_max_val_folders_loc = "/Users/scotthull/Desktop/maxvals_8_5_2023/"
 
 stewart_aneos_path = "src/phase_data/forst_STS.table.txt"
 stewart_rho_u = "src/phase_data/forst_STS.rho_u.txt"
@@ -111,7 +112,7 @@ for i in ["Stewart M-ANEOS", "N-SPH M-ANEOS"]:
         for s, t in zip(sims, titles):
             maxvals.update({t: get_max_vals(angle, t, j)})
         for j, (title, max_vals) in enumerate(maxvals.items()):
-            x, y = [max_vals[p]['pressure'] / 10 ** 9 for p in max_vals.keys()], [max_vals[p]['entropy'] for p in max_vals.keys()]
+            x, y = [max_vals[p]['pressure'] / 10 ** 9 for p in max_vals.keys() if max_vals[p]['tag'] % 2 == 0], [max_vals[p]['entropy'] for p in max_vals.keys() if max_vals[p]['tag'] % 2 == 0]
             cd = int(title.split("b")[0])
             color_index = cutoff_densities.index(cd)
             if "high" in title or "low" in title:
