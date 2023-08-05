@@ -155,6 +155,7 @@ for s, t in zip(names, titles):
         )
         if iteration > min_iteration:
             delta_s_wd = {i: prev_entropy[i] - s_curr for i, s_curr in zip(whole_disk['id'], whole_disk['entropy'])}
+            delta_s_wd_at_rhoc = {i: prev_entropy[i] - s_curr for i, s_curr in zip(whole_disk['id'], whole_disk['entropy']) if whole_disk['density'] == cutoff_densities[0]}
             delta_s_d = {i: prev_entropy[i] - s_curr for i, s_curr in zip(disk['id'], disk['entropy'])}
 
             axs2[3].scatter(
@@ -164,7 +165,7 @@ for s, t in zip(names, titles):
                 disk['density'], delta_s_d.values(), marker=".", s=80, c='r'
             )
             axs2[3].annotate(
-                "Average\nDelta Entropy:\n{:.2f}".format(np.mean(list(delta_s_wd.values()))),
+                "Average Delta Entropy at\n" + r"$\rho_c$:" + "{:.2f}".format(np.mean(list(delta_s_wd_at_rhoc.values()))),
                 xy=(0.50, 0.9),
                 xycoords='axes fraction',
                 fontsize=10,
@@ -187,8 +188,9 @@ for s, t in zip(names, titles):
         interval=increment,
         path="paper1_sawtooth_{}".format(s),
         fps=80,
-        filename="{}_sawtooth.mp4".format(s),
+        filename="{}_{}_sawtooth.mp4".format(s, cutoff_densities[0]),
     )
+    break
 
 
 fig, axs = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
@@ -208,18 +210,18 @@ for s in density.keys():
         for index, j in enumerate(density[s].keys()):
             ax.plot(time[s][j], i[j], linestyle=linestyle, color=colors[index])
 
-axs[-1].plot(
-    [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
-)
-axs[-1].plot(
-    [], [], linestyle="--", label="N-SPH M-ANEOS", color="black"
-)
-
-axs[0].set_ylim(bottom=0, top=50)
-
-axs[-1].legend(fontsize=14, loc='lower right')
+# axs[-1].plot(
+#     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
+# )
+# axs[-1].plot(
+#     [], [], linestyle="--", label="N-SPH M-ANEOS", color="black"
+# )
+#
+# axs[0].set_ylim(bottom=0, top=50)
+#
+# axs[-1].legend(fontsize=14, loc='lower right')
 plt.tight_layout()
-plt.savefig("sawtooth_entropy.png", dpi=300)
+plt.savefig(f"{cutoff_densities[0]}_{angle}_sawtooth_entropy.png", dpi=300)
 
 
 
