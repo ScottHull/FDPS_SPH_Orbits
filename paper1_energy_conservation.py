@@ -102,22 +102,23 @@ for sim, title in zip(sims, titles):
     for iteration in np.arange(min_iteration, max_iteration + to_increment, to_increment):
         path = base_path + "{}/circularized_{}/".format(sim, sim)
         report_path = base_path + "{}/{}_reports/".format(sim, sim)
-        report_df = pd.read_csv(report_path + "{}.csv".format(iteration))
-        time = report_df['TIME_HRS'][0]
-        df = pd.read_csv(path + "/{}.csv".format(iteration))
-        df['velocity'] = np.sqrt(df['vx']**2 + df['vy']**2 + df['vz']**2)
-        disk = df[df['label'] == 'DISK']
-        specific_internal_energy = sum(df['internal_energy'] / df['mass'])
-        specific_potential_energy = sum(df['potential_energy'] / df['mass'])
-        disk_specific_internal_energy = sum(disk['internal_energy'] / disk['mass'])
-        disk_specific_potential_energy = sum(disk['potential_energy'] / disk['mass'])
-        specific_energy_total = (specific_internal_energy + specific_potential_energy + sum(0.5 * df['velocity']**2)) / 1000
-        specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + sum(0.5 * disk['velocity']**2)) / 1000
+        if os.path.exists(report_path):
+            report_df = pd.read_csv(report_path + "{}.csv".format(iteration))
+            time = report_df['TIME_HRS'][0]
+            df = pd.read_csv(path + "/{}.csv".format(iteration))
+            df['velocity'] = np.sqrt(df['vx']**2 + df['vy']**2 + df['vz']**2)
+            disk = df[df['label'] == 'DISK']
+            specific_internal_energy = sum(df['internal_energy'] / df['mass'])
+            specific_potential_energy = sum(df['potential_energy'] / df['mass'])
+            disk_specific_internal_energy = sum(disk['internal_energy'] / disk['mass'])
+            disk_specific_potential_energy = sum(disk['potential_energy'] / disk['mass'])
+            specific_energy_total = (specific_internal_energy + specific_potential_energy + sum(0.5 * df['velocity']**2)) / 1000
+            specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + sum(0.5 * disk['velocity']**2)) / 1000
 
-        times.append(time)
-        disk_mass.append(float(report_df['DISK_MASS'][0].split(" ")[0]))
-        disk_energy.append(specific_energy_disk)
-        total_energy.append(specific_energy_total)
+            times.append(time)
+            disk_mass.append(float(report_df['DISK_MASS'][0].split(" ")[0]))
+            disk_energy.append(specific_energy_disk)
+            total_energy.append(specific_energy_total)
 
     axs[0].plot(times, disk_mass, color=color, linestyle=linestyle)
     axs[1].plot(times, disk_energy, color=color, linestyle=linestyle)

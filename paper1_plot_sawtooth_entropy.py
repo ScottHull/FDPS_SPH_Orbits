@@ -158,6 +158,7 @@ for s, t in zip(names, titles):
             delta_s_wd = {i: prev_entropy[i] - s_curr for i, s_curr in zip(whole_disk['id'], whole_disk['entropy']) if i in prev_entropy.keys()}
             delta_s_wd_at_rhoc = {i: prev_entropy[i] - s_curr for i, s_curr, density in zip(whole_disk['id'], whole_disk['entropy'], whole_disk['density']) if density == cutoff_densities[0] if i in prev_entropy.keys()}
             delta_s_d = {i: prev_entropy[i] - s_curr for i, s_curr in zip(disk['id'], disk['entropy']) if i in prev_entropy.keys()}
+            delta_s_wd_density =
 
             axs2[3].scatter(
                 whole_disk['density'], delta_s_wd.values(), marker=".", s=5
