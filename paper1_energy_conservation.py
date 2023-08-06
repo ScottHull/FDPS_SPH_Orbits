@@ -102,7 +102,7 @@ for sim, title in zip(sims, titles):
     for iteration in np.arange(min_iteration, max_iteration + to_increment, to_increment):
         path = base_path + "{}/circularized_{}/".format(sim, sim)
         report_path = base_path + "{}/{}_reports/".format(sim, sim)
-        if os.path.exists(report_path):
+        if os.path.exists(report_path + "{}.csv".format(iteration)):
             report_df = pd.read_csv(report_path + "{}.csv".format(iteration))
             time = report_df['TIME_HRS'][0]
             df = pd.read_csv(path + "/{}.csv".format(iteration))
