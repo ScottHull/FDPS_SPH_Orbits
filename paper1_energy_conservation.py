@@ -80,6 +80,11 @@ axs[0].set_ylabel(r"Disk Mass ($M_{\oplus}$)", fontsize=16)
 axs[1].set_ylabel(r"Disk Energy (kJ/kg)", fontsize=16)
 axs[2].set_ylabel(r"Total Energy (kJ/kg)", fontsize=16)
 
+times_dict = {}
+total_potential_energy = {}
+total_internal_energy = {}
+total_kinetic_energy = {}
+
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 d = {}
 for sim, title in zip(sims, titles):
@@ -87,6 +92,10 @@ for sim, title in zip(sims, titles):
     disk_mass = []
     disk_energy = []
     total_energy = []
+    times_dict.update({title: []})
+    total_potential_energy.update({title: []})
+    total_internal_energy.update({title: []})
+    total_kinetic_energy.update({title: []})
     cutoff_density = int(title.split("b")[0])
     color = colors[cutoff_densities.index(cutoff_density)]
     linestyle = "-"
@@ -110,15 +119,21 @@ for sim, title in zip(sims, titles):
             disk = df[df['label'] == 'DISK']
             specific_internal_energy = sum(df['internal_energy'] / df['mass'])
             specific_potential_energy = sum(df['potential_energy'] / df['mass'])
+            specific_kinetic_energy = sum(0.5 * df['velocity']**2)
             disk_specific_internal_energy = sum(disk['internal_energy'] / disk['mass'])
             disk_specific_potential_energy = sum(disk['potential_energy'] / disk['mass'])
-            specific_energy_total = (specific_internal_energy + specific_potential_energy + sum(0.5 * df['velocity']**2)) / 1000
-            specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + sum(0.5 * disk['velocity']**2)) / 1000
+            disk_specific_kinetic_energy = sum(0.5 * disk['velocity']**2)
+            specific_energy_total = (specific_internal_energy + specific_potential_energy + specific_kinetic_energy) / 1000
+            specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + disk_specific_kinetic_energy) / 1000
+            times_dict[title].append(time)
 
             times.append(time)
             disk_mass.append(float(report_df['DISK_MASS'][0].split(" ")[0]))
             disk_energy.append(specific_energy_disk)
             total_energy.append(specific_energy_total)
+            total_potential_energy[title].append(specific_potential_energy / 1000)
+            total_internal_energy[title].append(specific_internal_energy / 1000)
+            total_kinetic_energy[title].append(specific_kinetic_energy / 1000)
 
     axs[0].plot(times, disk_mass, color=color, linestyle=linestyle)
     axs[1].plot(times, disk_energy, color=color, linestyle=linestyle)
@@ -163,3 +178,56 @@ for handle in legend.legendHandles:  # increase marker sizes in legend
         pass
 fig.subplots_adjust(right=0.82)
 plt.savefig("energy_conservation_{}.png".format(angle), dpi=300)
+
+
+# make a 3 column 1 row plot
+fig, axs = plt.subplots(1, 3, figsize=(20, 6))
+axs = axs.flatten()
+for ax in axs:
+    ax.grid()
+    ax.set_xlabel("Time (hrs.)")
+    # make all axis tick font size larger
+    ax.tick_params(axis='both', which='major', labelsize=14)
+axs[0].set_ylabel(r"Potential Energy (kJ/kg)", fontsize=16)
+axs[1].set_ylabel(r"Internal Energy (kJ/kg)", fontsize=16)
+axs[2].set_ylabel(r"Kinetic Energy (kJ/kg)", fontsize=16)
+
+for sim, title in zip(sims, titles):
+    cutoff_density = float(sim.split("_")[1].split("kg")[0])
+    cutoff_density = int(title.split("b")[0])
+    linestyle = "-"
+    to_increment = increment
+    if "high" in sim:
+        to_increment = increment_high
+    if "low" in sim:
+        to_increment = increment_low
+    if "N" in sim:
+        linestyle = "--"
+    if "high" in sim or "low" in sim:
+        linestyle = "dotted"
+    axs[0].plot(
+        times_dict[title], total_potential_energy[title], color=color, linestyle=linestyle
+    )
+    axs[1].plot(
+        times_dict[title], total_internal_energy[title], color=color, linestyle=linestyle
+    )
+    axs[2].plot(
+        times_dict[title], total_kinetic_energy[title], color=color, linestyle=linestyle
+    )
+
+plt.tight_layout()
+legend = fig.legend(loc=7, fontsize=16)
+for line in legend.get_lines():  # increase line widths in legend
+    try:
+        line.set_linewidth(4.0)
+    except:
+        pass
+for handle in legend.legendHandles:  # increase marker sizes in legend
+    try:
+        handle.set_sizes([120.0])
+    except:
+        pass
+fig.subplots_adjust(right=0.82)
+plt.savefig("energy_conservation_components_{}.png".format(angle), dpi=300)
+
+
