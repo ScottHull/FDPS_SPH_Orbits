@@ -68,7 +68,7 @@ def get_all_sims(angle, high=True):
 
 sims, titles = get_all_sims(high=True, angle=angle)
 # make a 2 column 1 row plot
-fig, axs = plt.subplots(1, 3, figsize=(18, 6))
+fig, axs = plt.subplots(1, 3, figsize=(20, 6))
 axs = axs.flatten()
 
 for ax in axs:
@@ -112,8 +112,8 @@ for sim, title in zip(sims, titles):
             specific_potential_energy = [df['potential_energy'][i] / df['mass'][i] for i in range(len(df['potential_energy']))]
             disk_specific_internal_energy = [disk['internal_energy'][i] / disk['mass'][i] for i in range(len(disk['internal_energy']))]
             disk_specific_potential_energy = [disk['potential_energy'][i] / disk['mass'][i] for i in range(len(disk['potential_energy']))]
-            specific_energy_total = specific_internal_energy + specific_potential_energy + sum((0.5 * df['velocity']**2)) / 1000
-            specific_energy_disk = disk_specific_internal_energy + disk_specific_potential_energy + sum((0.5 * disk['velocity']**2)) / 1000
+            specific_energy_total = (specific_internal_energy + specific_potential_energy + sum(0.5 * df['velocity']**2)) / 1000
+            specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + sum(0.5 * disk['velocity']**2)) / 1000
 
             times.append(time)
             disk_mass.append(float(report_df['DISK_MASS'][0].split(" ")[0]))
