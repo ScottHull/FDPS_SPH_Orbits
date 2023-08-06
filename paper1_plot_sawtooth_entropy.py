@@ -107,6 +107,7 @@ for s, t in zip(names, titles):
             ax.grid()
             ax.set_xlabel(r"Density (kg/m$^3$", fontsize=16)
             ax.set_title(f"{formatted_time} hrs.")
+            ax.set_xlim(0, 20)
         axs2[0].set_ylabel(r'Entropy (J/kg/K)', fontsize=16)
         axs2[1].set_ylabel(r'Internal Energy (kJ)', fontsize=16)
         axs2[2].set_ylabel(r'Temperature (K)', fontsize=16)
@@ -210,15 +211,14 @@ for s in density.keys():
         for index, j in enumerate(density[s].keys()):
             ax.plot(time[s][j], i[j], linestyle=linestyle, color=colors[index])
 
+axs[0].set_ylim(bottom=0, top=50)
+
 # axs[-1].plot(
 #     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
 # )
 # axs[-1].plot(
 #     [], [], linestyle="--", label="N-SPH M-ANEOS", color="black"
 # )
-#
-# axs[0].set_ylim(bottom=0, top=50)
-#
 # axs[-1].legend(fontsize=14, loc='lower right')
 plt.tight_layout()
 plt.savefig(f"{cutoff_densities[0]}_{angle}_sawtooth_entropy.png", dpi=300)
