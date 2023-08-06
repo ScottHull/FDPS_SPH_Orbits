@@ -154,24 +154,26 @@ for s, t in zip(names, titles):
             xycoords='axes fraction',
             fontsize=10,
         )
-        if iteration > min_iteration:
-            delta_s_wd = {i: prev_entropy[i] - s_curr for i, s_curr in zip(whole_disk['id'], whole_disk['entropy']) if i in prev_entropy.keys()}
-            delta_s_wd_at_rhoc = {i: prev_entropy[i] - s_curr for i, s_curr, density in zip(whole_disk['id'], whole_disk['entropy'], whole_disk['density']) if density == cutoff_densities[0] if i in prev_entropy.keys()}
-            delta_s_d = {i: prev_entropy[i] - s_curr for i, s_curr in zip(disk['id'], disk['entropy']) if i in prev_entropy.keys()}
-            delta_s_wd_density =
+        try:
+            if iteration > min_iteration:
+                delta_s_wd = {i: prev_entropy[i] - s_curr for i, s_curr in zip(whole_disk['id'], whole_disk['entropy'])}
+                delta_s_wd_at_rhoc = {i: prev_entropy[i] - s_curr for i, s_curr, density in zip(whole_disk['id'], whole_disk['entropy'], whole_disk['density'])}
+                delta_s_d = {i: prev_entropy[i] - s_curr for i, s_curr in zip(disk['id'], disk['entropy'])}
 
-            axs2[3].scatter(
-                whole_disk['density'], delta_s_wd.values(), marker=".", s=5
-            )
-            axs2[3].scatter(
-                disk['density'], delta_s_d.values(), marker=".", s=80, c='r'
-            )
-            axs2[3].annotate(
-                "Average Delta Entropy at\n" + r"$\rho_c$:" + "{:.2f}".format(np.mean(list(delta_s_wd_at_rhoc.values()))),
-                xy=(0.50, 0.9),
-                xycoords='axes fraction',
-                fontsize=10,
-            )
+                axs2[3].scatter(
+                    whole_disk['density'], delta_s_wd.values(), marker=".", s=5
+                )
+                axs2[3].scatter(
+                    disk['density'], delta_s_d.values(), marker=".", s=80, c='r'
+                )
+                axs2[3].annotate(
+                    "Average Delta Entropy at\n" + r"$\rho_c$:" + "{:.2f}".format(np.mean(list(delta_s_wd_at_rhoc.values()))),
+                    xy=(0.50, 0.9),
+                    xycoords='axes fraction',
+                    fontsize=10,
+                )
+        except:
+            pass
         # axs2[-1].scatter(
         #     [], [], label="Stewart M-ANEOS"
         # )
