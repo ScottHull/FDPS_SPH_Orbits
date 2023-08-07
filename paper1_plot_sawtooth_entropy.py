@@ -22,6 +22,8 @@ plt.style.use('seaborn-colorblind')
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
 angle = "b073"
 cutoff_densities = [5]
+min_density = 0
+max_density = 20
 min_iteration = 0
 max_iteration = 1800
 endstate_iteration = max_iteration
@@ -103,11 +105,10 @@ for s, t in zip(names, titles):
         fig2, axs2 = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
         axs2 = axs2.flatten()
         for ax in axs2:
-            ax.set_xlim(0, 50)
             ax.grid()
             ax.set_xlabel(r"Density (kg/m$^3$", fontsize=16)
             ax.set_title(f"{formatted_time} hrs.")
-            ax.set_xlim(0, 20)
+            ax.set_xlim(min_density, max_density)
         axs2[0].set_ylabel(r'Entropy (J/kg/K)', fontsize=16)
         axs2[1].set_ylabel(r'Internal Energy (kJ)', fontsize=16)
         axs2[2].set_ylabel(r'Temperature (K)', fontsize=16)
