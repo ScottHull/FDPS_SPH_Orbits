@@ -59,6 +59,7 @@ def plot_iteration(iteration):
     fig = plt.figure(figsize=(10, 10))
     fig.patch.set_facecolor('xkcd:black')
     ax = fig.add_subplot(111, projection='3d')
+    ax.view_init(azim=90)
     ax.scatter(
         df[3], df[4], df[5], s=5, alpha=1, color=cmap(normalizer(df[normalize_column]))
     )

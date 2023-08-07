@@ -126,25 +126,25 @@ for sim, title in zip(sims, titles):
             # specific_energy_total = (specific_internal_energy + specific_potential_energy + specific_kinetic_energy) / 1000
             # specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + disk_specific_kinetic_energy) / 1000
             # times_dict[title].append(time)
-            # specific_internal_energy = sum(df['internal_energy'])
-            # specific_potential_energy = sum(df['potential_energy'])
-            # specific_kinetic_energy = sum(0.5 * df['mass'] * df['velocity']**2)
-            # disk_specific_internal_energy = sum(disk['internal_energy'])
-            # disk_specific_potential_energy = sum(disk['potential_energy'])
-            # disk_specific_kinetic_energy = sum(0.5 * disk['mass'] * disk['velocity']**2)
-            # specific_energy_total = (specific_internal_energy + specific_potential_energy + specific_kinetic_energy) / 1000
-            # specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + disk_specific_kinetic_energy) / 1000
-            # times_dict[title].append(time)
-
-            specific_internal_energy = sum(df['internal_energy']) / sum(df['mass'])
-            specific_potential_energy = sum(df['potential_energy']) / sum(df['mass'])
-            specific_kinetic_energy = sum(0.5 * df['velocity']**2)
-            disk_specific_internal_energy = sum(disk['internal_energy']) / sum(df['mass'])
-            disk_specific_potential_energy = sum(disk['potential_energy']) / sum(df['mass'])
-            disk_specific_kinetic_energy = sum(0.5 * disk['velocity']**2)
+            specific_internal_energy = sum(df['internal_energy'])
+            specific_potential_energy = sum(df['potential_energy'])
+            specific_kinetic_energy = sum(0.5 * df['mass'] * df['velocity']**2)
+            disk_specific_internal_energy = sum(disk['internal_energy'])
+            disk_specific_potential_energy = sum(disk['potential_energy'])
+            disk_specific_kinetic_energy = sum(0.5 * disk['mass'] * disk['velocity']**2)
             specific_energy_total = (specific_internal_energy + specific_potential_energy + specific_kinetic_energy) / 1000
             specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + disk_specific_kinetic_energy) / 1000
             times_dict[title].append(time)
+
+            # specific_internal_energy = sum(df['internal_energy']) / sum(df['mass'])
+            # specific_potential_energy = sum(df['potential_energy']) / sum(df['mass'])
+            # specific_kinetic_energy = sum(0.5 * df['velocity']**2)
+            # disk_specific_internal_energy = sum(disk['internal_energy']) / sum(df['mass'])
+            # disk_specific_potential_energy = sum(disk['potential_energy']) / sum(df['mass'])
+            # disk_specific_kinetic_energy = sum(0.5 * disk['velocity']**2)
+            # specific_energy_total = (specific_internal_energy + specific_potential_energy + specific_kinetic_energy) / 1000
+            # specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + disk_specific_kinetic_energy) / 1000
+            # times_dict[title].append(time)
 
             times.append(time)
             disk_mass.append(float(report_df['DISK_MASS'][0].split(" ")[0]))
