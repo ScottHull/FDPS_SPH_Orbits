@@ -197,9 +197,9 @@ for ax in axs:
     ax.set_xlabel("Time (hrs.)")
     # make all axis tick font size larger
     ax.tick_params(axis='both', which='major', labelsize=14)
-axs[0].set_ylabel(r"Potential Energy (kJ/kg)", fontsize=16)
-axs[1].set_ylabel(r"Internal Energy (kJ/kg)", fontsize=16)
-axs[2].set_ylabel(r"Kinetic Energy (kJ/kg)", fontsize=16)
+axs[0].set_ylabel(r"Potential Energy (kJ)", fontsize=16)
+axs[1].set_ylabel(r"Internal Energy (kJ)", fontsize=16)
+axs[2].set_ylabel(r"Kinetic Energy (kJ)", fontsize=16)
 
 for sim, title in zip(sims, titles):
     cutoff_density = int(title.split("b")[0])
