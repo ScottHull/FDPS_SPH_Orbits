@@ -215,7 +215,7 @@ for s in density.keys():
         for index, j in enumerate(density[s].keys()):
             ax.plot(time[s][j], i[j], linestyle=linestyle, color=colors[index])
 
-axs[0].set_ylim(bottom=0, top=50)
+axs[0].set_ylim(bottom=min_density, top=max_density)
 
 # axs[-1].plot(
 #     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
