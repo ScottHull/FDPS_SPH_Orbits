@@ -193,7 +193,6 @@ axs[1].set_ylabel(r"Internal Energy (kJ/kg)", fontsize=16)
 axs[2].set_ylabel(r"Kinetic Energy (kJ/kg)", fontsize=16)
 
 for sim, title in zip(sims, titles):
-    cutoff_density = float(sim.split("_")[1].split("kg")[0])
     cutoff_density = int(title.split("b")[0])
     linestyle = "-"
     to_increment = increment
