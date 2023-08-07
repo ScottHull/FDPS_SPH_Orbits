@@ -117,12 +117,21 @@ for sim, title in zip(sims, titles):
             df = pd.read_csv(path + "/{}.csv".format(iteration))
             df['velocity'] = np.sqrt(df['vx']**2 + df['vy']**2 + df['vz']**2)
             disk = df[df['label'] == 'DISK']
-            specific_internal_energy = sum(df['internal_energy'] / df['mass'])
-            specific_potential_energy = sum(df['potential_energy'] / df['mass'])
-            specific_kinetic_energy = sum(0.5 * df['velocity']**2)
-            disk_specific_internal_energy = sum(disk['internal_energy'] / disk['mass'])
-            disk_specific_potential_energy = sum(disk['potential_energy'] / disk['mass'])
-            disk_specific_kinetic_energy = sum(0.5 * disk['velocity']**2)
+            # specific_internal_energy = sum(df['internal_energy'] / df['mass'])
+            # specific_potential_energy = sum(df['potential_energy'] / df['mass'])
+            # specific_kinetic_energy = sum(0.5 * df['velocity']**2)
+            # disk_specific_internal_energy = sum(disk['internal_energy'] / disk['mass'])
+            # disk_specific_potential_energy = sum(disk['potential_energy'] / disk['mass'])
+            # disk_specific_kinetic_energy = sum(0.5 * disk['velocity']**2)
+            # specific_energy_total = (specific_internal_energy + specific_potential_energy + specific_kinetic_energy) / 1000
+            # specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + disk_specific_kinetic_energy) / 1000
+            # times_dict[title].append(time)
+            specific_internal_energy = sum(df['internal_energy'])
+            specific_potential_energy = sum(df['potential_energy'])
+            specific_kinetic_energy = sum(0.5 * df['mass'] * df['velocity']**2)
+            disk_specific_internal_energy = sum(disk['internal_energy'])
+            disk_specific_potential_energy = sum(disk['potential_energy'])
+            disk_specific_kinetic_energy = sum(0.5 * disk['mass'] * disk['velocity']**2)
             specific_energy_total = (specific_internal_energy + specific_potential_energy + specific_kinetic_energy) / 1000
             specific_energy_disk = (disk_specific_internal_energy + disk_specific_potential_energy + disk_specific_kinetic_energy) / 1000
             times_dict[title].append(time)
@@ -194,6 +203,7 @@ axs[2].set_ylabel(r"Kinetic Energy (kJ/kg)", fontsize=16)
 
 for sim, title in zip(sims, titles):
     cutoff_density = int(title.split("b")[0])
+    color = colors[cutoff_densities.index(cutoff_density)]
     linestyle = "-"
     to_increment = increment
     if "high" in sim:
