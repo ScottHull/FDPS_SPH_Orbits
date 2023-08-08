@@ -127,8 +127,8 @@ for s in density.keys():
     #     for index, j in enumerate(density[s].keys()):
     #         ax.plot(time[s][j], i[j], linestyle=linestyle, color=colors[index])
 
-axs[0].set_ylim(bottom=density_ranges[density_ranges[0][0]], top=density_ranges[density_ranges[0][1]])
-axs[4].set_ylim(bottom=density_ranges[density_ranges[1][0]], top=density_ranges[density_ranges[1][1]])
+axs[0].set_ylim(bottom=density_ranges[0][0], top=density_ranges[0][1])
+axs[4].set_ylim(bottom=density_ranges[1][0], top=density_ranges[1][1])
 
 # axs[-1].plot(
 #     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
