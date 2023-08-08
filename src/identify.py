@@ -13,7 +13,7 @@ class ParticleMap:
 
     def __init__(self, path, center, relative_velocity=False, centering_resolution=1e5,
                  centering_delta=1e7, a=(12713.6 / 2.0) * 1000.0, b=(12756.2 / 2.0) * 1000.0, formatted=False,
-                 mass_protoplanet=5.972e24, initial_equatorial_radius=1.099e7):
+                 mass_protoplanet=5.972e24, initial_equatorial_radius=1.099e7, radius_protoplanet=6.371e6):
         self.path = path
         self.time = None
         self.formatted = formatted
@@ -29,6 +29,7 @@ class ParticleMap:
         self.b = initial_equatorial_radius
         # self.mass_protoearth = classify.calc_mass_protoearth(a=self.a, b=self.b)
         self.mass_protoearth = mass_protoplanet
+        self.radius_protoearth = radius_protoplanet
         self.center = center
         self.centering_resolution = centering_resolution
         self.centering_delta = centering_delta
@@ -115,7 +116,7 @@ class ParticleMap:
                     NEW_MASS_DISK += p.mass
                     NEW_Z_ANGULAR_MOMENTUM_DISK += p.angular_momentum_vector[
                         2]  # assume z component dominate and x and y cancel
-                    if classify.is_beyond_roche_radius(p=p):
+                    if classify.is_beyond_roche_radius(p=p, radius_protoplanet=self.radius_protoearth):
                         PARTICLES_BEYOND_ROCHE += 1
                         MASS_BEYOND_ROCHE += p.mass
                 elif classify.is_escape(p=p, a=self.a):
@@ -129,7 +130,7 @@ class ParticleMap:
                               NUM_PARTICLES_NO_CLASSIFICATION
             # recalibrate the system
             iron_disk_mass_fraction, iron_disk_mass_fraction_beyond_roche = classify.get_iron_fraction(
-                particles=particles)
+                particles=particles, radius_protoearth=self.radius_protoearth)
             moment_of_inertia_protoplanet = (2.0 / 5.0) * NEW_MASS_PROTOPLANET * (self.a ** 2)
             angular_velocity_protoplanet = NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET / moment_of_inertia_protoplanet
             keplerian_velocity_protoplanet = sqrt((G * NEW_MASS_PROTOPLANET) / (self.a ** 3))
@@ -152,7 +153,9 @@ class ParticleMap:
                 disk_angular_momentum=NEW_Z_ANGULAR_MOMENTUM_DISK,
                 mass_target=NEW_MASS_PROTOPLANET,
                 mass_disk=NEW_MASS_DISK,
-                mass_escape=NEW_MASS_ESCAPED
+                mass_escape=NEW_MASS_ESCAPED,
+                radius_earth=self.radius_protoearth,
+                mass_planet=self.mass_protoearth,
             )
             if self.relative_velocity:
                 new_target_velocity = classify.refine_target_velocity(particles=particles)

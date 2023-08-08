@@ -27,9 +27,9 @@ def calc_target_velocity(vx, vy, vz, tags):
     ]
 
 
-def get_iron_fraction(particles):
+def get_iron_fraction(particles, radius_protoearth):
     try:
-        roche_limit = get_roche_radius()
+        roche_limit = get_roche_radius(radius_planet=radius_protoearth)
         disk_particles = [p for p in particles if p.label == "DISK"]
         total_disk_mass = sum([p.mass for p in disk_particles])
         total_iron_disk_mass = sum([p.mass for p in disk_particles if p.tag % 2 != 0])
@@ -144,15 +144,15 @@ def average_density(planet_mass, a):
     return planet_mass / vol_sphere
 
 
-def get_roche_radius(radius_planet=6371 * 1000):
+def get_roche_radius(radius_planet):
     return 2.9 * radius_planet
 
 
 def predicted_satellite_mass(disk_angular_momentum, mass_target, mass_disk, mass_escape,
-                             radius_earth = 6371 * 1000, mass_planet = 5.972e24):
+                             radius_earth, mass_planet):
     # Canup 2004 equation 1
     G = 6.67 * 10 ** -11
-    roche_radius = get_roche_radius()
+    roche_radius = get_roche_radius(radius_planet=radius_earth)
     mass_escape = 0.05 * mass_disk  # assumption based on Canup 2004 for more centrally condensed disks than Ida 1997
     a1 = 1.9 * disk_angular_momentum / sqrt(G * mass_planet * roche_radius)
     a2 = 1.1 * mass_disk
@@ -160,8 +160,8 @@ def predicted_satellite_mass(disk_angular_momentum, mass_target, mass_disk, mass
     return a1 - a2 - a3
 
 
-def is_beyond_roche_radius(p):
-    roche_radius = get_roche_radius()
+def is_beyond_roche_radius(p, radius_protoplanet):
+    roche_radius = get_roche_radius(radius_planet=radius_protoplanet)
     if p.distance > roche_radius:
         return True
     return False
@@ -184,8 +184,8 @@ def is_planet(p, a):
         return False
 
 
-def circular_orbit_beyond_roche(p):
-    roche = get_roche_radius()
+def circular_orbit_beyond_roche(p, radius_protoplanet):
+    roche = get_roche_radius(radius_planet=radius_protoplanet)
     if abs(p.radius_circular_orbit) > roche:
         return True
     return False
