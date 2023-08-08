@@ -103,7 +103,7 @@ for s, t in zip(names, titles):
                 temperature[s][i].append(disk[disk['id'] == i]['temperature'].values[0])
 
 
-fig, axs = plt.subplots(2, 4, figsize=(24, 12), sharex='all')
+fig, axs = plt.subplots(2, 4, figsize=(26, 12), sharex='all')
 axs = axs.flatten()
 for ax in axs:
     ax.grid()
