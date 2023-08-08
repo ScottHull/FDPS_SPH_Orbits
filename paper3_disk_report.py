@@ -17,6 +17,7 @@ from src.report import get_sim_report, write_report_at_time, build_latex_table_f
 base_path = "/home/theia/scotthull/Paper2_SPH/gi/"
 sim = "500_mars"
 title = "Mars b073"
+angle = 'b073'
 min_iteration = 0
 max_iteration = 1800
 increment = 50
