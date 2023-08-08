@@ -15,11 +15,12 @@ from src.identify import ParticleMap
 from src.report import get_sim_report, write_report_at_time, build_latex_table_from_disk_report, rows_map
 
 base_path = "/home/theia/scotthull/Paper2_SPH/gi/"
-sim = ["500_mars"]
+sim = "500_mars"
+title = "Mars b073"
 min_iteration = 0
 max_iteration = 1800
 increment = 50
-number_processes = 200
+number_processes = 600
 
 # MASS_EARTH = 5.972e24  # kg
 # RADIUS_EARTH = 6.371e6  # m
@@ -148,9 +149,8 @@ def __plot_disk_report(run_names: list, run_titles: list, to_base_path: str, imp
 
 
 def build_report():
-    sims, titles = get_all_sims(high=False)
     pool = mp.Pool(5)
-    pool.map(__build_report, [[i, sims[0], titles[0]] for i in np.arange(min_iteration, max_iteration + increment, increment)])
+    pool.map(__build_report, [[i, sim, title] for i in np.arange(min_iteration, max_iteration + increment, increment)])
     pool.close()
     pool.join()
 
