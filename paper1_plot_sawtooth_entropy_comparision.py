@@ -62,44 +62,45 @@ density = {}
 temperature = {}
 names, titles = get_all_sims()
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
-for s, t in zip(names, titles):
-    if os.path.exists(f"paper1_sawtooth_{s}"):
-        shutil.rmtree(f"paper1_sawtooth_{s}")
-    os.mkdir(f"paper1_sawtooth_{s}")
-    # get the endstate df
-    endstate = get_endstate(s)
-    endstate_whole_disk = endstate['id'].tolist()
-    endstate_target_particles = endstate[endstate['entropy'] > 9000]
-    endstate_target_particles = endstate_target_particles[endstate_target_particles['density'] == cutoff_densities[0]]
-    # get 5 random particle ids from the endstate df
-    endstate = endstate_target_particles.sample(n=5)['id'].tolist()
-    # get the color cycle
-    time.update({s: {i: [] for i in endstate}})
-    entropy.update({s: {i: [] for i in endstate}})
-    internal_energy.update({s: {i: [] for i in endstate}})
-    density.update({s: {i: [] for i in endstate}})
-    temperature.update({s: {i: [] for i in endstate}})
-    prev_entropy = {}
-    for iteration in np.arange(min_iteration, max_iteration + increment, increment):
-        path = base_path + "{}/{}".format(s, s)
-        to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
-        cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
-        combined_file = cf.combine()
-        formatted_time = round(cf.sim_time * 0.000277778, 2)
-        f = os.getcwd() + "/{}".format(to_fname)
-        headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
-                   "potential energy", "entropy", "temperature"]
-        df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
-        disk = df[df['id'].isin(endstate)]
-        whole_disk = df[df['id'].isin(endstate_whole_disk)]
-        os.remove(f)
-        for i in endstate:
-            time[s][i].append(formatted_time)
-            entropy[s][i].append(disk[disk['id'] == i]['entropy'].values[0])
-            internal_energy[s][i].append(disk[disk['id'] == i]['internal energy'].values[0])
-            density[s][i].append(disk[disk['id'] == i]['density'].values[0])
-            temperature[s][i].append(disk[disk['id'] == i]['temperature'].values[0])
-    break
+for cd in cutoff_densities:
+    for s, t in zip(names, titles):
+        if "S" in s:
+            if os.path.exists(f"paper1_sawtooth_{s}"):
+                shutil.rmtree(f"paper1_sawtooth_{s}")
+            os.mkdir(f"paper1_sawtooth_{s}")
+            # get the endstate df
+            endstate = get_endstate(s)
+            endstate_whole_disk = endstate['id'].tolist()
+            endstate_target_particles = endstate[endstate['entropy'] > 9000]
+            endstate_target_particles = endstate_target_particles[endstate_target_particles['density'] == cd]
+            # get 5 random particle ids from the endstate df
+            endstate = endstate_target_particles.sample(n=5)['id'].tolist()
+            # get the color cycle
+            time.update({s: {i: [] for i in endstate}})
+            entropy.update({s: {i: [] for i in endstate}})
+            internal_energy.update({s: {i: [] for i in endstate}})
+            density.update({s: {i: [] for i in endstate}})
+            temperature.update({s: {i: [] for i in endstate}})
+            prev_entropy = {}
+            for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+                path = base_path + "{}/{}".format(s, s)
+                to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
+                cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
+                combined_file = cf.combine()
+                formatted_time = round(cf.sim_time * 0.000277778, 2)
+                f = os.getcwd() + "/{}".format(to_fname)
+                headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                           "potential energy", "entropy", "temperature"]
+                df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
+                disk = df[df['id'].isin(endstate)]
+                whole_disk = df[df['id'].isin(endstate_whole_disk)]
+                os.remove(f)
+                for i in endstate:
+                    time[s][i].append(formatted_time)
+                    entropy[s][i].append(disk[disk['id'] == i]['entropy'].values[0])
+                    internal_energy[s][i].append(disk[disk['id'] == i]['internal energy'].values[0])
+                    density[s][i].append(disk[disk['id'] == i]['density'].values[0])
+                    temperature[s][i].append(disk[disk['id'] == i]['temperature'].values[0])
 
 
 fig, axs = plt.subplots(2, 4, figsize=(24, 12), sharex='all')
@@ -137,7 +138,7 @@ axs[4].set_ylim(bottom=density_ranges[density_ranges[1][0]], top=density_ranges[
 # )
 # axs[-1].legend(fontsize=14, loc='lower right')
 plt.tight_layout()
-plt.savefig(f"{cutoff_densities[0]}_{angle}_sawtooth_entropy.png", dpi=300)
+plt.savefig(f"comparison_{angle}_sawtooth_entropy.png", dpi=300)
 
 
 
