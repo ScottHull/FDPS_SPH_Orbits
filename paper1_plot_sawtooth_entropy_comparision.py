@@ -64,7 +64,7 @@ names, titles = get_all_sims()
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for s, t in zip(names, titles):
     cd = int(s.split("_")[0])
-    if "S" in s:
+    if "S" in t:
         if os.path.exists(f"paper1_sawtooth_{s}"):
             shutil.rmtree(f"paper1_sawtooth_{s}")
         os.mkdir(f"paper1_sawtooth_{s}")
@@ -129,6 +129,13 @@ for s in density.keys():
 
 axs[0].set_ylim(bottom=density_ranges[0][0], top=density_ranges[0][1])
 axs[4].set_ylim(bottom=density_ranges[1][0], top=density_ranges[1][1])
+
+letters = list(string.ascii_lowercase)
+for index, ax in enumerate(axs):
+    x1, x2, y1, y2 = ax.axis()
+    x_loc = x1 + (0.02 * (x2 - x1))
+    y_loc = y2 - (0.08 * (y2 - y1))
+    ax.text(x_loc, y_loc, letters[index], fontweight="bold")
 
 # axs[-1].plot(
 #     [], [], linestyle="-", label="Stewart M-ANEOS", color="black"
