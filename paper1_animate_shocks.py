@@ -144,6 +144,9 @@ for index, p in enumerate(paths):
         cbar.ax.tick_params(labelsize=10)
         cbar.ax.set_title("Delta S", fontsize=10)
 
+        plt.tight_layout()
+        plt.savefig(f"shocks_{p}/{iteration}.png", dpi=300)
+
         prev_df = disk
         prev_df_disk_sample = disk_sample
 
