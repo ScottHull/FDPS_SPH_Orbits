@@ -168,7 +168,7 @@ for index, p in enumerate(paths):
         ax.set_xlabel("Time (hrs.)", fontsize=16)
         for particle in disk_samples[p]['samples']:
             ax.plot(
-                disk_samples[p]['times'], particle[y], alpha=1
+                disk_samples[p]['times'], [disk_samples[p]['samples'][i][particle][y] for i in range(len(disk_samples[p]['times']))], alpha=1
             )
     plt.tight_layout()
     plt.savefig(f"{p}_shocks.png", dpi=300)
