@@ -166,7 +166,7 @@ for index, p in enumerate(paths):
         ax.grid()
         ax.set_xlim(0, 50)
         ax.set_xlabel("Time (hrs.)", fontsize=16)
-        for particle in disk_samples[p]['samples']:
+        for particle in disk_samples[p]['samples'][0].index:
             ax.plot(
                 disk_samples[p]['times'], [disk_samples[p]['samples'][i][particle][y] for i in range(len(disk_samples[p]['times']))], alpha=1
             )
