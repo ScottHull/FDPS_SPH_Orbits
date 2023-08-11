@@ -92,8 +92,8 @@ for index, p in enumerate(paths):
         headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers, index_col='id')
-        disk = df[df['id'].isin(endstate)]
-        disk_sample = df[df['id'].isin(endstate_sample['id'])]
+        disk = df[df.index.isin(endstate)]
+        disk_sample = df[df.index.isin(endstate_sample['id'])]
         # calculate the smoothing length for each particle in the sample group
         disk_sample['smth'] = get_smth_length(disk_sample['mass'], disk_sample['density'])
         # get the number of particles with distances less than the smoothing length
