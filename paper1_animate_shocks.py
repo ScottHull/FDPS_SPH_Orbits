@@ -107,7 +107,7 @@ for index, p in enumerate(paths):
         # calculate the change in entropy for each particle in the sample group
         if prev_df is not None:
             disk['entropy_change'] = disk['entropy'] - prev_df['entropy']
-            disk_sample['entropy_change'] = disk_sample['entropy'] - prev_df['entropy']
+            disk_sample['entropy_change'] = disk_sample['entropy'] - prev_df_disk_sample['entropy']
             disk_samples[p]['samples'].append(disk_sample)
 
         fig, axs = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
