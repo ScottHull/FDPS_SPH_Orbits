@@ -7,7 +7,7 @@ import numpy as np
 from math import pi
 import string
 from random import randint
-import multiprocessing as mp
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
@@ -101,9 +101,6 @@ for index, p in enumerate(paths):
         for i, row in disk_sample.iterrows():
             disk_sample.loc[i, 'neighbors'] = len(df[(df['x'] - row['x']) ** 2 + (df['y'] - row['y']) ** 2 +
                                                      (df['z'] - row['z']) ** 2 <= row['smth'] ** 2]) - 1
-            # disk_sample.loc[i, 'neighbors'] = len(disk_sample[(disk_sample['x'] - row['x']) ** 2 +
-            #                                                   (disk_sample['y'] - row['y']) ** 2 +
-            #                                                   (disk_sample['z'] - row['z']) ** 2 <= row['smth'] ** 2])
         # calculate the change in entropy for each particle in the sample group
         if prev_df is not None:
             disk['entropy_change'] = disk['entropy'] - prev_df['entropy']
@@ -139,8 +136,13 @@ for index, p in enumerate(paths):
         axs[-1].set_xlim(density_ranges[index][0], density_ranges[index][1])
         axs[-1].set_title(f"{formatted_time} hrs.")
         axs[-1].grid()
-        plt.tight_layout()
-        plt.savefig(f"shocks_{p}/{iteration}.png")
+
+        sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
+        sm.set_array([])
+        cbaxes = inset_axes(axs[0], width="50%", height="5%", loc=1, borderpad=1.8)
+        cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
+        cbar.ax.tick_params(labelsize=10)
+        cbar.ax.set_title("Delta S", fontsize=10)
 
         prev_df = disk
         prev_df_disk_sample = disk_sample
