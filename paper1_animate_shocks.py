@@ -153,8 +153,6 @@ for index, p in enumerate(paths):
         filename=f"{p}_shocks.mp4",
     )
 
-
-for p in paths:
     fig, axs = plt.subplots(1, 5, figsize=(30, 6), sharex='all')
     axs = axs.flatten()
     for ax in axs:
