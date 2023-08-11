@@ -161,8 +161,9 @@ for p in paths:
         ax.grid()
         ax.set_xlabel("Time (hours)", fontsize=16)
     ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)', r'Temperature (K)', r'Neighbors']
-    for ax, y in zip(axs, ylabels):
-        ax.set_ylabel(y, fontsize=16)
+    y = ['density', 'entropy', 'internal energy', 'temperature', 'neighbors']
+    for ax, ylabel, y in zip(axs, ylabels, y):
+        ax.set_ylabel(ylabel, fontsize=16)
         ax.grid()
         ax.set_xlim(0, 50)
         ax.set_xlabel("Time (hrs.)", fontsize=16)
