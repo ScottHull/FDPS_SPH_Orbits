@@ -120,7 +120,7 @@ for index, p in enumerate(paths):
             ax.set_xlim(density_ranges[index][0], density_ranges[index][1])
             ax.set_title(f"{formatted_time} hrs.")
             ax.scatter(
-                disk['density'], disk[var], s=2, alpha=1, color=cmap(normalizer(disk['entropy change']))
+                disk['density'], disk[var], s=2, alpha=1, color=cmap(normalizer(disk['entropy_change']))
             )
             ax.scatter(
                 disk_sample['density'], disk_sample[var], s=60, alpha=1
