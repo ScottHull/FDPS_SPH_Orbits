@@ -92,6 +92,7 @@ for index, p in enumerate(paths):
         headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers, index_col='id')
+        os.remove(f)
         disk = df[df.index.isin(endstate)]
         disk_sample = df[df.index.isin(endstate_sample['id'])]
         # calculate the smoothing length for each particle in the sample group
