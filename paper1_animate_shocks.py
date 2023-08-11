@@ -152,7 +152,7 @@ for index, p in enumerate(paths):
         end_time=max_iteration,
         interval=increment,
         path=f"shocks_{p}",
-        fps=80,
+        fps=15,
         filename=f"{p}_shocks.mp4",
     )
 
