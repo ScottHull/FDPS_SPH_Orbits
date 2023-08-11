@@ -32,9 +32,9 @@ num_processes = 600
 iterations = [50, 100, 200, 500, 1000]
 paths = [['500_mars', "Mars " + r"($b=0.73$)"]]
 square_scale = 1e7 / 10 ** 7
-min_normalize = 0
-max_normalize = 1500
-end_iteration = 10000
+min_normalize = 1500
+max_normalize = 10000
+end_iteration = 1800
 
 normalizer = LogNorm(min_normalize, max_normalize)
 cmap = cm.get_cmap('cool')
