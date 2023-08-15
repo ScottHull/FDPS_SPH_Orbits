@@ -74,4 +74,4 @@ for s, t in paths:
     ax.grid()
     ax.legend()
     ax.set_title(f"{t} Impact Velocity Profile")
-    plt.savefig("{}_impact_velocity_profile.png".format(s), dpi=300)
+    plt.savefig("{}_impact_velocity_profile.png".format(s), dpi=200)
