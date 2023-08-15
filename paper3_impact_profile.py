@@ -29,8 +29,8 @@ iterations = [50, 100, 200, 500, 1000]
 paths = [['500_mars', "Mars " + r"($b=0.73$)"]]
 
 begin_iteration = 0
-end_iteration = 100
-increment = 10
+end_iteration = 20
+increment = 2
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
@@ -51,8 +51,10 @@ for s, t in paths:
         df['velocity'] = np.sqrt(df['vx'] ** 2 + df['vy'] ** 2 + df['z'] ** 2)
         target = df[df['tag'] < 2]
         impactor = df[df['tag'] >= 2]
-        target_velocity.append(target['velocity'].mean())
-        impactor_velocity.append(impactor['velocity'].mean())
+        mean_target_velocity = target['velocity'].mean()
+        mean_impactor_velocity = impactor['velocity'].mean()
+        target_velocity.append(mean_target_velocity)
+        impactor_velocity.append(mean_impactor_velocity)
         times.append(formatted_time)
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
