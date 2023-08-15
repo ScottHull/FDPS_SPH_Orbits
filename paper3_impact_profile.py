@@ -40,6 +40,8 @@ for s, t in paths:
     times = []
     target_velocity = []
     impactor_velocity = []
+    imp_vel_from_imp = []
+    imp_vel_from_tar = []
     for iteration in np.arange(begin_iteration, end_iteration + increment, increment):
         print(iteration)
         path = base_path + "{}/{}".format(s, s)
@@ -53,6 +55,11 @@ for s, t in paths:
         impactor = df[df['tag'] >= 2]
         mean_target_velocity = target['velocity'].mean()
         mean_impactor_velocity = impactor['velocity'].mean()
+        target_mass = target['mass'].sum()
+        impactor_mass = impactor['mass'].sum()
+        total_mass = target_mass + impactor_mass
+        v_imp_from_tar = (total_mass * mean_target_velocity) / impactor_mass
+        v_imp_from_imp = (total_mass * mean_target_velocity) / target_mass
         target_velocity.append(mean_target_velocity)
         impactor_velocity.append(mean_impactor_velocity)
         times.append(formatted_time)
@@ -60,6 +67,8 @@ for s, t in paths:
     ax = fig.add_subplot(111)
     ax.plot(times, np.array(target_velocity) / 1000, linewidth=2.0, label="Target")
     ax.plot(times, np.array(impactor_velocity) / 1000, linewidth=2.0, label="Impactor")
+    ax.plot(times, np.array(imp_vel_from_tar) / 1000, linewidth=2.0, label="Impact Velocity (from target)")
+    ax.plot(times, np.array(imp_vel_from_imp) / 1000, linewidth=2.0, label="Impact Velocity (from impactor)")
     ax.set_xlabel("Time (hours)")
     ax.set_ylabel("Velocity (km/s)")
     ax.grid()
