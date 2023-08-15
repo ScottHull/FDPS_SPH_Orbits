@@ -50,7 +50,7 @@ for s, t in paths:
         df = cf.combine_df()
         df.columns = headers
         formatted_time = round(cf.sim_time * 0.000277778, 2)
-        df['velocity'] = np.sqrt(df['vx'] ** 2 + df['vy'] ** 2 + df['z'] ** 2)
+        df['velocity'] = np.sqrt(df['vx'] ** 2 + df['vy'] ** 2 + df['vz'] ** 2)
         target = df[df['tag'] < 2]
         impactor = df[df['tag'] >= 2]
         mean_target_velocity = target['velocity'].mean()
