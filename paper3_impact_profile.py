@@ -63,6 +63,8 @@ for s, t in paths:
         target_velocity.append(mean_target_velocity)
         impactor_velocity.append(mean_impactor_velocity)
         times.append(formatted_time)
+        imp_vel_from_imp.append(v_imp_from_imp)
+        imp_vel_from_tar.append(v_imp_from_tar)
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
     ax.plot(times, np.array(target_velocity) / 1000, linewidth=2.0, label="Target")
