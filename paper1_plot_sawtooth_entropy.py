@@ -101,101 +101,101 @@ for s, t in zip(names, titles):
             density[s][i].append(disk[disk['id'] == i]['density'].values[0])
             temperature[s][i].append(disk[disk['id'] == i]['temperature'].values[0])
 
-        # make a 3 column plot of density, entropy, internal energy
-        fig2, axs2 = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
-        axs2 = axs2.flatten()
-        for ax in axs2:
-            ax.grid()
-            ax.set_xlabel(r"Density (kg/m$^3$", fontsize=16)
-            ax.set_title(f"{formatted_time} hrs.")
-            ax.set_xlim(min_density, max_density)
-        axs2[0].set_ylabel(r'Entropy (J/kg/K)', fontsize=16)
-        axs2[1].set_ylabel(r'Internal Energy (kJ)', fontsize=16)
-        axs2[2].set_ylabel(r'Temperature (K)', fontsize=16)
-        axs2[3].set_ylabel(r'Delta Entropy (J/kg/K)', fontsize=16)
-        axs2[0].set_ylim(0, 15000)
-        axs2[1].set_ylim(0, 100000)
-        axs2[2].set_ylim(0, 15000)
-        axs2[3].set_ylim(0, 200)
-        # axs2[1].set_ylim(0, 5e7)
-        axs2[0].scatter(
-            whole_disk['density'], whole_disk['entropy'], marker=".", s=5
-        )
-        axs2[0].scatter(
-            disk['density'], disk['entropy'], marker=".", s=80, c='r'
-        )
-        axs2[1].scatter(
-            whole_disk['density'], whole_disk['internal energy'] / 1000, marker=".", s=5
-        )
-        axs2[1].scatter(
-            disk['density'], disk['internal energy'] / 1000, marker=".", s=80, c='r'
-        )
-        # annotate the average y value in the upper right corner
-        axs2[0].annotate(
-            "Average Entropy:\n{:.2f}".format(np.mean(whole_disk['entropy'])),
-            xy=(0.65, 0.9),
-            xycoords='axes fraction',
-            fontsize=10,
-        )
-        axs2[1].annotate(
-            "Average\nInternal Energy: \n{:.2f}".format(np.mean(whole_disk['internal energy']) / 1000),
-            xy=(0.65, 0.9),
-            xycoords='axes fraction',
-            fontsize=10,
-        )
-        axs2[2].scatter(
-            whole_disk['density'], whole_disk['temperature'], marker=".", s=5
-        )
-        axs2[2].scatter(
-            disk['density'], disk['temperature'], marker=".", s=80, c='r'
-        )
-        axs2[2].annotate(
-            "Average\nTemperature:\n{:.2f}".format(np.mean(whole_disk['temperature'])),
-            xy=(0.50, 0.9),
-            xycoords='axes fraction',
-            fontsize=10,
-        )
-        try:
-            if iteration > min_iteration:
-                delta_s_wd = {i: prev_entropy[i] - s_curr for i, s_curr in zip(whole_disk['id'], whole_disk['entropy'])}
-                delta_s_wd_at_rhoc = {i: prev_entropy[i] - s_curr for i, s_curr, density in zip(whole_disk['id'], whole_disk['entropy'], whole_disk['density'])}
-                delta_s_d = {i: prev_entropy[i] - s_curr for i, s_curr in zip(disk['id'], disk['entropy'])}
-
-                axs2[3].scatter(
-                    whole_disk['density'], delta_s_wd.values(), marker=".", s=5
-                )
-                axs2[3].scatter(
-                    disk['density'], delta_s_d.values(), marker=".", s=80, c='r'
-                )
-                axs2[3].annotate(
-                    "Average Delta Entropy at\n" + r"$\rho_c$:" + "{:.2f}".format(np.mean(list(delta_s_wd_at_rhoc.values()))),
-                    xy=(0.50, 0.9),
-                    xycoords='axes fraction',
-                    fontsize=10,
-                )
-        except:
-            pass
-        # axs2[-1].scatter(
-        #     [], [], label="Stewart M-ANEOS"
-        # )
-        # axs2[-1].scatter(
-        #     [], [], label="N-SPH M-ANEOS"
-        # )
-        # axs2[-1].legend(fontsize=14, loc='lower right')
-        plt.tight_layout()
-        plt.savefig("paper1_sawtooth_{}/{}.png".format(s, iteration), dpi=200)
-
-        prev_entropy = dict(zip(whole_disk['id'], whole_disk['entropy']))
-
-    animate(
-        start_time=min_iteration,
-        end_time=max_iteration,
-        interval=increment,
-        path="paper1_sawtooth_{}".format(s),
-        fps=80,
-        filename="{}_{}_sawtooth.mp4".format(s, cutoff_densities[0]),
-    )
-    break
+    #     # make a 3 column plot of density, entropy, internal energy
+    #     fig2, axs2 = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
+    #     axs2 = axs2.flatten()
+    #     for ax in axs2:
+    #         ax.grid()
+    #         ax.set_xlabel(r"Density (kg/m$^3$", fontsize=16)
+    #         ax.set_title(f"{formatted_time} hrs.")
+    #         ax.set_xlim(min_density, max_density)
+    #     axs2[0].set_ylabel(r'Entropy (J/kg/K)', fontsize=16)
+    #     axs2[1].set_ylabel(r'Internal Energy (kJ)', fontsize=16)
+    #     axs2[2].set_ylabel(r'Temperature (K)', fontsize=16)
+    #     axs2[3].set_ylabel(r'Delta Entropy (J/kg/K)', fontsize=16)
+    #     axs2[0].set_ylim(0, 15000)
+    #     axs2[1].set_ylim(0, 100000)
+    #     axs2[2].set_ylim(0, 15000)
+    #     axs2[3].set_ylim(0, 200)
+    #     # axs2[1].set_ylim(0, 5e7)
+    #     axs2[0].scatter(
+    #         whole_disk['density'], whole_disk['entropy'], marker=".", s=5
+    #     )
+    #     axs2[0].scatter(
+    #         disk['density'], disk['entropy'], marker=".", s=80, c='r'
+    #     )
+    #     axs2[1].scatter(
+    #         whole_disk['density'], whole_disk['internal energy'] / 1000, marker=".", s=5
+    #     )
+    #     axs2[1].scatter(
+    #         disk['density'], disk['internal energy'] / 1000, marker=".", s=80, c='r'
+    #     )
+    #     # annotate the average y value in the upper right corner
+    #     axs2[0].annotate(
+    #         "Average Entropy:\n{:.2f}".format(np.mean(whole_disk['entropy'])),
+    #         xy=(0.65, 0.9),
+    #         xycoords='axes fraction',
+    #         fontsize=10,
+    #     )
+    #     axs2[1].annotate(
+    #         "Average\nInternal Energy: \n{:.2f}".format(np.mean(whole_disk['internal energy']) / 1000),
+    #         xy=(0.65, 0.9),
+    #         xycoords='axes fraction',
+    #         fontsize=10,
+    #     )
+    #     axs2[2].scatter(
+    #         whole_disk['density'], whole_disk['temperature'], marker=".", s=5
+    #     )
+    #     axs2[2].scatter(
+    #         disk['density'], disk['temperature'], marker=".", s=80, c='r'
+    #     )
+    #     axs2[2].annotate(
+    #         "Average\nTemperature:\n{:.2f}".format(np.mean(whole_disk['temperature'])),
+    #         xy=(0.50, 0.9),
+    #         xycoords='axes fraction',
+    #         fontsize=10,
+    #     )
+    #     try:
+    #         if iteration > min_iteration:
+    #             delta_s_wd = {i: prev_entropy[i] - s_curr for i, s_curr in zip(whole_disk['id'], whole_disk['entropy'])}
+    #             delta_s_wd_at_rhoc = {i: prev_entropy[i] - s_curr for i, s_curr, density in zip(whole_disk['id'], whole_disk['entropy'], whole_disk['density'])}
+    #             delta_s_d = {i: prev_entropy[i] - s_curr for i, s_curr in zip(disk['id'], disk['entropy'])}
+    #
+    #             axs2[3].scatter(
+    #                 whole_disk['density'], delta_s_wd.values(), marker=".", s=5
+    #             )
+    #             axs2[3].scatter(
+    #                 disk['density'], delta_s_d.values(), marker=".", s=80, c='r'
+    #             )
+    #             axs2[3].annotate(
+    #                 "Average Delta Entropy at\n" + r"$\rho_c$:" + "{:.2f}".format(np.mean(list(delta_s_wd_at_rhoc.values()))),
+    #                 xy=(0.50, 0.9),
+    #                 xycoords='axes fraction',
+    #                 fontsize=10,
+    #             )
+    #     except:
+    #         pass
+    #     # axs2[-1].scatter(
+    #     #     [], [], label="Stewart M-ANEOS"
+    #     # )
+    #     # axs2[-1].scatter(
+    #     #     [], [], label="N-SPH M-ANEOS"
+    #     # )
+    #     # axs2[-1].legend(fontsize=14, loc='lower right')
+    #     plt.tight_layout()
+    #     plt.savefig("paper1_sawtooth_{}/{}.png".format(s, iteration), dpi=200)
+    #
+    #     prev_entropy = dict(zip(whole_disk['id'], whole_disk['entropy']))
+    #
+    # animate(
+    #     start_time=min_iteration,
+    #     end_time=max_iteration,
+    #     interval=increment,
+    #     path="paper1_sawtooth_{}".format(s),
+    #     fps=80,
+    #     filename="{}_{}_sawtooth.mp4".format(s, cutoff_densities[0]),
+    # )
+    # break
 
 
 fig, axs = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
