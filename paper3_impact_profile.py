@@ -30,7 +30,7 @@ paths = [['500_mars', "Mars " + r"($b=0.73$)"]]
 
 begin_iteration = 0
 end_iteration = 20
-increment = 2
+increment = 4
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
@@ -65,6 +65,8 @@ for s, t in paths:
         times.append(formatted_time)
         imp_vel_from_imp.append(v_imp_from_imp)
         imp_vel_from_tar.append(v_imp_from_tar)
+        print("Mean target velocity: {} km/s".format(mean_target_velocity / 1000))
+        print("Mean impactor velocity: {} km/s".format(mean_impactor_velocity / 1000))
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
     ax.plot(times, np.array(target_velocity) / 1000, linewidth=2.0, label="Target")
