@@ -30,7 +30,10 @@ paths = [['500_mars', "Mars " + r"($b=0.73$)"]]
 
 begin_iteration = 0
 end_iteration = 100
-increment = 5
+increment = 10
+
+headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                   "potential energy", "entropy", "temperature"]
 
 for s, t in paths:
     cd = int(s.split("_")[0])
@@ -42,6 +45,7 @@ for s, t in paths:
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
         cf = CombineFile(num_processes=num_processes, time=iteration, output_path=path, to_fname=to_fname)
         df = cf.combine_df()
+        df.columns = headers
         formatted_time = round(cf.sim_time * 0.000277778, 2)
         df['velocity'] = np.sqrt(df['vx'] ** 2 + df['vy'] ** 2 + df['z'] ** 2)
         target = df[df['tag'] < 2]
