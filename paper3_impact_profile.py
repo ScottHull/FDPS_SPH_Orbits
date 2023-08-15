@@ -41,6 +41,7 @@ for s, t in paths:
     target_velocity = []
     impactor_velocity = []
     for iteration in np.arange(begin_iteration, end_iteration + increment, increment):
+        print(iteration)
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
         cf = CombineFile(num_processes=num_processes, time=iteration, output_path=path, to_fname=to_fname)
