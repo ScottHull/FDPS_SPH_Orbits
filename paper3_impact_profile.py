@@ -59,7 +59,7 @@ for s, t in paths:
         impactor_mass = impactor['mass'].sum()
         total_mass = target_mass + impactor_mass
         v_imp_from_tar = (total_mass * mean_target_velocity) / impactor_mass
-        v_imp_from_imp = (total_mass * mean_target_velocity) / target_mass
+        v_imp_from_imp = (total_mass * mean_impactor_velocity) / target_mass
         target_velocity.append(mean_target_velocity)
         impactor_velocity.append(mean_impactor_velocity)
         times.append(formatted_time)
