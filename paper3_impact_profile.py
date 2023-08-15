@@ -67,6 +67,8 @@ for s, t in paths:
         imp_vel_from_tar.append(v_imp_from_tar)
         print("Mean target velocity: {} km/s".format(mean_target_velocity / 1000))
         print("Mean impactor velocity: {} km/s".format(mean_impactor_velocity / 1000))
+        print("Target mass: {} kg".format(target_mass))
+        print("Impactor mass: {} kg".format(impactor_mass))
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
     ax.plot(times, np.array(target_velocity) / 1000, linewidth=2.0, label="Target")
