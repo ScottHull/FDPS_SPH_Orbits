@@ -148,7 +148,7 @@ for iteration_index, iteration in enumerate(iterations):
             for i, delta_S, label in zip([disk], [delta_S_disk], ["Disk"]):
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
-                    c=cmap(normalizer(delta_S)), label=label
+                    c=cmap(normalizer(delta_S.values)), label=label
                 )
             if current_index % len(sims) == 0:
                 axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.40 * square_scale),
