@@ -112,7 +112,7 @@ for ax in axs:
     ax.axes.set_aspect('equal')
 current_index = 0
 
-prev_df = {s: None for s in sims}
+prev_disk = {s: None for s in sims}
 for iteration_index, iteration in enumerate(iterations):
     for s, t in zip(sims, titles):
         cd = cutoff_densities.index(int(s.split("_")[0]))
@@ -139,8 +139,8 @@ for iteration_index, iteration in enumerate(iterations):
         planet, disk, escape = df[df.index.isin(end_planet.index.tolist())], df[
             df.index.isin(end_disk.index.tolist())], df[df.index.isin(end_escape.index.tolist())]
         if iteration_index > 0:
-            df['prev_entropy'] = [prev_df[s][prev_df[s].index == i]['entropy'].values[0] for i in df.index]
-            df['delta_S'] = df['entropy'] - df['prev_entropy']
+            disk['prev_entropy'] = [prev_disk[s][prev_disk[s].index == i]['entropy'].values[0] for i in disk.index]
+            disk['delta_S'] = disk['entropy'] - disk['prev_entropy']
             delta_S_disk = df[df.index.isin(end_disk.index.tolist())]['delta_S']
             for i, delta_S, label in zip([disk], [delta_S_disk], ["Disk"]):
                 axs[current_index].scatter(
@@ -154,7 +154,7 @@ for iteration_index, iteration in enumerate(iterations):
             #                         "{} %".format(fraction_at_rho_c), fontsize=20)
             current_index += 1
 
-        prev_df[s] = df
+        prev_disk[s] = df
 
 
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
