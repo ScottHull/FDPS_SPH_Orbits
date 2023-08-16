@@ -118,7 +118,7 @@ for iteration_index, iteration in enumerate(iterations):
         cd = cutoff_densities.index(int(s.split("_")[0]))
         p = base_path + "{}/circularized_{}".format(s, s)
         f = p + "/{}.csv".format(iteration)
-        df = pd.read_csv(f)
+        df = pd.read_csv(f, index_col="id")
         path = base_path + "{}/{}".format(s, s)
         if "high" in s:
             number_processes = 500
@@ -136,13 +136,12 @@ for iteration_index, iteration in enumerate(iterations):
         # df = df[df['z'] <= 0]  # slice simulation
         end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
             endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
-        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())], df[
-            df['id'].isin(end_disk.index.tolist())], df[
-                                   df['id'].isin(end_escape.index.tolist())]
+        planet, disk, escape = df[df.index.isin(end_planet.index.tolist())], df[
+            df.index.isin(end_disk.index.tolist())], df[df.index.isin(end_escape.index.tolist())]
         if iteration_index > 0:
             df['prev_entropy'] = prev_df[s]['entropy']
             df['delta_S'] = df['entropy'] - df['prev_entropy']
-            delta_S_disk = df[df['id'].isin(end_disk.index.tolist())]['delta_S']
+            delta_S_disk = df[df.index.isin(end_disk.index.tolist())]['delta_S']
             for i, delta_S, label in zip([disk], [delta_S_disk], ["Disk"]):
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
