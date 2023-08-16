@@ -35,7 +35,7 @@ def wendland_c6(r, h, support_radius=2.5, n=3):
     return W
 
 
-print(2.5 * get_smth_length(get_particle_mass(target_mass + impactor_mass, 10 ** 6), 5) / 1000)
+print(2.5 * get_smth_length(get_particle_mass(target_mass + impactor_mass, 10 ** 6), .05) / 1000)
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
