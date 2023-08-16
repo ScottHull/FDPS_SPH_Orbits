@@ -111,11 +111,10 @@ for ax in axs:
     # ax.set_yticks([], minor=False)
     ax.axes.set_aspect('equal')
 current_index = 0
-# colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+prev_planet = None
+prev_disk = None
+prev_escape = None
 for iteration_index, iteration in enumerate(iterations):
-    prev_planet = None
-    prev_disk = None
-    prev_escape = None
     for s, t in zip(sims, titles):
         cd = cutoff_densities.index(int(s.split("_")[0]))
         p = base_path + "{}/circularized_{}".format(s, s)
