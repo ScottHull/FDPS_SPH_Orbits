@@ -82,12 +82,12 @@ for s, t in zip(names, titles):
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
         disk = df[df['id'].isin(endstate)]
         os.remove(f)
-        for i in endstate:
-            time[s][i].append(formatted_time)
-            entropy[s][i].append(disk[disk['id'] == i]['entropy'].values[0])
-            internal_energy[s][i].append(disk[disk['id'] == i]['internal energy'].values[0])
-            density[s][i].append(disk[disk['id'] == i]['density'].values[0])
-            temperature[s][i].append(disk[disk['id'] == i]['temperature'].values[0])
+        for i in endstate['id'].values:
+            time[i].append(formatted_time)
+            entropy[i].append(disk[disk['id'] == i]['entropy'].values[0])
+            internal_energy[i].append(disk[disk['id'] == i]['internal energy'].values[0])
+            density[i].append(disk[disk['id'] == i]['density'].values[0])
+            temperature[i].append(disk[disk['id'] == i]['temperature'].values[0])
 
     fig, axs = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
     axs = axs.flatten()
