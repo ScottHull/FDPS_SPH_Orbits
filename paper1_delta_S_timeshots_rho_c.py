@@ -112,9 +112,7 @@ for ax in axs:
     ax.axes.set_aspect('equal')
 current_index = 0
 
-prev_planet = {s: None for s in sims}
-prev_disk = {s: None for s in sims}
-prev_escape = {s: None for s in sims}
+prev_df = {s: None for s in sims}
 for iteration_index, iteration in enumerate(iterations):
     for s, t in zip(sims, titles):
         cd = cutoff_densities.index(int(s.split("_")[0]))
@@ -138,13 +136,13 @@ for iteration_index, iteration in enumerate(iterations):
         # df = df[df['z'] <= 0]  # slice simulation
         end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
             endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
-        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("id"), df[
-            df['id'].isin(end_disk.index.tolist())].sort_values("id"), df[
-                                   df['id'].isin(end_escape.index.tolist())].sort_values("id")
+        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())], df[
+            df['id'].isin(end_disk.index.tolist())], df[
+                                   df['id'].isin(end_escape.index.tolist())]
         if iteration_index > 0:
-            delta_S_planet = planet['entropy'] - prev_planet[s]['entropy']
-            delta_S_disk = disk['entropy'] - prev_disk[s]['entropy']
-            delta_S_escape = escape['entropy'] - prev_escape[s]['entropy']
+            df['prev_entropy'] = prev_df[s]['entropy']
+            delta_S = prev_df[s]['entropy'] - df['entropy']
+            delta_S_disk = delta_S[df['id'].isin(end_disk.index.tolist())]
             for i, delta_S, label in zip([disk], [delta_S_disk], ["Disk"]):
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
@@ -157,9 +155,7 @@ for iteration_index, iteration in enumerate(iterations):
             #                         "{} %".format(fraction_at_rho_c), fontsize=20)
             current_index += 1
 
-        prev_planet[s] = planet
-        prev_disk[s] = disk
-        prev_escape[s] = escape
+        prev_df[s] = df
 
 
 sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
