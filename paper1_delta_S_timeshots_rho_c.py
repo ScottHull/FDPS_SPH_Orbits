@@ -138,9 +138,9 @@ for iteration_index, iteration in enumerate(iterations):
         # df = df[df['z'] <= 0]  # slice simulation
         end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
             endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
-        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("z"), df[
-            df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
-                                   df['id'].isin(end_escape.index.tolist())].sort_values("z")
+        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("id"), df[
+            df['id'].isin(end_disk.index.tolist())].sort_values("id"), df[
+                                   df['id'].isin(end_escape.index.tolist())].sort_values("id")
         if iteration_index > 0:
             delta_S_planet = planet['entropy'] - prev_planet[s]['entropy']
             delta_S_disk = disk['entropy'] - prev_disk[s]['entropy']
