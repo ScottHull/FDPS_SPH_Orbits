@@ -139,7 +139,7 @@ for iteration_index, iteration in enumerate(iterations):
         planet, disk, escape = df[df.index.isin(end_planet.index.tolist())], df[
             df.index.isin(end_disk.index.tolist())], df[df.index.isin(end_escape.index.tolist())]
         if iteration_index > 0:
-            df['prev_entropy'] = prev_df[s]['entropy']
+            df['prev_entropy'] = [prev_df[s][prev_df[s].index == i]['entropy'].values[0] for i in df.index]
             df['delta_S'] = df['entropy'] - df['prev_entropy']
             delta_S_disk = df[df.index.isin(end_disk.index.tolist())]['delta_S']
             for i, delta_S, label in zip([disk], [delta_S_disk], ["Disk"]):
