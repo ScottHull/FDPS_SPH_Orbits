@@ -141,11 +141,10 @@ for iteration_index, iteration in enumerate(iterations):
         if iteration_index > 0:
             disk['prev_entropy'] = [prev_disk[s][prev_disk[s].index == i]['entropy'].values[0] for i in disk.index]
             disk['delta_S'] = disk['entropy'] - disk['prev_entropy']
-            delta_S_disk = df[df.index.isin(end_disk.index.tolist())]['delta_S']
-            for i, delta_S, label in zip([disk], [delta_S_disk], ["Disk"]):
+            for i, label in zip([disk], ["Disk"]):
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
-                    c=cmap(normalizer(delta_S.values)), label=label
+                    c=cmap(normalizer(i['delta_S'])), label=label
                 )
             if current_index % len(sims) == 0:
                 axs[current_index].text(square_scale - (0.7 * square_scale), -square_scale + (0.40 * square_scale),
