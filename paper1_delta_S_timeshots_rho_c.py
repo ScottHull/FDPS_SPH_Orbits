@@ -39,7 +39,7 @@ end_iteration = 1800
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
-normalizer = LogNorm(min_normalize, max_normalize)
+normalizer = Normalize(min_normalize, max_normalize)
 cmap = cm.get_cmap('cool')
 
 phase_path = new_phase_path
