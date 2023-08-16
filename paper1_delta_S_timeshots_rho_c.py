@@ -141,8 +141,8 @@ for iteration_index, iteration in enumerate(iterations):
                                    df['id'].isin(end_escape.index.tolist())]
         if iteration_index > 0:
             df['prev_entropy'] = prev_df[s]['entropy']
-            delta_S = prev_df[s]['entropy'] - df['entropy']
-            delta_S_disk = delta_S[df['id'].isin(end_disk.index.tolist())]
+            df['delta_S'] = df['entropy'] - df['prev_entropy']
+            delta_S_disk = df[df['id'].isin(end_disk.index.tolist())]['delta_S']
             for i, delta_S, label in zip([disk], [delta_S_disk], ["Disk"]):
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
