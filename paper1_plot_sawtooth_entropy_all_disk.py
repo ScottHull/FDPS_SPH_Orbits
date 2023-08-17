@@ -71,6 +71,7 @@ for s, t in zip(names, titles):
     temperature = {i: [] for i in endstate['id'].values}
     prev_entropy = {}
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
+        print(f"Working on {s} at iteration {iteration}...")
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
         cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
