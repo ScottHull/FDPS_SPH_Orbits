@@ -70,7 +70,7 @@ for s, t in zip(names, titles):
     os.mkdir(f"paper1_sawtooth_{s}")
     # get the endstate df
     endstate = get_endstate(s, endstate_iteration)
-    midstate = get_endstate(s, mid_iteration)
+    midstate = get_endstate(s, mid_iteration, only_disk=False)
     # get a list of the difference in entropy between the endstate and midstate
     select_particles = [i for i in endstate['id'].tolist() if endstate[endstate['id'] == i]['entropy'].values[0] - midstate[midstate['id'] == i]['entropy'].values[0] > 500]
     # get the color cycle
