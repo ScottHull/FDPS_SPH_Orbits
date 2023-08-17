@@ -141,13 +141,13 @@ for iteration_index, iteration in enumerate(iterations):
         if iteration_index > 0:
             # get the difference between the entropy of this iteration and the previous iteration for each particle
             # which is indexed by the particle id
-            delta_S = {i: [] for i in disk.index.values}
+            disk['delta_S'] = None
             for i in disk.index.values:
                 try:
-                    delta_S[i] = disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy']
+                    disk.loc[i, 'delta_S'] = disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy']
+                    # delta_S[i] = disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy']
                 except KeyError:
-                    delta_S[i] = 0
-            disk['delta_S'] = delta_S.values()
+                    disk.loc[i, 'delta_S'] = 0
             for i, label in zip([disk], ["Disk"]):
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
