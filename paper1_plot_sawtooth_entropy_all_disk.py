@@ -111,20 +111,21 @@ for s, t in zip(names, titles):
             sel_density[i].append(df[df['id'] == i]['density'].values[0])
             sel_temperature[i].append(df[df['id'] == i]['temperature'].values[0])
 
-        fig = plt.figure(figsize=(10, 10))
-        ax = fig.add_subplot(111)
-        ax.set_xlim(-square_scale, square_scale)
-        ax.set_ylim(-square_scale, square_scale)
-        ax.set_xticks([], minor=False)
-        ax.set_yticks([], minor=False)
-        ax.scatter(df['x'] / 10 ** 7, df['y'] / 10 ** 7, s=0.8, marker=".")
-        ax.scatter(
-            df[df['id'].isin(select_particles)]['x'] / 10 ** 7, df[df['id'].isin(select_particles)]['y'] / 10 ** 7,
-            s=200, marker=".", color='red'
-        )
-        ax.set_title(f"{formatted_time} hrs.")
-        plt.tight_layout()
-        plt.savefig(f"{to_path}/{iteration}.png", dpi=200)
+        if iteration % 20 == 0:
+            fig = plt.figure(figsize=(10, 10))
+            ax = fig.add_subplot(111)
+            ax.set_xlim(-square_scale, square_scale)
+            ax.set_ylim(-square_scale, square_scale)
+            ax.set_xticks([], minor=False)
+            ax.set_yticks([], minor=False)
+            ax.scatter(df['x'] / 10 ** 7, df['y'] / 10 ** 7, s=0.8, marker=".")
+            ax.scatter(
+                df[df['id'].isin(select_particles)]['x'] / 10 ** 7, df[df['id'].isin(select_particles)]['y'] / 10 ** 7,
+                s=200, marker=".", color='red'
+            )
+            ax.set_title(f"{formatted_time} hrs.")
+            plt.tight_layout()
+            plt.savefig(f"{to_path}/{iteration}.png", dpi=200)
 
     plt.rcParams.update({'font.size': 16, })
     # plt.style.use("dark_background")
