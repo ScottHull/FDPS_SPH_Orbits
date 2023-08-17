@@ -147,6 +147,7 @@ for iteration_index, iteration in enumerate(iterations):
                     delta_S[i] = disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy']
                 except KeyError:
                     delta_S[i] = 0
+            disk['delta_S'] = delta_S.values()
             for i, label in zip([disk], ["Disk"]):
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
