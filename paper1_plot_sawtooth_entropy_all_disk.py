@@ -78,7 +78,7 @@ for s, t in zip(names, titles):
     # get a list of the difference in entropy between the endstate and midstate
     select_particles = [i for i in endstate['id'].tolist() if endstate[endstate['id'] == i]['entropy'].values - midstate[midstate['id'] == i]['entropy'].values > 500]
     # get 5 random particles from the select_particles list
-    select_particles = np.random.choice(select_particles, 5)
+    select_particles = np.random.choice(select_particles, 10)
     # get the color cycle
     time = {i: [] for i in endstate['id'].values}
     entropy = {i: [] for i in endstate['id'].values}
@@ -122,6 +122,7 @@ for s, t in zip(names, titles):
             df[df['id'].isin(select_particles)]['x'] / 10 ** 7, df[df['id'].isin(select_particles)]['y'] / 10 ** 7,
             s=200, marker=".", color='red'
         )
+        ax.set_title(f"{formatted_time} hrs.")
         plt.tight_layout()
         plt.savefig(f"{to_path}/{iteration}.png", dpi=200)
 
