@@ -99,10 +99,10 @@ for s, t in zip(names, titles):
         ax.set_ylabel(y, fontsize=16)
 
     for i in endstate['id'].values:
-        axs[0].plot(time[s][i], density[s][i])
-        axs[1].plot(time[s][i], entropy[s][i])
-        axs[2].plot(time[s][i], internal_energy[s][i])
-        axs[3].plot(time[s][i], temperature[s][i])
+        axs[0].plot(time[i], density[i])
+        axs[1].plot(time[i], entropy[i])
+        axs[2].plot(time[i], internal_energy[i])
+        axs[3].plot(time[i], temperature[i])
 
     plt.tight_layout()
     plt.savefig(f"{cutoff_densities[0]}_{angle}_sawtooth_entropy_all_disk.png", dpi=300)
