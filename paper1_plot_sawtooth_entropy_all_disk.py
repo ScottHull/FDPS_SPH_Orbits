@@ -26,7 +26,7 @@ mid_iteration = 800
 endstate_iteration = max_iteration
 increment = 1
 number_processes = 200
-square_scale = 6e7 / 10 ** 7
+square_scale = 10 ** 7
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
            "potential energy", "entropy", "temperature"]
@@ -117,9 +117,11 @@ for s, t in zip(names, titles):
         ax.set_ylim(-square_scale, square_scale)
         ax.set_xticks([], minor=False)
         ax.set_yticks([], minor=False)
-        ax.scatter(df['x'] / 1000, df['y'] / 1000, s=0.1, marker=".")
-        for i in select_particles:
-            ax.scatter(df[df['id'] == i]['x'] / 1000, df[df['id'] == i]['y'] / 1000, s=20, marker=".", color='magenta')
+        ax.scatter(df['x'] / 10 ** 7, df['y'] / 10 ** 7, s=0.1, marker=".")
+        ax.scatter(
+            df[df['id'].isin(select_particles)]['x'] / 10 ** 7, df[df['id'].isin(select_particles)]['y'] / 10 ** 7,
+            s=20, marker="."
+        )
         plt.tight_layout()
         plt.savefig(f"{to_path}/{iteration}.png", dpi=200)
 
