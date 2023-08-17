@@ -151,6 +151,8 @@ for iteration_index, iteration in enumerate(iterations):
             for i, label in zip([disk], ["Disk"]):
                 # print all values that are nan
                 print(i[i.isna().any(axis=1)])
+                # print all None values
+                print(i[i['delta_S'].isnull()])
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
                     c=cmap(normalizer(i['delta_S'])), label=label
