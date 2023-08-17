@@ -33,7 +33,7 @@ cutoff_densities = [5, 500, 1000, 2000]
 high = True
 square_scale = 6e7 / 10 ** 7
 min_normalize = 0
-max_normalize = 1000
+max_normalize = 200
 end_iteration = 1800
 
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
