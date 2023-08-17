@@ -32,7 +32,7 @@ headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "int
            "potential energy", "entropy", "temperature"]
 
 # use dark background
-plt.style.use("dark_background")
+# plt.style.use("dark_background")
 
 if os.path.exists(to_path):
     shutil.rmtree(to_path)
