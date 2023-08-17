@@ -120,7 +120,7 @@ for s, t in zip(names, titles):
         ax.scatter(df['x'] / 10 ** 7, df['y'] / 10 ** 7, s=0.8, marker=".")
         ax.scatter(
             df[df['id'].isin(select_particles)]['x'] / 10 ** 7, df[df['id'].isin(select_particles)]['y'] / 10 ** 7,
-            s=20, marker="."
+            s=200, marker=".", color='red'
         )
         plt.tight_layout()
         plt.savefig(f"{to_path}/{iteration}.png", dpi=200)
