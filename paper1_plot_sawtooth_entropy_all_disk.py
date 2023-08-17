@@ -14,12 +14,8 @@ from src.combine import CombineFile
 from src.identify import ParticleMap
 from src.report import get_sim_report, write_report_at_time, build_latex_table_from_disk_report, rows_map
 
-
-plt.rcParams.update({'font.size': 16, })
-# plt.style.use("dark_background")
-plt.style.use('seaborn-colorblind')
-
 base_path = "/home/theia/scotthull/Paper1_SPH/gi/"
+to_path = "sawtooth_gi_visualization"
 angle = "b073"
 cutoff_densities = [5]
 min_density = 0
@@ -30,9 +26,17 @@ mid_iteration = 800
 endstate_iteration = max_iteration
 increment = 1
 number_processes = 200
+square_scale = 6e7 / 10 ** 7
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
            "potential energy", "entropy", "temperature"]
+
+# use dark background
+plt.style.use("dark_background")
+
+if os.path.exists(to_path):
+    shutil.rmtree(to_path)
+os.mkdir(to_path)
 
 def get_all_sims(high=True):
     fformat = "{}_{}_{}"
@@ -107,6 +111,22 @@ for s, t in zip(names, titles):
             sel_density[i].append(df[df['id'] == i]['density'].values[0])
             sel_temperature[i].append(df[df['id'] == i]['temperature'].values[0])
 
+        fig = plt.figure(figsize=(10, 10))
+        ax = fig.add_subplot(111)
+        ax.set_xlim(-square_scale, square_scale)
+        ax.set_ylim(-square_scale, square_scale)
+        ax.set_xticks([], minor=False)
+        ax.set_yticks([], minor=False)
+        ax.scatter(df['x'] / 1000, df['y'] / 1000, s=0.1, marker=".")
+        for i in select_particles:
+            ax.scatter(df[df['id'] == i]['x'] / 1000, df[df['id'] == i]['y'] / 1000, s=20, marker=".", color='magenta')
+        plt.tight_layout()
+        plt.savefig(f"{to_path}/{iteration}.png", dpi=200)
+
+    plt.rcParams.update({'font.size': 16, })
+    # plt.style.use("dark_background")
+    plt.style.use('seaborn-colorblind')
+
     fig, axs = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
     axs = axs.flatten()
     ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)', r'Temperature (K)']
@@ -125,6 +145,7 @@ for s, t in zip(names, titles):
         axs[1].plot(sel_time[i], sel_entropy[i], alpha=1)
         axs[2].plot(sel_time[i], sel_internal_energy[i], alpha=1)
         axs[3].plot(sel_time[i], sel_temperature[i], alpha=1)
+    axs[0].set_ylim(0, 20)
 
     plt.tight_layout()
     plt.savefig(f"{cutoff_densities[0]}_{angle}_sawtooth_entropy_all_disk.png", dpi=300)
