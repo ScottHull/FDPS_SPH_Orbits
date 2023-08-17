@@ -69,7 +69,7 @@ for s, t in zip(names, titles):
     endstate = get_endstate(s, endstate_iteration)
     midstate = get_endstate(s, mid_iteration)
     # get a list of the difference in entropy between the endstate and midstate
-    select_particles = [i for i in endstate['id'].tolist() if  endstate[endstate['id'] == i]['entropy'] - midstate[midstate['id'] == i]['entropy'] > 500]
+    select_particles = [i for i in endstate['id'].tolist() if endstate[endstate['id'] == i]['entropy'].values[0] - midstate[midstate['id'] == i]['entropy'].values[0] > 500]
     # get the color cycle
     time = {i: [] for i in endstate['id'].values}
     entropy = {i: [] for i in endstate['id'].values}
