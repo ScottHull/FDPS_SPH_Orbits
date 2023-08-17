@@ -73,6 +73,8 @@ for s, t in zip(names, titles):
     midstate = get_endstate(s, mid_iteration, only_disk=False)
     # get a list of the difference in entropy between the endstate and midstate
     select_particles = [i for i in endstate['id'].tolist() if endstate[endstate['id'] == i]['entropy'].values - midstate[midstate['id'] == i]['entropy'].values > 500]
+    # get 5 random particles from the select_particles list
+    select_particles = np.random.choice(select_particles, 5)
     # get the color cycle
     time = {i: [] for i in endstate['id'].values}
     entropy = {i: [] for i in endstate['id'].values}
@@ -92,12 +94,12 @@ for s, t in zip(names, titles):
         df = cf.combine_df()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
         df.columns = headers
-        for i in endstate['id'].values:
-            time[i].append(formatted_time)
-            entropy[i].append(df[df['id'] == i]['entropy'].values[0])
-            internal_energy[i].append(df[df['id'] == i]['internal energy'].values[0])
-            density[i].append(df[df['id'] == i]['density'].values[0])
-            temperature[i].append(df[df['id'] == i]['temperature'].values[0])
+        # for i in endstate['id'].values:
+        #     time[i].append(formatted_time)
+        #     entropy[i].append(df[df['id'] == i]['entropy'].values[0])
+        #     internal_energy[i].append(df[df['id'] == i]['internal energy'].values[0])
+        #     density[i].append(df[df['id'] == i]['density'].values[0])
+        #     temperature[i].append(df[df['id'] == i]['temperature'].values[0])
         for i in select_particles:
             sel_time[i].append(formatted_time)
             sel_entropy[i].append(df[df['id'] == i]['entropy'].values[0])
@@ -113,11 +115,11 @@ for s, t in zip(names, titles):
         ax.set_xlabel("Time (hours)", fontsize=16)
         ax.set_ylabel(y, fontsize=16)
 
-    for i in endstate['id'].values:
-        axs[0].plot(time[i], density[i], alpha=0.1)
-        axs[1].plot(time[i], entropy[i], alpha=0.1)
-        axs[2].plot(time[i], internal_energy[i], alpha=0.1)
-        axs[3].plot(time[i], temperature[i], alpha=0.1)
+    # for i in endstate['id'].values:
+    #     axs[0].plot(time[i], density[i], alpha=0.05)
+    #     axs[1].plot(time[i], entropy[i], alpha=0.05)
+    #     axs[2].plot(time[i], internal_energy[i], alpha=0.05)
+    #     axs[3].plot(time[i], temperature[i], alpha=0.05)
     for i in select_particles:
         axs[0].plot(sel_time[i], sel_density[i], alpha=1)
         axs[1].plot(sel_time[i], sel_entropy[i], alpha=1)
