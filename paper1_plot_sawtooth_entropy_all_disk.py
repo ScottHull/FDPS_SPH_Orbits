@@ -91,6 +91,7 @@ for s, t in zip(names, titles):
         cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
         df = cf.combine_df()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
+        df.columns = headers
         for i in endstate['id'].values:
             time[i].append(formatted_time)
             entropy[i].append(df[df['id'] == i]['entropy'].values[0])
