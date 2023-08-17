@@ -146,7 +146,7 @@ for iteration_index, iteration in enumerate(iterations):
                 try:
                     disk.loc[i, 'delta_S'] = float(disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy'])
                     # delta_S[i] = disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy']
-                except KeyError:
+                except:
                     disk.loc[i, 'delta_S'] = 0
             for i, label in zip([disk], ["Disk"]):
                 # print all values that are nan
