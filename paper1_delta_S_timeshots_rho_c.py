@@ -149,6 +149,8 @@ for iteration_index, iteration in enumerate(iterations):
                 except KeyError:
                     disk.loc[i, 'delta_S'] = 0
             for i, label in zip([disk], ["Disk"]):
+                # print all values that are not numeric
+                print(i[i['delta_S'].apply(lambda x: isinstance(x, str))])
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
                     c=cmap(normalizer(i['delta_S'])), label=label
