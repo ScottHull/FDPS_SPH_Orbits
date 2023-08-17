@@ -51,10 +51,13 @@ def get_all_sims(high=True):
     return names, titles
 
 
-def get_endstate(s, iteration):
+def get_endstate(s, iteration, only_disk=True):
     path = base_path + "{}/circularized_{}".format(s, s)
     df = pd.read_csv(path + "/{}.csv".format(iteration))
-    return df[df['label'] == "DISK"]
+    if only_disk:
+        return df[df['label'] == "DISK"]
+    else:
+        return df
 
 
 # make a 3 column plot of density, entropy, internal energy
