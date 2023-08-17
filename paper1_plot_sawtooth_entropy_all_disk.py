@@ -30,6 +30,9 @@ endstate_iteration = max_iteration
 increment = 1
 number_processes = 200
 
+headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+           "potential energy", "entropy", "temperature"]
+
 def get_all_sims(high=True):
     fformat = "{}_{}_{}"
     tformat = "{}{}{}"
@@ -49,7 +52,7 @@ def get_all_sims(high=True):
 
 def get_endstate(s):
     path = base_path + "{}/circularized_{}".format(s, s)
-    df = pd.read_csv(path + "/{}.csv".format(endstate_iteration))
+    df = pd.read_csv(path + "/{}.csv".format(endstate_iteration), names=headers)
     return df[df['label'] == "DISK"]
 
 
@@ -78,16 +81,14 @@ for s, t in zip(names, titles):
         combined_file = cf.combine()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
         f = os.getcwd() + "/{}".format(to_fname)
-        headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
-                   "potential energy", "entropy", "temperature"]
         df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
         os.remove(f)
         for i in endstate['id'].values:
             time[i].append(formatted_time)
-            entropy[i].append(endstate[endstate['id'] == i]['entropy'].values[0])
-            internal_energy[i].append(endstate[endstate['id'] == i]['internal energy'].values[0])
-            density[i].append(endstate[endstate['id'] == i]['density'].values[0])
-            temperature[i].append(endstate[endstate['id'] == i]['temperature'].values[0])
+            entropy[i].append(df[df['id'] == i]['entropy'].values[0])
+            internal_energy[i].append(df[df['id'] == i]['internal energy'].values[0])
+            density[i].append(df[df['id'] == i]['density'].values[0])
+            temperature[i].append(df[df['id'] == i]['temperature'].values[0])
 
     fig, axs = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
     axs = axs.flatten()
