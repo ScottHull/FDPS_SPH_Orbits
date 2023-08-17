@@ -26,6 +26,7 @@ min_density = 0
 max_density = 20
 min_iteration = 0
 max_iteration = 1800
+mid_iteration = 800
 endstate_iteration = max_iteration
 increment = 1
 number_processes = 200
@@ -50,9 +51,9 @@ def get_all_sims(high=True):
     return names, titles
 
 
-def get_endstate(s):
+def get_endstate(s, iteration):
     path = base_path + "{}/circularized_{}".format(s, s)
-    df = pd.read_csv(path + "/{}.csv".format(endstate_iteration))
+    df = pd.read_csv(path + "/{}.csv".format(iteration))
     return df[df['label'] == "DISK"]
 
 
@@ -65,30 +66,40 @@ for s, t in zip(names, titles):
         shutil.rmtree(f"paper1_sawtooth_{s}")
     os.mkdir(f"paper1_sawtooth_{s}")
     # get the endstate df
-    endstate = get_endstate(s)
+    endstate = get_endstate(s, endstate_iteration)
+    midstate = get_endstate(s, mid_iteration)
+    # get a list of the difference in entropy between the endstate and midstate
+    select_particles = [i for i in endstate['id'].tolist() if  endstate[endstate['id'] == i]['entropy'] - midstate[midstate['id'] == i]['entropy'] > 500]
     # get the color cycle
     time = {i: [] for i in endstate['id'].values}
     entropy = {i: [] for i in endstate['id'].values}
     internal_energy = {i: [] for i in endstate['id'].values}
     density = {i: [] for i in endstate['id'].values}
     temperature = {i: [] for i in endstate['id'].values}
-    prev_entropy = {}
+    sel_time = {i: [] for i in select_particles}
+    sel_entropy = {i: [] for i in select_particles}
+    sel_internal_energy = {i: [] for i in select_particles}
+    sel_density = {i: [] for i in select_particles}
+    sel_temperature = {i: [] for i in select_particles}
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         print(f"Working on {s} at iteration {iteration}...")
         path = base_path + "{}/{}".format(s, s)
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
         cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
-        combined_file = cf.combine()
+        df = cf.combine_df()
         formatted_time = round(cf.sim_time * 0.000277778, 2)
-        f = os.getcwd() + "/{}".format(to_fname)
-        df = pd.read_csv(f, skiprows=2, header=None, delimiter="\t", names=headers)
-        os.remove(f)
         for i in endstate['id'].values:
             time[i].append(formatted_time)
             entropy[i].append(df[df['id'] == i]['entropy'].values[0])
             internal_energy[i].append(df[df['id'] == i]['internal energy'].values[0])
             density[i].append(df[df['id'] == i]['density'].values[0])
             temperature[i].append(df[df['id'] == i]['temperature'].values[0])
+        for i in select_particles:
+            sel_time[i].append(formatted_time)
+            sel_entropy[i].append(df[df['id'] == i]['entropy'].values[0])
+            sel_internal_energy[i].append(df[df['id'] == i]['internal energy'].values[0])
+            sel_density[i].append(df[df['id'] == i]['density'].values[0])
+            sel_temperature[i].append(df[df['id'] == i]['temperature'].values[0])
 
     fig, axs = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
     axs = axs.flatten()
@@ -99,10 +110,15 @@ for s, t in zip(names, titles):
         ax.set_ylabel(y, fontsize=16)
 
     for i in endstate['id'].values:
-        axs[0].plot(time[i], density[i])
-        axs[1].plot(time[i], entropy[i])
-        axs[2].plot(time[i], internal_energy[i])
-        axs[3].plot(time[i], temperature[i])
+        axs[0].plot(time[i], density[i], alpha=0.1)
+        axs[1].plot(time[i], entropy[i], alpha=0.1)
+        axs[2].plot(time[i], internal_energy[i], alpha=0.1)
+        axs[3].plot(time[i], temperature[i], alpha=0.1)
+    for i in select_particles:
+        axs[0].plot(sel_time[i], sel_density[i], alpha=1)
+        axs[1].plot(sel_time[i], sel_entropy[i], alpha=1)
+        axs[2].plot(sel_time[i], sel_internal_energy[i], alpha=1)
+        axs[3].plot(sel_time[i], sel_temperature[i], alpha=1)
 
     plt.tight_layout()
     plt.savefig(f"{cutoff_densities[0]}_{angle}_sawtooth_entropy_all_disk.png", dpi=300)
