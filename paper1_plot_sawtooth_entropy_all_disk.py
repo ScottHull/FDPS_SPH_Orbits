@@ -52,7 +52,7 @@ def get_all_sims(high=True):
 
 def get_endstate(s):
     path = base_path + "{}/circularized_{}".format(s, s)
-    df = pd.read_csv(path + "/{}.csv".format(endstate_iteration), names=headers)
+    df = pd.read_csv(path + "/{}.csv".format(endstate_iteration))
     return df[df['label'] == "DISK"]
 
 
