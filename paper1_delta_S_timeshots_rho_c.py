@@ -144,7 +144,7 @@ for iteration_index, iteration in enumerate(iterations):
             disk['delta_S'] = None
             for i in disk.index.values:
                 try:
-                    disk.loc[i, 'delta_S'] = disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy']
+                    disk.loc[i, 'delta_S'] = float(disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy'])
                     # delta_S[i] = disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy']
                 except KeyError:
                     disk.loc[i, 'delta_S'] = 0
