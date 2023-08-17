@@ -139,8 +139,14 @@ for iteration_index, iteration in enumerate(iterations):
         planet, disk, escape = df[df.index.isin(end_planet.index.tolist())], df[
             df.index.isin(end_disk.index.tolist())], df[df.index.isin(end_escape.index.tolist())]
         if iteration_index > 0:
-            disk['prev_entropy'] = [prev_disk[s][prev_disk[s].index == i]['entropy'].values[0] for i in disk.index]
-            disk['delta_S'] = disk['entropy'] - disk['prev_entropy']
+            # get the difference between the entropy of this iteration and the previous iteration for each particle
+            # which is indexed by the particle id
+            delta_S = {i: [] for i in disk.index.values}
+            for i in disk.index.values:
+                try:
+                    delta_S[i] = disk.loc[i]['entropy'] - prev_disk[s].loc[i]['entropy']
+                except KeyError:
+                    delta_S[i] = 0
             for i, label in zip([disk], ["Disk"]):
                 axs[current_index].scatter(
                     i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1,
