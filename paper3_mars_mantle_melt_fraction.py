@@ -28,5 +28,6 @@ initial_df = initial_file.combine_df()
 post_impact_file = CombineFile(num_processes=num_processes, time=post_impact_iteration, output_path=f"{base_path}{paths[0][0]}/{paths[0][0]}")
 post_impact_df = post_impact_file.combine_df()
 
-delta_S = {i: post_impact_df.loc[i, 'id']['entropy'] - initial_df.loc[i, 'id']['entropy'] for i in initial_df['index'].tolist()}
-print(len([i for i in delta_S.values() if i >= 500]) / len(delta_S.values()))
+delta_S = {i: post_impact_df.loc[i, 'id']['entropy'] - initial_df.loc[i, 'id']['entropy'] for i in initial_df['id'].tolist()}
+for iteration in np.arange(50, 500 + 50, 50):
+    print(f"> {iteration}", len([i for i in delta_S.values() if i >= iteration]) / len(delta_S.values()))
