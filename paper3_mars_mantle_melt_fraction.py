@@ -29,13 +29,14 @@ headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "int
 initial_file = CombineFile(num_processes=num_processes, time=initial_iteration, output_path=f"{base_path}{paths[0][0]}/{paths[0][0]}")
 initial_df = initial_file.combine_df()
 initial_df.columns = headers
+# change the index to the particle id
+initial_df.set_index('id', inplace=True)
 post_impact_file = CombineFile(num_processes=num_processes, time=post_impact_iteration, output_path=f"{base_path}{paths[0][0]}/{paths[0][0]}")
 post_impact_df = post_impact_file.combine_df()
 post_impact_df.columns = headers
+# change the index to the particle id
+post_impact_df.set_index('id', inplace=True)
 
-for i in initial_df['id'].tolist():
-    print(i, initial_df.loc[i, 'id']['entropy'], post_impact_df.loc[i, 'id']['entropy'])
-
-delta_S = {i: post_impact_df.loc[i, 'id']['entropy'] - initial_df.loc[i, 'id']['entropy'] for i in post_impact_df['id'].tolist()}
+delta_S = {i: post_impact_df["entropy"][i] - initial_df["entropy"][i] for i in initial_df.index}
 for iteration in np.arange(50, 500 + 50, 50):
     print(f"> {iteration}", len([i for i in delta_S.values() if i >= iteration]) / len(delta_S.values()))
