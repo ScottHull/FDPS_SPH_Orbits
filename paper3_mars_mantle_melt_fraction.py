@@ -29,4 +29,4 @@ post_impact_file = CombineFile(num_processes=num_processes, time=post_impact_ite
 post_impact_df = post_impact_file.combine_df()
 
 delta_S = {i: post_impact_df.loc[i, 'id']['entropy'] - initial_df.loc[i, 'id']['entropy'] for i in initial_df['index'].tolist()}
-print(len([i for i in delta_S.values() if i >= 500]) / len(delta_S.values())
+print(len([i for i in delta_S.values() if i >= 500]) / len(delta_S.values()))
