@@ -8,6 +8,7 @@ import string
 from random import randint
 import multiprocessing as mp
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from src.animate import animate
 from src.combine import CombineFile
@@ -27,6 +28,7 @@ endstate_iteration = max_iteration
 increment = 1
 number_processes = 200
 square_scale = 6e7 / 10 ** 7
+num_samples = 10
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
            "potential energy", "entropy", "temperature"]
@@ -66,6 +68,9 @@ def get_endstate(s, iteration, only_disk=True):
 
 # make a 3 column plot of density, entropy, internal energy
 ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
+
+# get a spectrum of colors in the jet colormap that equals the number of samples
+colors = sns.color_palette('husl', n_colors=range(num_samples))  # a list of RGB tuples
 
 names, titles = get_all_sims()
 for s, t in zip(names, titles):
@@ -119,13 +124,14 @@ for s, t in zip(names, titles):
             ax.set_xticks([], minor=False)
             ax.set_yticks([], minor=False)
             ax.scatter(df['x'] / 10 ** 7, df['y'] / 10 ** 7, s=0.8, marker=".")
-            ax.scatter(
-                df[df['id'].isin(select_particles)]['x'] / 10 ** 7, df[df['id'].isin(select_particles)]['y'] / 10 ** 7,
-                s=200, marker=".", color='red'
-            )
+            for index, i in enumerate(select_particles):
+                ax.scatter(
+                    df[df['id'] == i]['x'] / 10 ** 7, df[df['id'] == i]['y'] / 10 ** 7, s=200, marker=".", alpha=1,
+                    color=colors[index]
+                )
             ax.set_title(f"{formatted_time} hrs.")
             plt.tight_layout()
-            plt.savefig(f"{to_path}/{iteration}.png", dpi=200)
+            plt.savefig(f"paper1_sawtooth_{s}/{iteration}.png", dpi=200)
 
     plt.rcParams.update({'font.size': 16, })
     # plt.style.use("dark_background")
@@ -144,15 +150,24 @@ for s, t in zip(names, titles):
     #     axs[1].plot(time[i], entropy[i], alpha=0.05)
     #     axs[2].plot(time[i], internal_energy[i], alpha=0.05)
     #     axs[3].plot(time[i], temperature[i], alpha=0.05)
-    for i in select_particles:
-        axs[0].plot(sel_time[i], sel_density[i], alpha=1)
-        axs[1].plot(sel_time[i], sel_entropy[i], alpha=1)
-        axs[2].plot(sel_time[i], sel_internal_energy[i], alpha=1)
-        axs[3].plot(sel_time[i], sel_temperature[i], alpha=1)
-    axs[0].set_ylim(0, 20)
+    for index, i in enumerate(select_particles):
+        axs[0].plot(sel_time[i], sel_density[i], alpha=1, color=colors[index])
+        axs[1].plot(sel_time[i], sel_entropy[i], alpha=1, color=colors[index])
+        axs[2].plot(sel_time[i], sel_internal_energy[i], alpha=1, color=colors[index])
+        axs[3].plot(sel_time[i], sel_temperature[i], alpha=1, color=colors[index])
+    axs[0].set_ylim(0, 50)
 
     plt.tight_layout()
-    plt.savefig(f"{cutoff_densities[0]}_{angle}_sawtooth_entropy_all_disk.png", dpi=300)
+    plt.savefig(f"{s}_sawtooth_entropy_all_disk.png", dpi=300)
+
+    animate(
+        start_time=min_iteration,
+        end_time=max_iteration,
+        interval=increment,
+        path=to_path,
+        fps=10,
+        filename=f"paper1_sawtooth_{s}"
+    )
     break
 
 
