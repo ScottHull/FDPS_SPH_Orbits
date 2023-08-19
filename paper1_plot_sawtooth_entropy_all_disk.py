@@ -70,7 +70,7 @@ def get_endstate(s, iteration, only_disk=True):
 ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
 
 # get a spectrum of colors in the jet colormap that equals the number of samples
-colors = sns.color_palette('husl', n_colors=range(num_samples))  # a list of RGB tuples
+colors = sns.color_palette('husl', n_colors=len(range(num_samples)))  # a list of RGB tuples
 
 names, titles = get_all_sims()
 for s, t in zip(names, titles):
