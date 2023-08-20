@@ -166,7 +166,7 @@ for s, t in zip(names, titles):
         interval=increment,
         path=f"paper1_sawtooth_{s}",
         fps=10,
-        filename=f"paper1_sawtooth_{s}"
+        filename=f"paper1_sawtooth_{s}.mp4"
     )
     break
 
