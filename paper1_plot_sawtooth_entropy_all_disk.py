@@ -73,6 +73,18 @@ ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)']
 colors = sns.color_palette('husl', n_colors=len(range(num_samples)))  # a list of RGB tuples
 
 names, titles = get_all_sims()
+
+# time = {j: {i: [] for i in endstate['id'].values} for j in titles}
+# entropy = {i: [] for i in endstate['id'].values}
+# internal_energy = {i: [] for i in endstate['id'].values}
+# density = {i: [] for i in endstate['id'].values}
+# temperature = {i: [] for i in endstate['id'].values}
+# sel_time = {i: [] for i in select_particles}
+# sel_entropy = {i: [] for i in select_particles}
+# sel_internal_energy = {i: [] for i in select_particles}
+# sel_density = {i: [] for i in select_particles}
+# sel_temperature = {i: [] for i in select_particles}
+
 for s, t in zip(names, titles):
     if os.path.exists(f"paper1_sawtooth_{s}"):
         shutil.rmtree(f"paper1_sawtooth_{s}")
@@ -168,7 +180,6 @@ for s, t in zip(names, titles):
         fps=10,
         filename=f"paper1_sawtooth_{s}.mp4"
     )
-    break
 
 
 
