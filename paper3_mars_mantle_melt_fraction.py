@@ -29,11 +29,11 @@ iron_entropy = 1500
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
 
-# initial_file = CombineFile(num_processes=num_processes, time=initial_iteration, output_path=f"{base_path}{paths[0][0]}/{paths[0][0]}")
-# initial_df = initial_file.combine_df()
-# initial_df.columns = headers
-# # change the index to the particle id
-# initial_df.set_index('id', inplace=True)
+initial_file = CombineFile(num_processes=num_processes, time=initial_iteration, output_path=f"{base_path}{paths[0][0]}/{paths[0][0]}")
+initial_df = initial_file.combine_df()
+initial_df.columns = headers
+# change the index to the particle id
+initial_df.set_index('id', inplace=True)
 post_impact_file = CombineFile(num_processes=num_processes, time=post_impact_iteration, output_path=f"{base_path}{paths[0][0]}/{paths[0][0]}")
 post_impact_df = post_impact_file.combine_df()
 post_impact_df.columns = headers
