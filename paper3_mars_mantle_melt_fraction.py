@@ -23,20 +23,27 @@ paths = [['500_mars', "Mars " + r"($b=0.73$)"]]
 initial_iteration = 0
 post_impact_iteration = 20
 
+sil_entropy = 3165
+iron_entropy = 1500
+
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
 
-initial_file = CombineFile(num_processes=num_processes, time=initial_iteration, output_path=f"{base_path}{paths[0][0]}/{paths[0][0]}")
-initial_df = initial_file.combine_df()
-initial_df.columns = headers
-# change the index to the particle id
-initial_df.set_index('id', inplace=True)
+# initial_file = CombineFile(num_processes=num_processes, time=initial_iteration, output_path=f"{base_path}{paths[0][0]}/{paths[0][0]}")
+# initial_df = initial_file.combine_df()
+# initial_df.columns = headers
+# # change the index to the particle id
+# initial_df.set_index('id', inplace=True)
 post_impact_file = CombineFile(num_processes=num_processes, time=post_impact_iteration, output_path=f"{base_path}{paths[0][0]}/{paths[0][0]}")
 post_impact_df = post_impact_file.combine_df()
 post_impact_df.columns = headers
 # change the index to the particle id
 post_impact_df.set_index('id', inplace=True)
 
-delta_S = {i: post_impact_df["entropy"][i] - initial_df["entropy"][i] for i in initial_df.index}
+sil_df = post_impact_df[post_impact_df["entropy"] % 2 == 0]
+iron_df = post_impact_df[post_impact_df["entropy"] % 2 != 1]
+
+delta_S_sil = sil_df["entropy"] - sil_entropy
+delta_S_iron = iron_df["entropy"] - iron_entropy
 for iteration in np.arange(50, 500 + 50, 50):
-    print(f"> {iteration}", len([i for i in delta_S.values() if i >= iteration]) / len(delta_S.values()))
+    print(f"> {iteration}", (len(sil_df[sil_df["entropy"] >= iteration]) + len(iron_df[iron_df["entropy"] >= iteration])) / len(post_impact_df))
