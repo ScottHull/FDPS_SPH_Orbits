@@ -40,10 +40,9 @@ post_impact_df.columns = headers
 # change the index to the particle id
 post_impact_df.set_index('id', inplace=True)
 
-sil_df = post_impact_df[post_impact_df["entropy"] % 2 == 0]
-iron_df = post_impact_df[post_impact_df["entropy"] % 2 != 1]
+# add a column called delta entropy
+# subtract sil_entropy if the tag column value is 1, else subtract iron_entropy
+initial_df["delta_entropy"] = initial_df.apply(lambda row: row["entropy"] - sil_entropy if row["tag"] % 2 == 0 else row["entropy"] - iron_entropy, axis=1)
 
-delta_S_sil = sil_df["entropy"] - sil_entropy
-delta_S_iron = iron_df["entropy"] - iron_entropy
 for iteration in np.arange(50, 500 + 50, 50):
-    print(f"> {iteration}", (len(sil_df[sil_df["entropy"] >= iteration]) + len(iron_df[iron_df["entropy"] >= iteration])) / len(post_impact_df))
+    print(f"> {iteration}", len(initial_df["delta_entropy"]) / len(post_impact_df))
