@@ -45,4 +45,4 @@ post_impact_df.set_index('id', inplace=True)
 post_impact_df["delta_entropy"] = post_impact_df.apply(lambda row: row["entropy"] - sil_entropy if row["tag"] % 2 == 0 else row["entropy"] - iron_entropy, axis=1)
 
 for iteration in np.arange(50, 500 + 50, 50):
-    print(f"> {iteration}", len(post_impact_df["delta_entropy"]) / len(post_impact_df))
+    print(f"> {iteration}", len(post_impact_df[post_impact_df['delta_entropy'] >= iteration]) / len(post_impact_df))
