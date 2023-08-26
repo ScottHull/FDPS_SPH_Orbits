@@ -57,6 +57,16 @@ def get_all_sims(high=True):
     return names, titles
 
 
+def get_smth_length(m, rho, xi=1.2, n=3):
+    """
+    h = xi * (m_j / rho_j)^(1/n)
+    where xi is a coefficient, m_j is particle mass, and n is the resolution of the simulation.
+    Increasing resolution decreases particle mass and therefore decreases smoothing length.
+    Decreasing cutoff density increases smoothing length.
+    """
+    return xi * ((m / rho) ** (1 / n))
+
+
 def get_endstate(s, iteration, only_disk=True):
     path = base_path + "{}/circularized_{}".format(s, s)
     df = pd.read_csv(path + "/{}.csv".format(iteration))
@@ -107,6 +117,7 @@ for s, t in zip(names, titles):
     sel_internal_energy = {i: [] for i in select_particles}
     sel_density = {i: [] for i in select_particles}
     sel_temperature = {i: [] for i in select_particles}
+    sel_neighbors = {i: [] for i in select_particles}
     for iteration in np.arange(min_iteration, max_iteration + increment, increment):
         print(f"Working on {s} at iteration {iteration}...")
         path = base_path + "{}/{}".format(s, s)
@@ -127,6 +138,13 @@ for s, t in zip(names, titles):
             sel_internal_energy[i].append(df[df['id'] == i]['internal energy'].values[0])
             sel_density[i].append(df[df['id'] == i]['density'].values[0])
             sel_temperature[i].append(df[df['id'] == i]['temperature'].values[0])
+
+            smth = get_smth_length(df[df['id'] == i]['mass'].values[0], df[df['id'] == i]['density'].values[0])
+            # get the number of particles in the dataframe whose distance from the sample particle is less than the smoothing length
+            neighbors = len(df[(df['x'] - df[df['id'] == i]['x'].values[0]) ** 2 +
+                               (df['y'] - df[df['id'] == i]['y'].values[0]) ** 2 +
+                               (df['z'] - df[df['id'] == i]['z'].values[0]) ** 2 <= smth ** 2]) - 1
+            sel_neighbors[i].append(neighbors)
 
         if iteration % 20 == 0:
             fig = plt.figure(figsize=(10, 10))
@@ -149,9 +167,9 @@ for s, t in zip(names, titles):
     # plt.style.use("dark_background")
     plt.style.use('seaborn-colorblind')
 
-    fig, axs = plt.subplots(1, 4, figsize=(24, 6), sharex='all')
+    fig, axs = plt.subplots(1, 5, figsize=(30, 6), sharex='all')
     axs = axs.flatten()
-    ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)', r'Temperature (K)']
+    ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)', r'Temperature (K)', 'Neighbors']
     for ax, y in zip(axs, ylabels):
         ax.grid()
         ax.set_xlabel("Time (hours)", fontsize=16)
@@ -167,7 +185,9 @@ for s, t in zip(names, titles):
         axs[1].plot(sel_time[i], sel_entropy[i], alpha=1, color=colors[index])
         axs[2].plot(sel_time[i], sel_internal_energy[i], alpha=1, color=colors[index])
         axs[3].plot(sel_time[i], sel_temperature[i], alpha=1, color=colors[index])
+        axs[4].plot(sel_time[i], sel_neighbors[i], alpha=1, color=colors[index])
     axs[0].set_ylim(0, 50)
+    axs[4].set_ylim(0, 10)
 
     plt.tight_layout()
     plt.savefig(f"{s}_sawtooth_entropy_all_disk.png", dpi=300)
