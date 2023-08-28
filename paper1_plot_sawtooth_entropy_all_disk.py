@@ -169,7 +169,7 @@ for s, t in zip(names, titles):
 
     fig, axs = plt.subplots(1, 5, figsize=(30, 6), sharex='all')
     axs = axs.flatten()
-    ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ)', r'Temperature (K)', 'Neighbors']
+    ylabels = [r'Density (kg/m$^3$)', r'Entropy (J/kg/K)', r'Internal Energy (kJ/kg)', r'Temperature (K)', 'Neighbors']
     for ax, y in zip(axs, ylabels):
         ax.grid()
         ax.set_xlabel("Time (hours)", fontsize=16)
