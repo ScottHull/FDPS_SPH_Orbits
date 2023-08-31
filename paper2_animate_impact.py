@@ -49,12 +49,11 @@ plt.style.use("dark_background")
 def plot_iteration(iteration):
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
     cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
-    combined_file = cf.combine()
+    combined_file = cf.combine_df()
     formatted_time = round(cf.sim_time * 0.000277778, 2)
-    df = pd.read_csv(to_fname, header=None, skiprows=2, delimiter="\t")
+    df = combined_file
     # target = df[df[1] <= 1]
     # impactor = df[df[1] > 1]
-    os.remove(to_fname)
 
     fig = plt.figure(figsize=(10, 10))
     fig.patch.set_facecolor('xkcd:black')
@@ -93,9 +92,11 @@ def plot_iteration(iteration):
     cbar.ax.set_title(normalize_name, fontsize=14)
     plt.savefig(to_path + "/{}.png".format(iteration), format='png', dpi=200)
 
+
 ldir = os.listdir(to_path)
 pool = mp.Pool(10)
-pool.map(plot_iteration, [iteration for iteration in np.arange(min_iteration, max_iteration + increment, increment) if "{}.png".format(iteration) not in ldir])
+pool.map(plot_iteration, [iteration for iteration in np.arange(min_iteration, max_iteration + increment, increment) if
+                          "{}.png".format(iteration) not in ldir])
 pool.close()
 pool.join()
 
