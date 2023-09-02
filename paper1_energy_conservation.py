@@ -77,8 +77,8 @@ for ax in axs:
     # make all axis tick font size larger
     ax.tick_params(axis='both', which='major', labelsize=14)
 axs[0].set_ylabel(r"Disk Mass ($M_{\oplus}$)", fontsize=16)
-axs[1].set_ylabel(r"Disk Energy (kJ/kg)", fontsize=16)
-axs[2].set_ylabel(r"Total Energy (kJ/kg)", fontsize=16)
+axs[1].set_ylabel(r"Disk Energy (MJ/kg)", fontsize=16)
+axs[2].set_ylabel(r"Total Energy (MJ/kg)", fontsize=16)
 
 times_dict = {}
 total_potential_energy = {}
@@ -207,7 +207,7 @@ for ax in axs:
     ax.set_xlabel("Time (hrs.)")
     # make all axis tick font size larger
     ax.tick_params(axis='both', which='major', labelsize=14)
-axs[0].set_ylabel(r"Potential Energy (kJ)", fontsize=16)
+axs[0].set_ylabel(r"Potential Energy (mJ)", fontsize=16)
 axs[1].set_ylabel(r"Internal Energy (kJ)", fontsize=16)
 axs[2].set_ylabel(r"Kinetic Energy (kJ)", fontsize=16)
 

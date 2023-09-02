@@ -13,7 +13,7 @@ base_path = "/Users/scotthull/Downloads/data_robin/"
 headers = [  # tag: 1=water ; 2=ice ; 3=serpentine ; 4=dunite ; 5=iron
     'id', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'temperature', 'size', 'tag'
 ]
-square_scale = 1e6
+square_scale = 100
 
 def center_of_mass(x: np.array, y: np.array, z: np.array, mass: np.array):
     """
@@ -30,8 +30,14 @@ def center_of_mass(x: np.array, y: np.array, z: np.array, mass: np.array):
     z_com = np.sum(z * mass) / np.sum(mass)
     return x_com, y_com, z_com
 
+# the files in the base path have a number in the string
+# we need to order the file names by this number
+dir_files = [i for i in os.listdir(base_path) if i.endswith(".dat")]
+dir_files.sort(key=lambda x: int(x.replace("marsimp", "").replace(".dat", "")))
+
+
 # loop through all the files in the directory
-for index, i in enumerate([i for i in os.listdir(base_path) if not i.endswith(".png")]):
+for index, i in enumerate(dir_files):
     # read in as a dataframe
     df = pd.read_fwf(f"{base_path}{i}", header=None)
     # set the column names
@@ -40,6 +46,7 @@ for index, i in enumerate([i for i in os.listdir(base_path) if not i.endswith(".
     com_x, com_y, com_z = center_of_mass(
         df['x'].values, df['y'].values, df['z'].values, df['mass'].values
     )
+    print(f"Center of mass: {com_x}, {com_y}, {com_z}")
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
     for tag in df['tag'].unique():
@@ -47,10 +54,10 @@ for index, i in enumerate([i for i in os.listdir(base_path) if not i.endswith(".
             df[df['tag'] == tag]['x'] - com_x, df[df['tag'] == tag]['y'] - com_y, marker=".", s=5, label=tag
         )
     # turn off the axes
-    ax.set_xticks([], minor=False)
-    ax.set_yticks([], minor=False)
-    # ax.set_xlim(-square_scale, square_scale)
-    # ax.set_ylim(-square_scale, square_scale)
+    # ax.set_xticks([], minor=False)
+    # ax.set_yticks([], minor=False)
+    ax.set_xlim(-square_scale, square_scale)
+    ax.set_ylim(-square_scale, square_scale)
     ax.set_title(i)
 
     legend = plt.legend(loc='upper right', fontsize=16, title="Tag")
@@ -62,7 +69,7 @@ for index, i in enumerate([i for i in os.listdir(base_path) if not i.endswith(".
 
 animate(
     0,
-    len([i for i in os.listdir(base_path) if not i.endswith(".png")]),
+    len([i for i in os.listdir(base_path) if i.endswith(".dat")]),
     interval=1,
     path=base_path,
     fps=5,
