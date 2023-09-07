@@ -75,10 +75,20 @@ for s, t in paths:
 
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
-    ax.plot(times, np.array(target_velocity) / 1000, linewidth=2.0, label="Target")
-    ax.plot(times, np.array(impactor_velocity) / 1000, linewidth=2.0, label="Impactor")
-    ax.plot(times, np.array(imp_vel_from_tar) / 1000, linewidth=2.0, label="Impact Velocity (from target)")
-    ax.plot(times, np.array(imp_vel_from_imp) / 1000, linewidth=2.0, label="Impact Velocity (from impactor)")
+    ax.plot(times, np.array(target_velocity) / 1000, linewidth=1.0, color='red', label="Target")
+    ax.plot(times, np.array(impactor_velocity) / 1000, linewidth=1.0, color='blue', label="Impactor")
+    # scatter and annotate the points on top of the lines
+    ax.scatter(
+        times, np.array(target_velocity) / 1000, marker='o', color='red', s=10
+    )
+    ax.scatter(
+        times, np.array(impactor_velocity) / 1000, marker='o', color='blue', s=10
+    )
+    for i, txt in enumerate(times):
+        ax.annotate(txt, (times[i], np.array(target_velocity)[i] / 1000), fontsize=8)
+        ax.annotate(txt, (times[i], np.array(impactor_velocity)[i] / 1000), fontsize=8)
+    ax.plot(times, np.array(imp_vel_from_tar) / 1000, linewidth=1.0, label="Impact Velocity (from target)")
+    ax.plot(times, np.array(imp_vel_from_imp) / 1000, linewidth=1.0, label="Impact Velocity (from impactor)")
     ax.set_xlabel("Time (hours)")
     ax.set_ylabel("Velocity (km/s)")
     ax.grid()
