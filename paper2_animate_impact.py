@@ -52,16 +52,26 @@ def plot_iteration(iteration):
     combined_file = cf.combine_df()
     formatted_time = round(cf.sim_time * 0.000277778, 2)
     df = combined_file
-    # target = df[df[1] <= 1]
-    # impactor = df[df[1] > 1]
+    target = df[df[1] <= 1]
+    impactor = df[df[1] > 1]
+    silicate = df[df[1] % 2 == 0]
+    iron = df[df[1] % 2 != 0]
 
     fig = plt.figure(figsize=(10, 10))
     fig.patch.set_facecolor('xkcd:black')
     ax = fig.add_subplot(111, projection='3d')
     ax.view_init(azim=90)
-    ax.scatter(
-        df[3], df[4], df[5], s=5, alpha=1, color=cmap(normalizer(df[normalize_column]))
-    )
+    # ax.scatter(
+    #     df[3], df[4], df[5], s=5, alpha=1, color=cmap(normalizer(df[normalize_column]))
+    # )
+
+    for index, i in enumerate([silicate, iron]):
+        alpha = 1
+        if index == 0:
+            alpha = 0.01
+        ax.scatter(
+            i[3], i[4], i[5], s=5, alpha=alpha
+        )
 
     ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
     ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))

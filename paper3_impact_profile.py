@@ -48,6 +48,7 @@ for s, t in paths:
         to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
         cf = CombineFile(num_processes=num_processes, time=iteration, output_path=path, to_fname=to_fname)
         df = cf.combine_df()
+        print("# of particles: {}".format(len(df)))
         df.columns = headers
         formatted_time = round(cf.sim_time * 0.000277778, 2)
         df['velocity'] = np.sqrt(df['vx'] ** 2 + df['vy'] ** 2 + df['vz'] ** 2)
@@ -69,6 +70,9 @@ for s, t in paths:
         print("Mean impactor velocity: {} km/s".format(mean_impactor_velocity / 1000))
         print("Target mass: {} kg".format(target_mass))
         print("Impactor mass: {} kg".format(impactor_mass))
+
+
+
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
     ax.plot(times, np.array(target_velocity) / 1000, linewidth=2.0, label="Target")
