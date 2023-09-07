@@ -85,8 +85,8 @@ for s, t in paths:
         times, np.array(impactor_velocity) / 1000, marker='o', color='blue', s=10
     )
     for i, txt in enumerate(times):
-        ax.annotate(txt, (times[i], np.array(target_velocity)[i] / 1000), fontsize=8)
-        ax.annotate(txt, (times[i], np.array(impactor_velocity)[i] / 1000), fontsize=8)
+        ax.annotate(target_velocity[i], (times[i], np.array(target_velocity)[i] / 1000), fontsize=8)
+        ax.annotate(impactor_velocity[i], (times[i], np.array(impactor_velocity)[i] / 1000), fontsize=8)
     ax.plot(times, np.array(imp_vel_from_tar) / 1000, linewidth=1.0, label="Impact Velocity (from target)")
     ax.plot(times, np.array(imp_vel_from_imp) / 1000, linewidth=1.0, label="Impact Velocity (from impactor)")
     ax.set_xlabel("Time (hours)")
