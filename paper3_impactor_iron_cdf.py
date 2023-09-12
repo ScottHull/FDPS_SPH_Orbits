@@ -38,6 +38,8 @@ df.columns = headers
 df['radius'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2 + df['z'] ** 2) / 1000
 particles_within_mars = df[df['radius'] <= mars_radius]
 impactor_iron_within_mars = particles_within_mars[particles_within_mars['tag'] == 3]
+# sort particles by radius
+impactor_iron_within_mars = impactor_iron_within_mars.sort_values(by=['radius'])
 # create a column of the cumulative sum of the mass of the particles within each radius
 impactor_iron_within_mars['cumulative_mass'] = impactor_iron_within_mars['mass'].cumsum() / impactor_iron_within_mars['mass'].sum()
 
