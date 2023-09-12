@@ -23,7 +23,7 @@ from src.animate import animate
 from src.identify import ParticleMap
 from src.combine import CombineFile
 
-base_path = "/home/theia/scotthull/Paper3_SPH/gi/00_mars_b073_2v_esc/00_mars_b073_2v_esc/"
+base_path = "/home/theia/scotthull/Paper3_SPH/gi/500_mars_b073_2v_esc/500_mars_b073_2v_esc/"
 num_processes = 600
 iteration = 100
 mars_radius = 3389.5 * 1000
