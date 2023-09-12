@@ -52,6 +52,11 @@ df = cf.combine_df()
 df.columns = headers
 # calculate the martian COM
 
+target = df[df['tag'] == 1]
+target_com = center_of_mass(target['x'], target['y'], target['z'], target['mass'])
+df['x'] = df['x'] - target_com[0]
+df['y'] = df['y'] - target_com[1]
+df['z'] = df['z'] - target_com[2]
 df['radius'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2 + df['z'] ** 2) / 1000
 particles_within_mars = df[df['radius'] <= mars_radius]
 impactor_iron_within_mars = particles_within_mars[particles_within_mars['tag'] == 3]
