@@ -59,18 +59,23 @@ df['y'] = df['y'] - target_com[1]
 df['z'] = df['z'] - target_com[2]
 df['radius'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2 + df['z'] ** 2) / 1000
 particles_within_mars = df[df['radius'] <= mars_radius]
+target_iron = particles_within_mars[particles_within_mars['tag'] == 1]
 impactor_iron_within_mars = particles_within_mars[particles_within_mars['tag'] == 3]
 # sort particles by radius
+target_iron = target_iron.sort_values(by=['radius'])
 impactor_iron_within_mars = impactor_iron_within_mars.sort_values(by=['radius'])
 # create a column of the cumulative sum of the mass of the particles within each radius
 impactor_iron_within_mars['cumulative_mass'] = impactor_iron_within_mars['mass'].cumsum() / impactor_iron_within_mars['mass'].sum()
+target_iron['cumulative_mass'] = target_iron['mass'].cumsum() / target_iron['mass'].sum()
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.plot(impactor_iron_within_mars['radius'], impactor_iron_within_mars['cumulative_mass'], color='black', linewidth=2)
+ax.plot(impactor_iron_within_mars['radius'], impactor_iron_within_mars['cumulative_mass'], color='black', linewidth=2, label='Impactor Iron')
+ax.plot(target_iron['radius'], target_iron['cumulative_mass'], color='red', linewidth=2, label='Target Iron')
 ax.set_xlabel("Radius (km)")
 ax.set_ylabel("Cumulative Mass Fraction of Impactor Iron Particles")
 ax.set_title(f"{round(cf.sim_time * 0.000277778, 2)} hrs.")
+ax.legend()
 ax.grid()
 plt.tight_layout()
 plt.savefig("iron_cdf.png", dpi=200)
