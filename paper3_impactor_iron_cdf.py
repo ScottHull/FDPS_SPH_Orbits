@@ -26,15 +26,32 @@ from src.combine import CombineFile
 base_path = "/home/theia/scotthull/Paper3_SPH/gi/500_mars_b073_2v_esc/500_mars_b073_2v_esc"
 num_processes = 600
 iteration = 100
-mars_radius = 3389.5 * 1000
+mars_radius = 3389.5
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
+
+def center_of_mass(x: np.array, y: np.array, z: np.array, mass: np.array):
+    """
+    Calculate the center of mass of a system of particles
+    :param x:
+    :param y:
+    :param z:
+    :param mass:
+    :return:
+    """
+    # calculate the center of mass
+    x_com = np.sum(x * mass) / np.sum(mass)
+    y_com = np.sum(y * mass) / np.sum(mass)
+    z_com = np.sum(z * mass) / np.sum(mass)
+    return x_com, y_com, z_com
 
 to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
 cf = CombineFile(num_processes=num_processes, time=iteration, output_path=base_path, to_fname=to_fname)
 df = cf.combine_df()
 df.columns = headers
+# calculate the martian COM
+
 df['radius'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2 + df['z'] ** 2) / 1000
 particles_within_mars = df[df['radius'] <= mars_radius]
 impactor_iron_within_mars = particles_within_mars[particles_within_mars['tag'] == 3]
