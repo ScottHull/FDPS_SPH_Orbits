@@ -26,7 +26,8 @@ from src.combine import CombineFile
 base_path = "/home/theia/scotthull/Paper3_SPH/gi/500_mars_b073_2v_esc/500_mars_b073_2v_esc"
 num_processes = 600
 iteration = 100
-mars_radius = 3389.5
+# mars_radius = 3389.5
+mars_radius = 4000
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
@@ -74,7 +75,7 @@ ax.plot(impactor_iron_within_mars['radius'], impactor_iron_within_mars['cumulati
 ax.plot(target_iron['radius'], target_iron['cumulative_mass'], color='red', linewidth=2, label='Target Iron')
 ax.set_xlabel("Radius (km)")
 ax.set_ylabel("Cumulative Mass Fraction of Impactor Iron Particles")
-ax.set_title(f"{round(cf.sim_time * 0.000277778, 2)} hrs.")
+ax.set_title(f"{base_path.split('/')[-1]} - {round(cf.sim_time * 0.000277778, 2)} hrs.")
 ax.legend()
 ax.grid()
 plt.tight_layout()
