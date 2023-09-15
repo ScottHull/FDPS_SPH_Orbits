@@ -34,6 +34,7 @@ increment = 4
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
+mass_mars = 6.39e23  # kg
 
 for s, t in paths:
     cd = int(s.split("_")[0])

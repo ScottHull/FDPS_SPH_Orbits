@@ -1,5 +1,6 @@
 import os
 import csv
+from math import atan, sin, pi
 
 import numpy as np
 import pandas as pd
@@ -41,7 +42,7 @@ def get_impact_angle(com_target, com_impactor):
     :return:
     """
     # calculate the angle between the target and impactor
-    impact_angle = np.arctan2(com_impactor[1] - com_target[1], com_impactor[0] - com_target[0])
+    impact_angle = atan((com_impactor[1] - com_target[1]) / (com_impactor[0] - com_target[0]))
     # return impact parameter b = sin(impact_angle)
     return np.sin(impact_angle)
 
@@ -88,7 +89,11 @@ for index, i in enumerate(np.arange(1, 5, 1)):
     df = pd.read_csv(f"{base_path}{i}", header=None)
     # set the column names
     df.columns = headers
+    utime = 0.00025826343 ** -1
     df['mass'] = 1.0
+    df['vx'] *= (10 ** 3) * (1 / utime)
+    df['vy'] *= (10 ** 3) * (1 / utime)
+    df['vz'] *= (10 ** 3) * (1 / utime)
     df['velocity'] = np.sqrt(df['vx'] ** 2 + df['vy'] ** 2 + df['vz'] ** 2)
     df['radius'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2 + df['z'] ** 2)
     if index == 0:
@@ -98,6 +103,11 @@ for index, i in enumerate(np.arange(1, 5, 1)):
         impactor_particles = impactor['id']
     target = df[df['id'].isin(target_particles)]
     impactor = df[df['id'].isin(impactor_particles)]
+    num_target_particles = len(target)
+    num_impactor_particles = len(impactor)
+    total_particles = num_target_particles + num_impactor_particles
+    gamma = num_impactor_particles / num_target_particles
+    print(f"Gamma: {gamma}")
     impact_angle.append(get_impact_angle(center_of_mass(target['x'], target['y'], target['z'], target['mass']), center_of_mass(impactor['x'], impactor['y'], impactor['z'], impactor['mass'])))
     target_velocity.append(target['velocity'].mean())
     impactor_velocity.append(impactor['velocity'].mean())
@@ -117,6 +127,13 @@ for index, i in enumerate(np.arange(1, 5, 1)):
         ax.scatter(
             j['x'] - com_x, j['y'] - com_y, marker=".", s=5
         )
+    # scatter the target and impactor COMs
+    ax.scatter(
+        com_target[0] - com_x, com_target[1] - com_y, marker="*", s=100, label="COM Target"
+    )
+    ax.scatter(
+        com_impactor[0] - com_x, com_impactor[1] - com_y, marker="*", s=100, label="COM Impactor"
+    )
     # turn off the axes
     # ax.set_xticks([], minor=False)
     # ax.set_yticks([], minor=False)
@@ -138,6 +155,18 @@ fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(111)
 for i, label in [(target_velocity, "Target"), (impactor_velocity, "Impactor")]:
     ax.plot(range(0, iterations), np.array(i), linewidth=1.0, label=label)
+    # scatter the points on top and annotate the value
+    ax.scatter(
+        range(0, iterations), np.array(i)
+    )
+    for point in range(0, iterations):
+        ax.annotate(
+            f"{np.array(i)[point]:.2f}",
+            (point, np.array(i)[point]),
+            textcoords="offset points",
+            xytext=(0, 10),
+            ha='center'
+        )
 ax.set_xlabel("Iteration")
 ax.set_ylabel("Velocity (km/s)")
 ax.legend()
@@ -148,8 +177,21 @@ plt.show()
 fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(111)
 ax.plot(range(0, iterations), np.array(impact_angle), linewidth=1.0)
+# scatter the points on top and annotate the value
+ax.scatter(
+    range(0, iterations), np.array(impact_angle)
+)
+for point in range(0, iterations):
+    ax.annotate(
+        f"{np.array(impact_angle)[point]:.2f}",
+        (point, np.array(impact_angle)[point]),
+        textcoords="offset points",
+        xytext=(0, 10),
+        ha='center'
+    )
 ax.set_xlabel("Iteration")
 ax.set_ylabel("Impact Parameter (b)")
+ax.set_ylim(0, 1)
 ax.grid()
 plt.show()
 
@@ -159,5 +201,5 @@ animate(
     interval=1,
     path=base_path,
     fps=5,
-    filename=f"{base_path}robin_impact.mp4"
+    filename=f"{base_path}_robin_impact.mp4"
 )
