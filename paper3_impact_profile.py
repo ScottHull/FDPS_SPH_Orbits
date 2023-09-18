@@ -47,7 +47,7 @@ data = {
     } for i in paths
 }
 
-def calculate_v_esc(R_tar=3363.53 * 1000, R_imp=336.04, M_tot = 1.001 * mass_mars):
+def calculate_v_esc(R_tar=3363.53 * 1000, R_imp=336.04 * 1000, M_tot = 1.001 * mass_mars):
     """
     Calculate the mutual escape velocity.
     :return:
@@ -83,6 +83,9 @@ for index, (s, t) in enumerate(paths):
         total_mass = target_mass + impactor_mass
         v_imp_from_tar = (total_mass * mean_target_velocity) / impactor_mass
         v_imp_from_imp = (total_mass * mean_impactor_velocity) / target_mass
+        data[t]['times'].append(formatted_time)
+        data[t]['target_velocity'].append(mean_target_velocity)
+        data[t]['impactor_velocity'].append(mean_impactor_velocity)
         # target_velocity.append(mean_target_velocity)
         # impactor_velocity.append(mean_impactor_velocity)
         # times.append(formatted_time)
