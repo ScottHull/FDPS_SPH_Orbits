@@ -23,10 +23,14 @@ from src.animate import animate
 from src.identify import ParticleMap
 from src.combine import CombineFile
 
-base_path = "/home/theia/scotthull/Paper2_SPH/gi/"
+base_path = "/home/theia/scotthull/Paper3_SPH/gi/"
 num_processes = 600
 iterations = [50, 100, 200, 500, 1000]
-paths = [['500_mars', "Mars " + r"($b=0.73$)"]]
+paths = [
+    ['500_mars_b073_2v_esc', "Mars (v_imp=2v_esc, b=0.73)"],
+    ['500_mars_b073_1v_esc', "Mars (v_imp=1v_esc, b=0.73)"],
+    ['500_mars_b050_1v_esc', "Mars (v_imp=1 v_esc, b=0.50)"]
+]
 
 begin_iteration = 0
 end_iteration = 20
@@ -88,8 +92,8 @@ for s, t in paths:
     for i, txt in enumerate(times):
         ax.annotate(target_velocity[i] / 1000, (times[i], np.array(target_velocity)[i] / 1000), fontsize=8)
         ax.annotate(impactor_velocity[i] / 1000, (times[i], np.array(impactor_velocity)[i] / 1000), fontsize=8)
-    ax.plot(times, np.array(imp_vel_from_tar) / 1000, linewidth=1.0, label="Impact Velocity (from target)")
-    ax.plot(times, np.array(imp_vel_from_imp) / 1000, linewidth=1.0, label="Impact Velocity (from impactor)")
+    # ax.plot(times, np.array(imp_vel_from_tar) / 1000, linewidth=1.0, label="Impact Velocity (from target)")
+    # ax.plot(times, np.array(imp_vel_from_imp) / 1000, linewidth=1.0, label="Impact Velocity (from impactor)")
     ax.set_xlabel("Time (hours)")
     ax.set_ylabel("Velocity (km/s)")
     ax.grid()
