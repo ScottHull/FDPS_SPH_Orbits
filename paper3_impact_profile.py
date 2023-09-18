@@ -122,8 +122,9 @@ ax = fig.add_subplot(111)
 # get a series of unique colors of the length of the data keys array
 colors = cm.jet(np.linspace(0, 1, len(data.keys())))
 for index, p in enumerate(data.keys()):
-    ax.plot(p['times'], p['target_velocity'] / 1000, linewidth=2.0, color=colors[index], label=f'{p} (Target)')
-    ax.plot(p['times'], p['impactor_velocity'] / 1000, linewidth=2.0, color=colors[index], linestyle='dashed',
+    d = data[p]
+    ax.plot(d['times'], d['target_velocity'] / 1000, linewidth=2.0, color=colors[index], label=f'{p} (Target)')
+    ax.plot(d['times'], d['impactor_velocity'] / 1000, linewidth=2.0, color=colors[index], linestyle='dashed',
             label=f'{p} (Impactor)')
     # ax.plot(times, np.array(target_velocity) / 1000, linewidth=2.0, color='red', label="Target")
     # ax.plot(times, np.array(impactor_velocity) / 1000, linewidth=2.0, color='blue', label="Impactor")
