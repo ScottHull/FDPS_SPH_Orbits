@@ -32,8 +32,8 @@ paths = [
 ]
 
 begin_iteration = 0
-end_iteration = 20
-increment = 4
+end_iteration = 30
+increment = 2
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
