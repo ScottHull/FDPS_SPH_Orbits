@@ -66,7 +66,7 @@ class CombinedFile:
         self.total_particles = total_N
 
     def combine_to_memory(self):
-        print("Combining to memory...")
+        print(f"Combining to memory ({self.path} iteration {self.iteration})...")
         dfs = []
         total_N = 0
         time = 0
