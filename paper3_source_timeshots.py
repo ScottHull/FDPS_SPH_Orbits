@@ -78,8 +78,8 @@ fig, axs = plt.subplots(len(iterations), len(runs), figsize=(15, 15 * 5/3), shar
 
 axs = axs.flatten()
 for ax in axs:
-    ax.set_xlim(-square_scale, square_scale)
-    ax.set_ylim(-square_scale, square_scale)
+    ax.set_xlim(-50, 50)
+    ax.set_ylim(-50, 50)
     # ax.set_xticks([], minor=False)
     # ax.set_yticks([], minor=False)
     ax.axes.set_aspect('equal')
@@ -139,8 +139,8 @@ for index, ax in enumerate(axs):
     y_loc = y2 - (0.08 * (y2 - y1))
     ax.text(x_loc, y_loc, letters[index], fontweight="bold", fontsize=20)
 
-axs[0].annotate("x ($10^3$ km)", xy=(0.0, -5.5), ha="center", fontsize=16, weight='bold')
-axs[0].annotate("y ($10^3$ km)", xy=(-5.5, 0.0), va="center", rotation=90, fontsize=16, weight='bold')
+# axs[0].annotate("x ($10^3$ km)", xy=(0.0, -5.5), ha="center", fontsize=16, weight='bold')
+# axs[0].annotate("y ($10^3$ km)", xy=(-5.5, 0.0), va="center", rotation=90, fontsize=16, weight='bold')
 
 plt.tight_layout()
 plt.savefig("paper3_source_scenes.png", format='png', dpi=300)
