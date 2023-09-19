@@ -135,7 +135,7 @@ for iteration in iterations:
             #                         "{} hrs".format(formatted_time), fontsize=20)
             x1, x2, y1, y2 = axs[current_index].axis()
             x_loc = x1 + (0.02 * (x2 - x1))
-            y_loc = y2 + (0.02 * (y2 - y1))
+            y_loc = y2 - (0.75 * (y2 - y1))
             axs[current_index].text(x_loc, y_loc, "{} hrs".format(formatted_time), fontsize=20)
         current_index += 1
 
