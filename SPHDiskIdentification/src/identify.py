@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from src.elements import (total_orbital_energy, angular_momentum, eccentricity, semi_major_axis,
+from SPHDiskIdentification.src.elements import (total_orbital_energy, angular_momentum, eccentricity, semi_major_axis,
                           equivalent_circular_semi_major_axis, angular_momentum_vector, periapsis, inclination,
                           circularization_entropy_gain)
 
