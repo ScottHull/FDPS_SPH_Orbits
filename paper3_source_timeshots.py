@@ -25,8 +25,8 @@ plt.style.use("dark_background")
 base_path = "/home/theia/scotthull/Paper3_SPH/gi/"
 runs = [
     [base_path + f"500_mars_b073_2v_esc/500_mars_b073_2v_esc", r"Mars ($b=0.73$, $1 v_{esc}$)", 600],
-    [base_path + f"500_mars_b073_2v_esc/500_mars_b073_2v_esc", r"Mars ($b=0.73$, $2 v_{esc}$)", 600],
-    [base_path + f"500_mars_b073_2v_esc/500_mars_b073_2v_esc", r"Mars ($b=0.50$, $1 v_{esc}$)", 600],
+    [base_path + f"500_mars_b073_1v_esc/500_mars_b073_1v_esc", r"Mars ($b=0.73$, $2 v_{esc}$)", 600],
+    [base_path + f"500_mars_b050_1v_esc/500_mars_b050_1v_esc", r"Mars ($b=0.50$, $1 v_{esc}$)", 600],
 ]
 iterations = [0, 20, 80, 100, 200]
 end_iteration = 200
