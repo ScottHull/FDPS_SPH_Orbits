@@ -30,7 +30,7 @@ runs = [
 ]
 iterations = [0, 20, 80, 100, 200]
 end_iteration = 200
-square_scale = 10 ** 7
+square_scale = 10 ** 6
 mass_mars = 6.39e23  # kg
 radius_mars = 3389.5 * 1000  # m
 
@@ -139,8 +139,8 @@ for index, ax in enumerate(axs):
     y_loc = y2 - (0.08 * (y2 - y1))
     ax.text(x_loc, y_loc, letters[index], fontweight="bold", fontsize=20)
 
-axs[0].annotate("x ($10^4$ km)", xy=(0.0, -5.5), ha="center", fontsize=16, weight='bold')
-axs[0].annotate("y ($10^4$ km)", xy=(-5.5, 0.0), va="center", rotation=90, fontsize=16, weight='bold')
+axs[0].annotate("x ($10^3$ km)", xy=(0.0, -5.5), ha="center", fontsize=16, weight='bold')
+axs[0].annotate("y ($10^3$ km)", xy=(-5.5, 0.0), va="center", rotation=90, fontsize=16, weight='bold')
 
 plt.tight_layout()
 plt.savefig("paper3_source_scenes.png", format='png', dpi=300)
