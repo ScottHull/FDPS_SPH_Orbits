@@ -108,8 +108,12 @@ for iteration in iterations:
                 i['x'] / square_scale, i['y'] / square_scale, s=0.8, marker=".", alpha=1, label=label
             )
         if current_index % len(runs) == 0:
-            axs[current_index].text(square_scale - (0.75 * square_scale), -square_scale + (0.3 * square_scale),
-                                    "{} hrs".format(formatted_time), fontsize=20)
+            # axs[current_index].text(square_scale - (0.75 * square_scale), -square_scale + (0.3 * square_scale),
+            #                         "{} hrs".format(formatted_time), fontsize=20)
+            x1, x2, y1, y2 = ax.axis()
+            x_loc = x1 + (0.02 * (x2 - x1))
+            y_loc = y2 + (0.02 * (y2 - y1))
+            ax.text(x_loc, y_loc, "{} hrs".format(formatted_time), fontsize=20)
         current_index += 1
 
 legend = axs[0].legend(loc='upper right', fontsize=20)
