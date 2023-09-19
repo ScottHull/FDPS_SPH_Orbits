@@ -67,6 +67,7 @@ def get_end_states():
         particle_map = ParticleMap(particles=combined_file, mass_planet=mass_mars,
                                    equatorial_radius=radius_mars)
         particles = particle_map.loop()
+        particles.columns = file_headers
         endstates[t] = particles
     return endstates
 
