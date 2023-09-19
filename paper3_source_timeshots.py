@@ -78,8 +78,8 @@ fig, axs = plt.subplots(len(iterations), len(runs), figsize=(15, 15 * 5/3), shar
 
 axs = axs.flatten()
 for ax in axs:
-    ax.set_xlim(-50, 50)
-    ax.set_ylim(-50, 50)
+    ax.set_xlim(-10, 10)
+    ax.set_ylim(-10, 10)
     # ax.set_xticks([], minor=False)
     # ax.set_yticks([], minor=False)
     ax.axes.set_aspect('equal')
