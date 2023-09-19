@@ -100,7 +100,9 @@ for ax in axs:
 current_index = 0
 # colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for iteration in iterations:
+    print(f"Processing iteration {iteration}...")
     for s, t, number_processes in runs:
+        print(f"Processing {t} at iteration {iteration} ({s})...")
         c = CombinedFile(
             path=s,
             iteration=iteration,
@@ -127,6 +129,7 @@ for iteration in iterations:
             axs[current_index].scatter(
                 (i['x'] - com_x) / square_scale, (i['y'] - com_y) / square_scale, s=0.8, marker=".", alpha=1, label=label
             )
+        print(f"Plotting {t} at iteration {iteration} ({s}) at current index {current_index}... ({current_index % len(runs)})")
         if current_index % len(runs) == 0:
             # axs[current_index].text(square_scale - (0.75 * square_scale), -square_scale + (0.3 * square_scale),
             #                         "{} hrs".format(formatted_time), fontsize=20)
