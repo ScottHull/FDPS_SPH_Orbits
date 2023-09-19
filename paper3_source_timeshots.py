@@ -93,6 +93,8 @@ for iteration in iterations:
             to_fname=f"merged_{iteration}_{randint(1, int(1e5))}.dat"
         )
         df = c.combine_to_memory()
+        formatted_time = c.sim_time
+        df.columns = file_headers
         endstate = endstates[t]
         # df = df[df['z'] <= 0]  # slice simulation
         end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
