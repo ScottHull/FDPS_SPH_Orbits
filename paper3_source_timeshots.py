@@ -62,12 +62,12 @@ def get_end_states():
             to_fname=f"merged_{end_iteration}_{randint(1, int(1e5))}.dat"
         )
         combined_file = c.combine_to_memory()
+        combined_file.columns = file_headers
         time = c.sim_time
         # create the particle map
         particle_map = ParticleMap(particles=combined_file, mass_planet=mass_mars,
                                    equatorial_radius=radius_mars)
         particles = particle_map.loop()
-        particles.columns = file_headers
         endstates[t] = particles
     return endstates
 
