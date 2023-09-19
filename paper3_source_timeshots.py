@@ -74,7 +74,7 @@ def get_end_states():
 endstates = get_end_states()
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 # fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
-fig, axs = plt.subplots(len(iterations), len(runs), figsize=(10, 20), sharex='all', sharey='all')
+fig, axs = plt.subplots(len(iterations), len(runs), figsize=(15, 15 * 5/3), sharex='all', sharey='all')
 
 axs = axs.flatten()
 for ax in axs:
@@ -105,7 +105,7 @@ for iteration in iterations:
                                    df['id'].isin(end_escape.index.tolist())].sort_values("z")
         for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
             axs[current_index].scatter(
-                i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, label=label
+                i['x'] / square_scale, i['y'] / square_scale, s=0.8, marker=".", alpha=1, label=label
             )
         if current_index % len(runs) == 0:
             axs[current_index].text(square_scale - (0.75 * square_scale), -square_scale + (0.3 * square_scale),
