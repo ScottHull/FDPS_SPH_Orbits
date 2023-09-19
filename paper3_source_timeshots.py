@@ -15,11 +15,8 @@ import multiprocessing as mp
 from matplotlib.ticker import MaxNLocator
 import string
 
-from src.vapor import calc_vapor_mass_fraction_from_formatted
-from src.geometry import get_impact_geometry_from_formatted, get_velocity_profile_from_formatted
-from src.animate import animate
-from src.identify import ParticleMap
-from src.combine import CombineFile
+from SPHDiskIdentification.src.combine import CombinedFile
+from SPHDiskIdentification.src.identify import ParticleMap
 
 plt.rcParams.update({'font.size': 14, })
 plt.style.use("dark_background")
@@ -34,8 +31,13 @@ runs = [
 iterations = [0, 20, 80, 100, 200]
 end_iteration = 200
 square_scale = 10 ** 7
+mass_mars = 6.39e23  # kg
+radius_mars = 3389.5 * 1000  # m
 
 phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
+
+file_headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
+                "potential energy", "entropy", "temperature"]
 
 def get_time(f, local=True):
     formatted_time = None
@@ -52,10 +54,20 @@ def get_time(f, local=True):
 def get_end_states():
     endstates = {}
     for s, t, i in runs:
-        run_name = s.split("/")[-1]
-        end_state_file = s + "/circularized_{}/{}.csv".format(run_name, end_iteration)
-        end_state_df = pd.read_csv(end_state_file, index_col="id")
-        endstates.update({t: end_state_df})
+        # create the combined file
+        c = CombinedFile(
+            path=s,
+            iteration=iteration,
+            number_of_processes=i,
+            to_fname=f"merged_{iteration}_{randint(1, int(1e5))}.dat"
+        )
+        combined_file = c.combine_to_memory()
+        time = c.sim_time
+        # create the particle map
+        particle_map = ParticleMap(particles=combined_file, mass_planet=mass_mars,
+                                   equatorial_radius=radius_mars)
+        particles = particle_map.loop()
+        endstates[t] = particles
     return endstates
 
 endstates = get_end_states()
@@ -74,19 +86,13 @@ current_index = 0
 # colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 for iteration in iterations:
     for s, t, number_processes in runs:
-        run_name = s.split("/")[-1]
-        p = s + "/circularized_{}".format(run_name)
-        f = p + "/{}.csv".format(iteration)
-        df = pd.read_csv(f)
-        path = s + "/{}".format(run_name)
-        file_format = "results.{}_{}_{}.dat"
-        p2 = s + "/{}".format(run_name)
-        base_file = file_format.format(
-            str(iteration).zfill(5),
-            str(number_processes).zfill(5),
-            str(0).zfill(5)
+        c = CombinedFile(
+            path=s,
+            iteration=iteration,
+            number_of_processes=number_processes,
+            to_fname=f"merged_{iteration}_{randint(1, int(1e5))}.dat"
         )
-        formatted_time = get_time(p2 + "/" + base_file)
+        df = c.combine_to_memory()
         endstate = endstates[t]
         # df = df[df['z'] <= 0]  # slice simulation
         end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
