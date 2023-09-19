@@ -57,9 +57,9 @@ def get_end_states():
         # create the combined file
         c = CombinedFile(
             path=s,
-            iteration=iteration,
+            iteration=end_iteration,
             number_of_processes=i,
-            to_fname=f"merged_{iteration}_{randint(1, int(1e5))}.dat"
+            to_fname=f"merged_{end_iteration}_{randint(1, int(1e5))}.dat"
         )
         combined_file = c.combine_to_memory()
         time = c.sim_time
