@@ -75,8 +75,8 @@ endstates = get_end_states()
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 # fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig, axs = plt.subplots(len(iterations), len(runs), figsize=(15, 15 * 5/3), sharex='all', sharey='all')
-
 axs = axs.flatten()
+
 for ax in axs:
     ax.set_xlim(-10, 10)
     ax.set_ylim(-10, 10)
@@ -100,9 +100,11 @@ for iteration in iterations:
         # df = df[df['z'] <= 0]  # slice simulation
         end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
             endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
-        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("z"), df[
-            df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
-                                   df['id'].isin(end_escape.index.tolist())].sort_values("z")
+        # planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("z"), df[
+        #     df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
+        #                            df['id'].isin(end_escape.index.tolist())].sort_values("z")
+        planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())], df[
+            df['id'].isin(end_disk.index.tolist())], df[df['id'].isin(end_escape.index.tolist())]
         for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
             axs[current_index].scatter(
                 i['x'] / square_scale, i['y'] / square_scale, s=0.8, marker=".", alpha=1, label=label
