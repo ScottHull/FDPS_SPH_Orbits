@@ -50,6 +50,20 @@ def get_time(f, local=True):
         formatted_time = float(next(f))
     return round(formatted_time * 0.000277778, 2)  # seconds -> hours
 
+def center_of_mass(x: np.array, y: np.array, z: np.array, mass: np.array):
+    """
+    Calculate the center of mass of a system of particles
+    :param x:
+    :param y:
+    :param z:
+    :param mass:
+    :return:
+    """
+    # calculate the center of mass
+    x_com = np.sum(x * mass) / np.sum(mass)
+    y_com = np.sum(y * mass) / np.sum(mass)
+    z_com = np.sum(z * mass) / np.sum(mass)
+    return x_com, y_com, z_com
 
 def get_end_states():
     endstates = {}
@@ -78,8 +92,8 @@ fig, axs = plt.subplots(len(iterations), len(runs), figsize=(15, 15 * 5/3), shar
 axs = axs.flatten()
 
 for ax in axs:
-    ax.set_xlim(-10, 10)
-    ax.set_ylim(-10, 10)
+    ax.set_xlim(-6, 6)
+    ax.set_ylim(-6, 6)
     # ax.set_xticks([], minor=False)
     # ax.set_yticks([], minor=False)
     ax.axes.set_aspect('equal')
@@ -105,17 +119,21 @@ for iteration in iterations:
         #                            df['id'].isin(end_escape.index.tolist())].sort_values("z")
         planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())], df[
             df['id'].isin(end_disk.index.tolist())], df[df['id'].isin(end_escape.index.tolist())]
+        # get the center of mass from mars
+        com_x, com_y, com_z = center_of_mass(
+            planet['x'].values, planet['y'].values, planet['z'].values, planet['mass'].values
+        )
         for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
             axs[current_index].scatter(
-                i['x'] / square_scale, i['y'] / square_scale, s=0.8, marker=".", alpha=1, label=label
+                (i['x'] - com_x) / square_scale, (i['y'] - com_y) / square_scale, s=0.8, marker=".", alpha=1, label=label
             )
         if current_index % len(runs) == 0:
             # axs[current_index].text(square_scale - (0.75 * square_scale), -square_scale + (0.3 * square_scale),
             #                         "{} hrs".format(formatted_time), fontsize=20)
-            x1, x2, y1, y2 = ax.axis()
+            x1, x2, y1, y2 = axs[current_index].axis()
             x_loc = x1 + (0.02 * (x2 - x1))
             y_loc = y2 + (0.02 * (y2 - y1))
-            ax.text(x_loc, y_loc, "{} hrs".format(formatted_time), fontsize=20)
+            axs[current_index].text(x_loc, y_loc, "{} hrs".format(formatted_time), fontsize=20)
         current_index += 1
 
 legend = axs[0].legend(loc='upper right', fontsize=20)
