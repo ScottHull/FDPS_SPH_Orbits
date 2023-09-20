@@ -85,7 +85,7 @@ def get_end_states():
         endstates[t] = particles
     return endstates
 
-# endstates = get_end_states()
+endstates = get_end_states()
 # fig, axs = plt.subplots(len(iterations), len(sims), figsize=figsize, sharex='all', sharey='all')
 # fig, axs = plt.subplots(len(sims), len(iterations), figsize=figsize, sharex='all', sharey='all', gridspec_kw={"hspace": 0.0, "wspace": 0.0})
 fig, axs = plt.subplots(len(iterations), len(runs), figsize=(15, 15 * 5/3), sharex='all', sharey='all')
@@ -112,26 +112,23 @@ for iteration in iterations:
         df = c.combine_to_memory()
         formatted_time = c.sim_time
         df.columns = file_headers
-        # endstate = endstates[t]
+        endstate = endstates[t]
         # df = df[df['z'] <= 0]  # slice simulation
-        # end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
-        #     endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
-        # # planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("z"), df[
-        # #     df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
-        # #                            df['id'].isin(end_escape.index.tolist())].sort_values("z")
-        # planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())], df[
-        #     df['id'].isin(end_disk.index.tolist())], df[df['id'].isin(end_escape.index.tolist())]
-        # # get the center of mass from mars
-        # com_x, com_y, com_z = center_of_mass(
-        #     planet['x'].values, planet['y'].values, planet['z'].values, planet['mass'].values
-        # )
-        # for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
-        #     axs[current_index].scatter(
-        #         (i['x'] - com_x) / square_scale, (i['y'] - com_y) / square_scale, s=0.8, marker=".", alpha=1, label=label
-        #     )
-        axs[current_index].scatter(
-            (df['x']) / square_scale, (df['y']) / square_scale, s=0.8, marker=".", alpha=1
+        end_planet, end_disk, end_escape = endstate[endstate['label'] == "PLANET"], endstate[
+            endstate['label'] == "DISK"], endstate[endstate['label'] == "ESCAPE"]
+        # planet, disk, escape = df[df['id'].isin(end_planet.index.tolist())].sort_values("z"), df[
+        #     df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
+        #                            df['id'].isin(end_escape.index.tolist())].sort_values("z")
+        planet, disk, escape = df[df['id'].isin(end_planet['id'].tolist())], df[
+            df['id'].isin(end_disk['id'].tolist())], df[df['id'].isin(end_escape['id'].tolist())]
+        # get the center of mass from mars
+        com_x, com_y, com_z = center_of_mass(
+            planet['x'].values, planet['y'].values, planet['z'].values, planet['mass'].values
         )
+        for i, label in zip([planet, disk, escape], ["Planet", "Disk", "Escape"]):
+            axs[current_index].scatter(
+                (i['x'] - com_x) / square_scale, (i['y'] - com_y) / square_scale, s=0.8, marker=".", alpha=1, label=label
+            )
         print(f"Plotting {t} at iteration {iteration} ({s}) at current index {current_index}... ({current_index % len(runs)})")
         if current_index % len(runs) == 0:
             # axs[current_index].text(square_scale - (0.75 * square_scale), -square_scale + (0.3 * square_scale),
