@@ -28,7 +28,7 @@ runs = [
     [base_path + f"500_mars_b073_1v_esc/500_mars_b073_1v_esc", r"Mars ($b=0.73$, $2 v_{esc}$)", 600],
     [base_path + f"500_mars_b050_1v_esc/500_mars_b050_1v_esc", r"Mars ($b=0.50$, $1 v_{esc}$)", 600],
 ]
-iterations = [0, 20, 80, 120, 250]
+iterations = [0, 25, 80, 150, 300]
 end_iteration = iterations[-1]
 square_scale = 10 ** 6
 mass_mars = 6.39e23  # kg
