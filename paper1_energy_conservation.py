@@ -104,7 +104,7 @@ for sim, title in zip(sims, titles):
         to_increment = increment_high
     if "low" in sim:
         to_increment = increment_low
-    if "N" in sim:
+    if "old" in sim:
         linestyle = "--"
     if "high" in sim or "low" in sim:
         linestyle = "dotted"

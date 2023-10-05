@@ -18,6 +18,8 @@ headers = [  # tag: 1=water ; 2=ice ; 3=serpentine ; 4=dunite ; 5=iron
 square_scale = 100
 fname_template = "marsimp{}.csv"
 
+mars_radius = 3390  # km
+
 def center_of_mass(x: np.array, y: np.array, z: np.array, mass: np.array):
     """
     Calculate the center of mass of a system of particles
@@ -45,6 +47,19 @@ def get_impact_angle(com_target, com_impactor):
     impact_angle = atan((com_impactor[1] - com_target[1]) / (com_impactor[0] - com_target[0]))
     # return impact parameter b = sin(impact_angle)
     return np.sin(impact_angle)
+
+def get_target_impactor_separation(com_target: tuple, com_impactor: tuple):
+    """
+    Calculate the distance between the target and impactor COMs and the x and y components
+    :param com_target:
+    :param com_impactor:
+    :return:
+    """
+    # calculate the distance between the target and impactor COMs
+    x_sep = com_impactor[0] - com_target[0]
+    y_sep = com_impactor[1] - com_target[1]
+    total_distance = np.sqrt(x_sep ** 2 + y_sep ** 2)
+    return x_sep, y_sep, total_distance
 
 # the files in the base path have a number in the string
 # we need to order the file names by this number
@@ -94,6 +109,9 @@ for index, i in enumerate(np.arange(1, 5, 1)):
     df['vx'] *= (10 ** 3) * (1 / utime)
     df['vy'] *= (10 ** 3) * (1 / utime)
     df['vz'] *= (10 ** 3) * (1 / utime)
+    df['x'] *= (10 ** 3)
+    df['y'] *= (10 ** 3)
+    df['z'] *= (10 ** 3)
     df['velocity'] = np.sqrt(df['vx'] ** 2 + df['vy'] ** 2 + df['vz'] ** 2)
     df['radius'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2 + df['z'] ** 2)
     if index == 0:
@@ -103,6 +121,23 @@ for index, i in enumerate(np.arange(1, 5, 1)):
         impactor_particles = impactor['id']
     target = df[df['id'].isin(target_particles)]
     impactor = df[df['id'].isin(impactor_particles)]
+    com_target = center_of_mass(
+        target['x'].values, target['y'].values, target['z'].values, target['mass'].values
+    )
+    com_impactor = center_of_mass(
+        impactor['x'].values, impactor['y'].values, impactor['z'].values, impactor['mass'].values
+    )
+    df['x'] -= com_target[0]
+    df['y'] -= com_target[1]
+    df['z'] -= com_target[2]
+    target = df[df['id'].isin(target_particles)]
+    impactor = df[df['id'].isin(impactor_particles)]
+    com_target = center_of_mass(
+        target['x'].values, target['y'].values, target['z'].values, target['mass'].values
+    )
+    com_impactor = center_of_mass(
+        impactor['x'].values, impactor['y'].values, impactor['z'].values, impactor['mass'].values
+    )
     num_target_particles = len(target)
     num_impactor_particles = len(impactor)
     total_particles = num_target_particles + num_impactor_particles
@@ -114,12 +149,12 @@ for index, i in enumerate(np.arange(1, 5, 1)):
     com_x, com_y, com_z = center_of_mass(
         df['x'].values, df['y'].values, df['z'].values, df['mass'].values
     )
-    com_target = center_of_mass(
-        target['x'].values, target['y'].values, target['z'].values, target['mass'].values
-    )
-    com_impactor = center_of_mass(
-        impactor['x'].values, impactor['y'].values, impactor['z'].values, impactor['mass'].values
-    )
+    if index == 0:
+        # calculate the inital distance between the target and impactor COMs
+        x_sep, y_sep, total_distance = get_target_impactor_separation(com_target, com_impactor)
+        print(f"Initial distance between target and impactor: {total_distance / mars_radius:.2f} M_Mars (x component: {x_sep / mars_radius:.2f} M_Mars, y component: {y_sep / mars_radius:.2f} M_Mars)")
+        print("Initial target position ", com_target)
+        print("Initial impactor position", com_impactor)
     # print(f"Center of mass: {com_x}, {com_y}, {com_z}")
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
@@ -148,6 +183,10 @@ for index, i in enumerate(np.arange(1, 5, 1)):
     plt.tight_layout()
     # plt.savefig(f"{base_path}{index}.png", dpi=200)
     # plt.show()
+
+    print("Target Velocity: {} m/s".format(target['velocity'].mean()) * 1000)
+    print("Impactor Velocity: {} m/s".format(impactor['velocity'].mean()) * 1000)
+    print("Impact parameter: {:.3f}".format(sin(get_impact_angle(com_target, com_impactor))))
 
     iterations += 1
 
