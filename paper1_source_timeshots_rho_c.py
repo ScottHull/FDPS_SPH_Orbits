@@ -141,7 +141,8 @@ for iteration in iterations:
         disk_or_planet_at_rho_cutoff = df[df['id'].isin(disk.index.tolist() + planet.index.tolist())]
         disk_or_planet_at_rho_cutoff = disk_or_planet_at_rho_cutoff[disk_or_planet_at_rho_cutoff['density'] == cutoff_densities[cd]]
         disk_not_at_rho_cutoff = disk[disk['density'] != cutoff_densities[cd]]
-        fraction_at_rho_c = round(len(disk_at_rho_cutoff) / len(disk) * 100, 2)
+        # fraction_at_rho_c = round(len(disk_at_rho_cutoff) / len(disk) * 100, 2)
+        fraction_at_rho_c = round(len(disk_or_planet_at_rho_cutoff) / len(disk.index.tolist() + planet.index.tolist()) * 100, 2)
         # for i, label in zip([planet, disk, escape, disk_at_rho_cutoff], ["Planet", "Disk", "Escape", r"Disk At $\rho_c$"]):
         for i, label in zip([planet, disk, escape, disk_or_planet_at_rho_cutoff],
                             ["Planet", "Disk", "Escape", r"Planet/Disk At $\rho_c$"]):
