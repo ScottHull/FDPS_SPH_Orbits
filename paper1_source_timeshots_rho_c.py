@@ -138,9 +138,13 @@ for iteration in iterations:
             df['id'].isin(end_disk.index.tolist())].sort_values("z"), df[
                                    df['id'].isin(end_escape.index.tolist())].sort_values("z")
         disk_at_rho_cutoff = disk[disk['density'] == cutoff_densities[cd]]
+        disk_or_planet_at_rho_cutoff = df[df['id'].isin(disk.index.tolist() + planet.index.tolist())]
+        disk_or_planet_at_rho_cutoff = disk_or_planet_at_rho_cutoff[disk_or_planet_at_rho_cutoff['density'] == cutoff_densities[cd]]
         disk_not_at_rho_cutoff = disk[disk['density'] != cutoff_densities[cd]]
         fraction_at_rho_c = round(len(disk_at_rho_cutoff) / len(disk) * 100, 2)
-        for i, label in zip([planet, disk, escape, disk_at_rho_cutoff], ["Planet", "Disk", "Escape", r"Disk At $\rho_c$"]):
+        # for i, label in zip([planet, disk, escape, disk_at_rho_cutoff], ["Planet", "Disk", "Escape", r"Disk At $\rho_c$"]):
+        for i, label in zip([planet, disk, escape, disk_or_planet_at_rho_cutoff],
+                            ["Planet", "Disk", "Escape", r"Planet/Disk At $\rho_c$"]):
             axs[current_index].scatter(
                 i['x'] / 10 ** 7, i['y'] / 10 ** 7, s=0.8, marker=".", alpha=1, label=label
             )
