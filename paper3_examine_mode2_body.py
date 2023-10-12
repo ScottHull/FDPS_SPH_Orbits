@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 
-path = "/home/theia/scotthull/Paper2_SPH/tar-imp/target_mars_n_sph"
+path = "/home/theia/scotthull/Paper3_SPH/tar-imp/target_mars_n_sph"
 iteration = 71
 num_processes = 600
 
