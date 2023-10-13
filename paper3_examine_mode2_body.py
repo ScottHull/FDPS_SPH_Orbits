@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
 import numpy as np
 import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 
 path = "/home/theia/scotthull/Paper3_SPH/tar-imp/target_mars_n_sph"
-iteration = 71
+iteration = 82
 num_processes = 600
 
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
