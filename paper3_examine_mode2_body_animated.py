@@ -27,19 +27,19 @@ for iteration in np.arange(start_iteration, stop_iteration + increment, incremen
     df = cf.combine_df()
     df.columns = headers
     formatted_time = round(cf.sim_time * 0.000277778, 2)  # seconds -> hours
-    df['radius'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2 + df['z'] ** 2)
+    # df['radius'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2 + df['z'] ** 2)
 
     # first, make a 3D plot of the body in using xyz coordinates
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(df['x'], df['y'], df['z'], marker=".", s=5)
+    ax.scatter(df['x'], df['y'], df['z'], marker=".", s=5, alpha=1)
     ax.set_xlabel("x (m)")
     ax.set_ylabel("y (m)")
     ax.set_zlabel("z (m)")
     ax.set_xlim(-square_scale, square_scale)
     ax.set_ylim(-square_scale, square_scale)
     ax.set_zlim(-square_scale, square_scale)
-    ax.set_title("Mars (t={})".format(formatted_time))
+    ax.set_title("Mars (t={} hrs.)".format(formatted_time))
     plt.tight_layout()
     plt.savefig(f"{to_folder}/{iteration}", dpi=150)
 
