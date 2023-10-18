@@ -17,7 +17,7 @@ square_scale = 6 * 1e6
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
 
-if not os.path.exist(to_folder):
+if not os.path.exists(to_folder):
     os.mkdir(to_folder)
 
 for iteration in np.arange(start_iteration, stop_iteration + increment, increment):
