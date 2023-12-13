@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 from src.combine import CombineFile
 
-path = "/home/theia/scotthull/Paper3_SPH/tar-imp/target_mars_n_sph"
-iteration = 82
-num_processes = 600
-
+# path = "/home/theia/scotthull/Paper3_SPH/tar-imp/target_mars_n_sph"
+# iteration = 82
+# num_processes = 600
+#
 headers = ["id", "tag", "mass", "x", "y", "z", "vx", "vy", "vz", "density", "internal energy", "pressure",
                    "potential energy", "entropy", "temperature"]
-
-cf = CombineFile(
-    num_processes=num_processes, time=iteration, output_path=path, to_fname=""
-)
-df = cf.combine_df()
+#
+# cf = CombineFile(
+#     num_processes=num_processes, time=iteration, output_path=path, to_fname=""
+# )
+# df = cf.combine_df()
+path = "/Users/scotthull/Desktop/imp_diff.dat"
+iteration = 400
+df = pd.read_csv(path, sep='\t', skiprows=2, header=None)
 df.columns = headers
 df['radius'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2 + df['z'] ** 2)
 

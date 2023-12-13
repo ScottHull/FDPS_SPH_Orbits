@@ -92,7 +92,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     ) * 100
 
     axs.scatter(
-        final_disk_particles['velocity'] / 1000, df2['vmf_wo_circ'] * 100, s=5, label=verbose_run_name
+        df2['velocity'] / 1000, df2['vmf_wo_circ'] * 100, s=5, label=verbose_run_name
     )
 
 axs.set_xlabel("Velocity (km/s)")
