@@ -100,7 +100,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     # on the bottom row, plot a CDF of the VMFs
     sorted_vmf = df2['vmf_wo_circ'].sort_values()
     cdf = sorted_vmf.rank(method='average', pct=True)
-    axs[index + 2].plot(sorted_vmf, cdf, linewidth=2.0)
+    axs[index + 2].plot(sorted_vmf * 100, cdf, linewidth=2.0)
 
 for ax in axs:
     ax.grid()
