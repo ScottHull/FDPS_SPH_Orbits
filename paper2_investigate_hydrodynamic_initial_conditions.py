@@ -30,7 +30,7 @@ square_scale = 2e7 / 1000
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
-fig, axs = plt.subplots(2, 1, figsize=(10, 10))
+fig, axs = plt.subplots(2, 2, figsize=(10, 10))
 
 for index, (run, verbose_run_name, iteration) in enumerate(runs):
     # if len(run) == 0, then skip this part of the loop
@@ -91,17 +91,25 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
         df2, phase_path, restrict_df=False
     ) * 100
 
-    print(run_name, formatted_time, vmf_final_disk)
-
     axs[index].scatter(
         df2['velocity'] / 1000, df2['vmf_wo_circ'] * 100, s=5, label=verbose_run_name
     )
+    axs[index].set_title(f"Disk-bound particles at jet initial condition ({run_name})")
+
+    # on the bottom row, plot a CDF of the VMFs
+    sorted_vmf = df2['vmf_wo_circ'].sort_values()
+    cdf = sorted_vmf.rank(method='average', pct=True)
+    axs[index + 2].plot(sorted_vmf, cdf, linewidth=2.0)
+
 for ax in axs:
+    ax.grid()
+    ax.legend(loc='upper right')
+for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)")
     ax.set_ylabel("Vapor Mass Fraction (%)")
-    ax.grid()
-    ax.set_title("Disk-bound particles at jet initial condition")
-    ax.legend(loc='upper right')
+for ax in axs[2:]:
+    ax.set_xlabel("Vapor Mass Fraction (%)")
+    ax.set_ylabel("CDF")
 # make tight layout with no hspace
 plt.tight_layout()
 plt.savefig("paper2_initial_condition_velocity_vs_vmf.png", format='png', dpi=200)
