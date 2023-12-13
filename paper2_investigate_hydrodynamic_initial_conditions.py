@@ -91,7 +91,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
         df2, phase_path, restrict_df=False
     ) * 100
 
-    print(run_name, vmf_final_disk)
+    print(run_name, formatted_time, vmf_final_disk)
 
     axs[index].scatter(
         df2['velocity'] / 1000, df2['vmf_wo_circ'] * 100, s=5, label=verbose_run_name
