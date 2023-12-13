@@ -244,28 +244,28 @@ def calc_vapor_mass_fraction_without_circularization_from_formatted(df, phase_pa
     supercritical = max(phase_df['temperature'])
     vmf = 0.0
     num_particles = 0
-    df['vmf_wo_circ'] = []
+    df['vmf_wo_circ'] = [0 * len(df)]
     # particles = {'liq': [], 'vap': [], 'mix': [], 'supercritical': []}
-    for s, t in zip(disk_df['entropy'], disk_df['temperature']):
+    for index, s, t in zip(disk_df.index, disk_df['entropy'], disk_df['temperature']):
         nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=t,
                                                                     array=list(phase_df['temperature']))
         entropy_liq = phase_df['entropy_sol_liq'][nearest_temperature_index]
         entropy_vap = phase_df['entropy_vap'][nearest_temperature_index]
         if t >= supercritical:
             vmf += 1.0
-            df['vmf_wo_circ'].append(1.0)
+            df['vmf_wo_circ'].loc[index] = 1.0
             # particles['supercritical'].append((s, t, entropy_liq, entropy_vap))
         elif s < entropy_liq:
             vmf += 0.0
-            df['vmf_wo_circ'].append(0.0)
+            df['vmf_wo_circ'].loc[index] = 0.0
             # particles['liq'].append((s, t, entropy_liq, entropy_vap))
         elif entropy_liq <= s <= entropy_vap:
             vmf += (s - entropy_liq) / (entropy_vap - entropy_liq)
-            df['vmf_wo_circ'].append((s - entropy_liq) / (entropy_vap - entropy_liq))
+            df['vmf_wo_circ'].loc[index] = (s - entropy_liq) / (entropy_vap - entropy_liq)
             # particles['mix'].append((s, t, entropy_liq, entropy_vap))
         elif s > entropy_vap:
             vmf += 1.0
-            df['vmf_wo_circ'].append(1.0)
+            df['vmf_wo_circ'].loc[index] = 1.0
             # particles['vap'].append((s, t, entropy_liq, entropy_vap))
         num_particles += 1
     try:
