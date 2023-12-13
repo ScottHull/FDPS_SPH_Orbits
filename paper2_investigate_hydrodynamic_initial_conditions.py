@@ -91,7 +91,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
 
     final_disk_particles['velocity'] = np.sqrt(final_disk_particles['vx'] ** 2 + final_disk_particles['vy'] ** 2 + final_disk_particles['vz'] ** 2)
 
-    axs[index].scatter(
+    axs.scatter(
         final_disk_particles['velocity'] / 1000, final_disk_particles['vmf_wo_circ'] * 100, s=5, label=verbose_run_name
     )
 
