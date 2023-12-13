@@ -31,6 +31,7 @@ new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+axs = axs.flatten()
 
 for index, (run, verbose_run_name, iteration) in enumerate(runs):
     # if len(run) == 0, then skip this part of the loop
