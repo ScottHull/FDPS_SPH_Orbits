@@ -97,9 +97,9 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
 for ax in axs:
     ax.set_xlabel("Velocity (km/s)")
     ax.set_ylabel("Vapor Mass Fraction (%)")
-    axs.grid()
-    axs.set_title("Disk-bound particles at jet initial condition")
-    axs.legend(loc='upper right')
+    ax.grid()
+    ax.set_title("Disk-bound particles at jet initial condition")
+    ax.legend(loc='upper right')
 # make tight layout with no hspace
 plt.tight_layout()
 plt.savefig("paper2_initial_condition_velocity_vs_vmf.png", format='png', dpi=200)
