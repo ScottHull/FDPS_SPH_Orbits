@@ -95,7 +95,9 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index].scatter(
         df2['velocity'] / 1000, df2['vmf_wo_circ'] * 100, s=5, label=verbose_run_name
     )
-    axs[index].set_title(f"Disk-bound particles at jet initial condition ({run_name})")
+    axs[index].axvline(mean(df2['velocity'] / 1000), color='black', linestyle='--', label=f"Mean velocity: {mean(df2['velocity'] / 1000):.2f} km/s")
+    axs[index].axhline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--', label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
+    axs[index].set_title(f"Disk-bound particles at initial condition ({run_name})")
 
     # on the bottom row, plot a CDF of the VMFs
     sorted_vmf = df2['vmf_wo_circ'].sort_values()
