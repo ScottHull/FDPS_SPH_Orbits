@@ -244,7 +244,8 @@ def calc_vapor_mass_fraction_without_circularization_from_formatted(df, phase_pa
     supercritical = max(phase_df['temperature'])
     vmf = 0.0
     num_particles = 0
-    df['vmf_wo_circ'] = [0 * len(df)]
+    # create a vmf_wo_circ column in the df
+    df['vmf_wo_circ'] = 0.0
     # particles = {'liq': [], 'vap': [], 'mix': [], 'supercritical': []}
     for index, s, t in zip(disk_df.index, disk_df['entropy'], disk_df['temperature']):
         nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=t,
