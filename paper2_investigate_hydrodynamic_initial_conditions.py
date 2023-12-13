@@ -106,7 +106,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
 
 for ax in axs:
     ax.grid()
-    ax.legend(loc='upper right')
+    ax.legend()
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)")
     ax.set_ylabel("Vapor Mass Fraction (%)")
