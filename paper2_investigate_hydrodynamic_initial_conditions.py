@@ -16,7 +16,7 @@ from src.vapor import calc_vapor_mass_fraction_without_circularization_from_form
 # plt.style.use('seaborn-colorblind')
 
 runs = [
-    ('/home/theia/scotthull/Paper1_SPH/gi/500_b073_new', 'Canonical', 17),
+    ('/home/theia/scotthull/Paper1_SPH/gi/500_b073_new', 'Canonical', 25),
     ('/home/theia/scotthull/Paper2_SPH/gi/500_half_earths', 'Half-Earths', 17),
     # ('', 'Mars')
 ]
@@ -114,7 +114,6 @@ for ax in axs[2:]:
     ax.set_xlabel("Vapor Mass Fraction (%)")
     ax.set_ylabel("CDF")
     # ax.set_xscale('log')
-    ax.set_xlim(10 ** -1, 10)
 # make tight layout with no hspace
 plt.tight_layout()
 plt.savefig("paper2_initial_condition_velocity_vs_vmf.png", format='png', dpi=200)
