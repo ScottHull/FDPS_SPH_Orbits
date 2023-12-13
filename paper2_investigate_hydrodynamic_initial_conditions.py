@@ -84,15 +84,15 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
         'potential_energy', 'entropy', 'temperature'
     ]
     combined_file.columns = final_disk_particles.columns
+    final_disk_particles['velocity'] = np.sqrt(final_disk_particles['vx'] ** 2 + final_disk_particles['vy'] ** 2 + final_disk_particles['vz'] ** 2)
+    df2 = final_disk_particles[final_disk_particles['tag'] % 2 == 0]
 
     vmf_final_disk = calc_vapor_mass_fraction_without_circularization_from_formatted(
-        final_disk_particles[final_disk_particles['tag'] % 2 == 0], phase_path, restrict_df=False
+        df2, phase_path, restrict_df=False
     ) * 100
 
-    final_disk_particles['velocity'] = np.sqrt(final_disk_particles['vx'] ** 2 + final_disk_particles['vy'] ** 2 + final_disk_particles['vz'] ** 2)
-
     axs.scatter(
-        final_disk_particles['velocity'] / 1000, final_disk_particles['vmf_wo_circ'] * 100, s=5, label=verbose_run_name
+        final_disk_particles['velocity'] / 1000, df2['vmf_wo_circ'] * 100, s=5, label=verbose_run_name
     )
 
 axs.set_xlabel("Velocity (km/s)")
