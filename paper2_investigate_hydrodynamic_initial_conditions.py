@@ -30,7 +30,7 @@ square_scale = 2e7 / 1000
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
-fig, axs = plt.subplots(1, 2, figsize=(10, 10))
+fig, axs = plt.subplots(2, 1, figsize=(10, 10))
 
 for index, (run, verbose_run_name, iteration) in enumerate(runs):
     # if len(run) == 0, then skip this part of the loop
@@ -90,6 +90,8 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     vmf_final_disk = calc_vapor_mass_fraction_without_circularization_from_formatted(
         df2, phase_path, restrict_df=False
     ) * 100
+
+    print(run_name, vmf_final_disk)
 
     axs[index].scatter(
         df2['velocity'] / 1000, df2['vmf_wo_circ'] * 100, s=5, label=verbose_run_name
