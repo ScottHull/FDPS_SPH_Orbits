@@ -103,6 +103,8 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     sorted_vmf = df2['vmf_wo_circ'].sort_values()
     cdf = sorted_vmf.rank(method='average', pct=True)
     axs[index + 2].plot(sorted_vmf * 100, cdf, linewidth=2.0)
+    axs[index].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--',
+                       label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
 
 for ax in axs:
     ax.grid()
