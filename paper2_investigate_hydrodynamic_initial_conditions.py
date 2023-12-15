@@ -117,15 +117,17 @@ for ax in axs:
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)")
     ax.set_ylabel("Vapor Mass Fraction (%)")
-    ax.set_yscale('log')
+    # ax.set_yscale('log')
 for ax in axs[2:-2]:
     ax.set_xlabel("Vapor Mass Fraction (%)")
     ax.set_ylabel("CDF")
-    ax.set_xscale('log')
+    # ax.set_xscale('log')
+    ax.set_xlim(0, 2)
 for ax in axs[-2:]:
     ax.set_xlabel("Vapor Mass Fraction (%)")
     ax.set_ylabel("PDF")
-    ax.set_xscale('log')
+    ax.set_xlim(0, 2)
+    # ax.set_xscale('log')
 # make tight layout with no hspace
 plt.tight_layout()
 plt.savefig("paper2_initial_condition_velocity_vs_vmf.png", format='png', dpi=200)
