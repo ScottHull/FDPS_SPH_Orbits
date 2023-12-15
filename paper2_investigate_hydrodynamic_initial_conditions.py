@@ -30,7 +30,7 @@ square_scale = 2e7 / 1000
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
-fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+fig, axs = plt.subplots(3, 2, figsize=(10, 10))
 axs = axs.flatten()
 
 for index, (run, verbose_run_name, iteration) in enumerate(runs):
@@ -106,15 +106,24 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 2].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--',
                        label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
 
+    # plot a PDF of the VMFs
+    axs[index + 4].hist(df2['vmf_wo_circ'] * 100, bins=100, density=True)
+    axs[index + 4].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--',
+                       label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
+
 for ax in axs:
     ax.grid()
     ax.legend()
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)")
     ax.set_ylabel("Vapor Mass Fraction (%)")
-for ax in axs[2:]:
+for ax in axs[2:-2]:
     ax.set_xlabel("Vapor Mass Fraction (%)")
     ax.set_ylabel("CDF")
+    ax.set_xscale('log')
+for ax in axs[-2:]:
+    ax.set_xlabel("Vapor Mass Fraction (%)")
+    ax.set_ylabel("PDF")
     ax.set_xscale('log')
 # make tight layout with no hspace
 plt.tight_layout()
