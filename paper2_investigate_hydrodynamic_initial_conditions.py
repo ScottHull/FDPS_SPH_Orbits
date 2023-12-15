@@ -117,6 +117,7 @@ for ax in axs:
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)")
     ax.set_ylabel("Vapor Mass Fraction (%)")
+    ax.set_yscale('log')
 for ax in axs[2:-2]:
     ax.set_xlabel("Vapor Mass Fraction (%)")
     ax.set_ylabel("CDF")
