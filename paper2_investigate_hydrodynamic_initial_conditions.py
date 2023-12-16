@@ -111,7 +111,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 4].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--',
                        label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
     axs[index + 4].text(
-        0.05, 0.95, f"vmf@0%: {len(df2[df2['vmf_wo_circ'] == 0])}\n"
+        0.05, 0.90, f"vmf@0%: {len(df2[df2['vmf_wo_circ'] == 0])}\n"
                     f"0<vmf<1%: {len(df2[(df2['vmf_wo_circ'] > 0) & (df2['vmf_wo_circ'] < .01)])}"
                     f"1<vmf<99.99%: {len(df2[(df2['vmf_wo_circ'] > .01) & (df2['vmf_wo_circ'] < 0.9999)])}\n"
                     f"vmf@100%: {len(df2[df2['vmf_wo_circ'] > 0.9999])}",
