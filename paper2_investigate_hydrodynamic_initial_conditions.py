@@ -117,7 +117,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
                     f"vmf@100%: {len(df2[df2['vmf_wo_circ'] > 0.9999])}",
         transform=axs[index + 4].transAxes, verticalalignment='top'
     )
-    axs[index + 5].scatter(
+    axs[index + 6].scatter(
         df2['entropy'], df2['temperature'], s=5, marker="."
     )
 
