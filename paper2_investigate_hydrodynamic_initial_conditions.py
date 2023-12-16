@@ -107,7 +107,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
                        label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
 
     # plot a PDF of the VMFs
-    axs[index + 4].hist(sorted_vmf * 100, bins=100, density=True)
+    axs[index + 4].hist(sorted_vmf * 100, bins=1000, density=True)
     axs[index + 4].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--',
                        label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
     axs[index + 4].text(
@@ -129,11 +129,9 @@ for ax in axs[2:-2]:
     ax.set_xlabel("Vapor Mass Fraction (%)")
     ax.set_ylabel("CDF")
     # ax.set_xscale('log')
-    ax.set_xlim(0, 2)
 for ax in axs[-2:]:
     ax.set_xlabel("Vapor Mass Fraction (%)")
     ax.set_ylabel("PDF")
-    ax.set_xlim(0, 2)
     # ax.set_xscale('log')
 # make tight layout with no hspace
 plt.tight_layout()
