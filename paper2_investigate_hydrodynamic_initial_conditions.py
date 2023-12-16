@@ -30,7 +30,7 @@ square_scale = 2e7 / 1000
 new_phase_path = "src/phase_data/forstSTS__vapour_curve.txt"
 old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
-fig, axs = plt.subplots(3, 2, figsize=(10, 10))
+fig, axs = plt.subplots(4, 2, figsize=(10, 20))
 axs = axs.flatten()
 
 for index, (run, verbose_run_name, iteration) in enumerate(runs):
@@ -117,6 +117,9 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
                     f"vmf@100%: {len(df2[df2['vmf_wo_circ'] > 0.9999])}",
         transform=axs[index + 4].transAxes, verticalalignment='top'
     )
+    axs[index + 5].scatter(
+        df2['entropy'], df2['temperature'], s=5, marker="."
+    )
 
 for ax in axs:
     ax.grid()
@@ -125,13 +128,17 @@ for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)")
     ax.set_ylabel("Vapor Mass Fraction (%)")
     # ax.set_yscale('log')
-for ax in axs[2:-2]:
+for ax in axs[2:4]:
     ax.set_xlabel("Vapor Mass Fraction (%)")
     ax.set_ylabel("CDF")
     # ax.set_xscale('log')
-for ax in axs[-2:]:
+for ax in axs[4:6]:
     ax.set_xlabel("Vapor Mass Fraction (%)")
     ax.set_ylabel("PDF")
+    # ax.set_xscale('log')
+for ax in axs[6:]:
+    ax.set_xlabel("Entropy (J/kg/K)")
+    ax.set_ylabel("Temperature (K)")
     # ax.set_xscale('log')
 # make tight layout with no hspace
 plt.tight_layout()
