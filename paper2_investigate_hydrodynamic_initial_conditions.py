@@ -110,6 +110,13 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 4].hist(sorted_vmf * 100, bins=100, density=True)
     axs[index + 4].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--',
                        label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
+    axs[index + 4].text(
+        0.05, 0.95, f"vmf@0%: {len(df2[df2['vmf_wo_circ'] == 0])}\n"
+                    f"0<vmf<1%: {len(df2[df2['vmf_wo_circ'] > 0 & df2['vmf_wo_circ'] < 1])}"
+                    f"1<vmf<99.99%: {len(df2[df2['vmf_wo_circ'] > 1 & df2['vmf_wo_circ'] < 99.99])}\n"
+                    f"vmf@100%: {len(df2[df2['vmf_wo_circ'] > 99.99])}",
+        transform=axs[index + 4].transAxes, verticalalignment='top'
+    )
 
 for ax in axs:
     ax.grid()
