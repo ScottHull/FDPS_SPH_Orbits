@@ -170,6 +170,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     time, iterations, mean_disk_vel, mean_disk_entropy, mean_disk_temperature, final_disk_vmf, all_silicate_vmf = [], [], [], [], [], [], []
     phase_path = new_phase_path if "new" in run else old_phase_path
 
+    axs[index].set_title(f"Disk-bound particles at initial condition ({run_name})")
 
     path = base_path + f"{run}/{run}"
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
