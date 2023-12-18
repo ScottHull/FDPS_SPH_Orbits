@@ -218,16 +218,19 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
 
     # draw a pdf of entropy
     axs[index + 2].hist(df2['entropy'], bins=100, density=True)
+    axs[index + 2].axvline(mean(df2['entropy']), color='black', linestyle='--', label=f"Mean entropy: {mean(df2['entropy']):.2f} J/kg/K")
 
     # draw a pdf of temperature
     axs[index + 4].hist(df2['temperature'], bins=100, density=True)
+    axs[index + 4].axvline(mean(df2['temperature']), color='black', linestyle='--', label=f"Mean temperature: {mean(df2['temperature']):.2f} K")
 
     # draw a pdf of the vmf
     axs[index + 6].hist(df2['vmf_wo_circ'] * 100, bins=100, density=True)
+    axs[index + 6].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--', label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
 
 for ax in axs:
     ax.grid()
-    ax.legend()
+    # ax.legend()
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)")
     ax.set_ylabel("Probability Density")
