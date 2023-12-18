@@ -229,7 +229,13 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 6].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--', label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
 
     # get the bins from the subplot
-    bins = axs[index].get_xticks()
+    # Step 2: Get the 3 largest bins
+    hist_values, bin_edges = np.histogram(df2['vmf_wo_circ'], bins=100)
+    largest_bins_indices = (-hist_values).argsort()[:5]
+    largest_bins = bin_edges[largest_bins_indices + 1]  # Adding 1 to get the upper edge of the bin
+
+    # Display the x values of the 3 largest bins
+    print("X values of the 3 largest bins:", largest_bins)
 
 for ax in axs:
     ax.grid()
