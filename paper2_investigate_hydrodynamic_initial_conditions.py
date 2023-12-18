@@ -236,6 +236,8 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
 
     # Display the x values of the 3 largest bins
     print("X values of the 3 largest bins:", largest_bins)
+    # print the Y values of these bins
+    print("Y values of the 3 largest bins:", hist_values[largest_bins_indices])
 
 for ax in axs:
     ax.grid()
