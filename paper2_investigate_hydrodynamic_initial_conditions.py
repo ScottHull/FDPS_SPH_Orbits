@@ -149,7 +149,7 @@ plt.savefig("paper2_initial_condition_velocity_vs_vmf.png", format='png', dpi=20
 
 
 
-fig, axs = plt.subplots(3, 2, figsize=(10, 15))
+fig, axs = plt.subplots(4, 2, figsize=(10, 20))
 axs = axs.flatten()
 
 for index, (run, verbose_run_name, iteration) in enumerate(runs):
@@ -214,6 +214,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
 
     # draw a pdf of velocity
     axs[index].hist(df2['velocity'] / 1000, bins=100, density=True)
+    axs[index].axvline(mean(df2['velocity'] / 1000), color='black', linestyle='--', label=f"Mean velocity: {mean(df2['velocity'] / 1000):.2f} km/s")
 
     # draw a pdf of entropy
     axs[index + 2].hist(df2['entropy'], bins=100, density=True)
@@ -221,18 +222,24 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     # draw a pdf of temperature
     axs[index + 4].hist(df2['temperature'], bins=100, density=True)
 
+    # draw a pdf of the vmf
+    axs[index + 6].hist(df2['vmf_wo_circ'] * 100, bins=100, density=True)
+
 for ax in axs:
     ax.grid()
     ax.legend()
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)")
-    ax.set_ylabel("PDF")
+    ax.set_ylabel("Probability Density")
 for ax in axs[2:4]:
     ax.set_xlabel("Entropy (J/kg/K)")
-    ax.set_ylabel("PDF")
+    ax.set_ylabel("Probability Density")
 for ax in axs[4:6]:
     ax.set_xlabel("Temperature (K)")
-    ax.set_ylabel("PDF")
+    ax.set_ylabel("Probability Density")
+for ax in axs[6:]:
+    ax.set_xlabel("VMF (%)")
+    ax.set_ylabel("Probability Density")
 
 # make tight layout with no hspace
 plt.tight_layout()
