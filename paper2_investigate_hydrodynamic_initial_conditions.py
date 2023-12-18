@@ -230,19 +230,21 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
 
 for ax in axs:
     ax.grid()
+    # increase axis font size
+    ax.tick_params(axis='both', which='major', labelsize=16)
     # ax.legend()
 for ax in axs[:2]:
-    ax.set_xlabel("Velocity (km/s)")
-    ax.set_ylabel("Probability Density")
+    ax.set_xlabel("Velocity (km/s)", fontsize=16)
+    ax.set_ylabel("Probability Density", fontsize=16)
 for ax in axs[2:4]:
-    ax.set_xlabel("Entropy (J/kg/K)")
-    ax.set_ylabel("Probability Density")
+    ax.set_xlabel("Entropy (J/kg/K)", fontsize=16)
+    ax.set_ylabel("Probability Density", fontsize=16)
 for ax in axs[4:6]:
-    ax.set_xlabel("Temperature (K)")
-    ax.set_ylabel("Probability Density")
+    ax.set_xlabel("Temperature (K)", fontsize=16)
+    ax.set_ylabel("Probability Density", fontsize=16)
 for ax in axs[6:]:
-    ax.set_xlabel("VMF (%)")
-    ax.set_ylabel("Probability Density")
+    ax.set_xlabel("VMF (%)", fontsize=16)
+    ax.set_ylabel("Probability Density", fontsize=16)
 
 # make tight layout with no hspace
 plt.tight_layout()
