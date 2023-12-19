@@ -212,6 +212,9 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
         df2, phase_path, restrict_df=False
     ) * 100
 
+    # output df2
+    df2.to_csv(f"{run}_df2.csv", index=False)
+
     # draw a pdf of velocity
     axs[index].hist(df2['velocity'] / 1000, bins=100, density=True)
     axs[index].axvline(mean(df2['velocity'] / 1000), color='black', linestyle='--', label=f"Mean velocity: {mean(df2['velocity'] / 1000):.2f} km/s")
