@@ -218,18 +218,42 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     # draw a pdf of velocity
     axs[index].hist(df2['velocity'] / 1000, bins=100, density=True)
     axs[index].axvline(mean(df2['velocity'] / 1000), color='black', linestyle='--', label=f"Mean velocity: {mean(df2['velocity'] / 1000):.2f} km/s")
+    # on the right axis, plot the CDF of velocity
+    sorted_vel = df2['velocity'].sort_values()
+    cdf = sorted_vel.rank(method='average', pct=True)
+    axs2 = axs[index].twinx()
+    axs2.plot(sorted_vel / 1000, cdf, linewidth=2.0, color='red')
+    axs2.set_ylabel("CDF", fontsize=16)
 
     # draw a pdf of entropy
     axs[index + 2].hist(df2['entropy'], bins=100, density=True)
     axs[index + 2].axvline(mean(df2['entropy']), color='black', linestyle='--', label=f"Mean entropy: {mean(df2['entropy']):.2f} J/kg/K")
+    # on the right axis, plot the CDF of entropy
+    sorted_entropy = df2['entropy'].sort_values()
+    cdf = sorted_entropy.rank(method='average', pct=True)
+    axs2 = axs[index + 2].twinx()
+    axs2.plot(sorted_entropy, cdf, linewidth=2.0, color='red')
+    axs2.set_ylabel("CDF", fontsize=16)
 
     # draw a pdf of temperature
     axs[index + 4].hist(df2['temperature'], bins=100, density=True)
     axs[index + 4].axvline(mean(df2['temperature']), color='black', linestyle='--', label=f"Mean temperature: {mean(df2['temperature']):.2f} K")
+    # on the right axis, plot the CDF of temperature
+    sorted_temperature = df2['temperature'].sort_values()
+    cdf = sorted_temperature.rank(method='average', pct=True)
+    axs2 = axs[index + 4].twinx()
+    axs2.plot(sorted_temperature, cdf, linewidth=2.0, color='red')
+    axs2.set_ylabel("CDF", fontsize=16)
 
     # draw a pdf of the vmf
     axs[index + 6].hist(df2['vmf_wo_circ'] * 100, bins=100, density=True)
     axs[index + 6].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--', label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
+    # on the right axis, plot the CDF of vmf
+    sorted_vmf = df2['vmf_wo_circ'].sort_values()
+    cdf = sorted_vmf.rank(method='average', pct=True)
+    axs2 = axs[index + 6].twinx()
+    axs2.plot(sorted_vmf * 100, cdf, linewidth=2.0, color='red')
+    axs2.set_ylabel("CDF", fontsize=16)
 
     axs[index + 8].scatter(
         df2['temperature'], df2['vmf_wo_circ'] * 100, s=10, marker="."
@@ -252,6 +276,8 @@ for ax in axs:
     ax.grid()
     # increase axis font size
     ax.tick_params(axis='both', which='major', labelsize=16)
+    # turn on minor ticks
+    ax.minorticks_on()
     # ax.legend()
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)", fontsize=16)
