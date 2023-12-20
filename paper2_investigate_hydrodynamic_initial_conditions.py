@@ -321,8 +321,8 @@ def center_of_mass(df: pd.DataFrame):
 fig, axs = plt.subplots(2, 3, figsize=(15, 10), sharex='all', sharey='all', gridspec_kw={'hspace': 0, 'wspace': 0})
 axs = axs.flatten()
 
-temperature_normalizer = Normalize(1800, 6000)
-entropy_normalizer = Normalize(2000, 6000)
+temperature_normalizer = Normalize(1800 / 1000, 6000 / 1000)
+entropy_normalizer = Normalize(2000 / 1000, 6000 / 1000)
 vmf_normalizer = Normalize(0, 10)
 cmap = cm.get_cmap('cool')
 
@@ -391,7 +391,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
         (combined_file['x'] - com_x) / 1000 / 10 ** 3, (combined_file['y'] - com_y / 10 ** 3) / 1000, s=5, marker=".", color='black'
     )
     axs[plot_index].scatter(
-        (df2['x'] - com_x) / 1000 / 10 ** 3, (df2['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color=cmap(temperature_normalizer(df2['temperature']))
+        (df2['x'] - com_x) / 1000 / 10 ** 3, (df2['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color=cmap(temperature_normalizer(df2['temperature'] / 1000))
     )
     axs[plot_index].text(
         0.10, 0.10, f"{verbose_run_name}", transform=axs[plot_index].transAxes, verticalalignment='top',
@@ -402,7 +402,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
         (combined_file['x'] - com_x) / 1000 / 10 ** 3, (combined_file['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color='black'
     )
     axs[plot_index].scatter(
-        (df2['x'] - com_x) / 1000 / 10 ** 3, (df2['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color=cmap(temperature_normalizer(df2['entropy']))
+        (df2['x'] - com_x) / 1000 / 10 ** 3, (df2['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color=cmap(temperature_normalizer(df2['entropy'] / 1000))
     )
     plot_index += 1
     axs[plot_index].scatter(
@@ -417,18 +417,18 @@ for ax in [axs[0], axs[3]]:
     ax.set_ylabel(r"y ($10^3$ km)", fontsize=16)
 for ax in axs[-3:]:
     ax.set_xlabel(r"x ($10^3$ km)", fontsize=16)
-for ax, label, normalizer in zip(axs[:3], ['Temperature (K)', 'Entropy (J/kg/K)', 'VMF (%)'],
+for ax, label, normalizer in zip(axs[:3], ['Temperature (1000 K)', 'Entropy (1000 J/kg/K)', 'VMF (%)'],
                                  [temperature_normalizer, entropy_normalizer, vmf_normalizer]):
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
     cbaxes = inset_axes(ax, width="50%", height="8%", loc=1, borderpad=1.8)
     cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-    cbar.ax.tick_params(labelsize=12)
-    cbar.ax.set_title(label, fontsize=12)
+    cbar.ax.tick_params(labelsize=14)
+    cbar.ax.set_title(label, fontsize=14)
 
 for ax in axs:
     # increase font size
-    ax.tick_params(axis='both', which='major', labelsize=14)
+    ax.tick_params(axis='both', which='major', labelsize=16)
 
 
 plt.savefig("paper2_initial_condition_thermodynamics_as_func_space.png", format='png', dpi=200)
