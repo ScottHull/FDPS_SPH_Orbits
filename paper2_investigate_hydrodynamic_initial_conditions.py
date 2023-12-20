@@ -232,9 +232,9 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 6].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--', label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
 
     axs[index + 8].scatter(
-        df2['temperature'], df2['vmf_wo_circ'], s=10, marker="."
+        df2['temperature'], df2['vmf_wo_circ'] * 100, s=10, marker="."
     )
-    axs[index + 8].axhline(df2['vmf_wo_circ'].sum() / len(df2), color='black', linestyle='--', label=f"Mean VMF: {mean(df2['vmf_wo_circ']):.2f} %")
+    axs[index + 8].axhline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--', label=f"Mean VMF: {df2['vmf_wo_circ'].sum() / len(df2) * 100:.2f} %")
     axs[index + 8].axvline(mean(df2['temperature']), color='black', linestyle='--', label=f"Mean temperature: {mean(df2['temperature']):.2f} K")
 
     # get the bins from the subplot
