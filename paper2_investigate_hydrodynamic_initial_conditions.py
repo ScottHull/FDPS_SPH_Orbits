@@ -268,7 +268,8 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 8].axhline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--')
     axs[index + 8].axvline(mean(df2['temperature']), color='black', linestyle='--')
     axs[index + 8].text(
-        0.70, 0.8, "Avg. Temp.: {:.2f} K\nAvg. VMF: {:.2f} %".format(mean(df2['temperature']), np.sum(df2['vmf_wo_circ']) / len(df2) * 100)
+        0.70, 0.8, "Avg. Temp.: {:.2f} K\nAvg. VMF: {:.2f} %".format(mean(df2['temperature']), np.sum(df2['vmf_wo_circ']) / len(df2) * 100),
+            transform=axs[index + 8].transAxes, verticalalignment='top', fontsize=16
     )
 
     # get the bins from the subplot
