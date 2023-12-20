@@ -323,7 +323,7 @@ axs = axs.flatten()
 
 temperature_normalizer = Normalize(1800, 6000)
 entropy_normalizer = Normalize(2000, 6000)
-vmf_normalizer = Normalize(0, 100)
+vmf_normalizer = Normalize(0, 10)
 cmap = cm.get_cmap('cool')
 
 plot_index = 0
