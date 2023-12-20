@@ -307,9 +307,18 @@ for ax in axs[8:10]:
 plt.tight_layout()
 plt.savefig("paper2_initial_condition_thermodynamics.png", format='png', dpi=200)
 
+def center_of_mass(df: pd.DataFrame):
+    """
+    Calculate the center of mass of the particles dataframe
+    """
+    com_x = np.sum(df['x'] * df['mass']) / np.sum(df['mass'])
+    com_y = np.sum(df['y'] * df['mass']) / np.sum(df['mass'])
+    com_z = np.sum(df['z'] * df['mass']) / np.sum(df['mass'])
+    return com_x, com_y, com_z
+
 
 # make a 2 row 3 column figure
-fig, axs = plt.subplots(2, 3, figsize=(15, 10), sharex='all', sharey='all')
+fig, axs = plt.subplots(2, 3, figsize=(15, 10), sharex='all', sharey='all', gridspec_kw={'hspace': 0, 'wspace': 0})
 axs = axs.flatten()
 
 temperature_normalizer = Normalize(1800, 6000)
@@ -335,8 +344,6 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     end_time_particle_ids = end_time_disk["id"].values
     time, iterations, mean_disk_vel, mean_disk_entropy, mean_disk_temperature, final_disk_vmf, all_silicate_vmf = [], [], [], [], [], [], []
     phase_path = new_phase_path if "new" in run else old_phase_path
-
-    axs[index].set_title(verbose_run_name, fontsize=20)
 
     path = base_path + f"{run}/{run}"
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
@@ -374,36 +381,35 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     final_disk_particles['velocity'] = np.sqrt(final_disk_particles['vx'] ** 2 + final_disk_particles['vy'] ** 2 + final_disk_particles['vz'] ** 2)
     df2 = final_disk_particles[final_disk_particles['tag'] % 2 == 0]
 
+    com_x, com_y, com_z = center_of_mass(combined_file[combined_file['tag'] == 1])
+
     vmf_final_disk = calc_vapor_mass_fraction_without_circularization_from_formatted(
         df2, phase_path, restrict_df=False
     ) * 100
 
     axs[plot_index].scatter(
-        combined_file['x'] / 1000, combined_file['y'] / 1000, s=5, marker=".", color='black'
+        (combined_file['x'] - com_x) / 1000, (combined_file['y'] - com_y) / 1000, s=5, marker=".", color='black'
     )
     axs[plot_index].scatter(
-        df2['x'] / 1000, df2['y'] / 1000, s=5, marker=".", color=cmap(temperature_normalizer(df2['temperature']))
+        (df2['x'] - com_x) / 1000, (df2['y'] - com_y) / 1000, s=5, marker=".", color=cmap(temperature_normalizer(df2['temperature']))
     )
     axs[plot_index].text(
-        0.85, 0.90, f"{run_name}", transform=axs[plot_index].transAxes, verticalalignment='top',
+        0.85, 0.90, f"{verbose_run_name}", transform=axs[plot_index].transAxes, verticalalignment='top',
         fontsize=18, fontweight='bold'
     )
     plot_index += 1
     axs[plot_index].scatter(
-        combined_file['x'] / 1000, combined_file['y'] / 1000, s=5, marker=".", color='black'
+        (combined_file['x'] - com_x) / 1000, (combined_file['y'] - com_y) / 1000, s=5, marker=".", color='black'
     )
     axs[plot_index].scatter(
-        combined_file['x'] / 1000, combined_file['y'] / 1000, s=5, marker=".", color='black'
-    )
-    axs[plot_index].scatter(
-        df2['x'] / 1000, df2['y'] / 1000, s=5, marker=".", color=cmap(temperature_normalizer(df2['entropy']))
+        (df2['x'] - com_x) / 1000, (df2['y'] - com_y) / 1000, s=5, marker=".", color=cmap(temperature_normalizer(df2['entropy']))
     )
     plot_index += 1
     axs[plot_index].scatter(
-        combined_file['x'] / 1000, combined_file['y'] / 1000, s=5, marker=".", color='black'
+        (combined_file['x'] - com_x) / 1000, (combined_file['y'] - com_y) / 1000, s=5, marker=".", color='black'
     )
     axs[plot_index].scatter(
-        df2['x'] / 1000, df2['y'] / 1000, s=5, marker=".", color=cmap(vmf_normalizer(df2['vmf_wo_circ'] * 100))
+        (df2['x'] - com_x) / 1000, (df2['y'] - com_y) / 1000, s=5, marker=".", color=cmap(vmf_normalizer(df2['vmf_wo_circ'] * 100))
     )
     plot_index += 1
 
@@ -415,10 +421,10 @@ for ax, label, normalizer in zip(axs[:3], ['Temperature (K)', 'Entropy (J/kg/K)'
                                  [temperature_normalizer, entropy_normalizer, vmf_normalizer]):
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
-    cbaxes = inset_axes(axs[0], width="70%", height="10%", loc=1, borderpad=1.8)
+    cbaxes = inset_axes(ax, width="70%", height="10%", loc=1, borderpad=1.8)
     cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
     cbar.ax.tick_params(labelsize=14)
     cbar.ax.set_title(label, fontsize=16)
 
-plt.tight_layout()
+
 plt.savefig("paper2_initial_condition_thermodynamics_as_func_space.png", format='png', dpi=200)
