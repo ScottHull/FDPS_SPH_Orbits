@@ -265,8 +265,11 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 8].scatter(
         df2['temperature'], df2['vmf_wo_circ'] * 100, s=10, marker="."
     )
-    axs[index + 8].axhline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--', label=f"Mean VMF: {df2['vmf_wo_circ'].sum() / len(df2) * 100:.2f} %")
-    axs[index + 8].axvline(mean(df2['temperature']), color='black', linestyle='--', label=f"Mean temperature: {mean(df2['temperature']):.2f} K")
+    axs[index + 8].axhline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--')
+    axs[index + 8].axvline(mean(df2['temperature']), color='black', linestyle='--')
+    axs[index + 8].text(
+        0.70, 0.8, "Avg. Temp.: {:.2f} K\nAvg. VMF: {:.2f} %".format(mean(df2['temperature']), np.sum(df2['vmf_wo_circ']) / len(df2) * 100)
+    )
 
     # get the bins from the subplot
     # Step 2: Get the 3 largest bins
