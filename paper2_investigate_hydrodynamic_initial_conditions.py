@@ -388,35 +388,35 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     ) * 100
 
     axs[plot_index].scatter(
-        (combined_file['x'] - com_x) / 1000, (combined_file['y'] - com_y) / 1000, s=5, marker=".", color='black'
+        (combined_file['x'] - com_x) / 1000 / 10 ** 3, (combined_file['y'] - com_y / 10 ** 3) / 1000, s=5, marker=".", color='black'
     )
     axs[plot_index].scatter(
-        (df2['x'] - com_x) / 1000, (df2['y'] - com_y) / 1000, s=5, marker=".", color=cmap(temperature_normalizer(df2['temperature']))
+        (df2['x'] - com_x) / 1000 / 10 ** 3, (df2['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color=cmap(temperature_normalizer(df2['temperature']))
     )
     axs[plot_index].text(
         0.10, 0.10, f"{verbose_run_name}", transform=axs[plot_index].transAxes, verticalalignment='top',
-        fontsize=12
+        fontsize=16
     )
     plot_index += 1
     axs[plot_index].scatter(
-        (combined_file['x'] - com_x) / 1000, (combined_file['y'] - com_y) / 1000, s=5, marker=".", color='black'
+        (combined_file['x'] - com_x) / 1000 / 10 ** 3, (combined_file['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color='black'
     )
     axs[plot_index].scatter(
-        (df2['x'] - com_x) / 1000, (df2['y'] - com_y) / 1000, s=5, marker=".", color=cmap(temperature_normalizer(df2['entropy']))
+        (df2['x'] - com_x) / 1000 / 10 ** 3, (df2['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color=cmap(temperature_normalizer(df2['entropy']))
     )
     plot_index += 1
     axs[plot_index].scatter(
-        (combined_file['x'] - com_x) / 1000, (combined_file['y'] - com_y) / 1000, s=5, marker=".", color='black'
+        (combined_file['x'] - com_x) / 1000 / 10 ** 3, (combined_file['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color='black'
     )
     axs[plot_index].scatter(
-        (df2['x'] - com_x) / 1000, (df2['y'] - com_y) / 1000, s=5, marker=".", color=cmap(vmf_normalizer(df2['vmf_wo_circ'] * 100))
+        (df2['x'] - com_x) / 1000 / 10 ** 3, (df2['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color=cmap(vmf_normalizer(df2['vmf_wo_circ'] * 100))
     )
     plot_index += 1
 
 for ax in [axs[0], axs[3]]:
-    ax.set_ylabel("y (km)", fontsize=16)
+    ax.set_ylabel(r"y ($10^3$ km)", fontsize=16)
 for ax in axs[-3:]:
-    ax.set_xlabel("x (km)", fontsize=16)
+    ax.set_xlabel(r"x ($10^3$ km)", fontsize=16)
 for ax, label, normalizer in zip(axs[:3], ['Temperature (K)', 'Entropy (J/kg/K)', 'VMF (%)'],
                                  [temperature_normalizer, entropy_normalizer, vmf_normalizer]):
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
