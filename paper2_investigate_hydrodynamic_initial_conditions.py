@@ -394,8 +394,8 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
         (df2['x'] - com_x) / 1000, (df2['y'] - com_y) / 1000, s=5, marker=".", color=cmap(temperature_normalizer(df2['temperature']))
     )
     axs[plot_index].text(
-        0.85, 0.90, f"{verbose_run_name}", transform=axs[plot_index].transAxes, verticalalignment='top',
-        fontsize=18, fontweight='bold'
+        0.10, 0.10, f"{verbose_run_name}", transform=axs[plot_index].transAxes, verticalalignment='top',
+        fontsize=12
     )
     plot_index += 1
     axs[plot_index].scatter(
@@ -421,10 +421,14 @@ for ax, label, normalizer in zip(axs[:3], ['Temperature (K)', 'Entropy (J/kg/K)'
                                  [temperature_normalizer, entropy_normalizer, vmf_normalizer]):
     sm = cm.ScalarMappable(norm=normalizer, cmap=cmap)
     sm.set_array([])
-    cbaxes = inset_axes(ax, width="70%", height="10%", loc=1, borderpad=1.8)
+    cbaxes = inset_axes(ax, width="50%", height="8%", loc=1, borderpad=1.8)
     cbar = plt.colorbar(sm, cax=cbaxes, orientation='horizontal')
-    cbar.ax.tick_params(labelsize=14)
-    cbar.ax.set_title(label, fontsize=16)
+    cbar.ax.tick_params(labelsize=12)
+    cbar.ax.set_title(label, fontsize=12)
+
+for ax in axs:
+    # increase font size
+    ax.tick_params(axis='both', which='major', labelsize=14)
 
 
 plt.savefig("paper2_initial_condition_thermodynamics_as_func_space.png", format='png', dpi=200)
