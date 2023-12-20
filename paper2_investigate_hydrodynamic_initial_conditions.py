@@ -149,7 +149,7 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 
 
-fig, axs = plt.subplots(4, 2, figsize=(10, 20))
+fig, axs = plt.subplots(5, 2, figsize=(10, 10 * (5 / 2)))
 axs = axs.flatten()
 
 for index, (run, verbose_run_name, iteration) in enumerate(runs):
@@ -231,6 +231,12 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 6].hist(df2['vmf_wo_circ'] * 100, bins=100, density=True)
     axs[index + 6].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--', label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
 
+    axs[index + 8].scatter(
+        df2['temperature'], df2['vmf_wo_circ'], s=10, marker="."
+    )
+    axs[index + 8].axhline(df2['vmf_wo_circ'].sum() / len(df2), color='black', linestyle='--', label=f"Mean VMF: {mean(df2['vmf_wo_circ']):.2f} %")
+    axs[index + 8].axvline(mean(df2['temperature']), color='black', linestyle='--', label=f"Mean temperature: {mean(df2['temperature']):.2f} K")
+
     # get the bins from the subplot
     # Step 2: Get the 3 largest bins
     hist_values, bin_edges = np.histogram(df2['vmf_wo_circ'] * 100, bins=100)
@@ -256,9 +262,13 @@ for ax in axs[2:4]:
 for ax in axs[4:6]:
     ax.set_xlabel("Temperature (K)", fontsize=16)
     ax.set_ylabel("Probability Density", fontsize=16)
-for ax in axs[6:]:
+for ax in axs[6:8]:
     ax.set_xlabel("VMF (%)", fontsize=16)
     ax.set_ylabel("Probability Density", fontsize=16)
+for ax in axs[8:10]:
+    ax.set_xlabel("Temperature (K)", fontsize=16)
+    ax.set_ylabel("VMF (%)", fontsize=16)
+    ax.legend()
 
 # make tight layout with no hspace
 plt.tight_layout()
