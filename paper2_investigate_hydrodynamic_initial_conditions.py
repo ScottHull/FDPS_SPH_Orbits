@@ -428,7 +428,7 @@ for ax, label, normalizer in zip(axs[:3], ['Temperature (1000 K)', 'Entropy (100
 
 for ax in axs:
     # increase font size
-    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax.tick_params(axis='both', which='major', labelsize=14)
 
 
 plt.savefig("paper2_initial_condition_thermodynamics_as_func_space.png", format='png', dpi=200)
