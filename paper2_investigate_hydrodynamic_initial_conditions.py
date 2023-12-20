@@ -224,6 +224,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2 = axs[index].twinx()
     axs2.plot(sorted_vel / 1000, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
+    axs2.tick_params(axis='both', which='major', labelsize=16)
 
     # draw a pdf of entropy
     axs[index + 2].hist(df2['entropy'], bins=100, density=True)
@@ -234,6 +235,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2 = axs[index + 2].twinx()
     axs2.plot(sorted_entropy, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
+    axs2.tick_params(axis='both', which='major', labelsize=16)
 
     # draw a pdf of temperature
     axs[index + 4].hist(df2['temperature'], bins=100, density=True)
@@ -244,6 +246,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2 = axs[index + 4].twinx()
     axs2.plot(sorted_temperature, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
+    axs2.tick_params(axis='both', which='major', labelsize=16)
 
     # draw a pdf of the vmf
     axs[index + 6].hist(df2['vmf_wo_circ'] * 100, bins=100, density=True)
@@ -254,6 +257,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2 = axs[index + 6].twinx()
     axs2.plot(sorted_vmf * 100, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
+    axs2.tick_params(axis='both', which='major', labelsize=16)
 
     axs[index + 8].scatter(
         df2['temperature'], df2['vmf_wo_circ'] * 100, s=10, marker="."
