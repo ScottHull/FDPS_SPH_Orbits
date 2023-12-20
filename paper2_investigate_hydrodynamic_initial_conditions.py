@@ -388,7 +388,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     ) * 100
 
     axs[plot_index].scatter(
-        (combined_file['x'] - com_x) / 1000 / 10 ** 3, (combined_file['y'] - com_y / 10 ** 3) / 1000, s=5, marker=".", color='black'
+        (combined_file['x'] - com_x) / 1000 / 10 ** 3, (combined_file['y'] - com_y / 10 ** 3) / 1000 / 10 ** 3, s=5, marker=".", color='black'
     )
     axs[plot_index].scatter(
         (df2['x'] - com_x) / 1000 / 10 ** 3, (df2['y'] - com_y) / 1000 / 10 ** 3, s=5, marker=".", color=cmap(temperature_normalizer(df2['temperature'] / 1000))
