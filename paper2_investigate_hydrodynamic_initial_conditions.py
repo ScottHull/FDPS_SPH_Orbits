@@ -287,7 +287,6 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2 = axs[index + 6].twinx()
     axs2.plot(sorted_vmf * 100, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
-    axs2.set_xscale('log')
     axs2.tick_params(axis='both', which='major', labelsize=18)
     # get the PDF of the df2_intermediate_vmf and calculate the x location of the largest peak
     hist_values, bin_edges = np.histogram(df2_intermediate_vmf['vmf_wo_circ'] * 100, bins=100)
