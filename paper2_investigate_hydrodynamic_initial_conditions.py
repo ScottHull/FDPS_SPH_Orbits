@@ -211,6 +211,9 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     final_disk_particles['velocity'] = np.sqrt(final_disk_particles['vx'] ** 2 + final_disk_particles['vy'] ** 2 + final_disk_particles['vz'] ** 2)
     df2 = final_disk_particles[final_disk_particles['tag'] % 2 == 0]
 
+    df2_intermediate_vmf = df2[df2['vmf_wo_circ'] > 0]
+    df2_intermediate_vmf = df2_intermediate_vmf[df2_intermediate_vmf['vmf_wo_circ'] < 1]
+
     vmf_final_disk = calc_vapor_mass_fraction_without_circularization_from_formatted(
         df2, phase_path, restrict_df=False
     ) * 100
@@ -239,6 +242,11 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2.plot(sorted_entropy, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
     axs2.tick_params(axis='both', which='major', labelsize=16)
+    # get the PDF of the df2_intermediate_vmf and calculate the x location of the largest peak
+    hist_values, bin_edges = np.histogram(df2_intermediate_vmf['entropy'], bins=100)
+    largest_peak_index = np.argmax(hist_values)
+    largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
+    axs[index + 2].axvline(largest_peak_x, color='red', linestyle='--', label=f"Partially vaporized: {largest_peak_x:.2f} J/kg/K")
 
     # draw a pdf of temperature
     axs[index + 4].hist(df2['temperature'], bins=100, density=True)
@@ -250,6 +258,11 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2.plot(sorted_temperature, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
     axs2.tick_params(axis='both', which='major', labelsize=16)
+    # get the PDF of the df2_intermediate_vmf and calculate the x location of the largest peak
+    hist_values, bin_edges = np.histogram(df2_intermediate_vmf['temperature'], bins=100)
+    largest_peak_index = np.argmax(hist_values)
+    largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
+    axs[index + 4].axvline(largest_peak_x, color='red', linestyle='--', label=f"Partially vaporized: {largest_peak_x:.2f} K")
 
     # draw a pdf of the vmf
     axs[index + 6].hist(df2['vmf_wo_circ'] * 100, bins=100, density=True)
@@ -261,6 +274,11 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2.plot(sorted_vmf * 100, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
     axs2.tick_params(axis='both', which='major', labelsize=16)
+    # get the PDF of the df2_intermediate_vmf and calculate the x location of the largest peak
+    hist_values, bin_edges = np.histogram(df2_intermediate_vmf['vmf_wo_circ'] * 100, bins=100)
+    largest_peak_index = np.argmax(hist_values)
+    largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
+    axs[index + 6].axvline(largest_peak_x, color='red', linestyle='--', label=f"Partially vaporized: {largest_peak_x:.2f} %")
 
     axs[index + 8].scatter(
         df2['temperature'], df2['vmf_wo_circ'] * 100, s=10, marker="."
@@ -272,16 +290,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
             transform=axs[index + 8].transAxes, verticalalignment='top', fontsize=16
     )
 
-    # get the bins from the subplot
-    # Step 2: Get the 3 largest bins
-    hist_values, bin_edges = np.histogram(df2['vmf_wo_circ'] * 100, bins=100)
-    largest_bins_indices = (-hist_values).argsort()[:5]
-    largest_bins = bin_edges[largest_bins_indices + 1]  # Adding 1 to get the upper edge of the bin
 
-    # Display the x values of the 3 largest bins
-    print("X values of the 3 largest bins:", largest_bins)
-    # print the Y values of these bins
-    print("Y values of the 3 largest bins:", hist_values[largest_bins_indices])
 
 for ax in axs:
     ax.grid()
@@ -289,7 +298,7 @@ for ax in axs:
     ax.tick_params(axis='both', which='major', labelsize=16)
     # turn on minor ticks
     ax.minorticks_on()
-    # ax.legend()
+    ax.legend()
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)", fontsize=16)
     ax.set_ylabel("Probability Density", fontsize=16)
