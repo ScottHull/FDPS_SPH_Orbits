@@ -110,7 +110,7 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 #                        label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
 #
 #     # plot a PDF of the VMFs
-#     axs[index + 4].hist(sorted_vmf * 100, bins=100, density=True)
+#     axs[index + 4].hist(sorted_vmf * 100, bins=100, density=False)
 #     axs[index + 4].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--',
 #                        label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
 #     axs[index + 4].text(
@@ -217,12 +217,12 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     # output df2
     df2.to_csv(f"{run}_df2.csv", index=False)
 
-    df2_intermediate_vmf = df2[df2['vmf_wo_circ'] > 0]
+    df2_intermediate_vmf = df2[df2['vmf_wo_circ'] > 0.01]
     df2_intermediate_vmf = df2_intermediate_vmf[df2_intermediate_vmf['vmf_wo_circ'] < 1]
 
 
     # draw a pdf of velocity
-    axs[index].hist(df2['velocity'] / 1000, bins=100, density=True)
+    axs[index].hist(df2['velocity'] / 1000, bins=100, density=False)
     axs[index].axvline(mean(df2['velocity'] / 1000), color='black', linestyle='--', label=f"Mean velocity: {mean(df2['velocity'] / 1000):.2f} km/s")
     # on the right axis, plot the CDF of velocity
     sorted_vel = df2['velocity'].sort_values()
@@ -233,7 +233,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2.tick_params(axis='both', which='major', labelsize=16)
 
     # draw a pdf of entropy
-    axs[index + 2].hist(df2['entropy'], bins=100, density=True)
+    axs[index + 2].hist(df2['entropy'], bins=100, density=False)
     axs[index + 2].axvline(mean(df2['entropy']), color='black', linestyle='--', label=f"Mean entropy: {mean(df2['entropy']):.2f} J/kg/K")
     # on the right axis, plot the CDF of entropy
     sorted_entropy = df2['entropy'].sort_values()
@@ -249,7 +249,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 2].axvline(largest_peak_x, color='red', linestyle='--', label=f"Partially vaporized: {largest_peak_x:.2f} J/kg/K")
 
     # draw a pdf of temperature
-    axs[index + 4].hist(df2['temperature'], bins=100, density=True)
+    axs[index + 4].hist(df2['temperature'], bins=100, density=False)
     axs[index + 4].axvline(mean(df2['temperature']), color='black', linestyle='--', label=f"Mean temperature: {mean(df2['temperature']):.2f} K")
     # on the right axis, plot the CDF of temperature
     sorted_temperature = df2['temperature'].sort_values()
@@ -265,7 +265,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 4].axvline(largest_peak_x, color='red', linestyle='--', label=f"Partially vaporized: {largest_peak_x:.2f} K")
 
     # draw a pdf of the vmf
-    axs[index + 6].hist(df2['vmf_wo_circ'] * 100, bins=100, density=True)
+    axs[index + 6].hist(df2['vmf_wo_circ'] * 100, bins=100, density=False)
     axs[index + 6].axvline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--', label=f"Mean VMF: {mean(df2['vmf_wo_circ'] * 100):.2f} %")
     # on the right axis, plot the CDF of vmf
     sorted_vmf = df2['vmf_wo_circ'].sort_values()
@@ -315,6 +315,8 @@ for ax in axs[8:10]:
     ax.set_xlabel("Temperature (K)", fontsize=16)
     ax.set_ylabel("VMF (%)", fontsize=16)
     # ax.legend()
+for ax in axs[:-2]:
+    ax.set_yscale('log')
 
 # make tight layout with no hspace
 plt.tight_layout()
