@@ -254,7 +254,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
     axs[index + 2].axvline(largest_peak_x / 1000, color='red', linestyle='--', linewidth=2.0, label=f"Partially vaporized: {largest_peak_x:.2f} J/kg/K")
     axs[index + 2].text(
-        0.25, 0.8, "Bulk Average: {:.2f}  J/kg/K\nIntermediate Average: {:.2f} J/kg/K".format(mean(df2['entropy'] / 1000), mean(df2_intermediate_vmf['entropy'] / 1000)),
+        0.25, 0.8, "Bulk Average: {:.2f}  J/kg/K\nIntermediate Average: {:.2f} J/kg/K".format(mean(df2['entropy']), mean(df2_intermediate_vmf['entropy'])),
             transform=axs[index + 2].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
@@ -274,7 +274,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
     axs[index + 4].axvline(largest_peak_x / 1000, color='red', linestyle='--', linewidth=2.0, label=f"Partially vaporized: {largest_peak_x:.2f} K")
     axs[index + 4].text(
-        0.25, 0.8, "Bulk Average: {:.2f} K\nIntermediate Average: {:.2f} K".format(mean(df2['temperature'] / 1000), mean(df2_intermediate_vmf['temperature'] / 1000)),
+        0.25, 0.8, "Bulk Average: {:.2f} K\nIntermediate Average: {:.2f} K".format(mean(df2['temperature']), mean(df2_intermediate_vmf['temperature'])),
             transform=axs[index + 4].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
