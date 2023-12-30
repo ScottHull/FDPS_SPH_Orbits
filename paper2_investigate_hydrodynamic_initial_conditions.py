@@ -320,16 +320,16 @@ for ax in axs:
     # ax.legend()
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)", fontsize=18)
-    ax.set_ylabel("# Particles", fontsize=18)
+    ax.set_ylabel("Probability Density", fontsize=18)
 for ax in axs[2:4]:
     ax.set_xlabel("Entropy (1000 J/kg/K)", fontsize=18)
-    ax.set_ylabel("# Particles", fontsize=18)
+    ax.set_ylabel("Probability Density", fontsize=18)
 for ax in axs[4:6]:
     ax.set_xlabel("Temperature (1000 K)", fontsize=18)
-    ax.set_ylabel("# Particles", fontsize=18)
+    ax.set_ylabel("Probability Density", fontsize=18)
 for ax in axs[6:8]:
     ax.set_xlabel("VMF (%)", fontsize=18)
-    ax.set_ylabel("# Particles", fontsize=18)
+    ax.set_ylabel("Probability Density", fontsize=18)
 # for ax in axs[8:10]:
 #     ax.set_xlabel("Temperature (1000 K)", fontsize=16)
 #     ax.set_ylabel("VMF (%)", fontsize=16)
