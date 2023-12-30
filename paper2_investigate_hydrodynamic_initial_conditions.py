@@ -210,16 +210,16 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     combined_file.columns = final_disk_particles.columns
     final_disk_particles['velocity'] = np.sqrt(final_disk_particles['vx'] ** 2 + final_disk_particles['vy'] ** 2 + final_disk_particles['vz'] ** 2)
     df2 = final_disk_particles[final_disk_particles['tag'] % 2 == 0]
-
-    df2_intermediate_vmf = df2[df2['vmf_wo_circ'] > 0]
-    df2_intermediate_vmf = df2_intermediate_vmf[df2_intermediate_vmf['vmf_wo_circ'] < 1]
-
     vmf_final_disk = calc_vapor_mass_fraction_without_circularization_from_formatted(
         df2, phase_path, restrict_df=False
     ) * 100
 
     # output df2
     df2.to_csv(f"{run}_df2.csv", index=False)
+
+    df2_intermediate_vmf = df2[df2['vmf_wo_circ'] > 0]
+    df2_intermediate_vmf = df2_intermediate_vmf[df2_intermediate_vmf['vmf_wo_circ'] < 1]
+
 
     # draw a pdf of velocity
     axs[index].hist(df2['velocity'] / 1000, bins=100, density=True)
