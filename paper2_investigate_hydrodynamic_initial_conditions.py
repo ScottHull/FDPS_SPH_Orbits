@@ -152,7 +152,7 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 
 
-fig, axs = plt.subplots(4, 2, figsize=(12, 20))
+fig, axs = plt.subplots(4, 2, figsize=(18, 25))
 axs = axs.flatten()
 
 for index, (run, verbose_run_name, iteration) in enumerate(runs):
