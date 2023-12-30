@@ -152,7 +152,7 @@ old_phase_path = "src/phase_data/duniteN__vapour_curve.txt"
 
 
 
-fig, axs = plt.subplots(5, 2, figsize=(12, 10 * (5 / 2)))
+fig, axs = plt.subplots(4, 2, figsize=(12, 10 * (4 / 2)))
 axs = axs.flatten()
 
 for index, (run, verbose_run_name, iteration) in enumerate(runs):
@@ -233,12 +233,12 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2.tick_params(axis='both', which='major', labelsize=16)
     axs[index].text(
         0.05, 0.8, "Avg. Velocity: {:.2f} km/s".format(mean(df2['velocity'] / 1000)),
-            transform=axs[index + 8].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
+            transform=axs[index].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
     )
 
     # draw a pdf of entropy
-    axs[index + 2].hist(df2['entropy'], bins=100, density=False)
-    axs[index + 2].axvline(mean(df2['entropy']), color='black', linestyle='--', label=f"Mean entropy: {mean(df2['entropy']):.2f} J/kg/K")
+    axs[index + 2].hist(df2['entropy'] / 1000, bins=100, density=False)
+    axs[index + 2].axvline(mean(df2['entropy']) / 1000, color='black', linestyle='--', label=f"Mean entropy: {mean(df2['entropy']):.2f} J/kg/K")
     # on the right axis, plot the CDF of entropy
     sorted_entropy = df2['entropy'].sort_values()
     cdf = sorted_entropy.rank(method='average', pct=True)
@@ -253,12 +253,12 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 2].axvline(largest_peak_x / 1000, color='red', linestyle='--', label=f"Partially vaporized: {largest_peak_x:.2f} J/kg/K")
     axs[index + 2].text(
         0.5, 0.8, "Avg. Entropy (bulk): {:.2f} J/kg/K\nAvg. Entropy (bulk): {:.2f} J/kg/K".format(mean(df2['entropy'] / 1000), mean(df2_intermediate_vmf['entropy'] / 1000)),
-            transform=axs[index + 8].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
+            transform=axs[index + 2].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
     )
 
     # draw a pdf of temperature
-    axs[index + 4].hist(df2['temperature'], bins=100, density=False)
-    axs[index + 4].axvline(mean(df2['temperature']), color='black', linestyle='--', label=f"Mean temperature: {mean(df2['temperature']):.2f} K")
+    axs[index + 4].hist(df2['temperature'] / 1000, bins=100, density=False)
+    axs[index + 4].axvline(mean(df2['temperature']) / 1000, color='black', linestyle='--', label=f"Mean temperature: {mean(df2['temperature']):.2f} K")
     # on the right axis, plot the CDF of temperature
     sorted_temperature = df2['temperature'].sort_values()
     cdf = sorted_temperature.rank(method='average', pct=True)
@@ -273,7 +273,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 4].axvline(largest_peak_x / 1000, color='red', linestyle='--', label=f"Partially vaporized: {largest_peak_x:.2f} K")
     axs[index + 4].text(
         0.5, 0.8, "Avg. Temperature (bulk): {:.2f} km/s\nAvg. Temperature (intermediate): {:.2f} km/s".format(mean(df2['temperature'] / 1000), mean(df2_intermediate_vmf['temperature'] / 1000)),
-            transform=axs[index + 8].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
+            transform=axs[index + 4].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
     )
 
     # draw a pdf of the vmf
@@ -293,18 +293,18 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs[index + 6].axvline(largest_peak_x, color='red', linestyle='--', label=f"Partially vaporized: {largest_peak_x:.2f} %")
     axs[index + 6].text(
         0.5, 0.8, "Avg. VMF (bulk): {:.2f} %\nAvg. VMF (intermediate): {:.2f} %".format(mean(df2['vmf_wo_circ'] * 100), mean(df2_intermediate_vmf['vmf_wo_circ'] * 100)),
-            transform=axs[index + 8].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
+            transform=axs[index + 6].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
     )
 
-    axs[index + 8].scatter(
-        df2['temperature'] / 1000, df2['vmf_wo_circ'] * 100, s=10, marker="."
-    )
-    axs[index + 8].axhline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--')
-    axs[index + 8].axvline(mean(df2['temperature'] / 1000), color='black', linestyle='--')
-    # axs[index + 8].text(
-    #     0.50, 0.8, "Avg. Temperature: {:.2f} K\nAvg. VMF: {:.2f} %".format(mean(df2['temperature']), np.sum(df2['vmf_wo_circ']) / len(df2) * 100),
-    #         transform=axs[index + 8].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
+    # axs[index + 8].scatter(
+    #     df2['temperature'] / 1000, df2['vmf_wo_circ'] * 100, s=10, marker="."
     # )
+    # axs[index + 8].axhline(df2['vmf_wo_circ'].sum() / len(df2) * 100, color='black', linestyle='--')
+    # axs[index + 8].axvline(mean(df2['temperature'] / 1000), color='black', linestyle='--')
+    # # axs[index + 8].text(
+    # #     0.50, 0.8, "Avg. Temperature: {:.2f} K\nAvg. VMF: {:.2f} %".format(mean(df2['temperature']), np.sum(df2['vmf_wo_circ']) / len(df2) * 100),
+    # #         transform=axs[index + 8].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=16
+    # #     # )
 
 
 
@@ -314,6 +314,7 @@ for ax in axs:
     ax.tick_params(axis='both', which='major', labelsize=16)
     # turn on minor ticks
     ax.minorticks_on()
+    ax.set_yscale('log')
     # ax.legend()
 for ax in axs[:2]:
     ax.set_xlabel("Velocity (km/s)", fontsize=16)
@@ -327,13 +328,11 @@ for ax in axs[4:6]:
 for ax in axs[6:8]:
     ax.set_xlabel("VMF (%)", fontsize=16)
     ax.set_ylabel("# Particles", fontsize=16)
-for ax in axs[8:10]:
-    ax.set_xlabel("Temperature (1000 K)", fontsize=16)
-    ax.set_ylabel("VMF (%)", fontsize=16)
-    ax.set_xscale("log")
-    # ax.legend()
-for ax in axs[:-2]:
-    ax.set_yscale('log')
+# for ax in axs[8:10]:
+#     ax.set_xlabel("Temperature (1000 K)", fontsize=16)
+#     ax.set_ylabel("VMF (%)", fontsize=16)
+#     ax.set_xscale("log")
+#     # ax.legend()
 
 # make tight layout with no hspace
 plt.tight_layout()
