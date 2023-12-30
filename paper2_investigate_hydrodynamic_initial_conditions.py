@@ -232,9 +232,9 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2 = axs[index].twinx()
     axs2.plot(sorted_vel / 1000, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
-    axs2.tick_params(axis='both', which='major', labelsize=16)
+    axs2.tick_params(axis='both', which='major', labelsize=18)
     axs[index].text(
-        0.05, 0.9, "Avg. Velocity: {:.2f} km/s".format(mean(df2['velocity'] / 1000)),
+        0.05, 0.9, "Bulk Average: {:.2f} km/s".format(mean(df2['velocity'] / 1000)),
             transform=axs[index].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
@@ -247,14 +247,14 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2 = axs[index + 2].twinx()
     axs2.plot(sorted_entropy / 1000, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
-    axs2.tick_params(axis='both', which='major', labelsize=16)
+    axs2.tick_params(axis='both', which='major', labelsize=18)
     # get the PDF of the df2_intermediate_vmf and calculate the x location of the largest peak
     hist_values, bin_edges = np.histogram(df2_intermediate_vmf['entropy'], bins=100)
     largest_peak_index = np.argmax(hist_values)
     largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
     axs[index + 2].axvline(largest_peak_x / 1000, color='red', linestyle='--', linewidth=2.0, label=f"Partially vaporized: {largest_peak_x:.2f} J/kg/K")
     axs[index + 2].text(
-        0.25, 0.8, "Avg. Entropy (bulk): {:.2f} J/kg/K\nAvg. Entropy (intermediate): {:.2f} J/kg/K".format(mean(df2['entropy'] / 1000), mean(df2_intermediate_vmf['entropy'] / 1000)),
+        0.25, 0.8, "Bulk Average: {:.2f}  J/kg/K\nIntermediate Average: {:.2f} J/kg/K".format(mean(df2['entropy'] / 1000), mean(df2_intermediate_vmf['entropy'] / 1000)),
             transform=axs[index + 2].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
@@ -267,14 +267,14 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2 = axs[index + 4].twinx()
     axs2.plot(sorted_temperature / 1000, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
-    axs2.tick_params(axis='both', which='major', labelsize=16)
+    axs2.tick_params(axis='both', which='major', labelsize=18)
     # get the PDF of the df2_intermediate_vmf and calculate the x location of the largest peak
     hist_values, bin_edges = np.histogram(df2_intermediate_vmf['temperature'], bins=100)
     largest_peak_index = np.argmax(hist_values)
     largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
     axs[index + 4].axvline(largest_peak_x / 1000, color='red', linestyle='--', linewidth=2.0, label=f"Partially vaporized: {largest_peak_x:.2f} K")
     axs[index + 4].text(
-        0.25, 0.8, "Avg. Temperature (bulk): {:.2f} km/s\nAvg. Temperature (intermediate): {:.2f} km/s".format(mean(df2['temperature'] / 1000), mean(df2_intermediate_vmf['temperature'] / 1000)),
+        0.25, 0.8, "Bulk Average: {:.2f} K\nIntermediate Average: {:.2f} K".format(mean(df2['temperature'] / 1000), mean(df2_intermediate_vmf['temperature'] / 1000)),
             transform=axs[index + 4].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
@@ -287,14 +287,14 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2 = axs[index + 6].twinx()
     axs2.plot(sorted_vmf * 100, cdf, linewidth=2.0, color='red')
     axs2.set_ylabel("CDF", fontsize=16)
-    axs2.tick_params(axis='both', which='major', labelsize=16)
+    axs2.tick_params(axis='both', which='major', labelsize=18)
     # get the PDF of the df2_intermediate_vmf and calculate the x location of the largest peak
     hist_values, bin_edges = np.histogram(df2_intermediate_vmf['vmf_wo_circ'] * 100, bins=100)
     largest_peak_index = np.argmax(hist_values)
     largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
     axs[index + 6].axvline(largest_peak_x, color='red', linestyle='--', linewidth=2.0, label=f"Partially vaporized: {largest_peak_x:.2f} %")
     axs[index + 6].text(
-        0.25, 0.8, "Avg. VMF (bulk): {:.2f} %\nAvg. VMF (intermediate): {:.2f} %".format(mean(df2['vmf_wo_circ'] * 100), mean(df2_intermediate_vmf['vmf_wo_circ'] * 100)),
+        0.25, 0.8, "Bulk Average: {:.2f} %\nIntermediate Average: {:.2f} %".format(mean(df2['vmf_wo_circ'] * 100), mean(df2_intermediate_vmf['vmf_wo_circ'] * 100)),
             transform=axs[index + 6].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
@@ -313,23 +313,23 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
 for ax in axs:
     ax.grid()
     # increase axis font size
-    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax.tick_params(axis='both', which='major', labelsize=18)
     # turn on minor ticks
     ax.minorticks_on()
     ax.set_yscale('log')
     # ax.legend()
 for ax in axs[:2]:
-    ax.set_xlabel("Velocity (km/s)", fontsize=16)
-    ax.set_ylabel("# Particles", fontsize=16)
+    ax.set_xlabel("Velocity (km/s)", fontsize=18)
+    ax.set_ylabel("# Particles", fontsize=18)
 for ax in axs[2:4]:
-    ax.set_xlabel("Entropy (1000 J/kg/K)", fontsize=16)
-    ax.set_ylabel("# Particles", fontsize=16)
+    ax.set_xlabel("Entropy (1000 J/kg/K)", fontsize=18)
+    ax.set_ylabel("# Particles", fontsize=18)
 for ax in axs[4:6]:
-    ax.set_xlabel("Temperature (1000 K)", fontsize=16)
-    ax.set_ylabel("# Particles", fontsize=16)
+    ax.set_xlabel("Temperature (1000 K)", fontsize=18)
+    ax.set_ylabel("# Particles", fontsize=18)
 for ax in axs[6:8]:
-    ax.set_xlabel("VMF (%)", fontsize=16)
-    ax.set_ylabel("# Particles", fontsize=16)
+    ax.set_xlabel("VMF (%)", fontsize=18)
+    ax.set_ylabel("# Particles", fontsize=18)
 # for ax in axs[8:10]:
 #     ax.set_xlabel("Temperature (1000 K)", fontsize=16)
 #     ax.set_ylabel("VMF (%)", fontsize=16)
