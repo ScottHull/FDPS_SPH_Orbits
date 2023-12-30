@@ -16,7 +16,9 @@ from src.animate import animate
 from src.vapor import calc_vapor_mass_fraction_without_circularization_from_formatted
 
 # use colorblind-friendly colors from seaborn
-# plt.style.use('seaborn-colorblind')
+plt.style.use('seaborn-colorblind')
+# increase font size
+plt.rcParams.update({'font.size': 16})
 
 runs = [
     ('/home/theia/scotthull/Paper1_SPH/gi/500_b073_new', 'Canonical', 25),
@@ -233,7 +235,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2.tick_params(axis='both', which='major', labelsize=16)
     axs[index].text(
         0.05, 0.8, "Avg. Velocity: {:.2f} km/s".format(mean(df2['velocity'] / 1000)),
-            transform=axs[index].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=14
+            transform=axs[index].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
     # draw a pdf of entropy
@@ -252,8 +254,8 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
     axs[index + 2].axvline(largest_peak_x / 1000, color='red', linestyle='--', linewidth=2.0, label=f"Partially vaporized: {largest_peak_x:.2f} J/kg/K")
     axs[index + 2].text(
-        0.5, 0.8, "Avg. Entropy (bulk): {:.2f} J/kg/K\nAvg. Entropy (intermediate): {:.2f} J/kg/K".format(mean(df2['entropy'] / 1000), mean(df2_intermediate_vmf['entropy'] / 1000)),
-            transform=axs[index + 2].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=14
+        0.4, 0.8, "Avg. Entropy (bulk): {:.2f} J/kg/K\nAvg. Entropy (intermediate): {:.2f} J/kg/K".format(mean(df2['entropy'] / 1000), mean(df2_intermediate_vmf['entropy'] / 1000)),
+            transform=axs[index + 2].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
     # draw a pdf of temperature
@@ -272,8 +274,8 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
     axs[index + 4].axvline(largest_peak_x / 1000, color='red', linestyle='--', linewidth=2.0, label=f"Partially vaporized: {largest_peak_x:.2f} K")
     axs[index + 4].text(
-        0.5, 0.8, "Avg. Temperature (bulk): {:.2f} km/s\nAvg. Temperature (intermediate): {:.2f} km/s".format(mean(df2['temperature'] / 1000), mean(df2_intermediate_vmf['temperature'] / 1000)),
-            transform=axs[index + 4].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=14
+        0.4, 0.8, "Avg. Temperature (bulk): {:.2f} km/s\nAvg. Temperature (intermediate): {:.2f} km/s".format(mean(df2['temperature'] / 1000), mean(df2_intermediate_vmf['temperature'] / 1000)),
+            transform=axs[index + 4].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
     # draw a pdf of the vmf
@@ -292,8 +294,8 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     largest_peak_x = bin_edges[largest_peak_index + 1]  # Adding 1 to get the upper edge of the bin
     axs[index + 6].axvline(largest_peak_x, color='red', linestyle='--', linewidth=2.0, label=f"Partially vaporized: {largest_peak_x:.2f} %")
     axs[index + 6].text(
-        0.5, 0.8, "Avg. VMF (bulk): {:.2f} %\nAvg. VMF (intermediate): {:.2f} %".format(mean(df2['vmf_wo_circ'] * 100), mean(df2_intermediate_vmf['vmf_wo_circ'] * 100)),
-            transform=axs[index + 6].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=14
+        0.4, 0.8, "Avg. VMF (bulk): {:.2f} %\nAvg. VMF (intermediate): {:.2f} %".format(mean(df2['vmf_wo_circ'] * 100), mean(df2_intermediate_vmf['vmf_wo_circ'] * 100)),
+            transform=axs[index + 6].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )
 
     # axs[index + 8].scatter(
