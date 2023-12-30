@@ -331,7 +331,6 @@ for ax in axs[4:6]:
 for ax in axs[6:8]:
     ax.set_xlabel("VMF (%)", fontsize=18)
     ax.set_ylabel("# Particles", fontsize=18)
-    ax.set_xscale('log')
 # for ax in axs[8:10]:
 #     ax.set_xlabel("Temperature (1000 K)", fontsize=16)
 #     ax.set_ylabel("VMF (%)", fontsize=16)
