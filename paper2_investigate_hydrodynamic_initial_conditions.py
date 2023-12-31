@@ -219,7 +219,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     # output df2
     df2.to_csv(f"{run}_df2.csv", index=False)
 
-    print(verbose_run_name, len(df2[df2['vmf_wo_circ'] == 0]), len(df2[df2['vmf_wo_circ'] == 1]))
+    print(verbose_run_name, len(df2[df2['vmf_wo_circ'] == 0]) / len(df2), len(df2[df2['vmf_wo_circ'] == 1]) / len(df2))
 
     df2_intermediate_vmf = df2[df2['vmf_wo_circ'] > 0.01]
     df2_intermediate_vmf = df2_intermediate_vmf[df2_intermediate_vmf['vmf_wo_circ'] < 1]
