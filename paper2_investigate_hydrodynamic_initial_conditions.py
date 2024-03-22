@@ -235,7 +235,7 @@ for index, (run, verbose_run_name, iteration) in enumerate(runs):
     axs2.plot(sorted_vel / 1000, cdf, linewidth=3.0, color='k')
     axs2.set_ylabel("CDF", fontsize=16)
     axs2.tick_params(axis='both', which='major', labelsize=18)
-    axs[index].text(
+    axs[index]df(
         0.05, 0.9, "Bulk Average: {:.2f} km/s".format(mean(df2['velocity'] / 1000)),
             transform=axs[index].transAxes, verticalalignment='top', horizontalalignment='left', fontsize=18
     )

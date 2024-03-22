@@ -47,6 +47,10 @@ def plot_iteration(iteration):
     to_fname = "merged_{}_{}.dat".format(iteration, randint(0, 100000))
     cf = CombineFile(num_processes=number_processes, time=iteration, output_path=path, to_fname=to_fname)
     combined_file = cf.combine_df()
+    combined_file.columns = [
+        'id', 'tag', 'mass', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'density', 'internal_energy', 'pressure',
+        'potential_energy', 'entropy', 'temperature'
+    ]
     formatted_time = round(cf.sim_time * 0.000277778, 2)
     f = os.getcwd() + "/{}".format(to_fname)
 
