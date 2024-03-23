@@ -20,8 +20,8 @@ from src.animate import animate
 from src.plots3D import get_cube_verts
 
 min_iteration = 0
-max_iteration = 3000
-increment = 5
+max_iteration = 1800
+increment = 2
 fps = 30
 parameter = "entropy"
 min_normalize_parameter = 1000
@@ -58,8 +58,16 @@ def plot_iteration(iteration):
     fig.patch.set_facecolor('xkcd:black')
     ax = fig.add_subplot(111, projection='3d')
 
+    # limit the df to where |x| < square_scale, |y| < square_scale, |z| < square_scale
+    combined_file = combined_file[
+        (combined_file['x'] < square_scale) & (combined_file['x'] > -square_scale) &
+        (combined_file['y'] < square_scale) & (combined_file['y'] > -square_scale) &
+        (combined_file['z'] < square_scale) & (combined_file['z'] > -square_scale)
+    ]
+
     ax.scatter(
-        combined_file['x'], combined_file['y'], combined_file['z'], s=5, c=cmap(normalizer(combined_file[parameter]))
+        combined_file['x'], combined_file['y'], combined_file['z'], s=5, c=cmap(normalizer(combined_file[parameter])),
+        alpha=1
     )
 
     ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
