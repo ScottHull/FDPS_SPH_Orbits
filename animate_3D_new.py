@@ -30,7 +30,7 @@ run_name = "500_half_earths"
 path = "/home/theia/scotthull/Paper2_SPH/gi/{}/{}".format(run_name, run_name)
 to_path = "3D_{}".format(run_name)
 number_processes = 200
-square_scale = 2e7
+square_scale = 4e7
 
 verts = get_cube_verts(square_scale=square_scale)
 
